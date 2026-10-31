@@ -33,6 +33,14 @@ command = '''
 '''
 
 [[commands]]
+name = "update"
+category = "utilities"
+help = "Update the lock files of the repository and of every application"
+command = '''
+  exec "${PRJ_ROOT:-.}/tools/update.sh" "$@"
+'''
+
+[[commands]]
 name = "package"
 category = "utilities"
 help = "Build the .vsix extension package"

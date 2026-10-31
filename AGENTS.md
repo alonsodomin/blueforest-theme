@@ -17,6 +17,12 @@
 - Root flake evaluation only sees tracked files. `git add` new files before running `nix flake check` or `nix build .#...`.
 - Shells: one shell for the repository, `nix develop` (the tools of every application, the release tooling and `nixfmt`). There is no shell per application: the definition is the `devshell.toml` of the root, and the module of the root declares it with the `devshell` flake.
 
+## Updates
+- Every flake of the repository has a lock file of its own: the root one, and one per application. `update` from `nix develop` (or `tools/update.sh`) updates all of them: the root first, then each application.
+- The root owns the pins, so the helper pins the inputs an application shares with the root to the revisions the root resolved, with `nix flake lock --override-input`. Without that step the two drift apart, because the root and the application resolve the branch on their own.
+- Dependabot watches the lock files (`.github/dependabot.yml`): the `nix` ecosystem for the root and `/modules/*`, and `github-actions` for the workflows, both weekly. The `nix` entries are grouped by `dependency-name`, so one pull request carries every lock file that shares the input.
+- Dependabot runs `nix flake lock --override-input` itself, so it keeps the `original` of an input: a pinned revision does not become permanent.
+
 ## Versions and releases
 - One shared version. `VERSION`, every `modules/*/VERSION`, and every `modules/*/package.json` must match (`tests/version.nix`). `modules/vscode` has no `VERSION` (package.json is its copy); the `neovim` `VERSION` file does exist, so include it in manual bumps.
 - Prefer the helper over hand-editing: `release vscode` from `nix develop`, or `nix run .#release -- vscode`. It is interactive, needs authenticated `gh` and network, pushes, and triggers CI; do not run it unattended.

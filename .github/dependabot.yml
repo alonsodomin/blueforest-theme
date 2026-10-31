@@ -1,0 +1,29 @@
+# SPDX-License-Identifier: MPL-2.0
+#
+# The dependency updates of the repository.
+#
+# The repository is a flake with a flake of its own per application, so every
+# application has a lock file of its own. Dependabot watches them all, and it
+# groups the updates by the name of the dependency, so that a pull request
+# carries the lock files of every application that share the dependency.
+version: 2
+
+updates:
+  # The inputs of the flakes of the repository and of its applications.
+  - package-ecosystem: "nix"
+    directories:
+      - "/"
+      - "/modules/*"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    groups:
+      flake-inputs:
+        group-by: dependency-name
+
+  # The actions of the workflows.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
