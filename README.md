@@ -468,11 +468,35 @@ This repository comes with a Nix flake that sets up a development shell that com
 [utilities]
 
   release - Interactive release helper
+  update  - Update the lock files of the repository
 ```
 
 There is one development shell for the whole repository, and it comes with the tools of every
 application: the ones the release needs, and the ones that try out the theme of an application
 and format its sources.
+
+### Updates
+
+The repository is a flake, and every application is a flake of its own, so every one of them has a
+lock file of its own. The `update` command updates all of them:
+
+```console
+update
+```
+
+It updates the lock file of the repository, and then the lock file of every application. The
+repository owns the pins of its applications, so the command pins the inputs that an application
+shares with the repository to the revisions the repository resolved, and both agree.
+
+A single application can be updated on its own:
+
+```console
+update vscode
+```
+
+Dependabot does the same, once a week: it watches the lock files of the repository and of every
+application, and opens a pull request for the inputs that moved upstream. The configuration is in
+[`.github/dependabot.yml`](.github/dependabot.yml).
 
 ### Releases
 
