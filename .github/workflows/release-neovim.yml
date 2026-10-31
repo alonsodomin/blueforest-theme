@@ -52,7 +52,7 @@ jobs:
           tar -czf ./blueforest-neovim-theme-${{ steps.setup.outputs.version }}.tar.gz \
             ./blueforest-neovim-theme-${{ steps.setup.outputs.version }}
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: blueforest-neovim-theme
           path: ./blueforest-neovim-theme-*.tar.gz
