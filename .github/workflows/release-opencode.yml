@@ -10,7 +10,7 @@ jobs:
     name: Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: cachix/install-nix-action@v31
         with:
@@ -28,7 +28,7 @@ jobs:
       tag: ${{ steps.setup.outputs.tag }}
       version: ${{ steps.setup.outputs.version }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup
         id: setup
@@ -52,7 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [check, package]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/download-artifact@v4
         with:
           name: blueforest-opencode-theme
