@@ -68,6 +68,18 @@ in
 
     checks = {
       name = "Checks (\${{ matrix.flake }})";
+
+      # The workflows are rendered before the checks run, so that the check
+      # that compares them with the committed ones runs against a branch that
+      # carries the rendered files.
+      needs = [ "render" ];
+
+      # The render only runs on pull requests from the repository itself, and
+      # a job whose dependency is skipped is skipped with it. The checks run
+      # anyway, because they are the ones that tell whether the pull request
+      # is any good.
+      "if" = "always()";
+
       runs-on = "ubuntu-latest";
       strategy = {
         fail-fast = false;

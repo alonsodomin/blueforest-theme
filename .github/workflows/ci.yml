@@ -5,7 +5,10 @@
 # Or commit to trigger the pre-commit hook if enabled.
 jobs:
   checks:
+    if: always()
     name: Checks (${{ matrix.flake }})
+    needs:
+    - render
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
