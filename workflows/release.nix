@@ -139,6 +139,18 @@ let
           "dist/blueforest-eza-theme-$VERSION.yml"
       '';
     }
+    {
+      app = "zed";
+      title = "Zed";
+      asset = "dist/blueforest-zed-theme-$VERSION.tar.gz";
+      package = ''
+        mkdir -p dist staging/themes
+        cp modules/zed/extension/extension.toml staging/extension.toml
+        cp modules/zed/extension/themes/blueforest.json \
+          staging/themes/blueforest.json
+        tar -czf "dist/blueforest-zed-theme-$VERSION.tar.gz" -C staging .
+      '';
+    }
   ];
 
   applicationsByApp = listToAttrs (
@@ -297,12 +309,20 @@ in
 
     # The repository is checked before the release is created, so that a
     # broken tag does not leave a release behind.
+    #
+    # The flakes are checked from the working tree, and not from the git
+    # tree: the extension of Zed is a submodule of the repository, and Nix
+    # cannot read the contents of a submodule of a git tree. The checkout of
+    # the workflow brings the submodules with it.
     checks = {
       name = "Checks (\${{ matrix.flake }})";
       runs-on = "ubuntu-latest";
       strategy = {
         fail-fast = false;
-        matrix.flake = [ "." ] ++ map (application: "./modules/${application}") common.applications;
+        matrix.flake = [
+          "path:."
+        ]
+        ++ map (application: "path:./modules/${application}") common.applications;
       };
       steps = [
         common.checkout

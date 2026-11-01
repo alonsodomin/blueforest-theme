@@ -18,6 +18,7 @@ nav:
       - OpenCode: themes/opencode.md
       - sbt: themes/sbt.md
       - eza: themes/eza.md
+      - Zed: themes/zed.md
   - Reference:
       - Outputs: reference/outputs.md
       - Identifiers: reference/identifiers.md

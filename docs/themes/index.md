@@ -13,6 +13,7 @@ installed.
 | OpenCode    | [Release asset or Nix](opencode.md)          |
 | sbt         | [Upstream plugin or Nix](sbt.md)              |
 | eza         | [Release asset or Nix](eza.md)                |
+| Zed         | [Extension Gallery or Nix](zed.md)           |
 
 The release assets are attached to the
 [GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases).

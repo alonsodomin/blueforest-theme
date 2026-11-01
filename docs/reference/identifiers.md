@@ -29,3 +29,9 @@ modules of the repository.
   the name of the file. eza reads it as `theme.yml`, from
   `$XDG_CONFIG_HOME/eza/` or from the directory `EZA_CONFIG_DIR` points at,
   and there is no name to select.
+- The Zed package is `blueforest-zed-theme`. The Zed extension is
+  `blueforest-theme`, the id of its manifest, and the theme is
+  `BlueForest - Dark`, the name it has in the theme picker of Zed. The
+  extension lives in its own repository,
+  [alonsodomin/zed-blueforest-theme](https://github.com/alonsodomin/zed-blueforest-theme),
+  which is a submodule of the application.

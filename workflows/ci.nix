@@ -9,7 +9,12 @@ let
 
   # The root flake checks every application at once, and each application is
   # checked on its own as well.
-  flakes = [ "." ] ++ map (application: "./modules/${application}") common.applications;
+  #
+  # The flakes are checked from the working tree, and not from the git tree:
+  # the extension of Zed is a submodule of the repository, and Nix cannot
+  # read the contents of a submodule of a git tree. The checkout of the
+  # workflow brings the submodules with it.
+  flakes = [ "path:." ] ++ map (application: "path:./modules/${application}") common.applications;
 in
 {
   name = "CI";
@@ -63,6 +68,18 @@ in
 
     checks = {
       name = "Checks (\${{ matrix.flake }})";
+
+      # The workflows are rendered before the checks run, so that the check
+      # that compares them with the committed ones runs against a branch that
+      # carries the rendered files.
+      needs = [ "render" ];
+
+      # The render only runs on pull requests from the repository itself, and
+      # a job whose dependency is skipped is skipped with it. The checks run
+      # anyway, because they are the ones that tell whether the pull request
+      # is any good.
+      "if" = "always()";
+
       runs-on = "ubuntu-latest";
       strategy = {
         fail-fast = false;

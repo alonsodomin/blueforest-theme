@@ -20,6 +20,7 @@ application, is at
 | OpenCode | <https://alonsodomin.github.io/blueforest-theme/themes/opencode/> |
 | sbt | <https://alonsodomin.github.io/blueforest-theme/themes/sbt/> |
 | eza | <https://alonsodomin.github.io/blueforest-theme/themes/eza/> |
+| Zed | <https://alonsodomin.github.io/blueforest-theme/themes/zed/> |
 
 ## Installation
 

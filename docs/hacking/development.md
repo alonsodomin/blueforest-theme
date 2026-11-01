@@ -46,26 +46,32 @@ The shell is bash and uses tabs. `shellcheck` must pass.
 The fast checks are:
 
 ```console
-nix flake check
+nix flake check "path:."
 ```
 
 The root flake checks every application at once, and every application can be
 checked on its own the way a consumer that installs only one of them gets it:
 
 ```console
-nix flake check ./modules/vscode
-nix flake check ./modules/bat
-nix flake check ./modules/neovim
-nix flake check ./modules/starship
-nix flake check ./modules/opencode
-nix flake check ./modules/sbt
-nix flake check ./modules/eza
+nix flake check "path:./modules/vscode"
+nix flake check "path:./modules/bat"
+nix flake check "path:./modules/neovim"
+nix flake check "path:./modules/starship"
+nix flake check "path:./modules/opencode"
+nix flake check "path:./modules/sbt"
+nix flake check "path:./modules/eza"
+nix flake check "path:./modules/zed"
 ```
+
+The `path:` prefix matters: the flakes are checked from the working tree, and
+not from the git tree. The extension of Zed is a submodule of the repository,
+and Nix cannot read the contents of a submodule of a git tree, so the
+submodule has to be checked out for the checks to see it.
 
 A single check can be built on its own:
 
 ```console
-nix build .#checks.x86_64-linux.<name>
+nix build "path:.#checks.x86_64-linux.<name>"
 ```
 
 The names include `version`, `overlay`, `treefmt`, `workflows`,
@@ -74,10 +80,13 @@ The names include `version`, `overlay`, `treefmt`, `workflows`,
 `neovim-module`, `starship-preset`, `starship-render`, `starship-wrapper`,
 `starship-module`, `opencode-theme`, `opencode-configuration`,
 `opencode-module`, `sbt-package`, `sbt-module`, `eza-theme`, `eza-render`,
-`eza-module`, and `documentation`.
+`eza-module`, `zed-extension`, `zed-theme`, `zed-module`, `zed-colours`, and
+`documentation`.
 
-Root flake evaluation only sees tracked files. `git add` new files before
-running `nix flake check` or `nix build .#...`.
+Root flake evaluation sees the working tree, so the changes of the working
+tree are part of it. `git add` new files before running `nix flake check` or
+`nix build "path:.#..."`, so that the tree and the submodule agree with the
+repository.
 
 ### The expensive editor checks
 
@@ -91,14 +100,14 @@ Both need `--impure`, because they read the environment:
 ```console
 BLUEFOREST_VSCODE_INTEGRATION_CHECK=1 \
 BLUEFOREST_NEOVIM_NIXVIM_CHECK=1 \
-nix flake check --impure
+nix flake check --impure "path:."
 ```
 
 They can also be built on their own:
 
 ```console
-nix build .#vscode-integration-check
-nix build .#neovim-nixvim-check
+nix build "path:.#vscode-integration-check"
+nix build "path:.#neovim-nixvim-check"
 ```
 
 The CI runs them, so that the theme is checked against the editors it is made
@@ -121,7 +130,7 @@ request.
 The extension of VS Code is built by Nix:
 
 ```console
-nix build .#blueforest-vscode-theme
+nix build "path:.#blueforest-vscode-theme"
 ```
 
 The result holds the extension in `share/vscode/extensions`. An editor reads
@@ -130,7 +139,7 @@ so the extension is linked into one:
 
 ```console
 mkdir -p .vscode-exts
-ln -sfn "$(nix build .#blueforest-vscode-theme --print-out-paths)/share/vscode/extensions"/* .vscode-exts/
+ln -sfn "$(nix build "path:.#blueforest-vscode-theme" --print-out-paths)/share/vscode/extensions"/* .vscode-exts/
 code --extensions-dir="$PWD/.vscode-exts"
 ```
 

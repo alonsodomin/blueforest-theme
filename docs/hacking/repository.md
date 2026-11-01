@@ -17,7 +17,8 @@ self-contained flake.
 │   ├── opencode/
 │   ├── sbt/
 │   ├── starship/
-│   └── vscode/
+│   ├── vscode/
+│   └── zed/
 ├── tests/                    # checks of the root flake
 ├── tools/                    # the release and update helpers
 └── workflows/                # the definitions of the GitHub Actions workflows
@@ -53,6 +54,17 @@ compare the packaged copies against them:
 `modules/sbt` is the exception: it does not define a theme. It installs the
 upstream `sbt-prompt` plugin and selects its `BlueforestTheme` from
 `modules/sbt/config/`.
+
+`modules/zed` is the other exception: its theme is not in the application
+either. The theme is part of the
+[zed-blueforest-theme](https://github.com/alonsodomin/zed-blueforest-theme)
+extension, which lives in a repository of its own because that is how Zed
+ships extensions. The repository is a submodule of the application, at
+`modules/zed/extension/`, so every change of the extension is reviewed here.
+
+Nix cannot fetch the contents of a submodule of a git tree, so the checks of
+the repository run against the working tree, where the submodule is checked
+out. The checkout of the CI brings the submodules with it.
 
 ## The flake module of an application
 

@@ -13,6 +13,7 @@ rec {
     "sbt"
     "neovim"
     "eza"
+    "zed"
   ];
 
   # The actions that the workflows use. Their versions live here, so that they
@@ -31,6 +32,10 @@ rec {
   # Checks the repository out.
   checkout = {
     uses = actions.checkout;
+
+    # The extension of Zed lives in a submodule of the repository, and the
+    # release packages it.
+    "with".submodules = true;
   };
 
   # Installs Nix, with the features the flakes need.

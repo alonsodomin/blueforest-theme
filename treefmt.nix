@@ -8,6 +8,24 @@
 {
   settings.on-unmatched = "info";
 
+  settings.excludes = [
+    # The extension of Zed lives in a repository of its own. Its files are not
+    # ours, and they are not formatted here.
+    "modules/zed/extension/"
+  ];
+
+  # The tree that the check of the module formats. It is the tree of the
+  # repository without the repository of the working tree, because the check
+  # tells whether the formatters changed anything with git, and the copy of
+  # the working tree carries the repository with it: the check would find
+  # nothing to commit.
+  projectRoot = builtins.path {
+    path = ./.;
+    name = "root";
+
+    filter = path: _: baseNameOf path != ".git";
+  };
+
   programs.nixfmt.enable = true;
 
   programs.taplo.enable = true;

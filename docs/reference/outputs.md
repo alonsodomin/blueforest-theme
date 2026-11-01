@@ -15,10 +15,11 @@ combined ones.
 | `packages.<system>.blueforest-sbt-prompt` | The prompt for sbt |
 | `packages.<system>.blueforest-neovim-theme` | The theme for Neovim |
 | `packages.<system>.blueforest-eza-theme` | The theme for eza |
+| `packages.<system>.blueforest-zed-theme` | The theme for Zed, as an extension |
 | `packages.<system>.neovim-nixvim-check` | The check that builds an editor with nixvim |
 | `packages.<system>.documentation` | The documentation site as a static site |
 | `packages.<system>.render-workflows` | The program that renders the workflows of the repository |
-| `overlays.default` | Adds the packages of the VS Code, Starship, OpenCode, sbt, Neovim, and eza applications to a nixpkgs instance |
+| `overlays.default` | Adds the packages of the VS Code, Starship, OpenCode, sbt, Neovim, eza, and Zed applications to a nixpkgs instance |
 | `overlays.vscode` | Adds `pkgs.blueforest-vscode-theme` to a nixpkgs instance |
 | `overlays.bat` | Adds `pkgs.blueforest-bat-theme` to a nixpkgs instance. The aggregate does not compose it |
 | `overlays.starship` | Adds `pkgs.blueforest-starship-preset` and `pkgs.blueforest-starship` to a nixpkgs instance |
@@ -26,12 +27,14 @@ combined ones.
 | `overlays.sbt` | Adds `pkgs.blueforest-sbt-prompt` to a nixpkgs instance |
 | `overlays.neovim` | Adds `pkgs.blueforest-neovim-theme` to a nixpkgs instance |
 | `overlays.eza` | Adds `pkgs.blueforest-eza-theme` to a nixpkgs instance |
+| `overlays.zed` | Adds `pkgs.blueforest-zed-theme` to a nixpkgs instance |
 | `nixosModules.default`, `homeModules.default` | The modules of the applications that provide one |
 | `nixosModules.vscode`, `homeModules.vscode` | The module of the VS Code theme |
 | `nixosModules.starship`, `homeModules.starship` | The module of the Starship preset |
 | `nixosModules.opencode`, `homeModules.opencode` | The module of the OpenCode theme |
 | `homeModules.sbt` | The module of the sbt prompt |
 | `homeModules.eza` | The module of the eza theme |
+| `homeModules.zed` | The module of the Zed theme |
 | `nixosModules.neovim`, `homeModules.neovim` | The module of the Neovim theme |
 | `nixvimModules.neovim` | The module of the Neovim theme, for nixvim |
 | `checks.<system>.<app>-<check>` | The checks of every application |

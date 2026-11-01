@@ -5,10 +5,15 @@
 # Or commit to trigger the pre-commit hook if enabled.
 jobs:
   checks:
+    if: always()
     name: Checks (${{ matrix.flake }})
+    needs:
+    - render
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
+      with:
+        submodules: true
     - uses: cachix/install-nix-action@v31
       with:
         extra_nix_config: experimental-features = nix-command flakes
@@ -23,14 +28,15 @@ jobs:
       fail-fast: false
       matrix:
         flake:
-        - .
-        - ./modules/vscode
-        - ./modules/bat
-        - ./modules/starship
-        - ./modules/opencode
-        - ./modules/sbt
-        - ./modules/neovim
-        - ./modules/eza
+        - path:.
+        - path:./modules/vscode
+        - path:./modules/bat
+        - path:./modules/starship
+        - path:./modules/opencode
+        - path:./modules/sbt
+        - path:./modules/neovim
+        - path:./modules/eza
+        - path:./modules/zed
   render:
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name
       == github.repository
