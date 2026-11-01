@@ -14,6 +14,8 @@ jobs:
         extra_nix_config: experimental-features = nix-command flakes
     - env:
         BLUEFOREST_NEOVIM_NIXVIM_CHECK: '1'
+        BLUEFOREST_SKIP_WORKFLOWS_CHECK: ${{ github.event_name == 'pull_request' &&
+          '1' || '' }}
         BLUEFOREST_VSCODE_INTEGRATION_CHECK: '1'
       name: Run flake checks
       run: nix flake check --impure ${{ matrix.flake }}
@@ -28,6 +30,34 @@ jobs:
         - ./modules/opencode
         - ./modules/sbt
         - ./modules/neovim
+  render:
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name
+      == github.repository
+    name: Render the workflows
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+    - uses: cachix/install-nix-action@v31
+      with:
+        extra_nix_config: experimental-features = nix-command flakes
+    - name: Render the workflows
+      run: nix run .#render-workflows
+    - name: Commit the workflows
+      run: |-
+        if git diff --quiet -- .github/workflows; then
+          echo "The workflows are already rendered."
+          exit 0
+        fi
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git commit --all --message "Render the workflows"
+        # The ${ is the escape of an indented string: it writes the
+        # expression of GitHub, and not an interpolation of Nix.
+        git push origin "HEAD:refs/heads/${github.event.pull_request.head.ref }}"
 name: CI
 'on':
   pull_request:

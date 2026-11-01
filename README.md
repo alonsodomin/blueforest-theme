@@ -500,7 +500,8 @@ application, and opens a pull request for the inputs that moved upstream. The co
 
 The versions of the actions that the workflows use are updated by Renovate, once a week as well: it
 reads them from [`workflows/lib.nix`](workflows/lib.nix), and its configuration is in
-[`renovate.json5`](renovate.json5).
+[`renovate.json5`](renovate.json5). The application brings its own credential, so the repository holds
+no secret for it, and the CI renders the workflows for its pull requests.
 
 ### Releases
 
