@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MPL-2.0
 #
-# Evaluates the configuration documented in the README against the module
+# Evaluates the configuration documented in the documentation against the module
 # shipped by this flake and reports what the module system resolved.
 #
 # The result only contains JSON-serialisable values, so that it can be
@@ -16,7 +16,7 @@
 }:
 let
   # Stubs of the options that a consumer's own editor module provides.
-  # They mirror the contracts documented in the README: the extensions of an
+  # They mirror the contracts documented in the documentation: the extensions of an
   # editor are a list of packages.
   consumerModule =
     { lib, ... }:

@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MPL-2.0
 #
-# Checks that the configuration documented in the README installs the theme
+# Checks that the configuration documented in the documentation installs the theme
 # where Neovim reads it from, and that it writes nothing when Neovim is not
 # enabled.
 {

@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MPL-2.0
 #
-# Checks that the configuration documented in the README installs the theme
+# Checks that the configuration documented in the documentation installs the theme
 # where OpenCode reads it, and selects it.
 {
   lib,

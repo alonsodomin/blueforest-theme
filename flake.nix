@@ -13,6 +13,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    mkdocs-flake = {
+      url = "github:applicative-systems/mkdocs-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     devshell = {
       url = "github:numtide/devshell";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -94,7 +99,7 @@
   outputs =
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } (
-      {
+      top@{
         config,
         lib,
         inputs,
@@ -107,6 +112,7 @@
           inputs.home-manager.flakeModules.home-manager
           inputs.treefmt-nix.flakeModule
           inputs.actions-nix.flakeModules.default
+          inputs.mkdocs-flake.flakeModules.default
 
           # The modules the applications publish.
           inputs.vscode.flakeModule
@@ -178,6 +184,7 @@
 
         perSystem =
           {
+            config,
             pkgs,
             ...
           }:
@@ -196,15 +203,26 @@
             # that verifies it come with the module.
             treefmt.imports = [ ./treefmt.nix ];
 
+            # The documentation site. Its sources are the Markdown files in
+            # `docs/`, and its configuration is the `mkdocs.yml` at the root.
+            documentation = {
+              mkdocs-root = ./.;
+              strict = true;
+            };
+
             # Fails if the workflows of the repository are not valid.
             #
             # The lint does not depend on what is committed, so it runs on
             # every pull request.
             checks = {
+              # Fails if the documentation site does not build, or if it
+              # carries a broken link or a page missing from the navigation.
+              documentation = config.packages.documentation;
+
               workflows-lint =
                 let
                   render =
-                    (inputs.actions-nix.lib.evalModule pkgs config.flake.actions-nix).config.build.renderWorkflows;
+                    (inputs.actions-nix.lib.evalModule pkgs top.config.flake.actions-nix).config.build.renderWorkflows;
                 in
                 pkgs.runCommandLocal "workflows-lint-check"
                   {
@@ -228,7 +246,7 @@
               # packages of every application.
               overlay = import ./tests/overlay.nix {
                 inherit pkgs;
-                overlay = config.flake.overlays.default;
+                overlay = top.config.flake.overlays.default;
                 expected = [
                   "blueforest-vscode-theme"
                   "blueforest-starship-preset"
@@ -253,9 +271,9 @@
                 {
                   workflows =
                     let
-                      workflows = config.flake.actions-nix.workflows;
+                      workflows = top.config.flake.actions-nix.workflows;
                       render =
-                        (inputs.actions-nix.lib.evalModule pkgs config.flake.actions-nix).config.build.renderWorkflows;
+                        (inputs.actions-nix.lib.evalModule pkgs top.config.flake.actions-nix).config.build.renderWorkflows;
                     in
                     pkgs.runCommandLocal "workflows-check" { } ''
                       mkdir project

@@ -110,6 +110,15 @@ jobs:
           gh release create "$TAG" --draft \
             --title "Blueforest $VERSION" --notes-file notes.md
         fi
+  docs:
+    name: Documentation
+    needs:
+    - publish-release
+    permissions:
+      contents: read
+      id-token: write
+      pages: write
+    uses: ./.github/workflows/docs.yml
   neovim:
     name: 'Neovim: Package'
     needs:

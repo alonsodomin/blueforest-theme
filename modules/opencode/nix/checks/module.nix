@@ -20,7 +20,7 @@ let
       };
 
       # Stubs of the options that the module of Home Manager provides. They
-      # mirror the contracts documented in the README: the themes of OpenCode
+      # mirror the contracts documented in the documentation: the themes of OpenCode
       # are a set of themes, and its settings are a set of settings.
       options.programs.opencode = lib.mkOption {
         type = lib.types.submodule {

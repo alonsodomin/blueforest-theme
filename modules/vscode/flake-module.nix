@@ -100,7 +100,7 @@ in
             touch $out
           '';
 
-      # Checks that the configuration documented in the README evaluates
+      # Checks that the configuration documented in the documentation evaluates
       # and ends up installing the theme.
       configurationCheck =
         pkgs.runCommand "blueforest-configuration-check"

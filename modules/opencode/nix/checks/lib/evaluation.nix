@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MPL-2.0
 #
-# Evaluates the Home Manager configuration documented in the README against
+# Evaluates the Home Manager configuration documented in the documentation against
 # the module shipped by this flake, and reports what the module system
 # resolved.
 #

@@ -88,7 +88,7 @@ in
             ;
         };
 
-        # The configuration documented in the README installs the theme where
+        # The configuration documented in the documentation installs the theme where
         # OpenCode reads it, and selects it.
         opencode-configuration = import ./nix/checks/configuration.nix {
           inherit lib pkgs source;

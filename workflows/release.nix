@@ -314,6 +314,19 @@ in
         }
       ];
     };
+
+    # The documentation site is deployed once the release is published, so
+    # that the site of a release is the site of the code the release carries.
+    docs = {
+      name = "Documentation";
+      needs = [ "publish-release" ];
+      uses = "./.github/workflows/docs.yml";
+      permissions = {
+        contents = "read";
+        pages = "write";
+        id-token = "write";
+      };
+    };
   }
   # The applications, one job each, and the release they upload their
   # assets to.
