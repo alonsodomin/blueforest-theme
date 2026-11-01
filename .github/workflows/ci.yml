@@ -55,6 +55,8 @@ jobs:
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git commit --all --message "Render the workflows"
+        # The ${ is the escape of an indented string: it writes the
+        # expression of GitHub, and not an interpolation of Nix.
         git push origin "HEAD:refs/heads/${github.event.pull_request.head.ref }}"
 name: CI
 'on':
