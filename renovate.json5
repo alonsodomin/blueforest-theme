@@ -12,11 +12,15 @@
 // either, because the commands of the post-upgrade tasks are blocked on the
 // hosted application: the workflow of the CI renders them for its pull
 // requests instead.
+//
+// The second manager finds the version of the sbt prompt plugin. It is in
+// three places: the declaration of the plugin, the check that pins the
+// version, and the documentation of the application.
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
 
-  // Only the actions of the workflows. The inputs of the flakes are updated
-  // by Dependabot.
+  // Only the actions of the workflows and the version of the sbt prompt
+  // plugin. The inputs of the flakes are updated by Dependabot.
   "enabledManagers": [ "custom.regex" ],
 
   "customManagers": [
@@ -31,6 +35,22 @@
       "extractVersionTemplate": "^(?<version>.*)$",
       "versioningTemplate": "github-actions",
       "depTypeTemplate": "action"
+    },
+    {
+      "customType": "regex",
+      "description": "The version of the sbt prompt plugin",
+      "managerFilePatterns": [
+        "/^modules\\/sbt\\/config\\/sbt-prompt\\.sbt$/",
+        "/^modules\\/sbt\\/nix\\/checks\\/package\\.nix$/",
+        "/^modules\\/sbt\\/README\\.md$/"
+      ],
+      "matchStrings": [
+        "addSbtPlugin\\(\"(?<groupId>[^\"]+)\" % \"(?<artifactId>[^\"]+)\" % \"(?<currentValue>[^\"]+)\"\\)"
+      ],
+      "depNameTemplate": "alonsodomin/sbt-prompt",
+      "datasourceTemplate": "github-tags",
+      "versioningTemplate": "loose",
+      "depTypeTemplate": "sbt-plugin"
     }
   ]
 }

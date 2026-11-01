@@ -76,6 +76,9 @@ Every configuration of the repository shares one version, which lives in
   Dependabot only reads workflow files, which are generated. The application
   brings its own credential, so the repository holds no secret for it, and the
   CI renders the workflows for its pull requests
+- Renovate updates the version of the sbt prompt plugin as well, which is in
+  the declaration of the plugin, in the check that pins it and in the
+  documentation of the application
 - The changelog of an application that is not released yet carries an
   `Unreleased` section, which the release turns into the section of the
   release
