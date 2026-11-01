@@ -21,6 +21,7 @@ application, is at
 | sbt | <https://alonsodomin.github.io/blueforest-theme/themes/sbt/> |
 | eza | <https://alonsodomin.github.io/blueforest-theme/themes/eza/> |
 | Zed | <https://alonsodomin.github.io/blueforest-theme/themes/zed/> |
+| Yazi | <https://alonsodomin.github.io/blueforest-theme/themes/yazi/> |
 
 ## Installation
 

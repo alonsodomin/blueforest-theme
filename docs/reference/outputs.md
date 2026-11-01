@@ -16,10 +16,11 @@ combined ones.
 | `packages.<system>.blueforest-neovim-theme` | The theme for Neovim |
 | `packages.<system>.blueforest-eza-theme` | The theme for eza |
 | `packages.<system>.blueforest-zed-theme` | The theme for Zed, as an extension |
+| `packages.<system>.blueforest-yazi-theme` | The theme for Yazi, as a flavour |
 | `packages.<system>.neovim-nixvim-check` | The check that builds an editor with nixvim |
 | `packages.<system>.documentation` | The documentation site as a static site |
 | `packages.<system>.render-workflows` | The program that renders the workflows of the repository |
-| `overlays.default` | Adds the packages of the VS Code, Starship, OpenCode, sbt, Neovim, eza, and Zed applications to a nixpkgs instance |
+| `overlays.default` | Adds the packages of the VS Code, Starship, OpenCode, sbt, Neovim, eza, Zed, and Yazi applications to a nixpkgs instance |
 | `overlays.vscode` | Adds `pkgs.blueforest-vscode-theme` to a nixpkgs instance |
 | `overlays.bat` | Adds `pkgs.blueforest-bat-theme` to a nixpkgs instance. The aggregate does not compose it |
 | `overlays.starship` | Adds `pkgs.blueforest-starship-preset` and `pkgs.blueforest-starship` to a nixpkgs instance |
@@ -28,6 +29,7 @@ combined ones.
 | `overlays.neovim` | Adds `pkgs.blueforest-neovim-theme` to a nixpkgs instance |
 | `overlays.eza` | Adds `pkgs.blueforest-eza-theme` to a nixpkgs instance |
 | `overlays.zed` | Adds `pkgs.blueforest-zed-theme` to a nixpkgs instance |
+| `overlays.yazi` | Adds `pkgs.blueforest-yazi-theme` to a nixpkgs instance |
 | `nixosModules.default`, `homeModules.default` | The modules of the applications that provide one |
 | `nixosModules.vscode`, `homeModules.vscode` | The module of the VS Code theme |
 | `nixosModules.starship`, `homeModules.starship` | The module of the Starship preset |
@@ -35,6 +37,7 @@ combined ones.
 | `homeModules.sbt` | The module of the sbt prompt |
 | `homeModules.eza` | The module of the eza theme |
 | `homeModules.zed` | The module of the Zed theme |
+| `homeModules.yazi` | The module of the Yazi flavour |
 | `nixosModules.neovim`, `homeModules.neovim` | The module of the Neovim theme |
 | `nixvimModules.neovim` | The module of the Neovim theme, for nixvim |
 | `checks.<system>.<app>-<check>` | The checks of every application |

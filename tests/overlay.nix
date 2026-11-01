@@ -43,6 +43,7 @@ pkgs.runCommand "blueforest-overlay-check"
       vscodeUntouched = overlaid.vscode == base.vscode;
       ezaUntouched = overlaid.eza == base.eza;
       zedUntouched = overlaid.zed-editor == base.zed-editor;
+      yaziUntouched = overlaid.yazi == base.yazi;
     };
     expected = builtins.toJSON expected;
   }
@@ -55,6 +56,7 @@ pkgs.runCommand "blueforest-overlay-check"
       and .vscodeUntouched
       and .ezaUntouched
       and .zedUntouched
+      and .yaziUntouched
       and (.packages | length) > 0
     ' >/dev/null
 

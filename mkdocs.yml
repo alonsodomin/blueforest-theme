@@ -19,6 +19,7 @@ nav:
       - sbt: themes/sbt.md
       - eza: themes/eza.md
       - Zed: themes/zed.md
+      - Yazi: themes/yazi.md
   - Reference:
       - Outputs: reference/outputs.md
       - Identifiers: reference/identifiers.md

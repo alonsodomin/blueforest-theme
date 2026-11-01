@@ -52,6 +52,7 @@ jobs:
         - path:./modules/neovim
         - path:./modules/eza
         - path:./modules/zed
+        - path:./modules/yazi
   create-release:
     name: Create the release
     needs:
@@ -212,6 +213,7 @@ jobs:
     - sbt
     - eza
     - zed
+    - yazi
     runs-on: ubuntu-latest
     steps:
     - env:
@@ -331,6 +333,30 @@ jobs:
       name: Publish to the VS Marketplace
       run: npx --yes @vscode/vsce publish --packagePath "dist/blueforest-theme-$VERSION.vsix"
         -p "$VSCE_PAT"
+  yazi:
+    name: 'Yazi: Package'
+    needs:
+    - version
+    - create-release
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        submodules: true
+    - env:
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Package the theme
+      run: |-
+        mkdir -p dist staging
+        cp -r modules/yazi/themes/blueforest.yazi \
+          "staging/blueforest.yazi"
+        tar -czf "dist/blueforest-yazi-theme-$VERSION.tar.gz" -C staging .
+    - env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TAG: v${{ needs.version.outputs.version }}
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Upload the asset to the release
+      run: gh release upload "$TAG" "dist/blueforest-yazi-theme-$VERSION.tar.gz" --clobber
   zed:
     name: 'Zed: Package'
     needs:

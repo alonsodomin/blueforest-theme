@@ -24,6 +24,7 @@ packages = [
   "opencode",
   "sbt",
   "eza",
+  "yazi",
 ]
 
 [[commands]]

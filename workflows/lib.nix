@@ -14,6 +14,7 @@ rec {
     "neovim"
     "eza"
     "zed"
+    "yazi"
   ];
 
   # The actions that the workflows use. Their versions live here, so that they

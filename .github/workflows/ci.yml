@@ -37,6 +37,7 @@ jobs:
         - path:./modules/neovim
         - path:./modules/eza
         - path:./modules/zed
+        - path:./modules/yazi
   render:
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name
       == github.repository

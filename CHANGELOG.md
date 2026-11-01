@@ -15,12 +15,18 @@ its own changelog:
 | sbt        | [modules/sbt/CHANGELOG.md](modules/sbt/CHANGELOG.md) |
 | eza        | [modules/eza/CHANGELOG.md](modules/eza/CHANGELOG.md) |
 | Zed        | [modules/zed/CHANGELOG.md](modules/zed/CHANGELOG.md) |
+| Yazi       | [modules/yazi/CHANGELOG.md](modules/yazi/CHANGELOG.md) |
 
 Every configuration of the repository shares one version, which comes from the
 tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 
 ## Unreleased
 
+- The BlueForest theme now includes a theme for Yazi, packaged as
+  `blueforest-yazi-theme`. It is a flavour, the format Yazi reads, and it
+  carries the colours of the code preview as well. The Home Manager module
+  installs the flavour in the directory Yazi reads the flavours from, and it
+  selects it in the theme of the user
 - The BlueForest theme now includes a theme for Zed, packaged as
   `blueforest-zed-theme`. It is part of the `zed-blueforest-theme` extension,
   which lives in a repository of its own because that is how Zed ships

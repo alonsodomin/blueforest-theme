@@ -516,6 +516,7 @@
         "starship": "starship",
         "treefmt-nix": "treefmt-nix_2",
         "vscode": "vscode",
+        "yazi": "yazi",
         "zed": "zed"
       }
     },
@@ -695,6 +696,28 @@
       },
       "original": {
         "path": "./modules/vscode",
+        "type": "path"
+      },
+      "parent": []
+    },
+    "yazi": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "./modules/yazi",
+        "type": "path"
+      },
+      "original": {
+        "path": "./modules/yazi",
         "type": "path"
       },
       "parent": []
