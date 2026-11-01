@@ -91,7 +91,7 @@ in
         # The configuration documented in the documentation installs the theme where
         # OpenCode reads it, and selects it.
         opencode-configuration = import ./nix/checks/configuration.nix {
-          inherit lib pkgs source;
+          inherit pkgs source;
           homeManager = appInputs.home-manager;
           module = config.flake.homeModules.opencode;
         };

@@ -34,12 +34,18 @@ nix fmt
 The formatter is `treefmt`, configured in `treefmt.nix`. It runs:
 
 - `nixfmt` for Nix
+- `deadnix` and `statix` for Nix
 - `taplo` for TOML
-- `prettier` for JSON
+- `prettier` for JSON, JSON5 and YAML
+- `xmllint` for XML and SVG
 - `stylua` for Lua
 - `shfmt` and `shellcheck` for shell
 
 The shell is bash and uses tabs. `shellcheck` must pass.
+
+Two parts of the repository are not formatted: the extension of Zed, which
+lives in a repository of its own, and the workflows, which are rendered from
+their definitions.
 
 ## Checks
 

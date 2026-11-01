@@ -8,9 +8,7 @@
 #
 # The workflow runs on pushes to `master`, on manual dispatch, and when the
 # release workflow calls it as its last step.
-{
-  lib,
-}:
+_:
 let
   common = import ./lib.nix;
 in

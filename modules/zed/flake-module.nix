@@ -94,7 +94,7 @@ in
 
         # The Home Manager module installs the extension where Zed reads it.
         zed-module = import ./nix/checks/module.nix {
-          inherit lib source;
+          inherit source;
           pkgs = basePkgs;
           homeManager = appInputs.home-manager;
           module = config.flake.homeModules.zed;

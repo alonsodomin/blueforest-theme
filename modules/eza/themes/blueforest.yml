@@ -26,7 +26,8 @@ filekinds:
 perms:
   user_read: { foreground: "#91ccff" }
   user_write: { foreground: "#ffcc33", is_bold: true }
-  user_execute_file: { foreground: "#80ff80", is_bold: true, is_underline: true }
+  user_execute_file:
+    { foreground: "#80ff80", is_bold: true, is_underline: true }
   user_execute_other: { foreground: "#80ff80" }
   group_read: { foreground: "#7f8fa3" }
   group_write: { foreground: "#b3871f" }

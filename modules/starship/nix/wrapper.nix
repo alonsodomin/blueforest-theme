@@ -27,7 +27,7 @@ pkgs.runCommand "blueforest-starship-${starship.version}"
     };
     # The schema of the configuration travels with the wrapper, so that the
     # validation of the configuration keeps working.
-    passthru = starship.passthru;
+    inherit (starship) passthru;
   }
   ''
     mkdir -p $out

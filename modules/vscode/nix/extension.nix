@@ -20,7 +20,7 @@ let
 
   inherit (packageJson) name publisher;
 
-  description = packageJson.description;
+  inherit (packageJson) description;
 
   homepage = packageJson.repository.url;
 

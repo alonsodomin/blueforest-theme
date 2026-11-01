@@ -90,7 +90,7 @@ in
         # of sbt read their global configuration, and only when sbt is
         # enabled.
         sbt-module = import ./nix/checks/module.nix {
-          inherit lib sources;
+          inherit sources;
           pkgs = basePkgs;
           homeManager = appInputs.home-manager;
           module = config.flake.homeModules.sbt;

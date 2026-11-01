@@ -3,7 +3,6 @@
 # Checks that the Home Manager module installs the theme where Zed reads the
 # themes of the user from.
 {
-  lib,
   pkgs,
   homeManager,
   module,

@@ -13,7 +13,6 @@
 {
   pkgs,
   theme,
-  source,
 }:
 pkgs.runCommand "blueforest-bat-theme-nixos-check"
   {

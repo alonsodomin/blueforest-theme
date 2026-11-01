@@ -4,7 +4,6 @@
 # both generations of sbt read their global configuration, and that it writes
 # nothing when sbt is not enabled.
 {
-  lib,
   pkgs,
   homeManager,
   module,

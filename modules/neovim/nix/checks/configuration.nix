@@ -36,7 +36,7 @@ let
   plugins = map (plugin: plugin.pname or plugin.name) enabled.programs.neovim.plugins;
 
   result = builtins.toJSON {
-    plugins = plugins;
+    inherit plugins;
 
     # The module does not enable Neovim, so a configuration that does not
     # enable it gets no plugins at all.
