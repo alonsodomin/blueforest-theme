@@ -14,12 +14,18 @@ its own changelog:
 | OpenCode   | [modules/opencode/CHANGELOG.md](modules/opencode/CHANGELOG.md) |
 | sbt        | [modules/sbt/CHANGELOG.md](modules/sbt/CHANGELOG.md) |
 | eza        | [modules/eza/CHANGELOG.md](modules/eza/CHANGELOG.md) |
+| Zed        | [modules/zed/CHANGELOG.md](modules/zed/CHANGELOG.md) |
 
 Every configuration of the repository shares one version, which comes from the
 tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 
 ## Unreleased
 
+- The BlueForest theme now includes a theme for Zed, packaged as
+  `blueforest-zed-theme`. It is part of the `zed-blueforest-theme` extension,
+  which lives in a repository of its own because that is how Zed ships
+  extensions, and the Home Manager module writes the theme to the themes
+  directory of Zed, which is where Zed reads the themes of the user from
 - The BlueForest theme now includes a theme for eza, packaged as
   `blueforest-eza-theme`. It is the YAML file eza reads, and the Home Manager
   module installs it in the configuration directory of eza, which is where eza

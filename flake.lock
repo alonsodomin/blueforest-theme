@@ -515,7 +515,8 @@
         "sbt": "sbt",
         "starship": "starship",
         "treefmt-nix": "treefmt-nix_2",
-        "vscode": "vscode"
+        "vscode": "vscode",
+        "zed": "zed"
       }
     },
     "sbt": {
@@ -694,6 +695,28 @@
       },
       "original": {
         "path": "./modules/vscode",
+        "type": "path"
+      },
+      "parent": []
+    },
+    "zed": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "./modules/zed",
+        "type": "path"
+      },
+      "original": {
+        "path": "./modules/zed",
         "type": "path"
       },
       "parent": []

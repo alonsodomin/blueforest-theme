@@ -102,6 +102,14 @@
       inputs.flake-parts.follows = "flake-parts";
       inputs.home-manager.follows = "home-manager";
     };
+
+    zed = {
+      url = "path:./modules/zed";
+
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
   outputs =
@@ -130,6 +138,7 @@
           inputs.sbt.flakeModule
           inputs.neovim.flakeModule
           inputs.eza.flakeModule
+          inputs.zed.flakeModule
         ];
 
         systems = [
@@ -151,6 +160,7 @@
             config.flake.overlays.sbt
             config.flake.overlays.neovim
             config.flake.overlays.eza
+            config.flake.overlays.zed
           ];
 
           flakeModules = {
@@ -161,6 +171,7 @@
             sbt = inputs.sbt.flakeModule;
             neovim = inputs.neovim.flakeModule;
             eza = inputs.eza.flakeModule;
+            zed = inputs.zed.flakeModule;
             default = {
               imports = [
                 inputs.bat.flakeModule
@@ -170,6 +181,7 @@
                 inputs.sbt.flakeModule
                 inputs.neovim.flakeModule
                 inputs.eza.flakeModule
+                inputs.zed.flakeModule
               ];
             };
           };
@@ -191,6 +203,7 @@
               config.flake.homeModules.sbt
               config.flake.homeModules.neovim
               config.flake.homeModules.eza
+              config.flake.homeModules.zed
             ];
           };
         };
@@ -268,7 +281,17 @@
                   "blueforest-sbt-prompt"
                   "blueforest-neovim-theme"
                   "blueforest-eza-theme"
+                  "blueforest-zed-theme"
                 ];
+              };
+
+              # Fails if the colours of the theme of Zed are not the colours
+              # of the other applications of the repository.
+              zed-colours = import ./tests/zed-colours.nix {
+                inherit pkgs;
+                theme = (top.config.flake.overlays.zed pkgs pkgs).blueforest-zed-theme;
+                vscode = ./modules/vscode/themes/Blueforest-color-theme.json;
+                neovim = ./modules/neovim/themes/blueforest.lua;
               };
             }
             # Fails if the workflows of the repository are not the ones that

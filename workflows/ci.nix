@@ -61,6 +61,33 @@ in
       ];
     };
 
+    # The extension of Zed lives in a repository of its own, and the
+    # submodule at `modules/zed/extension` points at it. Nix cannot fetch the
+    # contents of a submodule of a git tree, so the sources of the package are
+    # fetched from the repository itself, at the revision the pin names. The
+    # two have to agree, or the release ships an asset that the package does
+    # not carry.
+    submodule = {
+      name = "Check the submodule";
+      runs-on = "ubuntu-latest";
+      steps = [
+        common.checkout
+        common.installNix
+        {
+          name = "Check that the submodule and the pin agree";
+          run = ''
+            pinned="$(nix eval --raw .#zedRevision)"
+            submodule="$(git ls-tree HEAD modules/zed/extension | awk '{print $3}')"
+
+            if [ "$pinned" != "$submodule" ]; then
+              echo "the submodule of the extension of Zed is at $submodule, and the sources of the package are pinned at $pinned" >&2
+              exit 1
+            fi
+          '';
+        }
+      ];
+    };
+
     checks = {
       name = "Checks (\${{ matrix.flake }})";
       runs-on = "ubuntu-latest";

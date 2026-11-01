@@ -42,6 +42,7 @@ pkgs.runCommand "blueforest-overlay-check"
       neovimUntouched = overlaid.neovim == base.neovim;
       vscodeUntouched = overlaid.vscode == base.vscode;
       ezaUntouched = overlaid.eza == base.eza;
+      zedUntouched = overlaid.zed-editor == base.zed-editor;
     };
     expected = builtins.toJSON expected;
   }
@@ -53,6 +54,7 @@ pkgs.runCommand "blueforest-overlay-check"
       and .neovimUntouched
       and .vscodeUntouched
       and .ezaUntouched
+      and .zedUntouched
       and (.packages | length) > 0
     ' >/dev/null
 

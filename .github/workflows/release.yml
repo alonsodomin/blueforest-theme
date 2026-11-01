@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
+      with:
+        submodules: true
     - env:
         VERSION: ${{ needs.version.outputs.version }}
       name: Package the theme
@@ -30,6 +32,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
+      with:
+        submodules: true
     - uses: cachix/install-nix-action@v31
       with:
         extra_nix_config: experimental-features = nix-command flakes
@@ -47,6 +51,7 @@ jobs:
         - ./modules/sbt
         - ./modules/neovim
         - ./modules/eza
+        - ./modules/zed
   create-release:
     name: Create the release
     needs:
@@ -55,6 +60,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
+      with:
+        submodules: true
     - env:
         VERSION: ${{ needs.version.outputs.version }}
       name: Collect the changelog
@@ -128,6 +135,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
+      with:
+        submodules: true
     - env:
         VERSION: ${{ needs.version.outputs.version }}
       name: Package the theme
@@ -149,6 +158,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
+      with:
+        submodules: true
     - env:
         VERSION: ${{ needs.version.outputs.version }}
       name: Package the theme
@@ -173,6 +184,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
+      with:
+        submodules: true
     - env:
         VERSION: ${{ needs.version.outputs.version }}
       name: Package the theme
@@ -198,6 +211,7 @@ jobs:
     - neovim
     - sbt
     - eza
+    - zed
     runs-on: ubuntu-latest
     steps:
     - env:
@@ -213,6 +227,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
+      with:
+        submodules: true
     - env:
         VERSION: ${{ needs.version.outputs.version }}
       name: Package the theme
@@ -235,6 +251,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
+      with:
+        submodules: true
     - env:
         VERSION: ${{ needs.version.outputs.version }}
       name: Package the theme
@@ -272,6 +290,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
+      with:
+        submodules: true
     - uses: actions/setup-node@v7
       with:
         node-version: 24
@@ -311,6 +331,31 @@ jobs:
       name: Publish to the VS Marketplace
       run: npx --yes @vscode/vsce publish --packagePath "dist/blueforest-theme-$VERSION.vsix"
         -p "$VSCE_PAT"
+  zed:
+    name: 'Zed: Package'
+    needs:
+    - version
+    - create-release
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        submodules: true
+    - env:
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Package the theme
+      run: |-
+        mkdir -p dist staging/themes
+        cp modules/zed/extension/extension.toml staging/extension.toml
+        cp modules/zed/extension/themes/blueforest.json \
+          staging/themes/blueforest.json
+        tar -czf "dist/blueforest-zed-theme-$VERSION.tar.gz" -C staging .
+    - env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TAG: v${{ needs.version.outputs.version }}
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Upload the asset to the release
+      run: gh release upload "$TAG" "dist/blueforest-zed-theme-$VERSION.tar.gz" --clobber
 name: Release
 'on':
   push:

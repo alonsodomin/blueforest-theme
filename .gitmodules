@@ -1,0 +1,3 @@
+[submodule "modules/zed/extension"]
+	path = modules/zed/extension
+	url = https://github.com/alonsodomin/zed-blueforest-theme.git

@@ -139,6 +139,18 @@ let
           "dist/blueforest-eza-theme-$VERSION.yml"
       '';
     }
+    {
+      app = "zed";
+      title = "Zed";
+      asset = "dist/blueforest-zed-theme-$VERSION.tar.gz";
+      package = ''
+        mkdir -p dist staging/themes
+        cp modules/zed/extension/extension.toml staging/extension.toml
+        cp modules/zed/extension/themes/blueforest.json \
+          staging/themes/blueforest.json
+        tar -czf "dist/blueforest-zed-theme-$VERSION.tar.gz" -C staging .
+      '';
+    }
   ];
 
   applicationsByApp = listToAttrs (
