@@ -19,7 +19,20 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 
 ## Unreleased
 
-- The version of the repository comes from its tags, and the `VERSION` files
+- The theme for bat is installed in the configuration directory of bat, which
+  is where bat reads the themes from, and the cache of bat is rebuilt, so that
+  the theme is picked up without further work
+- The Starship package that carries the preset declares the licences of what
+  it ships, and the attribution of the theme travels with it
+- The VS Code extension does not ship the Nix expressions of the application
+  any more, and a check verifies it
+- The version of a package of the repository comes from the revision of the
+  commit alone, and the release helper uses it, so that the extension built
+  by hand and the one built by Nix carry the same version
+- The release helper tells a remote that could not be reached from a tag that
+  is already there, and it keeps the changes made to a changelog while the
+  release was being confirmed
+- The version comes from the tags of the repository, and the `VERSION` files
   are gone: a release is a tag of the form `vMAJOR.MINOR.PATCH`, and it
   releases every application of the repository at once
 - The packages of the repository carry the revision of the commit they are

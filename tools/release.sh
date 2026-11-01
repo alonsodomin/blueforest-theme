@@ -95,6 +95,28 @@ stamp_changelog() {
 	mv "$file.tmp" "$file"
 }
 
+# Puts a changelog back the way it was before it was stamped. The original
+# is kept aside, so that an edit made while the release was being confirmed
+# is not thrown away with it.
+#
+# The copies are numbered, so that two changelogs of the same name do not
+# collide.
+save_changelog() {
+	local file="$1" index="$2"
+	cp "$file" "$backup_dir/$index-$(basename "$file")"
+}
+
+restore_changelogs() {
+	local file index backup
+	index=0
+	for file in "${changelogs[@]}"; do
+		backup="$backup_dir/$index-$(basename "$file")"
+		[ -f "$backup" ] || continue
+		cp "$backup" "$file"
+		index=$((index + 1))
+	done
+}
+
 # --------------------------------------------------------------------------
 # 1. the repository
 # --------------------------------------------------------------------------
@@ -165,15 +187,35 @@ if git -C "$repo_root" rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
 	die "the tag $tag already exists"
 fi
 
-if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1; then
+# The exit code of `ls-remote --exit-code` is 2 when no ref matches, and
+# something else when the remote could not be reached. The two are told
+# apart, so that a network failure is not reported as a tag that is
+# already there.
+set +e
+git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1
+ls_remote_status=$?
+set -e
+case "$ls_remote_status" in
+0)
 	die "the tag $tag already exists on the remote"
-fi
+	;;
+2)
+	;;
+*)
+	die "the remote could not be reached, so the tag $tag could not be checked"
+	;;
+esac
 
 # --------------------------------------------------------------------------
 # 3. the changelogs
 # --------------------------------------------------------------------------
 
 heading="## $version - [$(date +%d-%m-%Y)]"
+
+# Where the changelogs are kept aside, so that an aborted release can put
+# them back the way they were.
+backup_dir="$(mktemp -d)"
+trap 'rm -rf "$backup_dir"' EXIT
 
 changelogs=()
 for file in "$repo_root/CHANGELOG.md" "$repo_root"/modules/*/CHANGELOG.md; do
@@ -188,8 +230,11 @@ if [ "${#changelogs[@]}" -eq 0 ]; then
 	die "there is nothing to release: no changelog has an Unreleased section"
 fi
 
+changelog_index=0
 for file in "${changelogs[@]}"; do
+	save_changelog "$file" "$changelog_index"
 	stamp_changelog "$file" "$heading"
+	changelog_index=$((changelog_index + 1))
 done
 
 printf '\nChanges to be committed:\n'
@@ -201,10 +246,13 @@ if ! IFS= read -r answer; then
 	answer=""
 fi
 if [ "$answer" != "yes" ]; then
-	git -C "$repo_root" checkout -- "${changelogs[@]}"
+	restore_changelogs
+	rm -rf "$backup_dir"
 	printf '\nAborted. Nothing has been changed.\n'
 	exit 0
 fi
+
+rm -rf "$backup_dir"
 
 # --------------------------------------------------------------------------
 # 4. the commit and the tag

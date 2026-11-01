@@ -8,3 +8,5 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Initial release: the BlueForest preset for Starship, packaged as
   `blueforest-starship-preset` and `blueforest-starship`
+- The package that carries the preset declares the licences of what it ships,
+  and the attribution of the theme travels with it

@@ -91,6 +91,16 @@ in
             # repository.
             cmp "$dir/themes/Blueforest-color-theme.json" ${./themes/Blueforest-color-theme.json}
 
+            # The extension carries no file of the development of the
+            # repository. The Nix expressions of the application in
+            # particular have no place in an extension that VS Code reads.
+            for unwanted in flake.nix flake.lock flake-module.nix; do
+              if [ -e "$dir/$unwanted" ]; then
+                echo "$unwanted is part of the extension, and it should not be" >&2
+                exit 1
+              fi
+            done
+
             # This is the entry `vscode-with-extensions` writes to
             # extensions.json, the file VS Code reads to find its
             # extensions.

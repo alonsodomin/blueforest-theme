@@ -28,7 +28,6 @@ pkgs.runCommand "blueforest-bat-theme-${version}"
     };
   }
   ''
-    rm -f $out
     mkdir -p $out/share/bat/themes
     cp ${../themes/BlueForest.tmTheme} $out/share/bat/themes/BlueForest.tmTheme
 
@@ -45,15 +44,20 @@ pkgs.runCommand "blueforest-bat-theme-${version}"
         exit 0
       fi
 
-      if [ "$(id -u)" = "0" ]; then
-        # The activation of a NixOS system runs as root, and the system-wide
-        # configuration of bat lives in /etc/bat.
-        config_dir="/etc/bat"
-      else
-        config_dir="$(bat --config-dir)"
-      fi
+      # bat reads the themes from its own configuration directory, and the
+      # configuration directory belongs to the user that runs bat. The system
+      # only has a configuration file of its own, at /etc/bat/config, which
+      # carries no themes.
+      config_dir="$(bat --config-dir)"
 
       mkdir -p "$config_dir/themes"
       cp -f "$out/share/bat/themes/BlueForest.tmTheme" "$config_dir/themes/BlueForest.tmTheme"
+
+      # bat keeps the list of the themes it knows in a cache, and it only
+      # picks the theme up once the cache has been rebuilt. The rebuild is
+      # done here, so that the theme is there without further work.
+      if ! bat cache --build >/dev/null 2>&1; then
+        echo "the cache of bat could not be rebuilt, so the BlueForest theme is not available yet. Run 'bat cache --build' to fix it." >&2
+      fi
     HOOK
   ''

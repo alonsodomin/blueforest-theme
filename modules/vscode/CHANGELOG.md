@@ -12,6 +12,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
   that the root flake composes
 - The release process is split per application: `tools/release.sh` picks the
   application and hands it over to `tools/lib/vscode.sh`
+- The extension does not ship the Nix expressions of the application any more,
+  and a check verifies it
 
 ## 0.3.2 - [28-09-2026]
 

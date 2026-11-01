@@ -68,6 +68,7 @@ With Home Manager:
 }
 ```
 
-The package installs the theme in `/etc/bat` when it is installed in a NixOS
-system, and in the configuration directory of the user when it is installed
-with Home Manager.
+The package installs the theme in the configuration directory of bat, which is
+where bat reads the themes from, and rebuilds the cache of bat, without which
+bat does not pick the theme up. The setup hook does both when the package is
+installed, so the theme is available without further work.

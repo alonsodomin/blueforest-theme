@@ -99,5 +99,20 @@ pkgs.runCommand "blueforest-version-check"
       exit 1
     fi
 
+    # A package is never a release: it carries the revision of the
+    # commit over the base of "0.0.0", whatever the tags are.
+    if [ "$(version --package)" != "0.0.0+$revision" ]; then
+      echo "the version of the package is not 0.0.0+$revision" >&2
+      exit 1
+    fi
+
+    # A tree that is not clean says so, for a package too.
+    echo four >>file
+    if [ "$(version --package)" != "0.0.0+$revision.dirty" ]; then
+      echo "the version of the package does not say that the tree is dirty" >&2
+      exit 1
+    fi
+    git checkout -- file
+
     touch $out
   ''

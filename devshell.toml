@@ -50,7 +50,7 @@ help = "Build the .vsix extension package"
 command = '''
   set -euo pipefail
   root="${PRJ_ROOT:-.}"
-  version="$(bash "$root/tools/version.sh")"
+  version="$(bash "$root/tools/version.sh" --package)"
   work="$(mktemp -d)"
   trap 'rm -rf "$work"' EXIT
   cp -r "$root/modules/vscode/." "$work"

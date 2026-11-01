@@ -26,6 +26,10 @@ let
 
   # The tree a mode sees: the tokens of the base, with the tokens of the mode
   # over them.
+  #
+  # The order of the arguments matters: `recursiveUpdate` gives the right
+  # hand side the precedence, so the mode has to come second for its
+  # tokens to win over the ones of the base.
   merged = lib.recursiveUpdate theme.base mode;
 
   # The value at a path of the tree, with the references resolved on the way.

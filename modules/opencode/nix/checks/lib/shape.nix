@@ -7,8 +7,12 @@
 # ignores, and it ignores it without a word, falling back to the theme it
 # ships with.
 #
-# The tokens are the ones the documentation of OpenCode lists. Two of them
-# are not in the list, because OpenCode has a default for them:
+# The tokens are the ones the documentation of OpenCode lists. The list is a
+# snapshot of that documentation: the check verifies that the theme has every
+# token of the list, not that the list is complete. A token that OpenCode
+# adds later is not caught until the list is updated.
+#
+# Two tokens are not in the list, because OpenCode has a default for them:
 #
 #   - `text.faint` defaults to `text.muted`.
 #   - The interaction states of an action and of a form field default to the
