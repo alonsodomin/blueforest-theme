@@ -1,0 +1,115 @@
+# The BlueForest theme for eza.
+#
+# eza reads a single theme file, `theme.yml`, from the configuration directory
+# of the user, or from the directory the `EZA_CONFIG_DIR` variable points at.
+# The name of the theme is the name of this file; the package installs it
+# under the name eza reads.
+#
+# The colours are the ones of BlueForest: the blue of the keywords, the green
+# of the strings, the amber of the operators, the red of the numbers, and the
+# pale yellow of the variables.
+
+colourful: true
+
+filekinds:
+  normal: { foreground: "#d0d0d0" }
+  directory: { foreground: "#0099ff", is_bold: true }
+  symlink: { foreground: "#91ccff" }
+  pipe: { foreground: "#ffcc33" }
+  block_device: { foreground: "#ffcc33" }
+  char_device: { foreground: "#ffcc33" }
+  socket: { foreground: "#ff8080" }
+  special: { foreground: "#f7ff66" }
+  executable: { foreground: "#80ff80", is_bold: true }
+  mount_point: { foreground: "#4aa8ff", is_underline: true }
+
+perms:
+  user_read: { foreground: "#91ccff" }
+  user_write: { foreground: "#ffcc33", is_bold: true }
+  user_execute_file: { foreground: "#80ff80", is_bold: true, is_underline: true }
+  user_execute_other: { foreground: "#80ff80" }
+  group_read: { foreground: "#7f8fa3" }
+  group_write: { foreground: "#b3871f" }
+  group_execute: { foreground: "#4fd6a0" }
+  other_read: { foreground: "#56697d" }
+  other_write: { foreground: "#8c6617" }
+  other_execute: { foreground: "#219186" }
+  special_user_file: { foreground: "#ddbb88" }
+  special_other: { foreground: "#c57633" }
+  attribute: { foreground: "#7f8fa3" }
+
+size:
+  major: { foreground: "#91ccff" }
+  minor: { foreground: "#4aa8ff" }
+  number_byte: { foreground: "#80ff80" }
+  number_kilo: { foreground: "#4fd6a0" }
+  number_mega: { foreground: "#f7ff66" }
+  number_giga: { foreground: "#ffcc33" }
+  number_huge: { foreground: "#ff8080" }
+  unit_byte: { foreground: "#219186" }
+  unit_kilo: { foreground: "#1b7a70" }
+  unit_mega: { foreground: "#8c6617" }
+  unit_giga: { foreground: "#b02a28" }
+  unit_huge: { foreground: "#842220" }
+
+users:
+  user_you: { foreground: "#ffcc33", is_bold: true }
+  user_root: { foreground: "#ff8080", is_bold: true }
+  user_other: { foreground: "#7f8fa3" }
+  group_yours: { foreground: "#91ccff" }
+  group_root: { foreground: "#ddbb88" }
+  group_other: { foreground: "#56697d" }
+
+links:
+  normal: { foreground: "#4aa8ff" }
+  multi_link_file: { foreground: "#0099ff", background: "#1b2b40" }
+
+git:
+  new: { foreground: "#80ff80" }
+  modified: { foreground: "#4aa8ff" }
+  deleted: { foreground: "#ff8080" }
+  renamed: { foreground: "#ffcc33" }
+  typechange: { foreground: "#ddbb88" }
+  ignored: { foreground: "#3d4f63", is_dimmed: true }
+  conflicted: { foreground: "#ff8a89", is_bold: true }
+
+git_repo:
+  branch_main: { foreground: "#0099ff" }
+  branch_other: { foreground: "#91ccff" }
+  git_clean: { foreground: "#80ff80" }
+  git_dirty: { foreground: "#ffcc33", is_bold: true }
+
+security_context:
+  none: { foreground: "#7f8fa3" }
+  selinux:
+    colon: { foreground: "#3d4f63" }
+    user: { foreground: "#91ccff" }
+    role: { foreground: "#4aa8ff" }
+    typ: { foreground: "#0099ff" }
+    range: { foreground: "#91ccff" }
+
+file_type:
+  image: { foreground: "#cfe6ff" }
+  video: { foreground: "#91ccff", is_bold: true }
+  music: { foreground: "#4fd6a0" }
+  lossless: { foreground: "#219186", is_bold: true }
+  crypto: { foreground: "#ffcc33" }
+  document: { foreground: "#d0d0d0" }
+  compressed: { foreground: "#b3871f" }
+  temp: { foreground: "#56697d", is_dimmed: true }
+  compiled: { foreground: "#ddbb88" }
+  build: { foreground: "#f7ff66", is_bold: true, is_underline: true }
+  source: { foreground: "#91ccff", is_bold: true }
+
+punctuation: { foreground: "#56697d" }
+date: { foreground: "#91ccff" }
+inode: { foreground: "#7f8fa3" }
+blocks: { foreground: "#7f8fa3" }
+header: { foreground: "#d0d0d0", is_bold: true, is_underline: true }
+octal: { foreground: "#ddbb88" }
+flags: { foreground: "#56697d" }
+
+symlink_path: { foreground: "#4aa8ff" }
+control_char: { foreground: "#ff8080" }
+broken_symlink: { foreground: "#ff8080" }
+broken_path_overlay: { is_underline: true }

@@ -12,6 +12,7 @@ installed.
 | Starship    | [Release asset or Nix](starship.md)          |
 | OpenCode    | [Release asset or Nix](opencode.md)          |
 | sbt         | [Upstream plugin or Nix](sbt.md)              |
+| eza         | [Release asset or Nix](eza.md)                |
 
 The release assets are attached to the
 [GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases).

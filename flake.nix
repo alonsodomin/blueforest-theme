@@ -94,6 +94,14 @@
       inputs.home-manager.follows = "home-manager";
       inputs.nixvim.follows = "nixvim";
     };
+
+    eza = {
+      url = "path:./modules/eza";
+
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
   outputs =
@@ -121,6 +129,7 @@
           inputs.opencode.flakeModule
           inputs.sbt.flakeModule
           inputs.neovim.flakeModule
+          inputs.eza.flakeModule
         ];
 
         systems = [
@@ -141,6 +150,7 @@
             config.flake.overlays.opencode
             config.flake.overlays.sbt
             config.flake.overlays.neovim
+            config.flake.overlays.eza
           ];
 
           flakeModules = {
@@ -150,6 +160,7 @@
             opencode = inputs.opencode.flakeModule;
             sbt = inputs.sbt.flakeModule;
             neovim = inputs.neovim.flakeModule;
+            eza = inputs.eza.flakeModule;
             default = {
               imports = [
                 inputs.bat.flakeModule
@@ -158,6 +169,7 @@
                 inputs.opencode.flakeModule
                 inputs.sbt.flakeModule
                 inputs.neovim.flakeModule
+                inputs.eza.flakeModule
               ];
             };
           };
@@ -178,6 +190,7 @@
               config.flake.homeModules.opencode
               config.flake.homeModules.sbt
               config.flake.homeModules.neovim
+              config.flake.homeModules.eza
             ];
           };
         };
@@ -254,6 +267,7 @@
                   "blueforest-opencode-theme"
                   "blueforest-sbt-prompt"
                   "blueforest-neovim-theme"
+                  "blueforest-eza-theme"
                 ];
               };
             }

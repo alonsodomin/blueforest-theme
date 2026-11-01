@@ -19,6 +19,7 @@ application, is at
 | Starship | <https://alonsodomin.github.io/blueforest-theme/themes/starship/> |
 | OpenCode | <https://alonsodomin.github.io/blueforest-theme/themes/opencode/> |
 | sbt | <https://alonsodomin.github.io/blueforest-theme/themes/sbt/> |
+| eza | <https://alonsodomin.github.io/blueforest-theme/themes/eza/> |
 
 ## Installation
 

@@ -23,6 +23,7 @@ packages = [
   "taplo",
   "opencode",
   "sbt",
+  "eza",
 ]
 
 [[commands]]
