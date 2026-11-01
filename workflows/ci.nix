@@ -9,7 +9,12 @@ let
 
   # The root flake checks every application at once, and each application is
   # checked on its own as well.
-  flakes = [ "." ] ++ map (application: "./modules/${application}") common.applications;
+  #
+  # The flakes are checked from the working tree, and not from the git tree:
+  # the extension of Zed is a submodule of the repository, and Nix cannot
+  # read the contents of a submodule of a git tree. The checkout of the
+  # workflow brings the submodules with it.
+  flakes = [ "path:." ] ++ map (application: "path:./modules/${application}") common.applications;
 in
 {
   name = "CI";
@@ -56,33 +61,6 @@ in
             # The ''${ is the escape of an indented string: it writes the
             # expression of GitHub, and not an interpolation of Nix.
             git push origin "HEAD:refs/heads/''${github.event.pull_request.head.ref }}"
-          '';
-        }
-      ];
-    };
-
-    # The extension of Zed lives in a repository of its own, and the
-    # submodule at `modules/zed/extension` points at it. Nix cannot fetch the
-    # contents of a submodule of a git tree, so the sources of the package are
-    # fetched from the repository itself, at the revision the pin names. The
-    # two have to agree, or the release ships an asset that the package does
-    # not carry.
-    submodule = {
-      name = "Check the submodule";
-      runs-on = "ubuntu-latest";
-      steps = [
-        common.checkout
-        common.installNix
-        {
-          name = "Check that the submodule and the pin agree";
-          run = ''
-            pinned="$(nix eval --raw .#zedRevision)"
-            submodule="$(git ls-tree HEAD modules/zed/extension | awk '{print $3}')"
-
-            if [ "$pinned" != "$submodule" ]; then
-              echo "the submodule of the extension of Zed is at $submodule, and the sources of the package are pinned at $pinned" >&2
-              exit 1
-            fi
           '';
         }
       ];

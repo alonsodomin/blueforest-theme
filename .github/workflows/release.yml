@@ -43,15 +43,15 @@ jobs:
       fail-fast: false
       matrix:
         flake:
-        - .
-        - ./modules/vscode
-        - ./modules/bat
-        - ./modules/starship
-        - ./modules/opencode
-        - ./modules/sbt
-        - ./modules/neovim
-        - ./modules/eza
-        - ./modules/zed
+        - path:.
+        - path:./modules/vscode
+        - path:./modules/bat
+        - path:./modules/starship
+        - path:./modules/opencode
+        - path:./modules/sbt
+        - path:./modules/neovim
+        - path:./modules/eza
+        - path:./modules/zed
   create-release:
     name: Create the release
     needs:

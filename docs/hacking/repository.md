@@ -62,10 +62,9 @@ extension, which lives in a repository of its own because that is how Zed
 ships extensions. The repository is a submodule of the application, at
 `modules/zed/extension/`, so every change of the extension is reviewed here.
 
-Nix cannot fetch the contents of a submodule of a git tree, so the sources of
-the package are fetched from the repository itself, at the revision the
-submodule points at. The pin is in `modules/zed/nix/source.nix`, and the CI
-verifies that the two agree.
+Nix cannot fetch the contents of a submodule of a git tree, so the checks of
+the repository run against the working tree, where the submodule is checked
+out. The checkout of the CI brings the submodules with it.
 
 ## The flake module of an application
 

@@ -309,12 +309,20 @@ in
 
     # The repository is checked before the release is created, so that a
     # broken tag does not leave a release behind.
+    #
+    # The flakes are checked from the working tree, and not from the git
+    # tree: the extension of Zed is a submodule of the repository, and Nix
+    # cannot read the contents of a submodule of a git tree. The checkout of
+    # the workflow brings the submodules with it.
     checks = {
       name = "Checks (\${{ matrix.flake }})";
       runs-on = "ubuntu-latest";
       strategy = {
         fail-fast = false;
-        matrix.flake = [ "." ] ++ map (application: "./modules/${application}") common.applications;
+        matrix.flake = [
+          "path:."
+        ]
+        ++ map (application: "path:./modules/${application}") common.applications;
       };
       steps = [
         common.checkout

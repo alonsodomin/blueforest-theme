@@ -38,9 +38,6 @@ let
       "0.0.0+${lib.removeSuffix "-dirty" self.dirtyShortRev}.dirty"
     else
       "0.0.0";
-
-  # The pin of the extension repository.
-  pin = import ./nix/source.nix;
 in
 {
   # The flake module of Home Manager, which declares `flake.homeModules`. It
@@ -71,8 +68,13 @@ in
       # the overlay twice.
       basePkgs = import inputs.nixpkgs { inherit system; };
 
-      # The sources of the extension.
-      source = pin.fetch pkgs;
+      # The sources of the extension: the submodule, which is the repository
+      # Zed installs the extension from.
+      #
+      # Nix cannot read the contents of a submodule of a git tree, so the
+      # checks of the repository run against the working tree, where the
+      # submodule is checked out.
+      source = ./extension;
 
       theme = pkgs.blueforest-zed-theme;
     in
@@ -102,10 +104,6 @@ in
     };
 
   flake = {
-    # The revision of the extension repository, so that the CI can check that
-    # the submodule and the sources of the package agree.
-    zedRevision = pin.revision;
-
     # The overlay of the application. It adds the theme to a nixpkgs
     # instance, and it leaves the programs of nixpkgs alone: the theme is a
     # directory of its own, so that applying the overlay does not replace the
@@ -115,7 +113,7 @@ in
         inherit (final) lib;
         pkgs = final;
         inherit version;
-        source = pin.fetch final;
+        source = ./extension;
       };
     };
 

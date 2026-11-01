@@ -25,15 +25,15 @@ jobs:
       fail-fast: false
       matrix:
         flake:
-        - .
-        - ./modules/vscode
-        - ./modules/bat
-        - ./modules/starship
-        - ./modules/opencode
-        - ./modules/sbt
-        - ./modules/neovim
-        - ./modules/eza
-        - ./modules/zed
+        - path:.
+        - path:./modules/vscode
+        - path:./modules/bat
+        - path:./modules/starship
+        - path:./modules/opencode
+        - path:./modules/sbt
+        - path:./modules/neovim
+        - path:./modules/eza
+        - path:./modules/zed
   render:
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name
       == github.repository
@@ -62,25 +62,6 @@ jobs:
         # The ${ is the escape of an indented string: it writes the
         # expression of GitHub, and not an interpolation of Nix.
         git push origin "HEAD:refs/heads/${github.event.pull_request.head.ref }}"
-  submodule:
-    name: Check the submodule
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v7
-      with:
-        submodules: true
-    - uses: cachix/install-nix-action@v31
-      with:
-        extra_nix_config: experimental-features = nix-command flakes
-    - name: Check that the submodule and the pin agree
-      run: |-
-        pinned="$(nix eval --raw .#zedRevision)"
-        submodule="$(git ls-tree HEAD modules/zed/extension | awk '{print $3}')"
-
-        if [ "$pinned" != "$submodule" ]; then
-          echo "the submodule of the extension of Zed is at $submodule, and the sources of the package are pinned at $pinned" >&2
-          exit 1
-        fi
 name: CI
 'on':
   pull_request:

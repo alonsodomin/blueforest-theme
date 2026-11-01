@@ -47,8 +47,10 @@ The CI runs on pushes to `master` and on pull requests. It has two jobs:
   renders the workflows and commits the result to the branch. It skips pull
   requests from forks, because their token is read-only.
 - **Checks** runs `nix flake check --impure` for the root flake and for every
-  application. It sets the environment variables that enable the expensive
-  editor checks, and skips the workflow comparison on pull requests.
+  application, against the working tree, so that the submodule of the
+  extension of Zed is part of it. It sets the environment variables that
+  enable the expensive editor checks, and skips the workflow comparison on
+  pull requests.
 
 ## The documentation workflow
 
