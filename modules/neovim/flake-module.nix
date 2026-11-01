@@ -107,7 +107,7 @@ in
           lualine = pkgs.vimPlugins.lualine-nvim;
         };
 
-        # The configuration documented in the README installs the theme where
+        # The configuration documented in the documentation installs the theme where
         # Neovim reads it from.
         neovim-configuration = import ./nix/checks/configuration.nix {
           inherit pkgs;

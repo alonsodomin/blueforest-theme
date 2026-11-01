@@ -104,3 +104,13 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
   alone, the editor of nixpkgs included
 - The theme for VS Code and the theme for bat have a README of their own, like
   the other applications
+- The documentation is now an MkDocs site configured by `mkdocs.yml` at the
+  root, with user-facing pages under `docs/` and a separate `Hacking` section
+  for the repository layout, development, workflows, and releases. The
+  READMEs are short entry points that link to it
+- The documentation workflow builds the site with
+  `nix build .#documentation` and deploys it to GitHub Pages. The release
+  workflow calls it as its last step, and the root flake checks the site with
+  `mkdocs build --strict`
+- Every theme page documents installation without Nix as well as with Nix. The
+  VS Code page recommends Open VSX first

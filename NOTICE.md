@@ -49,8 +49,10 @@ CI workflows and the manifests — is licensed under the
 | `modules/*/themes/**` | CC BY 4.0 |
 | `modules/sbt/config/**` | MPL-2.0 |
 | `assets/**` | CC BY 4.0 |
+| `docs/**` | CC BY 4.0 |
 | `*.png`, `modules/*/*.png` | CC BY 4.0 |
 | `*.md`, `modules/*/*.md` | CC BY 4.0 |
+| `mkdocs.yml` | MPL-2.0 |
 | `LICENSE`, `LICENSES/**`, `modules/*/LICENSE` | the licence text itself |
 | everything else | MPL-2.0 |
 

@@ -18,10 +18,13 @@ rec {
   # are updated in one place, and Renovate keeps them up to date.
   actions = {
     checkout = "actions/checkout@v7";
+    configurePages = "actions/configure-pages@v6";
+    deployPages = "actions/deploy-pages@v5";
     downloadArtifact = "actions/download-artifact@v8";
     installNix = "cachix/install-nix-action@v31";
     setupNode = "actions/setup-node@v7";
     uploadArtifact = "actions/upload-artifact@v7";
+    uploadPagesArtifact = "actions/upload-pages-artifact@v5";
   };
 
   # Checks the repository out.

@@ -14,7 +14,7 @@
   module,
 }:
 let
-  # The configuration of nixvim that the README documents.
+  # The configuration of nixvim that the documentation describes.
   configuration = nixvim.lib.evalNixvim {
     system = pkgs.stdenv.hostPlatform.system;
     modules = [

@@ -42,7 +42,7 @@
       "managerFilePatterns": [
         "/^modules\\/sbt\\/config\\/sbt-prompt\\.sbt$/",
         "/^modules\\/sbt\\/nix\\/checks\\/package\\.nix$/",
-        "/^modules\\/sbt\\/README\\.md$/"
+        "/^docs\\/themes\\/sbt\\.md$/"
       ],
       "matchStrings": [
         "addSbtPlugin\\(\"(?<groupId>[^\"]+)\" % \"(?<artifactId>[^\"]+)\" % \"(?<currentValue>[^\"]+)\"\\)"
