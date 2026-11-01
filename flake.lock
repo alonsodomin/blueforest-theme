@@ -61,6 +61,28 @@
         "type": "github"
       }
     },
+    "eza": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "./modules/eza",
+        "type": "path"
+      },
+      "original": {
+        "path": "./modules/eza",
+        "type": "path"
+      },
+      "parent": []
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -482,6 +504,7 @@
         "actions-nix": "actions-nix",
         "bat": "bat",
         "devshell": "devshell",
+        "eza": "eza",
         "flake-parts": "flake-parts_2",
         "home-manager": "home-manager",
         "mkdocs-flake": "mkdocs-flake",

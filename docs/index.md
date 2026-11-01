@@ -16,6 +16,7 @@ The theme is available for the following applications:
 | Starship    | [Starship](themes/starship.md) |
 | OpenCode    | [OpenCode](themes/opencode.md) |
 | sbt         | [sbt](themes/sbt.md)           |
+| eza         | [eza](themes/eza.md)           |
 
 Every application has its own installation page. Each page explains how to
 install the theme without Nix, how to install it with Nix, and how to select it

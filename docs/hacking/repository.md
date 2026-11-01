@@ -12,6 +12,7 @@ self-contained flake.
 ├── docs/                     # the documentation sources
 ├── modules/
 │   ├── bat/                  # the simplest application: a package and checks
+│   ├── eza/
 │   ├── neovim/
 │   ├── opencode/
 │   ├── sbt/
@@ -47,6 +48,7 @@ compare the packaged copies against them:
   `modules/neovim/themes/lualine-blueforest.lua`
 - `modules/starship/themes/blueforest.toml`
 - `modules/opencode/themes/blueforest.json`
+- `modules/eza/themes/blueforest.yml`
 
 `modules/sbt` is the exception: it does not define a theme. It installs the
 upstream `sbt-prompt` plugin and selects its `BlueforestTheme` from

@@ -129,6 +129,16 @@ let
         tar -czf "dist/blueforest-sbt-prompt-$VERSION.tar.gz" -C staging .
       '';
     }
+    {
+      app = "eza";
+      title = "eza";
+      asset = "dist/blueforest-eza-theme-$VERSION.yml";
+      package = ''
+        mkdir -p dist
+        cp modules/eza/themes/blueforest.yml \
+          "dist/blueforest-eza-theme-$VERSION.yml"
+      '';
+    }
   ];
 
   applicationsByApp = listToAttrs (

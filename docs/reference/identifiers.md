@@ -25,3 +25,7 @@ modules of the repository.
 - The Neovim colourscheme is `blueforest`, the name of the file. Select it
   with `vim.cmd.colorscheme("blueforest")`.
 - The lualine theme is `blueforest` as well, and lualine finds it on its own.
+- The eza package is `blueforest-eza-theme`. The eza theme is `blueforest`,
+  the name of the file. eza reads it as `theme.yml`, from
+  `$XDG_CONFIG_HOME/eza/` or from the directory `EZA_CONFIG_DIR` points at,
+  and there is no name to select.

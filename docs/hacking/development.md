@@ -59,6 +59,7 @@ nix flake check ./modules/neovim
 nix flake check ./modules/starship
 nix flake check ./modules/opencode
 nix flake check ./modules/sbt
+nix flake check ./modules/eza
 ```
 
 A single check can be built on its own:
@@ -72,7 +73,8 @@ The names include `version`, `overlay`, `treefmt`, `workflows`,
 `bat-theme-home`, `bat-theme-nixos`, `neovim-theme`, `neovim-configuration`,
 `neovim-module`, `starship-preset`, `starship-render`, `starship-wrapper`,
 `starship-module`, `opencode-theme`, `opencode-configuration`,
-`opencode-module`, `sbt-package`, `sbt-module`, and `documentation`.
+`opencode-module`, `sbt-package`, `sbt-module`, `eza-theme`, `eza-render`,
+`eza-module`, and `documentation`.
 
 Root flake evaluation only sees tracked files. `git add` new files before
 running `nix flake check` or `nix build .#...`.

@@ -46,6 +46,7 @@ jobs:
         - ./modules/opencode
         - ./modules/sbt
         - ./modules/neovim
+        - ./modules/eza
   create-release:
     name: Create the release
     needs:
@@ -119,6 +120,27 @@ jobs:
       id-token: write
       pages: write
     uses: ./.github/workflows/docs.yml
+  eza:
+    name: 'eza: Package'
+    needs:
+    - version
+    - create-release
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+    - env:
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Package the theme
+      run: |-
+        mkdir -p dist
+        cp modules/eza/themes/blueforest.yml \
+          "dist/blueforest-eza-theme-$VERSION.yml"
+    - env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TAG: v${{ needs.version.outputs.version }}
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Upload the asset to the release
+      run: gh release upload "$TAG" "dist/blueforest-eza-theme-$VERSION.yml" --clobber
   neovim:
     name: 'Neovim: Package'
     needs:
@@ -175,6 +197,7 @@ jobs:
     - opencode
     - neovim
     - sbt
+    - eza
     runs-on: ubuntu-latest
     steps:
     - env:

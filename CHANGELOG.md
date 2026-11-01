@@ -13,12 +13,17 @@ its own changelog:
 | Starship   | [modules/starship/CHANGELOG.md](modules/starship/CHANGELOG.md) |
 | OpenCode   | [modules/opencode/CHANGELOG.md](modules/opencode/CHANGELOG.md) |
 | sbt        | [modules/sbt/CHANGELOG.md](modules/sbt/CHANGELOG.md) |
+| eza        | [modules/eza/CHANGELOG.md](modules/eza/CHANGELOG.md) |
 
 Every configuration of the repository shares one version, which comes from the
 tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 
 ## Unreleased
 
+- The BlueForest theme now includes a theme for eza, packaged as
+  `blueforest-eza-theme`. It is the YAML file eza reads, and the Home Manager
+  module installs it in the configuration directory of eza, which is where eza
+  reads the theme from
 - The theme for bat is installed in the configuration directory of bat, which
   is where bat reads the themes from, and the cache of bat is rebuilt, so that
   the theme is picked up without further work

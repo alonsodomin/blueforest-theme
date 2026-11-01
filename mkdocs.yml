@@ -17,6 +17,7 @@ nav:
       - Starship: themes/starship.md
       - OpenCode: themes/opencode.md
       - sbt: themes/sbt.md
+      - eza: themes/eza.md
   - Reference:
       - Outputs: reference/outputs.md
       - Identifiers: reference/identifiers.md

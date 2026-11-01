@@ -12,6 +12,7 @@ rec {
     "opencode"
     "sbt"
     "neovim"
+    "eza"
   ];
 
   # The actions that the workflows use. Their versions live here, so that they
