@@ -107,5 +107,31 @@ in
         }
       ];
     };
+
+    # The gate of the merge. The repository is configured with it as a
+    # required check, so that a pull request cannot be merged until the checks
+    # pass.
+    #
+    # The job runs even when the checks fail, so that GitHub always has a
+    # status to report: a required check that is never reported leaves the
+    # pull request waiting for a status that never comes. The job states the
+    # result of the checks it needs, and fails when they did not succeed.
+    merge-gate = {
+      name = "Merge gate";
+      needs = [ "checks" ];
+      "if" = "always()";
+      runs-on = "ubuntu-latest";
+      steps = [
+        {
+          name = "Check the result of the checks";
+          run = ''
+            if [ "''${{ needs.checks.result }}" != "success" ]; then
+              echo "the checks did not pass: ''${{ needs.checks.result }}" >&2
+              exit 1
+            fi
+          '';
+        }
+      ];
+    };
   };
 }

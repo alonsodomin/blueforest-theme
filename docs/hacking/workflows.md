@@ -41,7 +41,7 @@ unknown inputs, and invalid job dependencies.
 
 ## The CI workflow
 
-The CI runs on pushes to `master` and on pull requests. It has two jobs:
+The CI runs on pushes to `master` and on pull requests. It has three jobs:
 
 - **Render the workflows** runs on pull requests from the repository itself. It
   renders the workflows and commits the result to the branch. It skips pull
@@ -51,6 +51,19 @@ The CI runs on pushes to `master` and on pull requests. It has two jobs:
   extension of Zed is part of it. It sets the environment variables that
   enable the expensive editor checks, and skips the workflow comparison on
   pull requests.
+- **Merge gate** waits for the checks, and fails when they did not pass.
+
+## The merge gate
+
+The **Merge gate** job is the one the repository is configured with as a
+**required status check**, under **Settings → Branches → Branch protection
+rules**. The check is named *Merge gate*, and a pull request cannot be merged
+until it succeeds.
+
+The job depends on the **Checks** job, and it runs even when the checks fail,
+because a required check that is never reported leaves the pull request waiting
+for a status that never comes. The job reads the result of the checks it needs
+and fails when that result is not `success`.
 
 ## The documentation workflow
 

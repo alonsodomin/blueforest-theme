@@ -38,6 +38,19 @@ jobs:
         - path:./modules/eza
         - path:./modules/zed
         - path:./modules/yazi
+  merge-gate:
+    if: always()
+    name: Merge gate
+    needs:
+    - checks
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check the result of the checks
+      run: |-
+        if [ "${{ needs.checks.result }}" != "success" ]; then
+          echo "the checks did not pass: ${{ needs.checks.result }}" >&2
+          exit 1
+        fi
   render:
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name
       == github.repository
