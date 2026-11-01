@@ -74,8 +74,8 @@ module, so the consumer that wants the theme takes it from the outputs of the fl
 | ------------------------- | ------------------------------------ |
 | `packages.<system>.*`     | the packages of this application     |
 
-The release of the application lives in `tools/lib/bat.sh`, and its workflow in
-`.github/workflows/release-bat.yml`.
+The release of the application lives in `tools/lib/bat.sh`, and its entry in the release
+workflow in `workflows/release.nix`.
 
 See the root [README](../../README.md) for the installation of the flake and
 the modules.

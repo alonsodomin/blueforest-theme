@@ -65,6 +65,15 @@ Every configuration of the repository shares one version, which lives in
   application carries the version of the repository
 - The release workflow of bat checks the application before publishing it, and
   the workflows of bat and Neovim create the release when it does not exist yet
+- The workflows of the repository are defined in Nix now, in `workflows/`, and
+  rendered into the files of `.github/workflows/`. The release workflow is one
+  for every application instead of one per application, and a check verifies
+  that the rendered files are the committed ones and that they are valid
+- The input that publishes to GitHub releases now applies to every application
+  instead of the VS Code extension alone, and a GitHub release publishes the
+  extension to GitHub releases as well, which it did not before
+- Renovate updates the versions of the actions that the workflows use, because
+  Dependabot only reads workflow files, which are generated
 - The changelog of an application that is not released yet carries an
   `Unreleased` section, which the release turns into the section of the
   release

@@ -1,5 +1,8 @@
 # SPDX-License-Identifier: MPL-2.0
 
+# The module that installs the git hooks of the development shell.
+imports = ["git/hooks"]
+
 [devshell]
 name = "blueforest"
 # The tools of the repository: the ones the release needs, the ones that try
@@ -58,3 +61,17 @@ command = '''
 package = "nixfmt"
 category = "formatters"
 help = "Nix code formatter"
+
+# The workflows of the repository are rendered from their definitions in
+# `workflows/`, so they are rendered again on every commit.
+[git.hooks]
+enable = true
+
+[git.hooks.pre-commit]
+text = '''
+  #!/usr/bin/env bash
+  set -euo pipefail
+  cd "$(git rev-parse --show-toplevel)"
+  nix run .#render-workflows
+  git add .github/workflows
+'''

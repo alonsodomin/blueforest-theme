@@ -170,8 +170,8 @@ applications:
 | `overlays.neovim`         | the overlay of this application      |
 | `packages.<system>.*`     | the packages of this application     |
 
-The release of the application lives in `tools/lib/neovim.sh`, and its
-workflow in `.github/workflows/release-neovim.yml`.
+The release of the application lives in `tools/lib/neovim.sh`, and its entry in the
+release workflow in `workflows/release.nix`.
 
 See the root [README](../../README.md) for the installation of the flake and
 the modules.

@@ -118,8 +118,8 @@ that does not want the theme.
 The NixOS module adds the overlay and nothing else: OpenCode reads the
 configuration of the user, and there is no system-wide directory it reads.
 
-The release of the application lives in `tools/lib/opencode.sh`, and its
-workflow in `.github/workflows/release-opencode.yml`.
+The release of the application lives in `tools/lib/opencode.sh`, and its entry in the
+release workflow in `workflows/release.nix`.
 
 See the root [README](../../README.md) for the installation of the flake and
 the modules.

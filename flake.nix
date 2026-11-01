@@ -23,6 +23,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # The module that turns the definitions of the workflows into the files
+    # of `.github/workflows/`.
+    actions-nix = {
+      url = "github:nialov/actions.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # nixvim, for the check that reads the theme of Neovim. The repository
     # owns the pin of it, so that the check of the application is not at the
     # mercy of the release cycle of nixvim.
@@ -99,6 +106,7 @@
           inputs.devshell.flakeModule
           inputs.home-manager.flakeModules.home-manager
           inputs.treefmt-nix.flakeModule
+          inputs.actions-nix.flakeModules.default
 
           # The modules the applications publish.
           inputs.vscode.flakeModule
@@ -116,6 +124,9 @@
         ];
 
         flake = {
+          # The workflows of the repository, defined in Nix.
+          actions-nix.workflows = import ./workflows { inherit lib; };
+
           # The overlays of every application, applied like nixpkgs
           # applies them.
           overlays.default = lib.composeManyExtensions [
@@ -177,9 +188,40 @@
             # The development shell of the repository, declared in TOML.
             devshells.default = inputs.devshell.lib.importTOML ./devshell.toml;
 
+            # The hooks of git-hooks.nix are not checked here: the check of the
+            # workflows below covers the one that renders them.
+            pre-commit.check.enable = false;
+
             # The formatting of the repository. The formatter and the check
             # that verifies it come with the module.
             treefmt.imports = [ ./treefmt.nix ];
+
+            # Fails if the workflows of the repository are not the ones that
+            # the definitions in `workflows/` render, or if they are not
+            # valid.
+            checks.workflows =
+              let
+                workflows = config.flake.actions-nix.workflows;
+                render =
+                  (inputs.actions-nix.lib.evalModule pkgs config.flake.actions-nix).config.build.renderWorkflows;
+              in
+              pkgs.runCommandLocal "workflows-check"
+                {
+                  nativeBuildInputs = [
+                    pkgs.actionlint
+                    pkgs.shellcheck
+                  ];
+                }
+                ''
+                  mkdir project
+                  cd project
+                  ${render}/bin/render-workflows --no-prepend-git-root
+                  for workflow in ${lib.concatStringsSep " " (lib.attrNames workflows)}; do
+                    diff ${./.}/"$workflow" "$workflow"
+                  done
+                  actionlint .github/workflows/*.yml
+                  touch $out
+                '';
 
             # Fails if an application carries a version of its own.
             checks.version = import ./tests/version.nix { inherit pkgs; };
