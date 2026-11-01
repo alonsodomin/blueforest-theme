@@ -15,13 +15,19 @@
 # and, in the configuration of the editor:
 #
 #   vim.cmd.colorscheme("blueforest")
+#
+# The overlay of the application is passed to the module, so that the theme
+# the consumer gets is the one of the application, with its version.
+{
+  overlay,
+}:
 {
   lib,
   pkgs,
   ...
 }:
 {
-  nixpkgs.overlays = [ (import ../overlay.nix) ];
+  nixpkgs.overlays = [ overlay ];
 
   # The theme is a plugin, and the plugins of Neovim are a list: the theme is
   # added to the plugins of the consumer, not in place of them.

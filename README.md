@@ -195,9 +195,11 @@ nix build .#neovim-nixvim-check
 The CI runs them, so that the theme is checked against the editors it is made for.
 
 The extension is built from the sources in the `modules/vscode/` directory with `vsce`, the same tool the release
-uses, so the version in `modules/vscode/package.json` is the version that gets installed. `nix flake check`
-verifies that the installed theme is identical to the one in `modules/vscode/themes/`, and that every
-application carries the version of the repository. The Starship preset is compared with
+uses, so the manifest of the sources is the one that gets installed. The manifest carries a placeholder, because
+the version of a package is not a version of a release: it is the revision of the commit the package is built
+from. `nix flake check`
+verifies that the installed theme is identical to the one in `modules/vscode/themes/`, and that the version of the
+installed extension is the one of the package. The Starship preset is compared with
 `modules/starship/themes/blueforest.toml` and rendered with the actual `starship` binary. The theme of OpenCode is
 compared with `modules/opencode/themes/blueforest.json`, checked to have every token OpenCode reads and every colour
 of it resolved, and the configuration of the README is evaluated against Home Manager to see that the theme ends up
@@ -445,8 +447,9 @@ the supported way to install them.
 
 There is no NixOS module: sbt reads the configuration of the user, and there is no system-wide directory it reads.
 
-There is nothing to release here: the prompt and its theme are provided by the upstream plugin, so this application has
-no release workflow.
+There is nothing to publish for the prompt itself: the prompt and its theme are provided by the upstream plugin. The
+files that install and select them are published as an asset of the release of the repository, together with the
+files of the other applications.
 
 The prompt uses true colour and Nerd Font glyphs, so the terminal has to support both.
 
@@ -505,22 +508,29 @@ no secret for it, and the CI renders the workflows for its pull requests.
 
 ### Releases
 
-Releases are managed by the tooling here, you can trigger a release by either running `nix run .#release -- vscode` or by simply running `release vscode` from the previously mentioned shell.
+A release of the repository is a tag of the form `vMAJOR.MINOR.PATCH`, and it releases every application of the
+repository at once, into one GitHub release. The version is not a file of the repository: it comes from the tags,
+and the packages of the repository carry the revision of the commit they are built from.
 
-The release helper takes the name of the application to release, or `all` for every application
-that has a release script (`vscode`, `bat`, `starship`, `opencode` and `neovim`):
+Releases are managed by the tooling here. You can trigger a release by either running `nix run .#release` or by
+simply running `release` from the previously mentioned shell:
 
 ```console
-release vscode
-release all
+release
 ```
 
-It asks for the version every application shares, for the changelog of each application, and then
-commits, pushes and triggers the release workflow of the repository.
+It asks for the version, stamps the changelogs with it, commits, tags and pushes. The version is checked against
+the releases of GitHub, so a version that is released already is never released again. The push of the tag
+triggers the release workflow of the repository, which packages every application, publishes the extension to the
+marketplaces and creates the GitHub release with the changelog of the version.
+
+The changelogs carry the changes that are not released yet under the heading `Unreleased`, and the release turns
+that heading into the heading of the release. An application that has no changes carries no section for the
+version.
 
 The workflows of the repository are defined in Nix, in [`workflows/`](workflows), and rendered into
-the files of `.github/workflows/`. A GitHub release only releases the application its tag belongs
-to, and the workflow of the repository packages and publishes every application that is selected.
+the files of `.github/workflows/`. The workflow of the release creates the GitHub release first, and the
+applications upload their assets to it afterwards, so that the release never carries half of its assets.
 A new application brings an entry in the table of [`workflows/release.nix`](workflows/release.nix).
 
 ## Adding an application
@@ -531,7 +541,6 @@ An application is a directory with the theme, the packaging of it and a flake of
 modules/neovim/
 ├── flake.nix            # the application as a flake of its own
 ├── flake-module.nix     # the application as a flake-parts module
-├── VERSION              # the version of the application
 ├── CHANGELOG.md         # the changes of the application
 └── ...
 ```
@@ -594,8 +603,9 @@ imports = [
 ];
 ```
 
-The release of the application lives in `tools/lib/neovim.sh`, and its entry in the release workflow
-in `workflows/release.nix`.
+The application is released with the rest of the repository: it brings an entry in the table of
+[`workflows/release.nix`](workflows/release.nix), where the way it is packaged is described, and its
+changes are described in its own changelog.
 
 ## License
 

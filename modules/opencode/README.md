@@ -71,7 +71,6 @@ modules/opencode/
 ├── flake.nix            # the application as a flake of its own
 ├── flake.lock
 ├── flake-module.nix     # the application as a flake-parts module
-├── VERSION              # the version of the application
 ├── CHANGELOG.md         # the changes of the application
 ├── NOTICE.md            # the attribution of the theme
 ├── nix/                 # the packaging of the theme
@@ -118,8 +117,9 @@ that does not want the theme.
 The NixOS module adds the overlay and nothing else: OpenCode reads the
 configuration of the user, and there is no system-wide directory it reads.
 
-The release of the application lives in `tools/lib/opencode.sh`, and its entry in the
-release workflow in `workflows/release.nix`.
+The application is released with the rest of the repository: it brings an entry in the
+table of [`workflows/release.nix`](../../workflows/release.nix), where the way it is
+packaged is described, and its changes are described in its own changelog.
 
 See the root [README](../../README.md) for the installation of the flake and
 the modules.

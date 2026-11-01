@@ -8,11 +8,12 @@
 # the package carries both, and one package is the whole theme.
 #
 # The colours are CC BY 4.0, the packaging of them is MPL-2.0.
-{ lib, pkgs }:
+{
+  lib,
+  pkgs,
+  version,
+}:
 let
-  # The version of the application, with the newline of the file removed.
-  version = lib.removeSuffix "\n" (builtins.readFile ../VERSION);
-
   # The runtimepath of the plugin: the colourscheme where Neovim looks for
   # it, and the theme of lualine where lualine looks for it.
   sources = pkgs.runCommand "blueforest-neovim-theme-sources-${version}" { } ''

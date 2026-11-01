@@ -14,11 +14,22 @@ its own changelog:
 | OpenCode   | [modules/opencode/CHANGELOG.md](modules/opencode/CHANGELOG.md) |
 | sbt        | [modules/sbt/CHANGELOG.md](modules/sbt/CHANGELOG.md) |
 
-Every configuration of the repository shares one version, which lives in
-[VERSION](VERSION).
+Every configuration of the repository shares one version, which comes from the
+tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 
 ## Unreleased
 
+- The version of the repository comes from its tags, and the `VERSION` files
+  are gone: a release is a tag of the form `vMAJOR.MINOR.PATCH`, and it
+  releases every application of the repository at once
+- The packages of the repository carry the revision of the commit they are
+  built from, and never the version of a release
+- The release helper is one flow for the whole repository: it asks for the
+  version, checks it against the releases of GitHub, stamps the changelogs,
+  commits, tags and pushes. There is no script per application any more
+- The release workflow creates the GitHub release first, with the changelog of
+  the version, and the applications upload their assets to it afterwards, so
+  that the release never carries half of its assets
 - The repository holds a configuration of the theme per application, each of
   them in a directory of its own
 - The applications are flakes of their own, which publish a module that the

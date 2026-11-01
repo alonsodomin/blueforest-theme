@@ -78,10 +78,11 @@ no system-wide directory it reads.
 
 ## Releasing
 
-There is nothing to release here: the prompt and its theme come from the
-[sbt-prompt](https://github.com/alonsodomin/sbt-prompt) plugin. This directory
-only carries the files that install and select them, so it has no release
-workflow of its own.
+The prompt and its theme come from the
+[sbt-prompt](https://github.com/alonsodomin/sbt-prompt) plugin, so there is
+nothing to publish for them. This directory only carries the files that
+install and select them, and those files are published as an asset of the
+release of the repository, together with the files of the other applications.
 
 ## What an application directory holds
 
@@ -93,7 +94,6 @@ modules/sbt/
 ├── flake.nix            # the application as a flake of its own
 ├── flake.lock
 ├── flake-module.nix     # the application as a flake-parts module
-├── VERSION              # the version of the application
 ├── CHANGELOG.md         # the changes of the application
 ├── NOTICE.md            # the attribution of the prompt
 ├── config/              # the plugin declaration and the theme selection

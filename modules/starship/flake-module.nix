@@ -20,8 +20,25 @@
   config,
   lib,
   inputs,
+  self,
   ...
 }:
+let
+  # The version of the packages of the application.
+  #
+  # A release of the repository is a tag of the form vMAJOR.MINOR.PATCH. A
+  # package of the repository is never a release: it is a snapshot of the
+  # commit it is built from, and it carries the revision of that commit. The
+  # version of a release is the one of its tag, and it is the release
+  # workflow that applies it.
+  version =
+    if self ? shortRev then
+      "0.0.0+${self.shortRev}"
+    else if self ? dirtyShortRev then
+      "0.0.0+${lib.removeSuffix "-dirty" self.dirtyShortRev}.dirty"
+    else
+      "0.0.0";
+in
 {
   # The flake module of Home Manager, which declares `flake.homeModules`. It
   # is imported here, so that the module of the application can be composed
@@ -94,7 +111,29 @@
     };
 
   flake = {
-    overlays.starship = import ./nix/overlay.nix;
+    # The overlay of the application. It adds the preset to a nixpkgs
+    # instance, and it leaves the programs of nixpkgs alone: the
+    # preset-bundled binary is a package of its own, so that applying the
+    # overlay does not replace the Starship of a configuration that does not
+    # want the theme.
+    overlays.starship =
+      final: prev:
+      let
+        preset = import ./nix/preset.nix {
+          inherit (final) lib;
+          pkgs = final;
+          inherit version;
+        };
+      in
+      {
+        blueforest-starship-preset = preset;
+
+        blueforest-starship = import ./nix/wrapper.nix {
+          pkgs = final;
+          starship = prev.starship;
+          inherit preset;
+        };
+      };
 
     nixosModules.starship = {
       nixpkgs.overlays = [ config.flake.overlays.starship ];

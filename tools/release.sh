@@ -1,19 +1,25 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: MPL-2.0
 #
-# Release helper for the BlueForest themes.
+# The release helper of the repository.
 #
-#   release.sh <app>   release one application, e.g. "vscode"
-#   release.sh all     release every application
+#   release.sh   release the repository
 #
-# The application specific part of the release lives in tools/lib/<app>.sh:
-# it checks the published version, asks for the changelog and updates the
-# files of the application. This script picks the applications, asks for the
-# version they all share, and then commits, pushes and triggers the release
-# workflow of the repository.
+# The repository is released as a whole: one version, one tag and one GitHub
+# release with the assets of every application. The helper asks for the
+# version, stamps the changelogs with it, commits, tags and pushes. The push
+# of the tag triggers the release workflow of the repository, which packages
+# every application and publishes it.
 #
-# Press Enter with an empty value at any prompt to abort. The commit message
-# prompt is the exception: an empty value accepts the offered default.
+# The version is checked against the releases of GitHub: a version that has a
+# release already is never released again.
+#
+# The changelogs of the repository carry the changes that are not released
+# yet under the heading "Unreleased". The release turns that heading into the
+# heading of the release.
+#
+# Press Enter with an empty value at a prompt to abort, except at the prompt
+# of the version, where it accepts the version that is offered.
 
 set -euo pipefail
 
@@ -23,95 +29,82 @@ if [ -z "$repo_root" ]; then
 	exit 1
 fi
 
-lib_dir="$repo_root/tools/lib"
-version_file="$repo_root/VERSION"
 workflow="release.yml"
-
-# shellcheck source=tools/lib/common.sh
-source "$lib_dir/common.sh"
-
-PUBLISH_MS=true
-PUBLISH_OVSX=true
-PUBLISH_GH=true
-
-# The applications of this repository are the scripts in tools/lib.
-applications=()
-for script in "$lib_dir"/*.sh; do
-	[ -e "$script" ] || continue
-	[ "$(basename "$script")" = "common.sh" ] && continue
-	applications+=("$(basename "$script" .sh)")
-done
 
 # --------------------------------------------------------------------------
 # helpers
 # --------------------------------------------------------------------------
 
-usage() {
-	printf 'Usage: %s <app>|all\n\n' "$(basename "$0")"
-	printf 'Applications: %s\n' "${applications[*]:-none}"
+die() {
+	printf '\nError: %s\n' "$1" >&2
+	exit 1
 }
 
-# The abort of the repository is its own: the release stops, and the exit code
-# says that nothing happened.
 abort() {
 	printf '\nAborted. Nothing has been changed.\n'
 	exit 0
 }
 
-# Used at the final prompt, where the release is already committed and pushed.
-skip_trigger() {
-	printf '\nSkipped the CI trigger. %s is committed and pushed to %s.\n' \
-		"$version" "$branch"
-	printf 'Start the Release workflow from the Actions tab when you are ready.\n'
-	exit 0
+require() {
+	command -v "$1" >/dev/null 2>&1 || die "missing required program: $1"
 }
 
-# The workflow input that selects an application.
-workflow_input() {
-	case "$1" in
-	vscode) printf 'publishVSCode\n' ;;
-	bat) printf 'publishBat\n' ;;
-	neovim) printf 'publishNeovim\n' ;;
-	starship) printf 'publishStarship\n' ;;
-	opencode) printf 'publishOpencode\n' ;;
-	*) printf 'publish%s\n' "$1" ;;
-	esac
+# MAJOR.MINOR.PATCH, no leading zeros, no pre-release suffix.
+is_semver() {
+	[[ $1 =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]
+}
+
+# True when $1 is strictly greater than $2.
+version_gt() {
+	local newer="$1" older="$2"
+	if [ "$newer" = "$older" ]; then
+		return 1
+	fi
+	[ "$(printf '%s\n%s\n' "$older" "$newer" | sort -V | tail -n1)" = "$newer" ]
+}
+
+# The version that follows the given one.
+next_version() {
+	local version="$1"
+	local major minor patch
+	IFS=. read -r major minor patch <<<"$version"
+	printf '%s.%s.%s\n' "$major" "$minor" "$((patch + 1))"
+}
+
+# The body of the "Unreleased" section of a changelog.
+unreleased_body() {
+	awk '
+		/^## / {
+			if (inside) {
+				exit
+			}
+			inside = ($0 == "## Unreleased")
+			next
+		}
+		inside { print }
+	' "$1"
+}
+
+# Turns the "Unreleased" section of a changelog into the section of a release.
+stamp_changelog() {
+	local file="$1" heading="$2"
+	awk -v heading="$heading" '
+		/^## Unreleased$/ { print heading; next }
+		{ print }
+	' "$file" >"$file.tmp"
+	mv "$file.tmp" "$file"
 }
 
 # --------------------------------------------------------------------------
-# 1. the applications to release
+# 1. the repository
 # --------------------------------------------------------------------------
 
 printf '\nBlueforest release\n'
 printf '===================\n'
 
-target="${1:-}"
-case "$target" in
-all)
-	if [ "${#applications[@]}" -eq 0 ]; then
-		die "there are no applications to release"
-	fi
-	selected=("${applications[@]}")
-	;;
-"")
-	usage
-	exit 1
-	;;
-*)
-	if [ ! -f "$lib_dir/$target.sh" ]; then
-		die "unknown application: $target"
-	fi
-	selected=("$target")
-	;;
-esac
-
-for tool in git curl jq gh; do
+for tool in git gh; do
 	require "$tool"
 done
-
-[ -f "$version_file" ] || die "version file not found: $version_file"
-[ -f "$repo_root/.github/workflows/$workflow" ] ||
-	die "workflow not found: .github/workflows/$workflow"
 
 branch=$(git -C "$repo_root" rev-parse --abbrev-ref HEAD)
 if [ "$branch" = "HEAD" ]; then
@@ -119,177 +112,122 @@ if [ "$branch" = "HEAD" ]; then
 fi
 
 if [ -n "$(git -C "$repo_root" status --porcelain)" ]; then
-	printf '\nNote: the working tree has uncommitted changes.\n'
-	printf '      Only the files of the release will be committed.\n'
+	die "the working tree has uncommitted changes; commit or stash them first"
 fi
 
 if ! gh auth status >/dev/null 2>&1; then
-	# Hard stop: the version is committed and pushed before the trigger runs,
-	# so starting without a working gh would discover the problem far too late.
-	die "gh is not authenticated, so the CI workflow could not be triggered. Run: gh auth login"
+	die "gh is not authenticated, so the releases of GitHub could not be read. Run: gh auth login"
 fi
 
-current_version="$(cat "$version_file")"
-
-printf '\nBranch:        %s\n' "$branch"
-printf 'Current version: %s\n' "$current_version"
-printf 'Applications:  %s\n' "${selected[*]}"
+# The tags of the remote, so that the latest release and the tags that are
+# taken are the ones of the remote.
+git -C "$repo_root" fetch --quiet --tags origin ||
+	die "could not fetch the tags of the repository"
 
 # --------------------------------------------------------------------------
-# 2. the version every application shares
+# 2. the version of the release
 # --------------------------------------------------------------------------
 
-if [ -n "${BLUEFOREST_RELEASE_VERSION:-}" ]; then
-	version="$BLUEFOREST_RELEASE_VERSION"
-	is_semver "$version" || die "not a MAJOR.MINOR.PATCH version: $version"
-	version_gt "$version" "$current_version" ||
-		die "must be newer than the current version ($current_version)"
+current_version=$(bash "$repo_root/tools/version.sh" --latest)
+if [ -z "$current_version" ]; then
+	current_version="0.0.0"
+	suggested_version="0.1.0"
 else
-	while :; do
-		printf '\nEnter the next version (%s is the current one).\n' "$current_version"
-		printf 'Press Enter alone to abort: '
-		if ! IFS= read -r version; then
-			abort
-		fi
-		if [ -z "$version" ]; then
-			abort
-		fi
-		if ! is_semver "$version"; then
-			printf 'Not a MAJOR.MINOR.PATCH version: %s\n' "$version"
-			continue
-		fi
-		if ! version_gt "$version" "$current_version"; then
-			printf 'Must be newer than the current version (%s).\n' "$current_version"
-			continue
-		fi
-		break
-	done
+	suggested_version=$(next_version "$current_version")
+fi
+
+printf '\nCurrent release: %s\n' "$current_version"
+printf 'Enter the next version (Enter accepts %s): ' "$suggested_version"
+if ! IFS= read -r version; then
+	abort
+fi
+if [ -z "$version" ]; then
+	version="$suggested_version"
+fi
+
+if ! is_semver "$version"; then
+	die "not a MAJOR.MINOR.PATCH version: $version"
+fi
+
+if ! version_gt "$version" "$current_version"; then
+	die "must be newer than the current release ($current_version)"
+fi
+
+tag="v$version"
+
+# The version is checked against the releases of GitHub, and against the tags
+# of the remote: a version that is taken already is never released again.
+if gh release view "$tag" >/dev/null 2>&1; then
+	die "the release $tag already exists on GitHub"
+fi
+
+if git -C "$repo_root" rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
+	die "the tag $tag already exists"
+fi
+
+if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1; then
+	die "the tag $tag already exists on the remote"
 fi
 
 # --------------------------------------------------------------------------
-# 3. the applications
+# 3. the changelogs
 # --------------------------------------------------------------------------
 
-for app in "${selected[@]}"; do
-	printf '\n==> %s\n\n' "$app"
+heading="## $version - [$(date +%d-%m-%Y)]"
 
-	# The script of the application exits with 2 when the user aborts, and
-	# with anything else than 0 when it fails.
-	status=0
-	BLUEFOREST_RELEASE_VERSION="$version" "$lib_dir/$app.sh" || status=$?
-
-	if [ "$status" -eq 2 ]; then
-		# The user aborted: the release stops here, and nothing is
-		# committed nor pushed.
-		printf '\nAborted. Nothing has been committed and nothing has been pushed.\n'
-		exit 0
-	elif [ "$status" -ne 0 ]; then
-		die "the release of $app failed"
+changelogs=()
+for file in "$repo_root/CHANGELOG.md" "$repo_root"/modules/*/CHANGELOG.md; do
+	[ -f "$file" ] || continue
+	body=$(unreleased_body "$file")
+	if [ -n "$(printf '%s' "$body" | tr -d '[:space:]')" ]; then
+		changelogs+=("$file")
 	fi
 done
 
-# The applications that have no release script of their own still carry the
-# version of the repository: the version of their package comes from it, and
-# the check of the repository makes sure that every application agrees with
-# the version of the repository.
-for app_dir in "$repo_root"/modules/*/; do
-	app=$(basename "$app_dir")
-	app_dir="${app_dir%/}"
-	app_version_file="$app_dir/VERSION"
-
-	if [ ! -f "$app_version_file" ]; then
-		continue
-	fi
-
-	if [ -f "$lib_dir/$app.sh" ]; then
-		# The script of the application took care of it.
-		continue
-	fi
-
-	if [ "$(cat "$app_version_file")" = "$version" ]; then
-		continue
-	fi
-
-	printf '\n==> %s\n\n' "$app"
-
-	ask_changelog "$version" \
-		"The version of the application follows the version of the repository"
-
-	printf '%s\n' "$version" >"$app_version_file"
-
-	bullets_file=$(mktemp)
-	write_bullets "$bullets_file" "${bullets[@]}"
-	add_release_section "$(release_heading "$version")" "$bullets_file"
-	rm -f "$bullets_file"
-
-	git -C "$repo_root" add "modules/$app/VERSION" "modules/$app/CHANGELOG.md"
-done
-
-# The version is shared, so it lives in one place. The applications keep a
-# copy of it, and the check of the repository makes sure they agree.
-printf '%s\n' "$version" >"$version_file"
-
-# --------------------------------------------------------------------------
-# 4. commit message
-# --------------------------------------------------------------------------
-
-default_message="Release $version"
-printf '\nCommit message [%s]: ' "$default_message"
-if ! IFS= read -r commit_message; then
-	commit_message=""
+if [ "${#changelogs[@]}" -eq 0 ]; then
+	die "there is nothing to release: no changelog has an Unreleased section"
 fi
-if [ -z "$commit_message" ]; then
-	commit_message="$default_message"
+
+for file in "${changelogs[@]}"; do
+	stamp_changelog "$file" "$heading"
+done
+
+printf '\nChanges to be committed:\n'
+git -C "$repo_root" --no-pager diff --stat -- "${changelogs[@]}"
+
+printf '\nThe release %s will be created with these changes.\n' "$tag"
+printf 'Type the whole word "yes" to continue, Enter alone to abort: '
+if ! IFS= read -r answer; then
+	answer=""
+fi
+if [ "$answer" != "yes" ]; then
+	git -C "$repo_root" checkout -- "${changelogs[@]}"
+	printf '\nAborted. Nothing has been changed.\n'
+	exit 0
 fi
 
 # --------------------------------------------------------------------------
-# 5. commit and push
+# 4. the commit and the tag
 # --------------------------------------------------------------------------
 
-git -C "$repo_root" add VERSION
+git -C "$repo_root" add "${changelogs[@]}"
+git -C "$repo_root" commit -m "Release $version"
+git -C "$repo_root" tag -a "$tag" -m "Release $version"
 
-if git -C "$repo_root" diff --cached --quiet; then
-	printf '\nNothing staged to commit.\n'
-else
-	git -C "$repo_root" commit -m "$commit_message"
+git -C "$repo_root" push origin "$branch"
+
+if ! git -C "$repo_root" push origin "$tag"; then
+	printf '\nThe commit is pushed, but the tag %s is not.\n' "$tag" >&2
+	printf 'Push it with: git push origin %s\n' "$tag" >&2
+	exit 1
 fi
 
-git -C "$repo_root" push
-
 # --------------------------------------------------------------------------
-# 6. trigger
+# 5. the workflow
 # --------------------------------------------------------------------------
-
-printf '\n%s has been pushed to %s.\n' "$version" "$branch"
-
-while :; do
-	printf '\nTrigger the CI release workflow now?\n'
-	printf 'It will publish to the Marketplace (%s), Open VSX (%s) and GitHub (%s).\n' \
-		"$PUBLISH_MS" "$PUBLISH_OVSX" "$PUBLISH_GH"
-	printf 'Type the whole word "yes" to continue, Enter alone to skip: '
-	if ! IFS= read -r answer; then
-		answer=""
-	fi
-	if [ "$answer" = "yes" ]; then
-		break
-	fi
-	if [ -z "$answer" ]; then
-		skip_trigger
-	fi
-	printf 'Please type the whole word "yes", or press Enter alone to skip.\n'
-done
-
-trigger_args=()
-for app in "${selected[@]}"; do
-	trigger_args+=(-f "$(workflow_input "$app")=true")
-done
-
-gh workflow run "$workflow" --ref "$branch" \
-	-f "publishMS=$PUBLISH_MS" \
-	-f "publishOVSX=$PUBLISH_OVSX" \
-	-f "publishGH=$PUBLISH_GH" \
-	"${trigger_args[@]}"
 
 repo_url=$(gh repo view --json url --jq .url)
-printf '\nTriggered. Watch the run at:\n  %s/actions/workflows/%s\n' \
+
+printf '\n%s has been pushed to %s.\n' "$tag" "$branch"
+printf 'The release workflow is running:\n  %s/actions/workflows/%s\n' \
 	"$repo_url" "$workflow"

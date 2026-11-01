@@ -12,12 +12,18 @@
 #
 # The module does not touch `programs.opencode.package` either: the OpenCode
 # of the consumer is the one it wants.
+#
+# The overlay of the application is passed to the module, so that the theme
+# the consumer gets is the one of the application, with its version.
+{
+  overlay,
+}:
 {
   lib,
   ...
 }:
 {
-  nixpkgs.overlays = [ (import ../overlay.nix) ];
+  nixpkgs.overlays = [ overlay ];
 
   programs.opencode = {
     # The theme, under the name OpenCode reads the name of the theme from:

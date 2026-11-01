@@ -20,8 +20,25 @@
   config,
   lib,
   inputs,
+  self,
   ...
 }:
+let
+  # The version of the packages of the application.
+  #
+  # A release of the repository is a tag of the form vMAJOR.MINOR.PATCH. A
+  # package of the repository is never a release: it is a snapshot of the
+  # commit it is built from, and it carries the revision of that commit. The
+  # version of a release is the one of its tag, and it is the release
+  # workflow that applies it.
+  version =
+    if self ? shortRev then
+      "0.0.0+${self.shortRev}"
+    else if self ? dirtyShortRev then
+      "0.0.0+${lib.removeSuffix "-dirty" self.dirtyShortRev}.dirty"
+    else
+      "0.0.0";
+in
 {
   perSystem =
     {
@@ -30,7 +47,7 @@
     }:
     let
       theme = import ./nix/theme.nix {
-        inherit lib pkgs;
+        inherit lib pkgs version;
       };
 
       # The theme of the repository.
@@ -56,4 +73,16 @@
         };
       };
     };
+
+  flake = {
+    # The overlay of the application. It adds the theme to a nixpkgs
+    # instance, and it leaves the programs of nixpkgs alone.
+    overlays.bat = final: _prev: {
+      blueforest-bat-theme = import ./nix/theme.nix {
+        inherit (final) lib;
+        pkgs = final;
+        inherit version;
+      };
+    };
+  };
 }

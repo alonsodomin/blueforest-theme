@@ -8,11 +8,11 @@
 # The package carries the preset twice: at its root, so that a consumer can
 # read it directly, and in the directory where Starship looks for its presets,
 # so that the wrapper of the overlay can bundle it like a shipped preset.
-{ lib, pkgs }:
-let
-  # The version of the application, with the newline of the file removed.
-  version = lib.removeSuffix "\n" (builtins.readFile ../VERSION);
-in
+{
+  lib,
+  pkgs,
+  version,
+}:
 pkgs.runCommand "blueforest-starship-preset-${version}"
   {
     meta = {
