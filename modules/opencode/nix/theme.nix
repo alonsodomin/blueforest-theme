@@ -8,11 +8,11 @@
 # The package carries the theme twice: at its root, so that a consumer can
 # read it directly, and in the directory where OpenCode looks for its
 # themes, so that a consumer can hand it over to the themes of OpenCode.
-{ lib, pkgs }:
-let
-  # The version of the application, with the newline of the file removed.
-  version = lib.removeSuffix "\n" (builtins.readFile ../VERSION);
-in
+{
+  lib,
+  pkgs,
+  version,
+}:
 pkgs.runCommand "blueforest-opencode-theme-${version}"
   {
     meta = {

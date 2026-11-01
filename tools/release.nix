@@ -2,9 +2,11 @@
 #
 # The release helper of the repository.
 #
-# tools/release.sh picks the application that is being released and hands it
-# over to the script of that application. The wrapper only supplies a
-# hermetic PATH with the tools the script needs.
+# tools/release.sh releases the repository: it asks for the version, stamps
+# the changelogs, commits, tags and pushes. The push of the tag triggers the
+# release workflow, which packages every application and publishes it.
+#
+# The wrapper only supplies a hermetic PATH with the tools the script needs.
 { pkgs }:
 pkgs.writeShellApplication {
   name = "release";
@@ -14,11 +16,8 @@ pkgs.writeShellApplication {
     pkgs.bash
     pkgs.coreutils
     pkgs.gawk
-    pkgs.gnused
     pkgs.gnugrep
     pkgs.git
-    pkgs.curl
-    pkgs.jq
     pkgs.gh
   ];
 }

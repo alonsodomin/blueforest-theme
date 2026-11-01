@@ -12,11 +12,11 @@
 #
 #   share/sbt/plugins/sbt-prompt.sbt
 #   share/sbt/blueforest-prompt.sbt
-{ lib, pkgs }:
-let
-  # The version of the application, with the newline of the file removed.
-  version = lib.removeSuffix "\n" (builtins.readFile ../VERSION);
-in
+{
+  lib,
+  pkgs,
+  version,
+}:
 pkgs.runCommand "blueforest-sbt-prompt-${version}"
   {
     meta = {

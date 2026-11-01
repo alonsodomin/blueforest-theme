@@ -20,8 +20,25 @@
   config,
   lib,
   inputs,
+  self,
   ...
 }:
+let
+  # The version of the packages of the application.
+  #
+  # A release of the repository is a tag of the form vMAJOR.MINOR.PATCH. A
+  # package of the repository is never a release: it is a snapshot of the
+  # commit it is built from, and it carries the revision of that commit. The
+  # version of a release is the one of its tag, and it is the release
+  # workflow that applies it.
+  version =
+    if self ? shortRev then
+      "0.0.0+${self.shortRev}"
+    else if self ? dirtyShortRev then
+      "0.0.0+${lib.removeSuffix "-dirty" self.dirtyShortRev}.dirty"
+    else
+      "0.0.0";
+in
 {
   # The flake module of Home Manager, which declares `flake.homeModules`. It
   # is imported here, so that the module of the application can be composed
@@ -76,7 +93,7 @@
         opencode-configuration = import ./nix/checks/configuration.nix {
           inherit lib pkgs source;
           homeManager = appInputs.home-manager;
-          module = import ./nix/modules/default.nix;
+          module = config.flake.homeModules.opencode;
         };
 
         # The modules add the overlay of the application.
@@ -94,7 +111,17 @@
     };
 
   flake = {
-    overlays.opencode = import ./nix/overlay.nix;
+    # The overlay of the application. It adds the theme to a nixpkgs
+    # instance, and it leaves the programs of nixpkgs alone: the theme is a
+    # file of its own, so that applying the overlay does not replace the
+    # OpenCode of a configuration that does not want the theme.
+    overlays.opencode = final: _prev: {
+      blueforest-opencode-theme = import ./nix/theme.nix {
+        inherit (final) lib;
+        pkgs = final;
+        inherit version;
+      };
+    };
 
     # OpenCode is a program of the user, and Home Manager writes its
     # configuration only when the program is enabled, so the NixOS module can
@@ -103,6 +130,8 @@
       nixpkgs.overlays = [ config.flake.overlays.opencode ];
     };
 
-    homeModules.opencode = import ./nix/modules/default.nix;
+    homeModules.opencode = import ./nix/modules/default.nix {
+      overlay = config.flake.overlays.opencode;
+    };
   };
 }

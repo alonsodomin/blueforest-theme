@@ -4,76 +4,29 @@
 #   nix run .#render-workflows
 # Or commit to trigger the pre-commit hook if enabled.
 jobs:
-  bat-check:
-    if: inputs.publishBat == true || startsWith(github.event.release.tag_name || '',
-      'bat/')
-    name: 'bat: Check'
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v7
-    - uses: cachix/install-nix-action@v31
-      with:
-        extra_nix_config: experimental-features = nix-command flakes
-    - name: Run flake checks
-      run: nix flake check ./modules/bat
-  bat-package:
+  bat:
     name: 'bat: Package'
     needs:
-    - bat-check
-    outputs:
-      tag: ${{ steps.setup.outputs.tag }}
-      version: ${{ steps.setup.outputs.version }}
+    - version
+    - create-release
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
-    - id: setup
-      name: Setup
+    - env:
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Package the theme
       run: |-
-        version=$(cat modules/bat/VERSION)
-        echo "tag: bat/$version"
-        echo "tag=bat/$version" >> "$GITHUB_OUTPUT"
-        echo "version=$version" >> "$GITHUB_OUTPUT"
-    - name: Package the theme
-      run: cp modules/bat/themes/BlueForest.tmTheme ./blueforest-bat-theme-${{ steps.setup.outputs.version
-        }}.tmTheme
-    - uses: actions/upload-artifact@v7
-      with:
-        if-no-files-found: error
-        name: blueforest-bat-theme
-        path: ./blueforest-bat-theme-*
-  bat-publishGH:
-    if: needs.bat-check.result == 'success' && needs.bat-package.result == 'success'
-      && (github.event_name == 'release' || inputs.publishGH == true)
-    name: 'bat: Publish to GitHub releases'
-    needs:
-    - bat-check
-    - bat-package
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v7
-    - uses: actions/download-artifact@v8
-      with:
-        name: blueforest-bat-theme
+        mkdir -p dist
+        cp modules/bat/themes/BlueForest.tmTheme \
+          "dist/blueforest-bat-theme-$VERSION.tmTheme"
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: ${{ needs.bat-package.outputs.tag }}
-        VERSION: ${{ needs.bat-package.outputs.version }}
-      name: Create Release
-      run: |-
-        if gh release view "$TAG" >/dev/null 2>&1; then
-          echo "The release $TAG exists already."
-        else
-          gh release create "$TAG" --title "Release $VERSION" --generate-notes
-        fi
-    - env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: ${{ needs.bat-package.outputs.tag }}
-      name: Upload assets to a Release
-      run: gh release upload "$TAG" ./blueforest-bat-theme-* --clobber
-  neovim-check:
-    if: inputs.publishNeovim == true || startsWith(github.event.release.tag_name ||
-      '', 'neovim/')
-    name: 'Neovim: Check'
+        TAG: v${{ needs.version.outputs.version }}
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Upload the asset to the release
+      run: gh release upload "$TAG" "dist/blueforest-bat-theme-$VERSION.tmTheme" --clobber
+  checks:
+    name: Checks (${{ matrix.flake }})
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
@@ -81,357 +34,243 @@ jobs:
       with:
         extra_nix_config: experimental-features = nix-command flakes
     - name: Run flake checks
-      run: nix flake check ./modules/neovim
-  neovim-package:
+      run: nix flake check ${{ matrix.flake }}
+    strategy:
+      fail-fast: false
+      matrix:
+        flake:
+        - .
+        - ./modules/vscode
+        - ./modules/bat
+        - ./modules/starship
+        - ./modules/opencode
+        - ./modules/sbt
+        - ./modules/neovim
+  create-release:
+    name: Create the release
+    needs:
+    - version
+    - checks
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+    - env:
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Collect the changelog
+      run: |-
+        version="$VERSION"
+
+        # The body of the section of a changelog that belongs to the
+        # version of the release.
+        extract() {
+          awk -v heading="## $version - [" '
+            index($0, heading) == 1 { inside = 1; next }
+            inside && /^## / { exit }
+            inside && !started && $0 ~ /^[[:space:]]*$/ { next }
+            inside { started = 1; print }
+          ' "$1"
+        }
+
+        {
+          printf '## Blueforest %s\n\n' "$version"
+        } >notes.md
+
+        found=0
+
+        body=$(extract CHANGELOG.md)
+        if [ -n "$body" ]; then
+          printf '%s\n\n' "$body" >>notes.md
+          found=1
+        fi
+
+        for file in modules/*/CHANGELOG.md; do
+          body=$(extract "$file")
+          if [ -z "$body" ]; then
+            continue
+          fi
+          app=$(basename "$(dirname "$file")")
+          printf '### %s\n\n%s\n\n' "$app" "$body" >>notes.md
+          found=1
+        done
+
+        if [ "$found" != "1" ]; then
+          echo "There is no changelog for $version" >&2
+          exit 1
+        fi
+    - env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TAG: v${{ needs.version.outputs.version }}
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Create the release
+      run: |-
+        if gh release view "$TAG" >/dev/null 2>&1; then
+          echo "The release $TAG exists already."
+          gh release edit "$TAG" --notes-file notes.md
+        else
+          gh release create "$TAG" --draft \
+            --title "Blueforest $VERSION" --notes-file notes.md
+        fi
+  neovim:
     name: 'Neovim: Package'
     needs:
-    - neovim-check
-    outputs:
-      tag: ${{ steps.setup.outputs.tag }}
-      version: ${{ steps.setup.outputs.version }}
+    - version
+    - create-release
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
-    - id: setup
-      name: Setup
+    - env:
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Package the theme
       run: |-
-        version=$(cat modules/neovim/VERSION)
-        echo "tag: neovim/$version"
-        echo "tag=neovim/$version" >> "$GITHUB_OUTPUT"
-        echo "version=$version" >> "$GITHUB_OUTPUT"
-    - name: Package the theme
-      run: |-
-        mkdir -p ./blueforest-neovim-theme-${{ steps.setup.outputs.version }}/colors
-        mkdir -p ./blueforest-neovim-theme-${{ steps.setup.outputs.version }}/lua/lualine/themes
-        cp modules/neovim/themes/blueforest.lua \
-          ./blueforest-neovim-theme-${{ steps.setup.outputs.version }}/colors/blueforest.lua
+        mkdir -p staging/colors staging/lua/lualine/themes
+        cp modules/neovim/themes/blueforest.lua staging/colors/blueforest.lua
         cp modules/neovim/themes/lualine-blueforest.lua \
-          ./blueforest-neovim-theme-${{ steps.setup.outputs.version }}/lua/lualine/themes/blueforest.lua
-        tar -czf ./blueforest-neovim-theme-${{ steps.setup.outputs.version }}.tar.gz \
-          ./blueforest-neovim-theme-${{ steps.setup.outputs.version }}
-    - uses: actions/upload-artifact@v7
-      with:
-        if-no-files-found: error
-        name: blueforest-neovim-theme
-        path: ./blueforest-neovim-theme-*
-  neovim-publishGH:
-    if: needs.neovim-check.result == 'success' && needs.neovim-package.result == 'success'
-      && (github.event_name == 'release' || inputs.publishGH == true)
-    name: 'Neovim: Publish to GitHub releases'
-    needs:
-    - neovim-check
-    - neovim-package
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v7
-    - uses: actions/download-artifact@v8
-      with:
-        name: blueforest-neovim-theme
+          staging/lua/lualine/themes/blueforest.lua
+        tar -czf "dist/blueforest-neovim-theme-$VERSION.tar.gz" -C staging .
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: ${{ needs.neovim-package.outputs.tag }}
-        VERSION: ${{ needs.neovim-package.outputs.version }}
-      name: Create Release
-      run: |-
-        if gh release view "$TAG" >/dev/null 2>&1; then
-          echo "The release $TAG exists already."
-        else
-          gh release create "$TAG" --title "Release $VERSION" --generate-notes
-        fi
-    - env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: ${{ needs.neovim-package.outputs.tag }}
-      name: Upload assets to a Release
-      run: gh release upload "$TAG" ./blueforest-neovim-theme-* --clobber
-  opencode-check:
-    if: inputs.publishOpencode == true || startsWith(github.event.release.tag_name
-      || '', 'opencode/')
-    name: 'OpenCode: Check'
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v7
-    - uses: cachix/install-nix-action@v31
-      with:
-        extra_nix_config: experimental-features = nix-command flakes
-    - name: Run flake checks
-      run: nix flake check ./modules/opencode
-  opencode-package:
+        TAG: v${{ needs.version.outputs.version }}
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Upload the asset to the release
+      run: gh release upload "$TAG" "dist/blueforest-neovim-theme-$VERSION.tar.gz"
+        --clobber
+  opencode:
     name: 'OpenCode: Package'
     needs:
-    - opencode-check
-    outputs:
-      tag: ${{ steps.setup.outputs.tag }}
-      version: ${{ steps.setup.outputs.version }}
+    - version
+    - create-release
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
-    - id: setup
-      name: Setup
+    - env:
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Package the theme
       run: |-
-        version=$(cat modules/opencode/VERSION)
-        echo "tag: opencode/$version"
-        echo "tag=opencode/$version" >> "$GITHUB_OUTPUT"
-        echo "version=$version" >> "$GITHUB_OUTPUT"
-    - name: Package the theme
-      run: cp modules/opencode/themes/blueforest.json ./blueforest-opencode-theme-${{
-        steps.setup.outputs.version }}.json
-    - uses: actions/upload-artifact@v7
-      with:
-        if-no-files-found: error
-        name: blueforest-opencode-theme
-        path: ./blueforest-opencode-theme-*
-  opencode-publishGH:
-    if: needs.opencode-check.result == 'success' && needs.opencode-package.result
-      == 'success' && (github.event_name == 'release' || inputs.publishGH == true)
-    name: 'OpenCode: Publish to GitHub releases'
+        mkdir -p dist
+        cp modules/opencode/themes/blueforest.json \
+          "dist/blueforest-opencode-theme-$VERSION.json"
+    - env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TAG: v${{ needs.version.outputs.version }}
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Upload the asset to the release
+      run: gh release upload "$TAG" "dist/blueforest-opencode-theme-$VERSION.json"
+        --clobber
+  publish-release:
+    name: Publish the release
     needs:
-    - opencode-check
-    - opencode-package
+    - version
+    - vscode
+    - bat
+    - starship
+    - opencode
+    - neovim
+    - sbt
+    runs-on: ubuntu-latest
+    steps:
+    - env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TAG: v${{ needs.version.outputs.version }}
+      name: Publish the release
+      run: gh release edit "$TAG" --draft=false
+  sbt:
+    name: 'sbt: Package'
+    needs:
+    - version
+    - create-release
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
-    - uses: actions/download-artifact@v8
-      with:
-        name: blueforest-opencode-theme
     - env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: ${{ needs.opencode-package.outputs.tag }}
-        VERSION: ${{ needs.opencode-package.outputs.version }}
-      name: Create Release
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Package the theme
       run: |-
-        if gh release view "$TAG" >/dev/null 2>&1; then
-          echo "The release $TAG exists already."
-        else
-          gh release create "$TAG" --title "Release $VERSION" --generate-notes
-        fi
+        mkdir -p staging/plugins
+        cp modules/sbt/config/sbt-prompt.sbt staging/plugins/sbt-prompt.sbt
+        cp modules/sbt/config/blueforest-prompt.sbt staging/blueforest-prompt.sbt
+        tar -czf "dist/blueforest-sbt-prompt-$VERSION.tar.gz" -C staging .
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: ${{ needs.opencode-package.outputs.tag }}
-      name: Upload assets to a Release
-      run: gh release upload "$TAG" ./blueforest-opencode-theme-* --clobber
-  starship-check:
-    if: inputs.publishStarship == true || startsWith(github.event.release.tag_name
-      || '', 'starship/')
-    name: 'Starship: Check'
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v7
-    - uses: cachix/install-nix-action@v31
-      with:
-        extra_nix_config: experimental-features = nix-command flakes
-    - name: Run flake checks
-      run: nix flake check ./modules/starship
-  starship-package:
+        TAG: v${{ needs.version.outputs.version }}
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Upload the asset to the release
+      run: gh release upload "$TAG" "dist/blueforest-sbt-prompt-$VERSION.tar.gz" --clobber
+  starship:
     name: 'Starship: Package'
     needs:
-    - starship-check
+    - version
+    - create-release
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+    - env:
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Package the theme
+      run: |-
+        mkdir -p dist
+        cp modules/starship/themes/blueforest.toml \
+          "dist/blueforest-starship-preset-$VERSION.toml"
+    - env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TAG: v${{ needs.version.outputs.version }}
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Upload the asset to the release
+      run: gh release upload "$TAG" "dist/blueforest-starship-preset-$VERSION.toml"
+        --clobber
+  version:
+    name: Version
     outputs:
-      tag: ${{ steps.setup.outputs.tag }}
-      version: ${{ steps.setup.outputs.version }}
+      version: ${{ steps.version.outputs.version }}
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v7
-    - id: setup
-      name: Setup
+    - id: version
+      name: Read the tag
       run: |-
-        version=$(cat modules/starship/VERSION)
-        echo "tag: starship/$version"
-        echo "tag=starship/$version" >> "$GITHUB_OUTPUT"
-        echo "version=$version" >> "$GITHUB_OUTPUT"
-    - name: Package the theme
-      run: cp modules/starship/themes/blueforest.toml ./blueforest-starship-preset-${{
-        steps.setup.outputs.version }}.toml
-    - uses: actions/upload-artifact@v7
-      with:
-        if-no-files-found: error
-        name: blueforest-starship-preset
-        path: ./blueforest-starship-preset-*
-  starship-publishGH:
-    if: needs.starship-check.result == 'success' && needs.starship-package.result
-      == 'success' && (github.event_name == 'release' || inputs.publishGH == true)
-    name: 'Starship: Publish to GitHub releases'
-    needs:
-    - starship-check
-    - starship-package
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v7
-    - uses: actions/download-artifact@v8
-      with:
-        name: blueforest-starship-preset
-    - env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: ${{ needs.starship-package.outputs.tag }}
-        VERSION: ${{ needs.starship-package.outputs.version }}
-      name: Create Release
-      run: |-
-        if gh release view "$TAG" >/dev/null 2>&1; then
-          echo "The release $TAG exists already."
-        else
-          gh release create "$TAG" --title "Release $VERSION" --generate-notes
+        tag="$GITHUB_REF_NAME"
+        if [[ ! "$tag" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
+          echo "The tag of a release is vMAJOR.MINOR.PATCH, not: $tag" >&2
+          exit 1
         fi
-    - env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: ${{ needs.starship-package.outputs.tag }}
-      name: Upload assets to a Release
-      run: gh release upload "$TAG" ./blueforest-starship-preset-* --clobber
-  vscode-check:
-    if: inputs.publishVSCode == true || startsWith(github.event.release.tag_name ||
-      '', 'vscode/')
-    name: 'VS Code: Check'
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v7
-    - uses: cachix/install-nix-action@v31
-      with:
-        extra_nix_config: experimental-features = nix-command flakes
-    - name: Run flake checks
-      run: nix flake check ./modules/vscode
-  vscode-package:
+        echo "version=${tag#v}" >>"$GITHUB_OUTPUT"
+  vscode:
     name: 'VS Code: Package'
     needs:
-    - vscode-check
-    outputs:
-      packageName: ${{ steps.package-name.outputs.packageName }}
-      tag: ${{ steps.setup.outputs.tag }}
-      version: ${{ steps.setup.outputs.version }}
+    - version
+    - create-release
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
     - uses: actions/setup-node@v7
       with:
         node-version: 24
-    - name: Install dependencies
-      run: npm i
-      working-directory: modules/vscode
-    - id: package-name
-      name: Setup package path
-      run: echo "packageName=$(node -e "console.log(require('./package.json').name
-        + '-' + require('./package.json').version + '.vsix')")" >> "$GITHUB_OUTPUT"
-      working-directory: modules/vscode
-    - id: setup
-      name: Setup
+    - env:
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Package the theme
       run: |-
-        version=$(jq -r .version ./modules/vscode/package.json)
-        echo "tag: vscode/$version"
-        echo "tag=vscode/$version" >> "$GITHUB_OUTPUT"
-        echo "version=$version" >> "$GITHUB_OUTPUT"
-    - name: Package the theme
-      run: npx @vscode/vsce package --out ${{ steps.package-name.outputs.packageName
-        }}
-    - uses: actions/upload-artifact@v7
-      with:
-        if-no-files-found: error
-        name: ${{ steps.package-name.outputs.packageName }}
-        path: ./modules/vscode/${{ steps.package-name.outputs.packageName }}
-  vscode-publishGH:
-    if: needs.vscode-check.result == 'success' && needs.vscode-package.result == 'success'
-      && (github.event_name == 'release' || inputs.publishGH == true)
-    name: 'VS Code: Publish to GitHub releases'
-    needs:
-    - vscode-check
-    - vscode-package
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v7
-    - uses: actions/download-artifact@v8
-      with:
-        name: ${{ needs.vscode-package.outputs.packageName }}
+        mkdir -p dist
+        cd modules/vscode
+        jq --indent 2 --arg version "$VERSION" '.version = $version' \
+          package.json >package.json.tmp
+        mv package.json.tmp package.json
+        npx --yes @vscode/vsce package --no-dependencies \
+          --out "../../dist/blueforest-theme-$VERSION.vsix"
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: ${{ needs.vscode-package.outputs.tag }}
-        VERSION: ${{ needs.vscode-package.outputs.version }}
-      name: Create Release
-      run: |-
-        if gh release view "$TAG" >/dev/null 2>&1; then
-          echo "The release $TAG exists already."
-        else
-          gh release create "$TAG" --title "Release $VERSION" --generate-notes
-        fi
+        TAG: v${{ needs.version.outputs.version }}
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Upload the asset to the release
+      run: gh release upload "$TAG" "dist/blueforest-theme-$VERSION.vsix" --clobber
     - env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: ${{ needs.vscode-package.outputs.tag }}
-      name: Upload assets to a Release
-      run: gh release upload "$TAG" ./${{ needs.vscode-package.outputs.packageName
-        }} --clobber
-  vscode-publishMS:
-    if: '!cancelled() && needs.vscode-check.result == ''success'' && needs.vscode-package.result
-      == ''success'' && (needs.vscode-publishOVSX.result == ''success'' || needs.vscode-publishOVSX.result
-      == ''skipped'') && inputs.publishMS != false'
-    name: 'VS Code: Publish to VS marketplace'
-    needs:
-    - vscode-check
-    - vscode-package
-    - vscode-publishOVSX
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v7
-    - uses: actions/download-artifact@v8
-      with:
-        name: ${{ needs.vscode-package.outputs.packageName }}
-    - name: Publish to VS marketplace
-      run: npx @vscode/vsce publish --packagePath ./${{ needs.vscode-package.outputs.packageName
-        }} -p ${{ secrets.VSCE_PAT }}
-  vscode-publishOVSX:
-    if: needs.vscode-check.result == 'success' && needs.vscode-package.result == 'success'
-      && inputs.publishOVSX != false
-    name: 'VS Code: Publish to Open VSX'
-    needs:
-    - vscode-check
-    - vscode-package
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v7
-    - uses: actions/download-artifact@v8
-      with:
-        name: ${{ needs.vscode-package.outputs.packageName }}
-    - name: Publish to Open VSX
-      run: npx ovsx publish ./${{ needs.vscode-package.outputs.packageName }} -p ${{
-        secrets.OVSX_PAT }}
+        OVSX_PAT: ${{ secrets.OVSX_PAT }}
+      name: Publish to Open VSX
+      run: npx --yes ovsx publish "dist/blueforest-theme-$VERSION.vsix" -p "$OVSX_PAT"
+    - env:
+        VSCE_PAT: ${{ secrets.VSCE_PAT }}
+      name: Publish to the VS Marketplace
+      run: npx --yes @vscode/vsce publish --packagePath "dist/blueforest-theme-$VERSION.vsix"
+        -p "$VSCE_PAT"
 name: Release
 'on':
-  release:
-    types:
-    - published
-  workflow_dispatch:
-    inputs:
-      publishBat:
-        default: false
-        description: Publish the bat theme
-        required: true
-        type: boolean
-      publishGH:
-        default: true
-        description: Publish to GitHub Releases
-        required: true
-        type: boolean
-      publishMS:
-        default: true
-        description: Publish to the Microsoft Marketplace
-        required: true
-        type: boolean
-      publishNeovim:
-        default: false
-        description: Publish the Neovim theme
-        required: true
-        type: boolean
-      publishOVSX:
-        default: true
-        description: Publish to Open VSX
-        required: true
-        type: boolean
-      publishOpencode:
-        default: false
-        description: Publish the OpenCode theme
-        required: true
-        type: boolean
-      publishStarship:
-        default: false
-        description: Publish the Starship theme
-        required: true
-        type: boolean
-      publishVSCode:
-        default: true
-        description: Publish the VS Code theme
-        required: true
-        type: boolean
+  push:
+    tags:
+    - v*

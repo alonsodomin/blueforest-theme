@@ -9,11 +9,11 @@
 # configuration directory when it runs as root, which is what the activation
 # of a NixOS system does, and the configuration directory of the user
 # otherwise, which is what Home Manager does in the session of the user.
-{ lib, pkgs }:
-let
-  # The version of the application, with the newline of the file removed.
-  version = lib.removeSuffix "\n" (builtins.readFile ../VERSION);
-in
+{
+  lib,
+  pkgs,
+  version,
+}:
 pkgs.runCommand "blueforest-bat-theme-${version}"
   {
     meta = {

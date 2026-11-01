@@ -20,8 +20,25 @@
   config,
   lib,
   inputs,
+  self,
   ...
 }:
+let
+  # The version of the packages of the application.
+  #
+  # A release of the repository is a tag of the form vMAJOR.MINOR.PATCH. A
+  # package of the repository is never a release: it is a snapshot of the
+  # commit it is built from, and it carries the revision of that commit. The
+  # version of a release is the one of its tag, and it is the release
+  # workflow that applies it.
+  version =
+    if self ? shortRev then
+      "0.0.0+${self.shortRev}"
+    else if self ? dirtyShortRev then
+      "0.0.0+${lib.removeSuffix "-dirty" self.dirtyShortRev}.dirty"
+    else
+      "0.0.0";
+in
 {
   # The flake module of Home Manager, which declares `flake.homeModules`. It
   # is imported here, so that the module of the application can be composed
@@ -95,7 +112,9 @@
                   lib
                   pkgs
                   ;
-                module = import ./nix/modules/default.nix;
+                module = import ./nix/modules/default.nix {
+                  overlay = config.flake.overlays.vscode;
+                };
                 extensionId = "alonsodomin.blueforest-theme";
               }
             );
@@ -173,16 +192,19 @@
       };
     });
 
-    overlays.vscode = final: prev: {
-      blueforest-vscode-theme = import ./nix/extension.nix { pkgs = final; };
+    overlays.vscode = final: _prev: {
+      blueforest-vscode-theme = import ./nix/extension.nix {
+        pkgs = final;
+        inherit version;
+      };
     };
 
     nixosModules.vscode = {
       nixpkgs.overlays = [ config.flake.overlays.vscode ];
     };
 
-    homeModules.vscode = {
-      nixpkgs.overlays = [ config.flake.overlays.vscode ];
+    homeModules.vscode = import ./nix/modules/default.nix {
+      overlay = config.flake.overlays.vscode;
     };
   };
 }

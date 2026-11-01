@@ -11,6 +11,12 @@
 #     imports = [ blueforest.nixvimModules.neovim ];
 #     enable = true;
 #   };
+#
+# The overlay of the application is passed to the module, so that the theme
+# nixvim gets is the one of the application, with its version.
+{
+  overlay,
+}:
 {
   lib,
   pkgs,
@@ -18,7 +24,7 @@
 }:
 {
   # The overlay of the theme, in the nixpkgs of nixvim.
-  nixpkgs.overlays = [ (import ./overlay.nix) ];
+  nixpkgs.overlays = [ overlay ];
 
   # The theme is a plugin of Neovim.
   extraPlugins = [ pkgs.blueforest-neovim-theme ];

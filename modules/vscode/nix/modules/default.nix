@@ -10,9 +10,15 @@
 #   programs.vscodium.profiles.default.extensions = [
 #     pkgs.blueforest-vscode-theme
 #   ];
+#
+# The overlay of the application is passed to the module, so that the theme
+# the consumer gets is the one of the application, with its version.
+{
+  overlay,
+}:
 {
   ...
 }:
 {
-  nixpkgs.overlays = [ (import ../overlay.nix) ];
+  nixpkgs.overlays = [ overlay ];
 }

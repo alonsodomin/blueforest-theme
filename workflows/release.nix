@@ -1,118 +1,122 @@
 # SPDX-License-Identifier: MPL-2.0
 #
 # The workflow that releases the applications of the repository.
+#
+# A release of the repository is a tag of the form vMAJOR.MINOR.PATCH, and it
+# releases every application of the repository at once, into one GitHub
+# release.
+#
+# The workflow runs on the push of such a tag. It reads the version of the
+# tag, checks the repository, creates the release of GitHub with the
+# changelog of the version, and then lets every application package itself
+# and upload its asset to that release. The release is published when every
+# application is done, so that it never carries half of its assets.
 {
   lib,
 }:
 let
   common = import ./lib.nix;
 
-  inherit (lib)
-    foldl'
-    listToAttrs
-    mapAttrs'
-    nameValuePair
-    optional
-    optionalAttrs
-    ;
+  inherit (lib) listToAttrs mapAttrs' nameValuePair;
 
-  # The version of the package job, as the expression that reads it.
-  versionExpr = "\${{ steps.setup.outputs.version }}";
+  # The version of the release, as the expression that reads it.
+  versionExpr = "\${{ needs.version.outputs.version }}";
 
-  # The applications that the repository releases, and the details that are
-  # specific to each one of them.
+  # The tag of the release.
+  tagExpr = "v${versionExpr}";
+
+  # The applications of the repository, and the way each one of them is
+  # packaged. The asset of an application is the file it uploads to the
+  # release of GitHub.
   applications = [
     {
       app = "vscode";
       title = "VS Code";
-      dispatch = "publishVSCode";
-      dispatchDefault = true;
-
-      # The extension takes its version from its manifest, not from a VERSION
-      # file.
-      versionCommand = "jq -r .version ./modules/vscode/package.json";
-
-      setupSteps = [
+      asset = "dist/blueforest-theme-$VERSION.vsix";
+      steps = [
         {
           uses = common.actions.setupNode;
           "with".node-version = 24;
         }
+      ];
+      package = ''
+        mkdir -p dist
+        cd modules/vscode
+        jq --indent 2 --arg version "$VERSION" '.version = $version' \
+          package.json >package.json.tmp
+        mv package.json.tmp package.json
+        npx --yes @vscode/vsce package --no-dependencies \
+          --out "../../dist/blueforest-theme-$VERSION.vsix"
+      '';
+      # The extension is published to the marketplaces as well.
+      publish = [
         {
-          name = "Install dependencies";
-          working-directory = "modules/vscode";
-          run = "npm i";
+          name = "Publish to Open VSX";
+          env = {
+            OVSX_PAT = "\${{ secrets.OVSX_PAT }}";
+          };
+          run = "npx --yes ovsx publish \"dist/blueforest-theme-$VERSION.vsix\" -p \"$OVSX_PAT\"";
         }
         {
-          name = "Setup package path";
-          id = "package-name";
-          working-directory = "modules/vscode";
-          run = "echo \"packageName=$(node -e \"console.log(require('./package.json').name + '-' + require('./package.json').version + '.vsix')\")\" >> \"$GITHUB_OUTPUT\"";
+          name = "Publish to the VS Marketplace";
+          env = {
+            VSCE_PAT = "\${{ secrets.VSCE_PAT }}";
+          };
+          run = "npx --yes @vscode/vsce publish --packagePath \"dist/blueforest-theme-$VERSION.vsix\" -p \"$VSCE_PAT\"";
         }
       ];
-
-      # The extension names its package after its manifest, so the name of the
-      # package travels to the other jobs in the output of the package job.
-      packageName = "\${{ steps.package-name.outputs.packageName }}";
-      publishesPackageName = true;
-      uploadPath = name: "./modules/vscode/${name}";
-      assets = name: "./${name}";
-      package = "npx @vscode/vsce package --out \${{ steps.package-name.outputs.packageName }}";
-
-      # The extension is published to the marketplaces as well.
-      publish = prefix: {
-        OVSX = {
-          name = "Publish to Open VSX";
-          "if" =
-            "needs.${prefix}-check.result == 'success' && needs.${prefix}-package.result == 'success' && inputs.publishOVSX != false";
-          run = "npx ovsx publish ./\${{ needs.${prefix}-package.outputs.packageName }} -p \${{ secrets.OVSX_PAT }}";
-        };
-        MS = {
-          name = "Publish to VS marketplace";
-          "if" =
-            "!cancelled() && needs.${prefix}-check.result == 'success' && needs.${prefix}-package.result == 'success' && (needs.${prefix}-publishOVSX.result == 'success' || needs.${prefix}-publishOVSX.result == 'skipped') && inputs.publishMS != false";
-          run = "npx @vscode/vsce publish --packagePath ./\${{ needs.${prefix}-package.outputs.packageName }} -p \${{ secrets.VSCE_PAT }}";
-        };
-      };
     }
     {
       app = "bat";
       title = "bat";
-      dispatch = "publishBat";
-      packageName = "blueforest-bat-theme";
-      package = "cp modules/bat/themes/BlueForest.tmTheme ./blueforest-bat-theme-${versionExpr}.tmTheme";
+      asset = "dist/blueforest-bat-theme-$VERSION.tmTheme";
+      package = ''
+        mkdir -p dist
+        cp modules/bat/themes/BlueForest.tmTheme \
+          "dist/blueforest-bat-theme-$VERSION.tmTheme"
+      '';
     }
     {
       app = "starship";
       title = "Starship";
-      dispatch = "publishStarship";
-      packageName = "blueforest-starship-preset";
-      package = "cp modules/starship/themes/blueforest.toml ./blueforest-starship-preset-${versionExpr}.toml";
+      asset = "dist/blueforest-starship-preset-$VERSION.toml";
+      package = ''
+        mkdir -p dist
+        cp modules/starship/themes/blueforest.toml \
+          "dist/blueforest-starship-preset-$VERSION.toml"
+      '';
     }
     {
       app = "opencode";
       title = "OpenCode";
-      dispatch = "publishOpencode";
-      packageName = "blueforest-opencode-theme";
-      package = "cp modules/opencode/themes/blueforest.json ./blueforest-opencode-theme-${versionExpr}.json";
+      asset = "dist/blueforest-opencode-theme-$VERSION.json";
+      package = ''
+        mkdir -p dist
+        cp modules/opencode/themes/blueforest.json \
+          "dist/blueforest-opencode-theme-$VERSION.json"
+      '';
     }
     {
       app = "neovim";
       title = "Neovim";
-      dispatch = "publishNeovim";
-      packageName = "blueforest-neovim-theme";
-
-      # The theme is a plugin: the colourscheme goes into the `colors`
-      # directory, and the theme of lualine into the `lua/lualine/themes` one,
-      # which are where Neovim and lualine read them from.
+      asset = "dist/blueforest-neovim-theme-$VERSION.tar.gz";
       package = ''
-        mkdir -p ./blueforest-neovim-theme-${versionExpr}/colors
-        mkdir -p ./blueforest-neovim-theme-${versionExpr}/lua/lualine/themes
-        cp modules/neovim/themes/blueforest.lua \
-          ./blueforest-neovim-theme-${versionExpr}/colors/blueforest.lua
+        mkdir -p staging/colors staging/lua/lualine/themes
+        cp modules/neovim/themes/blueforest.lua staging/colors/blueforest.lua
         cp modules/neovim/themes/lualine-blueforest.lua \
-          ./blueforest-neovim-theme-${versionExpr}/lua/lualine/themes/blueforest.lua
-        tar -czf ./blueforest-neovim-theme-${versionExpr}.tar.gz \
-          ./blueforest-neovim-theme-${versionExpr}
+          staging/lua/lualine/themes/blueforest.lua
+        tar -czf "dist/blueforest-neovim-theme-$VERSION.tar.gz" -C staging .
+      '';
+    }
+    {
+      app = "sbt";
+      title = "sbt";
+      asset = "dist/blueforest-sbt-prompt-$VERSION.tar.gz";
+      package = ''
+        mkdir -p staging/plugins
+        cp modules/sbt/config/sbt-prompt.sbt staging/plugins/sbt-prompt.sbt
+        cp modules/sbt/config/blueforest-prompt.sbt staging/blueforest-prompt.sbt
+        tar -czf "dist/blueforest-sbt-prompt-$VERSION.tar.gz" -C staging .
       '';
     }
   ];
@@ -124,187 +128,194 @@ let
     }) applications
   );
 
-  # The jobs of one application.
-  mkJobs =
+  # The job of one application: it packages the theme and uploads it to the
+  # release of GitHub, which the job below has created already.
+  mkJob =
     {
-      app,
       title,
-      dispatch,
-      versionCommand ? "cat modules/${app}/VERSION",
-      setupSteps ? [ ],
-      packageName,
-      publishesPackageName ? false,
-      uploadPath ? name: "./${name}-*",
-      assets ? name: "./${name}-*",
+      asset,
+      steps ? [ ],
       package,
-      publish ? _: { },
-      publishGHIf ? "github.event_name == 'release' || inputs.publishGH == true",
+      publish ? [ ],
       ...
     }:
-    let
-      checkJob = "${app}-check";
-      packageJob = "${app}-package";
-
-      # The name of the package, as the jobs that consume the artifact see it.
-      publishedName =
-        if publishesPackageName then "\${{ needs.${packageJob}.outputs.packageName }}" else packageName;
-    in
     {
-      ${checkJob} = (common.checkFlake "./modules/${app}") // {
-        name = "${title}: Check";
-
-        # A GitHub release only releases the application its tag belongs to.
-        "if" = "inputs.${dispatch} == true || startsWith(github.event.release.tag_name || '', '${app}/')";
-      };
-
-      ${packageJob} = {
-        name = "${title}: Package";
-        needs = [ checkJob ];
-        runs-on = "ubuntu-latest";
-        outputs = {
-          tag = "\${{ steps.setup.outputs.tag }}";
-          version = "\${{ steps.setup.outputs.version }}";
+      name = "${title}: Package";
+      needs = [
+        "version"
+        "create-release"
+      ];
+      runs-on = "ubuntu-latest";
+      steps = [
+        common.checkout
+      ]
+      ++ steps
+      ++ [
+        {
+          name = "Package the theme";
+          env = {
+            VERSION = versionExpr;
+          };
+          run = package;
         }
-        // optionalAttrs publishesPackageName { packageName = packageName; };
-        steps = [
-          common.checkout
-        ]
-        ++ setupSteps
-        ++ [
-          {
-            name = "Setup";
-            id = "setup";
-            run = ''
-              version=$(${versionCommand})
-              echo "tag: ${app}/$version"
-              echo "tag=${app}/$version" >> "$GITHUB_OUTPUT"
-              echo "version=$version" >> "$GITHUB_OUTPUT"
-            '';
-          }
-          {
-            name = "Package the theme";
-            run = package;
-          }
-          {
-            uses = common.actions.uploadArtifact;
-            "with" = {
-              name = packageName;
-              path = uploadPath packageName;
-              "if-no-files-found" = "error";
-            };
-          }
-        ];
-      };
+        {
+          name = "Upload the asset to the release";
+          env = {
+            GH_TOKEN = "\${{ secrets.GITHUB_TOKEN }}";
+            TAG = tagExpr;
+            VERSION = versionExpr;
+          };
+          run = "gh release upload \"$TAG\" \"${asset}\" --clobber";
+        }
+      ]
+      ++ publish;
+    };
 
-      "${app}-publishGH" = {
-        name = "${title}: Publish to GitHub releases";
-        needs = [
-          checkJob
-          packageJob
-        ];
+  # The release of GitHub. It is created here, once, before the applications
+  # upload their assets to it, so that the applications never create it
+  # themselves and never race for it.
+  createRelease = {
+    name = "Create the release";
+    needs = [
+      "version"
+      "checks"
+    ];
+    runs-on = "ubuntu-latest";
+    steps = [
+      common.checkout
+      {
+        name = "Collect the changelog";
+        env = {
+          VERSION = versionExpr;
+        };
+        run = ''
+          version="$VERSION"
 
-        # An explicit condition replaces the implicit one, so the results of
-        # the jobs it needs are part of it. A GitHub release publishes the
-        # application its tag belongs to, and a manual trigger does it when
-        # the input says so.
-        "if" =
-          "needs.${checkJob}.result == 'success' && needs.${packageJob}.result == 'success' && (${publishGHIf})";
-        runs-on = "ubuntu-latest";
-        steps = [
-          common.checkout
-          {
-            uses = common.actions.downloadArtifact;
-            "with".name = publishedName;
+          # The body of the section of a changelog that belongs to the
+          # version of the release.
+          extract() {
+            awk -v heading="## $version - [" '
+              index($0, heading) == 1 { inside = 1; next }
+              inside && /^## / { exit }
+              inside && !started && $0 ~ /^[[:space:]]*$/ { next }
+              inside { started = 1; print }
+            ' "$1"
           }
 
-          # The release may already exist, for example when it was published
-          # by hand to release the theme. Only the assets are added in that
-          # case.
           {
-            name = "Create Release";
-            env = {
-              GH_TOKEN = "\${{ secrets.GITHUB_TOKEN }}";
-              TAG = "\${{ needs.${packageJob}.outputs.tag }}";
-              VERSION = "\${{ needs.${packageJob}.outputs.version }}";
-            };
-            run = ''
-              if gh release view "$TAG" >/dev/null 2>&1; then
-                echo "The release $TAG exists already."
-              else
-                gh release create "$TAG" --title "Release $VERSION" --generate-notes
-              fi
-            '';
-          }
-          {
-            name = "Upload assets to a Release";
-            env = {
-              GH_TOKEN = "\${{ secrets.GITHUB_TOKEN }}";
-              TAG = "\${{ needs.${packageJob}.outputs.tag }}";
-            };
-            run = "gh release upload \"$TAG\" ${assets publishedName} --clobber";
-          }
-        ];
-      };
-    }
-    // mapAttrs' (
-      kind: definition:
-      nameValuePair "${app}-publish${kind}" {
-        name = "${title}: ${definition.name}";
-        needs = [
-          checkJob
-          packageJob
-        ]
-        ++ optional (kind == "MS") "${app}-publishOVSX";
-        "if" = definition."if";
-        runs-on = "ubuntu-latest";
-        steps = [
-          common.checkout
-          {
-            uses = common.actions.downloadArtifact;
-            "with".name = publishedName;
-          }
-          {
-            name = definition.name;
-            run = definition.run;
-          }
-        ];
+            printf '## Blueforest %s\n\n' "$version"
+          } >notes.md
+
+          found=0
+
+          body=$(extract CHANGELOG.md)
+          if [ -n "$body" ]; then
+            printf '%s\n\n' "$body" >>notes.md
+            found=1
+          fi
+
+          for file in modules/*/CHANGELOG.md; do
+            body=$(extract "$file")
+            if [ -z "$body" ]; then
+              continue
+            fi
+            app=$(basename "$(dirname "$file")")
+            printf '### %s\n\n%s\n\n' "$app" "$body" >>notes.md
+            found=1
+          done
+
+          if [ "$found" != "1" ]; then
+            echo "There is no changelog for $version" >&2
+            exit 1
+          fi
+        '';
       }
-    ) (publish app);
+      {
+        name = "Create the release";
+        env = {
+          GH_TOKEN = "\${{ secrets.GITHUB_TOKEN }}";
+          TAG = tagExpr;
+          VERSION = versionExpr;
+        };
+        run = ''
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "The release $TAG exists already."
+            gh release edit "$TAG" --notes-file notes.md
+          else
+            gh release create "$TAG" --draft \
+              --title "Blueforest $VERSION" --notes-file notes.md
+          fi
+        '';
+      }
+    ];
+  };
 in
 {
   name = "Release";
-  on = {
-    release.types = [ "published" ];
-    workflow_dispatch.inputs =
-      mapAttrs' (
-        app: definition:
-        nameValuePair definition.dispatch {
-          description = "Publish the ${definition.title} theme";
-          type = "boolean";
-          required = true;
-          default = definition.dispatchDefault or false;
+  on.push.tags = [ "v*" ];
+  jobs = {
+    # The version of the release, which is the version of the tag.
+    version = {
+      name = "Version";
+      runs-on = "ubuntu-latest";
+      outputs.version = "\${{ steps.version.outputs.version }}";
+      steps = [
+        {
+          id = "version";
+          name = "Read the tag";
+          run = ''
+            tag="$GITHUB_REF_NAME"
+            if [[ ! "$tag" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
+              echo "The tag of a release is vMAJOR.MINOR.PATCH, not: $tag" >&2
+              exit 1
+            fi
+            echo "version=''${tag#v}" >>"$GITHUB_OUTPUT"
+          '';
         }
-      ) applicationsByApp
-      // {
-        publishMS = {
-          description = "Publish to the Microsoft Marketplace";
-          type = "boolean";
-          required = true;
-          default = true;
-        };
-        publishOVSX = {
-          description = "Publish to Open VSX";
-          type = "boolean";
-          required = true;
-          default = true;
-        };
-        publishGH = {
-          description = "Publish to GitHub Releases";
-          type = "boolean";
-          required = true;
-          default = true;
-        };
+      ];
+    };
+
+    # The repository is checked before the release is created, so that a
+    # broken tag does not leave a release behind.
+    checks = {
+      name = "Checks (\${{ matrix.flake }})";
+      runs-on = "ubuntu-latest";
+      strategy = {
+        fail-fast = false;
+        matrix.flake = [ "." ] ++ map (application: "./modules/${application}") common.applications;
       };
-  };
-  jobs = foldl' (jobs: definition: jobs // mkJobs definition) { } applications;
+      steps = [
+        common.checkout
+        common.installNix
+        {
+          name = "Run flake checks";
+          run = "nix flake check \${{ matrix.flake }}";
+        }
+      ];
+    };
+
+    # The release of GitHub, with the changelog of the version.
+    create-release = createRelease;
+
+    # The release is published when every application is done, so that it
+    # never carries half of its assets.
+    publish-release = {
+      name = "Publish the release";
+      needs = [ "version" ] ++ (map (definition: definition.app) applications);
+      runs-on = "ubuntu-latest";
+      steps = [
+        {
+          name = "Publish the release";
+          env = {
+            GH_TOKEN = "\${{ secrets.GITHUB_TOKEN }}";
+            TAG = tagExpr;
+          };
+          run = "gh release edit \"$TAG\" --draft=false";
+        }
+      ];
+    };
+  }
+  # The applications, one job each, and the release they upload their
+  # assets to.
+  // mapAttrs' (app: definition: nameValuePair app (mkJob definition)) applicationsByApp;
 }

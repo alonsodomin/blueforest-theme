@@ -5,15 +5,20 @@
 # The extension is built from the sources in this repository, the same way the
 # extensions of nix-vscode-extensions are built, so that the resulting
 # derivation is interchangeable with theirs.
+#
+# The version of the extension is the version of the package, and the
+# manifest of the sources carries a placeholder: the manifest is patched with
+# the version before the extension is packaged.
 {
   pkgs,
+  version,
 }:
 let
   # The metadata of the extension is the one of the sources in this
   # repository, so that the two cannot drift apart.
   packageJson = builtins.fromJSON (builtins.readFile ../package.json);
 
-  inherit (packageJson) name publisher version;
+  inherit (packageJson) name publisher;
 
   description = packageJson.description;
 
@@ -32,12 +37,20 @@ let
     src = ../.;
 
     nativeBuildInputs = [
+      pkgs.jq
       pkgs.nodejs
       pkgs.vsce
     ];
 
     buildPhase = ''
       runHook preBuild
+
+      # The manifest of the sources carries a placeholder: the version of the
+      # package is the version of the extension.
+      jq --indent 2 --arg version "${version}" '.version = $version' \
+        package.json >package.json.tmp
+      mv package.json.tmp package.json
+
       vsce package --no-dependencies --out blueforest-theme-${version}.vsix
       runHook postBuild
     '';
