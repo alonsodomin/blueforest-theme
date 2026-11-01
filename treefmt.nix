@@ -6,7 +6,53 @@
 # it. The formatter and the check that verifies the formatting come with the
 # module.
 {
+  config,
+  pkgs,
+  ...
+}:
+{
   settings.on-unmatched = "info";
+
+  settings.excludes = [
+    # The repository of the working tree. The checks of the repository copy
+    # the tree, and the copy carries the repository with it.
+    ".git/"
+
+    # The extension of Zed lives in a repository of its own. Its files are not
+    # ours, and they are not formatted here.
+    "modules/zed/extension/"
+  ];
+
+  # The check of treefmt-nix tells whether the formatters changed anything
+  # with git, and the flakes of the repository are checked from the working
+  # tree, which carries a repository of its own: the check finds nothing to
+  # commit and fails. The check below formats a copy of the tree and fails
+  # when a formatter changes a file.
+  build.check =
+    self:
+    pkgs.runCommandLocal "treefmt-check"
+      {
+        buildInputs = [ config.build.wrapper ];
+
+        meta.description = "Check that the project tree is formatted";
+      }
+      ''
+        set -e
+
+        project="$TMPDIR/project"
+        cp -r ${self} "$project"
+        chmod -R a+w "$project"
+        cd "$project"
+
+        export HOME="$TMPDIR"
+        export LANG=C.UTF-8
+        export LC_ALL=C.UTF-8
+
+        treefmt --version
+        treefmt --no-cache --fail-on-change
+
+        touch $out
+      '';
 
   programs.nixfmt.enable = true;
 
