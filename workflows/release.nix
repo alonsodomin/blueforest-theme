@@ -101,7 +101,7 @@ let
       title = "Neovim";
       asset = "dist/blueforest-neovim-theme-$VERSION.tar.gz";
       package = ''
-        mkdir -p staging/colors staging/lua/lualine/themes
+        mkdir -p dist staging/colors staging/lua/lualine/themes
         cp modules/neovim/themes/blueforest.lua staging/colors/blueforest.lua
         cp modules/neovim/themes/lualine-blueforest.lua \
           staging/lua/lualine/themes/blueforest.lua
@@ -113,7 +113,7 @@ let
       title = "sbt";
       asset = "dist/blueforest-sbt-prompt-$VERSION.tar.gz";
       package = ''
-        mkdir -p staging/plugins
+        mkdir -p dist staging/plugins
         cp modules/sbt/config/sbt-prompt.sbt staging/plugins/sbt-prompt.sbt
         cp modules/sbt/config/blueforest-prompt.sbt staging/blueforest-prompt.sbt
         tar -czf "dist/blueforest-sbt-prompt-$VERSION.tar.gz" -C staging .
