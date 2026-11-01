@@ -89,7 +89,7 @@ in
 
         # The Home Manager module installs the theme where eza reads it.
         eza-module = import ./nix/checks/module.nix {
-          inherit lib source;
+          inherit source;
           pkgs = basePkgs;
           homeManager = appInputs.home-manager;
           module = config.flake.homeModules.eza;

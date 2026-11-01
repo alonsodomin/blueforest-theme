@@ -3,7 +3,6 @@
 # Checks that the configuration documented in the documentation installs the theme
 # where OpenCode reads it, and selects it.
 {
-  lib,
   pkgs,
   source,
   homeManager,
@@ -12,7 +11,6 @@
 let
   evaluated = import ./lib/evaluation.nix {
     inherit
-      lib
       pkgs
       source
       homeManager
@@ -20,14 +18,14 @@ let
       ;
   };
 
-  result = builtins.toJSON ({
+  result = builtins.toJSON {
     inherit (evaluated)
       selectedMode
       selectedTheme
       themeIsTheRepositoryTheme
       themeTarget
       ;
-  });
+  };
 in
 pkgs.runCommand "blueforest-opencode-configuration-check"
   {
@@ -35,7 +33,7 @@ pkgs.runCommand "blueforest-opencode-configuration-check"
     inherit result;
 
     # The file Home Manager writes for the settings of the terminal.
-    cliFile = evaluated.cliFile;
+    inherit (evaluated) cliFile;
   }
   ''
     # The theme ends up where OpenCode reads the themes from, and it is the

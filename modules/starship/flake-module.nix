@@ -130,7 +130,7 @@ in
 
         blueforest-starship = import ./nix/wrapper.nix {
           pkgs = final;
-          starship = prev.starship;
+          inherit (prev) starship;
           inherit preset;
         };
       };

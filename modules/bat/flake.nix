@@ -12,8 +12,6 @@
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } (
       {
-        config,
-        lib,
         flake-parts-lib,
         ...
       }:

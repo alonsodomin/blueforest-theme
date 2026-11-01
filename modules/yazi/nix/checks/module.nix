@@ -8,7 +8,6 @@
 # covers a consumer that uses it: their theme wins over the one of this
 # application, and the two of them do not collide.
 {
-  lib,
   pkgs,
   homeManager,
   module,

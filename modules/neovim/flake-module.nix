@@ -80,7 +80,7 @@ in
       # only run on purpose.
       nixvimCheck = import ./nix/checks/nixvim.nix {
         inherit pkgs;
-        nixvim = appInputs.nixvim;
+        inherit (appInputs) nixvim;
         module = config.flake.nixvimModules.neovim;
       };
     in

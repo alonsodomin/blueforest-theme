@@ -17,40 +17,40 @@
 // three places: the declaration of the plugin, the check that pins the
 // version, and the documentation of the application.
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
 
   // Only the actions of the workflows and the version of the sbt prompt
   // plugin. The inputs of the flakes are updated by Dependabot.
-  "enabledManagers": [ "custom.regex" ],
+  enabledManagers: ["custom.regex"],
 
-  "customManagers": [
+  customManagers: [
     {
-      "customType": "regex",
-      "description": "The versions of the actions that the workflows use",
-      "managerFilePatterns": [ "/^workflows\\/lib\\.nix$/" ],
-      "matchStrings": [
-        "\"(?<depName>[a-zA-Z0-9._-]+/[a-zA-Z0-9._-]+)@(?<currentValue>v[^\"]+)\""
+      customType: "regex",
+      description: "The versions of the actions that the workflows use",
+      managerFilePatterns: ["/^workflows\\/lib\\.nix$/"],
+      matchStrings: [
+        '"(?<depName>[a-zA-Z0-9._-]+/[a-zA-Z0-9._-]+)@(?<currentValue>v[^"]+)"',
       ],
-      "datasourceTemplate": "github-tags",
-      "extractVersionTemplate": "^(?<version>.*)$",
-      "versioningTemplate": "github-actions",
-      "depTypeTemplate": "action"
+      datasourceTemplate: "github-tags",
+      extractVersionTemplate: "^(?<version>.*)$",
+      versioningTemplate: "github-actions",
+      depTypeTemplate: "action",
     },
     {
-      "customType": "regex",
-      "description": "The version of the sbt prompt plugin",
-      "managerFilePatterns": [
+      customType: "regex",
+      description: "The version of the sbt prompt plugin",
+      managerFilePatterns: [
         "/^modules\\/sbt\\/config\\/sbt-prompt\\.sbt$/",
         "/^modules\\/sbt\\/nix\\/checks\\/package\\.nix$/",
-        "/^docs\\/themes\\/sbt\\.md$/"
+        "/^docs\\/themes\\/sbt\\.md$/",
       ],
-      "matchStrings": [
-        "addSbtPlugin\\(\"(?<groupId>[^\"]+)\" % \"(?<artifactId>[^\"]+)\" % \"(?<currentValue>[^\"]+)\"\\)"
+      matchStrings: [
+        'addSbtPlugin\\("(?<groupId>[^"]+)" % "(?<artifactId>[^"]+)" % "(?<currentValue>[^"]+)"\\)',
       ],
-      "depNameTemplate": "alonsodomin/sbt-prompt",
-      "datasourceTemplate": "github-tags",
-      "versioningTemplate": "loose",
-      "depTypeTemplate": "sbt-plugin"
-    }
-  ]
+      depNameTemplate: "alonsodomin/sbt-prompt",
+      datasourceTemplate: "github-tags",
+      versioningTemplate: "loose",
+      depTypeTemplate: "sbt-plugin",
+    },
+  ],
 }

@@ -16,9 +16,6 @@
 {
   overlay,
 }:
-{
-  ...
-}:
-{
+_: {
   nixpkgs.overlays = [ overlay ];
 }

@@ -10,16 +10,17 @@
 # passes them as a static argument, so that the module does not depend on the
 # inputs of the flake that imports it.
 #
-# The arguments of the module are the ones of the flake that imports it: the
-# `inputs` below are the inputs of that flake, so that the packages of the
-# application are built with the nixpkgs of the consumer.
+# The theme of bat needs none of them: it is built with the nixpkgs of the
+# consumer, and its checks need nothing else. The argument is accepted and
+# ignored, so that the module has the same shape as the modules of the other
+# applications.
+#
+# The arguments of the module are the ones of the flake that imports it, so
+# that the packages of the application are built with the nixpkgs of the
+# consumer.
+_:
 {
-  appInputs,
-}:
-{
-  config,
   lib,
-  inputs,
   self,
   ...
 }:
@@ -69,7 +70,7 @@ in
 
         # The theme is installed in the system-wide configuration directory.
         bat-theme-nixos = import ./nix/checks/nixos.nix {
-          inherit pkgs theme source;
+          inherit pkgs theme;
         };
       };
     };

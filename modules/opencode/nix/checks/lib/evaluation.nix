@@ -7,7 +7,6 @@
 # The result only contains JSON-serialisable values, so that it can be
 # asserted on from a derivation.
 {
-  lib,
   pkgs,
   # The home-manager flake.
   homeManager,
@@ -21,7 +20,7 @@ let
   # module of this application.
   evaluated = homeManager.lib.homeManagerConfiguration {
     inherit pkgs;
-    lib = pkgs.lib;
+    inherit (pkgs) lib;
     modules = [
       module
       {
@@ -36,7 +35,7 @@ let
     ];
   };
 
-  config = evaluated.config;
+  inherit (evaluated) config;
 
   # The files Home Manager writes for OpenCode.
   themeFile = config.xdg.configFile."opencode/themes/blueforest.json";

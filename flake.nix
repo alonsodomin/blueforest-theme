@@ -234,6 +234,11 @@
             # The development shell of the repository, declared in TOML.
             devshells.default = inputs.devshell.lib.importTOML ./devshell.toml;
 
+            # The helper that releases the repository. It is the same helper
+            # that the command of the development shell runs, so that it can be
+            # run without the shell too.
+            packages.release = release;
+
             # The hooks of git-hooks.nix are not checked here: the check of the
             # workflows below covers the one that renders them.
             pre-commit.check.enable = false;
