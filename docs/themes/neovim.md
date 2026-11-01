@@ -28,7 +28,7 @@ Download `blueforest-neovim-theme-<version>.tar.gz` from the
 extract it into a package directory of the Neovim runtimepath:
 
 ```console
-plugin_dir="$HOME/.local/share/nvim/site/pack/blueforest/start/blueforest-theme"
+plugin_dir="$HOME/.local/share/nvim/site/pack/blueforest/start/blueforest-neovim-theme"
 mkdir -p "$plugin_dir"
 tar -xzf blueforest-neovim-theme-<version>.tar.gz -C "$plugin_dir"
 ```
@@ -37,7 +37,7 @@ With `lazy.nvim`, add the directory as a local plugin:
 
 ```lua
 {
-  dir = vim.fn.expand("~/.local/share/nvim/site/pack/blueforest/start/blueforest-theme"),
+  dir = vim.fn.expand("~/.local/share/nvim/site/pack/blueforest/start/blueforest-neovim-theme"),
   name = "blueforest",
 }
 ```

@@ -3,8 +3,8 @@
 #
 # The version of the sources of the repository.
 #
-#   version.sh           the version of the commit of HEAD
-#   version.sh --latest  the version of the latest release
+#   version.sh            the version of the commit of HEAD
+#   version.sh --latest   the version of the latest release
 #
 # A release of the repository is a tag of the form vMAJOR.MINOR.PATCH, and a
 # commit that carries such a tag is the version of the tag. Every other

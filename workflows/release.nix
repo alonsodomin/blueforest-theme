@@ -45,6 +45,16 @@ let
         jq --indent 2 --arg version "$VERSION" '.version = $version' \
           package.json >package.json.tmp
         mv package.json.tmp package.json
+
+        # The manifest has to carry the version of the release before the
+        # archive is built: vsce packages a manifest that still carries the
+        # placeholder without complaining about it.
+        if ! jq -e --arg version "$VERSION" \
+          '.version == $version and $version != ""' package.json >/dev/null; then
+          echo "the manifest does not carry the version $VERSION" >&2
+          exit 1
+        fi
+
         npx --yes @vscode/vsce package --no-dependencies \
           --out "../../dist/blueforest-theme-$VERSION.vsix"
       '';

@@ -16,6 +16,7 @@ combined ones.
 | `packages.<system>.blueforest-neovim-theme` | The theme for Neovim |
 | `packages.<system>.neovim-nixvim-check` | The check that builds an editor with nixvim |
 | `packages.<system>.documentation` | The documentation site as a static site |
+| `packages.<system>.render-workflows` | The program that renders the workflows of the repository |
 | `overlays.default` | Adds the packages of the VS Code, Starship, OpenCode, sbt, and Neovim applications to a nixpkgs instance |
 | `overlays.vscode` | Adds `pkgs.blueforest-vscode-theme` to a nixpkgs instance |
 | `overlays.bat` | Adds `pkgs.blueforest-bat-theme` to a nixpkgs instance. The aggregate does not compose it |

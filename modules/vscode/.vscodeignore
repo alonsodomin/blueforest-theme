@@ -5,4 +5,5 @@
 nix/
 flake.nix
 flake.lock
+flake-module.nix
 devshell.toml

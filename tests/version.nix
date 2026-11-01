@@ -7,8 +7,8 @@
 # every rule of it is covered.
 #
 # The check also makes sure that the repository does not carry a version of
-# its own: the version comes from the tags, and the packages of the
-# repository carry the revision of the commit they are built from.
+# its own: the version comes from the tags, and the manifest of the extension
+# carries the placeholder that the builds stamp the version over.
 { pkgs }:
 let
   # The script that derives the version of a commit from the tags.

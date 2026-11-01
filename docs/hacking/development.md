@@ -21,9 +21,8 @@ The shell prints a menu with the commands it provides:
 
 [utilities]
 
-  package - Build the .vsix extension package
   release - Interactive release helper
-  update  - Update the lock files of the repository
+  update  - Update the lock files of the repository and of every application
 ```
 
 ## Formatting
@@ -114,6 +113,31 @@ where the workflow of the CI renders the files and commits them to the branch.
 The `workflows-lint` check renders the workflows and runs `actionlint` over the
 result. It does not depend on what is committed, so it runs on every pull
 request.
+
+## Trying the theme
+
+The extension of VS Code is built by Nix:
+
+```console
+nix build .#blueforest-vscode-theme
+```
+
+The result holds the extension in `share/vscode/extensions`. An editor reads
+the extensions of a profile from a directory of its own, which it writes to,
+so the extension is linked into one:
+
+```console
+mkdir -p .vscode-exts
+ln -sfn "$(nix build .#blueforest-vscode-theme --print-out-paths)/share/vscode/extensions"/* .vscode-exts/
+code --extensions-dir="$PWD/.vscode-exts"
+```
+
+To try a change to the theme without building it, point the editor at the
+directory of the extension instead:
+
+```console
+code --extensionDevelopmentPath="$PWD/modules/vscode"
+```
 
 ## Documentation
 
