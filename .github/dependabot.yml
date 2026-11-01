@@ -10,6 +10,11 @@ version: 2
 
 updates:
   # The inputs of the flakes of the repository and of its applications.
+  #
+  # The actions of the workflows are updated by Renovate, not by Dependabot:
+  # the workflows are rendered from their definitions in `workflows/`, and
+  # Dependabot only reads workflow files. The configuration of Renovate is in
+  # `renovate.json5`.
   - package-ecosystem: "nix"
     directories:
       - "/"
@@ -20,10 +25,3 @@ updates:
     groups:
       flake-inputs:
         group-by: dependency-name
-
-  # The actions of the workflows.
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "monday"

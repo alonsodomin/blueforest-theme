@@ -62,8 +62,8 @@ The overlay leaves `pkgs.starship` alone: the Starship with the preset
 bundled is a package of its own, so that applying the overlay does not
 replace the Starship of a configuration that does not want the theme.
 
-The release of the application lives in `tools/lib/starship.sh`, and its
-workflow in `.github/workflows/release-starship.yml`.
+The release of the application lives in `tools/lib/starship.sh`, and its entry in the
+release workflow in `workflows/release.nix`.
 
 See the root [README](../../README.md) for the installation of the flake and
 the modules.

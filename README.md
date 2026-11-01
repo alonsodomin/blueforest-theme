@@ -498,6 +498,10 @@ Dependabot does the same, once a week: it watches the lock files of the reposito
 application, and opens a pull request for the inputs that moved upstream. The configuration is in
 [`.github/dependabot.yml`](.github/dependabot.yml).
 
+The versions of the actions that the workflows use are updated by Renovate, once a week as well: it
+reads them from [`workflows/lib.nix`](workflows/lib.nix), and its configuration is in
+[`renovate.json5`](renovate.json5).
+
 ### Releases
 
 Releases are managed by the tooling here, you can trigger a release by either running `nix run .#release -- vscode` or by simply running `release vscode` from the previously mentioned shell.
@@ -513,9 +517,10 @@ release all
 It asks for the version every application shares, for the changelog of each application, and then
 commits, pushes and triggers the release workflow of the repository.
 
-The workflow of the repository only dispatches: every application has a workflow of its own
-(`.github/workflows/release-vscode.yml`), which is the one that packages and publishes it. A new
-application brings a workflow of its own, and a job in `release.yml` that calls it.
+The workflows of the repository are defined in Nix, in [`workflows/`](workflows), and rendered into
+the files of `.github/workflows/`. A GitHub release only releases the application its tag belongs
+to, and the workflow of the repository packages and publishes every application that is selected.
+A new application brings an entry in the table of [`workflows/release.nix`](workflows/release.nix).
 
 ## Adding an application
 
@@ -588,8 +593,8 @@ imports = [
 ];
 ```
 
-The release of the application lives in `tools/lib/neovim.sh`, and its workflow in
-`.github/workflows/release-neovim.yml`.
+The release of the application lives in `tools/lib/neovim.sh`, and its entry in the release workflow
+in `workflows/release.nix`.
 
 ## License
 
