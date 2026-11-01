@@ -2,18 +2,16 @@
 //
 // The configuration of Renovate.
 //
-// Renovate keeps the versions of the actions that the workflows use up to
-// date. The versions live in `workflows/lib.nix`, and the custom manager
-// below is the one that finds them there: Dependabot cannot, because its
-// `github-actions` ecosystem only reads workflow files, which are rendered
-// from those definitions.
+// The application that updates the actions of the workflows reads their
+// versions from `workflows/lib.nix`, where the custom manager below finds
+// them. Dependabot cannot do it, because its `github-actions` ecosystem only
+// reads workflow files, and those are rendered from the definitions.
 //
-// The post-upgrade task renders the workflows again, so that the pull request
-// carries the files of `.github/workflows/` as well, and the check of the
-// repository passes.
-//
-// The commands of the post-upgrade tasks are allowed by the administrator of
-// Renovate, which is the workflow of `.github/workflows/renovate.yml`.
+// The manager is the only one that runs, so that the application does not
+// open pull requests against the rendered files. It cannot render them
+// either, because the commands of the post-upgrade tasks are blocked on the
+// hosted application: the workflow of the CI renders them for its pull
+// requests instead.
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
 
@@ -34,11 +32,5 @@
       "versioningTemplate": "github-actions",
       "depTypeTemplate": "action"
     }
-  ],
-
-  "postUpgradeTasks": {
-    "commands": [ "nix run .#render-workflows" ],
-    "executionMode": "branch",
-    "fileFilters": [ "workflows/**", ".github/workflows/**" ]
-  }
+  ]
 }

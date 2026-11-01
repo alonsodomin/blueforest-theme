@@ -73,7 +73,9 @@ Every configuration of the repository shares one version, which lives in
   instead of the VS Code extension alone, and a GitHub release publishes the
   extension to GitHub releases as well, which it did not before
 - Renovate updates the versions of the actions that the workflows use, because
-  Dependabot only reads workflow files, which are generated
+  Dependabot only reads workflow files, which are generated. The application
+  brings its own credential, so the repository holds no secret for it, and the
+  CI renders the workflows for its pull requests
 - The changelog of an application that is not released yet carries an
   `Unreleased` section, which the release turns into the section of the
   release

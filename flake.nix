@@ -196,50 +196,78 @@
             # that verifies it come with the module.
             treefmt.imports = [ ./treefmt.nix ];
 
+            # Fails if the workflows of the repository are not valid.
+            #
+            # The lint does not depend on what is committed, so it runs on
+            # every pull request.
+            checks = {
+              workflows-lint =
+                let
+                  render =
+                    (inputs.actions-nix.lib.evalModule pkgs config.flake.actions-nix).config.build.renderWorkflows;
+                in
+                pkgs.runCommandLocal "workflows-lint-check"
+                  {
+                    nativeBuildInputs = [
+                      pkgs.actionlint
+                      pkgs.shellcheck
+                    ];
+                  }
+                  ''
+                    mkdir project
+                    cd project
+                    ${render}/bin/render-workflows --no-prepend-git-root
+                    actionlint .github/workflows/*.yml
+                    touch $out
+                  '';
+
+              # Fails if an application carries a version of its own.
+              version = import ./tests/version.nix { inherit pkgs; };
+
+              # Fails if the overlay of the repository does not add the
+              # packages of every application.
+              overlay = import ./tests/overlay.nix {
+                inherit pkgs;
+                overlay = config.flake.overlays.default;
+                expected = [
+                  "blueforest-vscode-theme"
+                  "blueforest-starship-preset"
+                  "blueforest-starship"
+                  "blueforest-opencode-theme"
+                  "blueforest-sbt-prompt"
+                  "blueforest-neovim-theme"
+                ];
+              };
+            }
             # Fails if the workflows of the repository are not the ones that
-            # the definitions in `workflows/` render, or if they are not
-            # valid.
-            checks.workflows =
-              let
-                workflows = config.flake.actions-nix.workflows;
-                render =
-                  (inputs.actions-nix.lib.evalModule pkgs config.flake.actions-nix).config.build.renderWorkflows;
-              in
-              pkgs.runCommandLocal "workflows-check"
+            # the definitions in `workflows/` render.
+            #
+            # The check is skipped on a pull request, where the workflow of
+            # the CI renders the files and commits them to the branch: there
+            # is nothing to report there.
+            // (
+              if builtins.getEnv "BLUEFOREST_SKIP_WORKFLOWS_CHECK" == "1" then
                 {
-                  nativeBuildInputs = [
-                    pkgs.actionlint
-                    pkgs.shellcheck
-                  ];
                 }
-                ''
-                  mkdir project
-                  cd project
-                  ${render}/bin/render-workflows --no-prepend-git-root
-                  for workflow in ${lib.concatStringsSep " " (lib.attrNames workflows)}; do
-                    diff ${./.}/"$workflow" "$workflow"
-                  done
-                  actionlint .github/workflows/*.yml
-                  touch $out
-                '';
-
-            # Fails if an application carries a version of its own.
-            checks.version = import ./tests/version.nix { inherit pkgs; };
-
-            # Fails if the overlay of the repository does not add the
-            # packages of every application.
-            checks.overlay = import ./tests/overlay.nix {
-              inherit pkgs;
-              overlay = config.flake.overlays.default;
-              expected = [
-                "blueforest-vscode-theme"
-                "blueforest-starship-preset"
-                "blueforest-starship"
-                "blueforest-opencode-theme"
-                "blueforest-sbt-prompt"
-                "blueforest-neovim-theme"
-              ];
-            };
+              else
+                {
+                  workflows =
+                    let
+                      workflows = config.flake.actions-nix.workflows;
+                      render =
+                        (inputs.actions-nix.lib.evalModule pkgs config.flake.actions-nix).config.build.renderWorkflows;
+                    in
+                    pkgs.runCommandLocal "workflows-check" { } ''
+                      mkdir project
+                      cd project
+                      ${render}/bin/render-workflows --no-prepend-git-root
+                      for workflow in ${lib.concatStringsSep " " (lib.attrNames workflows)}; do
+                        diff ${./.}/"$workflow" "$workflow"
+                      done
+                      touch $out
+                    '';
+                }
+            );
           };
       }
     );
