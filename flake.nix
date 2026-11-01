@@ -110,6 +110,14 @@
       inputs.flake-parts.follows = "flake-parts";
       inputs.home-manager.follows = "home-manager";
     };
+
+    yazi = {
+      url = "path:./modules/yazi";
+
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
   outputs =
@@ -139,6 +147,7 @@
           inputs.neovim.flakeModule
           inputs.eza.flakeModule
           inputs.zed.flakeModule
+          inputs.yazi.flakeModule
         ];
 
         systems = [
@@ -161,6 +170,7 @@
             config.flake.overlays.neovim
             config.flake.overlays.eza
             config.flake.overlays.zed
+            config.flake.overlays.yazi
           ];
 
           flakeModules = {
@@ -172,6 +182,7 @@
             neovim = inputs.neovim.flakeModule;
             eza = inputs.eza.flakeModule;
             zed = inputs.zed.flakeModule;
+            yazi = inputs.yazi.flakeModule;
             default = {
               imports = [
                 inputs.bat.flakeModule
@@ -182,6 +193,7 @@
                 inputs.neovim.flakeModule
                 inputs.eza.flakeModule
                 inputs.zed.flakeModule
+                inputs.yazi.flakeModule
               ];
             };
           };
@@ -204,6 +216,7 @@
               config.flake.homeModules.neovim
               config.flake.homeModules.eza
               config.flake.homeModules.zed
+              config.flake.homeModules.yazi
             ];
           };
         };
@@ -282,6 +295,7 @@
                   "blueforest-neovim-theme"
                   "blueforest-eza-theme"
                   "blueforest-zed-theme"
+                  "blueforest-yazi-theme"
                 ];
               };
 
@@ -292,6 +306,14 @@
                 theme = (top.config.flake.overlays.zed pkgs pkgs).blueforest-zed-theme;
                 vscode = ./modules/vscode/themes/Blueforest-color-theme.json;
                 neovim = ./modules/neovim/themes/blueforest.lua;
+              };
+
+              # Fails if the theme of the code preview of Yazi is not the
+              # theme of the code preview of bat.
+              yazi-tmtheme = import ./tests/yazi-tmtheme.nix {
+                inherit pkgs;
+                yazi = ./modules/yazi/themes/blueforest.yazi/tmtheme.xml;
+                bat = ./modules/bat/themes/BlueForest.tmTheme;
               };
             }
             # Fails if the workflows of the repository are not the ones that

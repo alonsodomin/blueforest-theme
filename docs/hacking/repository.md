@@ -18,6 +18,7 @@ self-contained flake.
 │   ├── sbt/
 │   ├── starship/
 │   ├── vscode/
+│   ├── yazi/
 │   └── zed/
 ├── tests/                    # checks of the root flake
 ├── tools/                    # the release and update helpers
@@ -50,6 +51,8 @@ compare the packaged copies against them:
 - `modules/starship/themes/blueforest.toml`
 - `modules/opencode/themes/blueforest.json`
 - `modules/eza/themes/blueforest.yml`
+- `modules/yazi/themes/blueforest.yazi/flavor.toml` and
+  `modules/yazi/themes/blueforest.yazi/tmtheme.xml`
 
 `modules/sbt` is the exception: it does not define a theme. It installs the
 upstream `sbt-prompt` plugin and selects its `BlueforestTheme` from
@@ -65,6 +68,11 @@ ships extensions. The repository is a submodule of the application, at
 Nix cannot fetch the contents of a submodule of a git tree, so the checks of
 the repository run against the working tree, where the submodule is checked
 out. The checkout of the CI brings the submodules with it.
+
+The `tmtheme.xml` of the flavour of Yazi is the theme the repository ships
+for bat, and the two of them are the same file: an application cannot depend
+on another one, so the file is copied, and the check `yazi-tmtheme` of the
+repository compares the two copies.
 
 ## The flake module of an application
 

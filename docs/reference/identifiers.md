@@ -35,3 +35,7 @@ modules of the repository.
   extension lives in its own repository,
   [alonsodomin/zed-blueforest-theme](https://github.com/alonsodomin/zed-blueforest-theme),
   which is a submodule of the application.
+- The Yazi package is `blueforest-yazi-theme`. The Yazi flavour is
+  `blueforest`, the name of the directory `blueforest.yazi`, which Yazi reads
+  from `$XDG_CONFIG_HOME/yazi/flavors/`. Select it with
+  `[flavor] dark = "blueforest"` in the theme of the user.

@@ -14,6 +14,7 @@ installed.
 | sbt         | [Upstream plugin or Nix](sbt.md)              |
 | eza         | [Release asset or Nix](eza.md)                |
 | Zed         | [Extension Gallery or Nix](zed.md)           |
+| Yazi        | [Release asset or Nix](yazi.md)              |
 
 The release assets are attached to the
 [GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases).
