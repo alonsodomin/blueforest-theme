@@ -10,8 +10,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
   the configurations of the theme for several tools
 - The application is a flake of its own, which publishes a flake-parts module
   that the root flake composes
-- The release process is split per application: `tools/release.sh` picks the
-  application and hands it over to `tools/lib/vscode.sh`
+- The release is one flow for the whole repository, and it stamps the version
+  of the release into the manifest of the extension before it is packaged
 - The extension does not ship the Nix expressions of the application any more,
   and a check verifies it
 

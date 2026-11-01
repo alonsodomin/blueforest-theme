@@ -26,9 +26,14 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
   it ships, and the attribution of the theme travels with it
 - The VS Code extension does not ship the Nix expressions of the application
   any more, and a check verifies it
+- The development shell does not build the extension by hand any more: the
+  extension is built by Nix, and the tools of the packaging are not in the
+  shell
 - The version of a package of the repository comes from the revision of the
-  commit alone, and the release helper uses it, so that the extension built
-  by hand and the one built by Nix carry the same version
+  commit alone, and the release stamps the version of the release into the
+  manifest of the extension before it is packaged, and checks that the
+  manifest carries it, so that an extension that still carries the
+  placeholder is never published
 - The release helper tells a remote that could not be reached from a tag that
   is already there, and it keeps the changes made to a changelog while the
   release was being confirmed

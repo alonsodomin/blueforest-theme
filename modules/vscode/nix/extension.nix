@@ -51,6 +51,15 @@ let
         package.json >package.json.tmp
       mv package.json.tmp package.json
 
+      # The manifest has to carry the version before the archive is built:
+      # vsce packages a manifest that still carries the placeholder without
+      # complaining about it.
+      if ! jq -e --arg version "${version}" \
+        '.version == $version and $version != ""' package.json >/dev/null; then
+        echo "the manifest does not carry the version ${version}" >&2
+        exit 1
+      fi
+
       vsce package --no-dependencies --out blueforest-theme-${version}.vsix
       runHook postBuild
     '';

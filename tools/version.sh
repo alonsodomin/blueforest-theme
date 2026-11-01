@@ -5,19 +5,12 @@
 #
 #   version.sh            the version of the commit of HEAD
 #   version.sh --latest   the version of the latest release
-#   version.sh --package  the version a package of the commit carries
 #
 # A release of the repository is a tag of the form vMAJOR.MINOR.PATCH, and a
 # commit that carries such a tag is the version of the tag. Every other
 # commit carries the version of the latest release before it, with the hash
 # of the commit appended, so that two commits never share a version. A tree
 # that is not clean carries a ".dirty" suffix as well.
-#
-# A package of the repository is never a release: it carries the revision
-# of the commit it was built from, and the base of the version is always
-# "0.0.0". This is the version the packages of the repository carry, which
-# Nix derives on its own, because Nix cannot read the tags of a
-# repository.
 #
 # The tags of the repository before this scheme are not releases, and they are
 # ignored: only the tags of the strict form are.
@@ -52,10 +45,9 @@ version_of_head() {
 }
 
 usage() {
-	printf 'Usage: %s [--latest|--package]\n\n' "$(basename "$0")"
+	printf 'Usage: %s [--latest]\n\n' "$(basename "$0")"
 	printf '  (no option)  the version of the commit of HEAD\n'
 	printf '  --latest     the version of the latest release\n'
-	printf '  --package    the version a package of the commit carries\n'
 }
 
 case "${1:-}" in
@@ -66,8 +58,6 @@ case "${1:-}" in
 --latest)
 	latest_version
 	exit 0
-	;;
---package)
 	;;
 "")
 	;;
@@ -85,14 +75,6 @@ revision=$(git rev-parse --short=7 HEAD)
 suffix=""
 if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
 	suffix=".dirty"
-fi
-
-# The version of a package of the commit. A package is never a release: it
-# carries the revision of the commit it was built from, over the base of
-# "0.0.0". This is the version the packages of the repository carry.
-if [ "${1:-}" = "--package" ]; then
-	printf '0.0.0+%s%s\n' "$revision" "$suffix"
-	exit 0
 fi
 
 # The version of the tag of the commit, when it carries one.
