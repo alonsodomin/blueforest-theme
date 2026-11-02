@@ -1,5 +1,24 @@
 {
   "nodes": {
+    "bat": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "../bat",
+        "type": "path"
+      },
+      "original": {
+        "path": "../bat",
+        "type": "path"
+      },
+      "parent": []
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
@@ -71,6 +90,7 @@
     },
     "root": {
       "inputs": {
+        "bat": "bat",
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs"

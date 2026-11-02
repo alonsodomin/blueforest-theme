@@ -771,6 +771,9 @@
     },
     "yazi": {
       "inputs": {
+        "bat": [
+          "bat"
+        ],
         "flake-parts": [
           "flake-parts"
         ],

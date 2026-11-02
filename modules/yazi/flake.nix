@@ -10,6 +10,15 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # The theme of the code preview of Yazi is the theme of bat, so the
+    # application takes the one of bat as an input, instead of carrying a
+    # copy of it.
+    bat = {
+      url = "path:../bat";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+    };
   };
 
   outputs =

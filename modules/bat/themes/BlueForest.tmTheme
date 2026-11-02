@@ -84,6 +84,17 @@
       </dict>
       <dict>
         <key>name</key>
+        <string>JSON Property Name</string>
+        <key>scope</key>
+        <string>meta.mapping.key.json string.quoted.double.json</string>
+        <key>settings</key>
+        <dict>
+          <key>foreground</key>
+          <string>#808000</string>
+        </dict>
+      </dict>
+      <dict>
+        <key>name</key>
         <string>String (Escape)</string>
         <key>scope</key>
         <string>string.escape</string>

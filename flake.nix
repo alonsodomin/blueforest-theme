@@ -117,6 +117,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-parts.follows = "flake-parts";
       inputs.home-manager.follows = "home-manager";
+
+      # The theme of the code preview of Yazi is the theme of bat, so the
+      # two applications share it.
+      inputs.bat.follows = "bat";
     };
 
     kitty = {
@@ -341,6 +345,10 @@
                   "blueforest-kitty-theme"
                   "blueforest-mkdocs-theme"
                   "blueforest-claude-code-theme"
+
+                  # The theme of bat comes with the one of Yazi, which
+                  # carries it for the colours of the code preview.
+                  "blueforest-bat-theme"
                 ];
               };
 
@@ -357,7 +365,7 @@
               # theme of the code preview of bat.
               yazi-tmtheme = import ./tests/yazi-tmtheme.nix {
                 inherit pkgs;
-                yazi = ./modules/yazi/themes/blueforest.yazi/tmtheme.xml;
+                yazi = (top.config.flake.overlays.yazi pkgs pkgs).blueforest-yazi-theme;
                 bat = ./modules/bat/themes/BlueForest.tmTheme;
               };
             }

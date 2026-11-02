@@ -159,6 +159,12 @@ let
         mkdir -p dist staging
         cp -r modules/yazi/themes/blueforest.yazi \
           "staging/blueforest.yazi"
+
+        # The colours of the code preview are the ones of the theme of bat,
+        # so the asset carries it.
+        cp modules/bat/themes/BlueForest.tmTheme \
+          "staging/blueforest.yazi/tmtheme.xml"
+
         tar -czf "dist/blueforest-yazi-theme-$VERSION.tar.gz" -C staging .
       '';
     }
