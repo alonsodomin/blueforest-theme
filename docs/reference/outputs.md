@@ -24,7 +24,7 @@ combined ones.
 | `nixvimModules.neovim` | The module of the Neovim theme, for nixvim |
 | `overlays.bat` | Adds `pkgs.blueforest-bat-theme` to a nixpkgs instance. The aggregate does not compose it |
 | `overlays.claude-code` | Adds `pkgs.blueforest-claude-code-theme` to a nixpkgs instance |
-| `overlays.default` | Adds the packages of the VS Code, Starship, OpenCode, sbt, Neovim, eza, Zed, Yazi, kitty, and MkDocs applications to a nixpkgs instance |
+| `overlays.default` | Adds the packages of the VS Code, Starship, OpenCode, sbt, Neovim, eza, Zed, Yazi, kitty, MkDocs, and bat applications to a nixpkgs instance |
 | `overlays.eza` | Adds `pkgs.blueforest-eza-theme` to a nixpkgs instance |
 | `overlays.kitty` | Adds `pkgs.blueforest-kitty-theme` to a nixpkgs instance |
 | `overlays.mkdocs` | Adds `pkgs.blueforest-mkdocs-theme` to a nixpkgs instance |
@@ -33,7 +33,7 @@ combined ones.
 | `overlays.sbt` | Adds `pkgs.blueforest-sbt-prompt` to a nixpkgs instance |
 | `overlays.starship` | Adds `pkgs.blueforest-starship-preset` and `pkgs.blueforest-starship` to a nixpkgs instance |
 | `overlays.vscode` | Adds `pkgs.blueforest-vscode-theme` to a nixpkgs instance |
-| `overlays.yazi` | Adds `pkgs.blueforest-yazi-theme` to a nixpkgs instance |
+| `overlays.yazi` | Adds `pkgs.blueforest-yazi-theme` and `pkgs.blueforest-bat-theme` to a nixpkgs instance |
 | `overlays.zed` | Adds `pkgs.blueforest-zed-theme` to a nixpkgs instance |
 | `packages.<system>.blueforest-bat-theme` | The theme for bat |
 | `packages.<system>.blueforest-claude-code-theme` | The theme for Claude Code |

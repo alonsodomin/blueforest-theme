@@ -12,6 +12,7 @@
   homeManager,
   module,
   source,
+  batTheme,
 }:
 let
   # The identity of the user of the configuration, so that the paths of the
@@ -93,8 +94,11 @@ pkgs.runCommand "blueforest-yazi-module-check"
     # And the theme that ends up installed selects the flavour.
     grep -q 'blueforest' "$themeFile"
 
-    # The flavour that ends up installed is the flavour of the repository.
-    diff -r "$flavour" ${source}
+    # The flavour that ends up installed is the flavour of the repository,
+    # and the colours of its code preview are the ones of the theme of bat.
+    diff -r --exclude=tmtheme.xml "$flavour" ${source}
+    test "$(readlink "$flavour/tmtheme.xml")" = \
+      "${batTheme}/share/bat/themes/BlueForest.tmTheme"
 
     # The theme of a consumer that brings one of its own is the one of the
     # consumer, and the two of them do not collide.

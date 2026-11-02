@@ -11,10 +11,18 @@
 # package carries it twice: under the name of the flavour, so that a consumer
 # can read it directly, and under the name Yazi reads, so that a consumer can
 # point the configuration directory of Yazi at it.
+#
+# The flavour paints the code of the preview with a TextMate theme, and that
+# theme is the one the repository ships for bat. The package therefore links
+# to it, instead of carrying a copy of it that would drift apart from it.
 {
   lib,
   pkgs,
   version,
+
+  # The package of the theme of bat, which carries the TextMate theme of the
+  # code preview.
+  batTheme,
 }:
 pkgs.runCommand "blueforest-yazi-theme-${version}"
   {
@@ -33,6 +41,15 @@ pkgs.runCommand "blueforest-yazi-theme-${version}"
     mkdir -p $out/share/yazi/flavors
     cp -r ${../themes/blueforest.yazi} $out/blueforest.yazi
     cp -r ${../themes/blueforest.yazi} $out/share/yazi/flavors/blueforest.yazi
+
+    # The colours of the code preview are the ones of the theme of bat, so
+    # the flavour links to the theme of bat. The store is read-only, so the
+    # directories have to be writable to carry the link.
+    chmod u+w $out/blueforest.yazi $out/share/yazi/flavors/blueforest.yazi
+    ln -s ${batTheme}/share/bat/themes/BlueForest.tmTheme \
+      $out/blueforest.yazi/tmtheme.xml
+    ln -s ${batTheme}/share/bat/themes/BlueForest.tmTheme \
+      $out/share/yazi/flavors/blueforest.yazi/tmtheme.xml
 
     # The attribution of the theme travels with the package.
     mkdir -p $out/share/doc/blueforest

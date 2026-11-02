@@ -38,6 +38,12 @@ let
       "0.0.0+${lib.removeSuffix "-dirty" self.dirtyShortRev}.dirty"
     else
       "0.0.0";
+
+  # The theme of the code preview of Yazi is the theme of bat, so the
+  # application takes the one of bat as an input. The consumer that has one
+  # brings its own, so that both agree on what the theme is, and a consumer
+  # that has none gets the one of the application.
+  bat = inputs.bat or appInputs.bat;
 in
 {
   # The flake module of Home Manager, which declares `flake.homeModules`. It
@@ -49,6 +55,11 @@ in
   # system imports it only once.
   imports = [
     (inputs.home-manager or appInputs.home-manager).flakeModules.home-manager
+
+    # The module of the application of bat, which brings its overlay: the
+    # theme of the code preview of Yazi is the theme of bat, and the overlay
+    # of Yazi carries it.
+    bat.flakeModules.default
   ];
 
   perSystem =
@@ -70,8 +81,15 @@ in
 
       theme = pkgs.blueforest-yazi-theme;
 
+      # The package of the theme of bat, which carries the TextMate theme of
+      # the code preview.
+      batTheme = pkgs.blueforest-bat-theme;
+
       # The flavour of the repository.
       source = ./themes/blueforest.yazi;
+
+      # The flavour of the package, which links to the theme of bat.
+      flavour = "${theme}/share/yazi/flavors/blueforest.yazi";
     in
     {
       packages.blueforest-yazi-theme = theme;
@@ -79,17 +97,23 @@ in
       checks = {
         # The flavour of the package is the flavour of the repository.
         yazi-theme = import ./nix/checks/theme.nix {
-          inherit pkgs theme source;
+          inherit
+            pkgs
+            theme
+            source
+            batTheme
+            ;
         };
 
-        # Yazi reads the flavour of the repository and paints with it.
+        # Yazi reads the flavour of the package and paints with it.
         yazi-render = import ./nix/checks/render.nix {
-          inherit pkgs source;
+          inherit pkgs;
+          source = flavour;
         };
 
         # The Home Manager module installs the flavour where Yazi reads it.
         yazi-module = import ./nix/checks/module.nix {
-          inherit source;
+          inherit source batTheme;
           pkgs = basePkgs;
           homeManager = appInputs.home-manager;
           module = config.flake.homeModules.yazi;
@@ -102,17 +126,34 @@ in
     # instance, and it leaves the programs of nixpkgs alone: the theme is a
     # file of its own, so that applying the overlay does not replace the Yazi
     # of a configuration that does not want the theme.
-    overlays.yazi = final: _prev: {
-      blueforest-yazi-theme = import ./nix/theme.nix {
-        inherit (final) lib;
-        pkgs = final;
-        inherit version;
-      };
-    };
+    #
+    # The overlay of bat is part of it, because the theme of the code preview
+    # of Yazi is the theme of bat: the package of Yazi carries it, and a
+    # consumer that applies the overlay gets both packages.
+    overlays.yazi =
+      final: _prev:
+      let
+        # The overlay of bat, which brings the package of the theme of bat.
+        bat = config.flake.overlays.bat final _prev;
+
+        # The package of the theme of bat, which carries the TextMate theme
+        # of the code preview.
+        batTheme = bat.blueforest-bat-theme;
+      in
+      {
+        blueforest-yazi-theme = import ./nix/theme.nix {
+          inherit (final) lib;
+          pkgs = final;
+          inherit version batTheme;
+        };
+      }
+      // bat;
 
     # Yazi reads the theme from the configuration directory of the user, and
     # there is no system-wide directory it reads, so the application publishes
     # a Home Manager module and no NixOS module.
-    homeModules.yazi = import ./nix/module.nix;
+    homeModules.yazi = import ./nix/module.nix {
+      overlay = config.flake.overlays.yazi;
+    };
   };
 }

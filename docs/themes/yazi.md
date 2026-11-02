@@ -16,6 +16,21 @@ of the flavour is the name of its directory, without the `.yazi` suffix:
 
 The colours are true colour, so the terminal has to support it.
 
+## The theme depends on the one of bat
+
+The colours of the code preview are the ones of the
+[BlueForest theme for bat](bat.md): the flavour carries the TextMate theme of
+bat, and it is a link to it, so the two of them cannot drift apart.
+
+The theme of Yazi therefore depends on the theme of bat:
+
+- The package of the theme of Yazi carries the package of the theme of bat,
+  so installing it installs the theme of bat as well.
+- The overlay of Yazi adds the package of the theme of bat to the nixpkgs
+  instance it is applied to, next to the package of the theme of Yazi.
+- The release asset of the theme of Yazi carries the TextMate theme of bat,
+  so the manual installation needs nothing else.
+
 ## How Yazi reads the theme
 
 Yazi reads the flavours from the `flavors` directory of its configuration
@@ -61,6 +76,11 @@ your decision. It writes the flavour to
 `~/.config/yazi/flavors/blueforest.yazi/`, and it writes nothing when
 `programs.yazi.enable` is false.
 
+The flavour it writes is the one of the package, so it carries the theme of
+bat as a link, and the module adds the overlay of the application to the
+nixpkgs instance of Home Manager, so that the packages of both themes are
+there.
+
 Home Manager has an option of its own for the theme of Yazi,
 `programs.yazi.theme`, which writes the file the selection goes into. The
 theme of this application is a default one, so a consumer that sets that
@@ -86,6 +106,9 @@ flavour under the name of the flavour and under the name Yazi reads:
 blueforest.yazi/
 share/yazi/flavors/blueforest.yazi/
 ```
+
+The flavour of the package links to the theme of bat, so the package of the
+theme of Yazi carries the package of the theme of bat with it.
 
 There is no NixOS module: Yazi reads the theme from the configuration
 directory of the user, and there is no system-wide directory it reads.

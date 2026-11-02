@@ -7,6 +7,9 @@ The colours are the ones of BlueForest: the dark blue of the background, the
 vivid blue of the keywords, the green of the strings, the amber of the
 operators, the red of the numbers, and the pale yellow of the variables.
 
+The theme of [Yazi](yazi.md) paints the code of its preview with it, so the
+two of them are the same file.
+
 ## Install with Nix
 
 The package `blueforest-bat-theme` puts the theme where bat looks for it. Two

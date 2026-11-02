@@ -43,25 +43,34 @@ alone.
 
 ## Supported languages
 
-The theme has been optimized (and actively being used) for:
+The theme has syntax highlighting for:
 
 - Bash
 - C / C++
+- C#
+- Elm
+- Fish (shell)
 - GLSL
 - Golang
 - Groovy
 - Haskell
 - HTML
 - Java
+- JavaScript
 - JSON
 - Kotlin
 - Markdown
 - Nix
 - Powershell
+- PureScript
 - Python
+- Ruby
 - Rust
 - Scala
-- HTML / XML
+- Smithy
+- Swift
+- TypeScript
+- XML
 - YAML
 
 ## Hacking
