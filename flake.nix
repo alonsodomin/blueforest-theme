@@ -366,6 +366,13 @@
                 ];
               };
 
+              # Fails if the documentation marks a code block with a language
+              # that the applications of the repository do not highlight.
+              fences = import ./tests/fences.nix {
+                inherit pkgs;
+                sources = ./docs;
+              };
+
               # Fails if the colours of the theme of Zed are not the colours
               # of the other applications of the repository.
               zed-colours = import ./tests/zed-colours.nix {

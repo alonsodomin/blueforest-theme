@@ -19,7 +19,7 @@ so they keep the ones of the built-in theme.
 Claude Code reads the custom themes of the user from the `themes` directory of
 its configuration directory:
 
-```console
+```bash
 $HOME/.claude/themes/blueforest.json
 ```
 
@@ -88,7 +88,7 @@ Download `blueforest-claude-code-theme-<version>.json` from the
 [GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
 put it where Claude Code reads the themes from:
 
-```console
+```bash
 mkdir -p ~/.claude/themes
 cp blueforest-claude-code-theme-<version>.json ~/.claude/themes/blueforest.json
 ```

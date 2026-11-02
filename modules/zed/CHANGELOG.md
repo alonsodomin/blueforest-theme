@@ -10,3 +10,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - The theme comes from the `zed-blueforest-theme` extension, which is a
   submodule of the application, and the Home Manager module installs it where
   Zed reads the extensions from
+- The shell scopes are painted the way the other applications of the repository
+  paint them: the keywords, the punctuation and the comments are the ones of
+  the repository

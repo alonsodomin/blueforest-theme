@@ -30,7 +30,7 @@ The theme is also published to the
 [VS Marketplace](https://marketplace.visualstudio.com/items?itemName=alonsodomin.blueforest-theme).
 Open the Extensions view of VS Code and search for **BlueForest**, or run:
 
-```console
+```bash
 code --install-extension alonsodomin.blueforest-theme
 ```
 
@@ -41,7 +41,7 @@ Every release of the repository attaches the packaged extension as
 [GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
 install it with the CLI of your editor:
 
-```console
+```bash
 code --install-extension ./blueforest-theme-<version>.vsix
 ```
 

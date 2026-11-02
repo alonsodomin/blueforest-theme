@@ -9,7 +9,7 @@ own, and the root flake composes them.
 
 Start with the [development shell](development.md):
 
-```console
+```bash
 nix develop
 ```
 

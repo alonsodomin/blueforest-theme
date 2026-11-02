@@ -14,7 +14,7 @@ The colours are true colour, so the terminal has to support it.
 kitty reads the themes of the user from the `themes` directory of its
 configuration directory:
 
-```console
+```bash
 $XDG_CONFIG_HOME/kitty/themes/blueforest.conf
 ```
 
@@ -25,7 +25,7 @@ A theme is not selected by name. kitty has no option for it: the theme is
 selected with an `include` line in the configuration of kitty, and the last
 include of a colour wins:
 
-```console
+```bash
 include themes/blueforest.conf
 ```
 
@@ -92,14 +92,14 @@ Download `blueforest-kitty-theme-<version>.conf` from the
 [GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
 put it where kitty reads the themes from:
 
-```console
+```bash
 mkdir -p ~/.config/kitty/themes
 cp blueforest-kitty-theme-<version>.conf ~/.config/kitty/themes/blueforest.conf
 ```
 
 Then select the theme in the configuration of kitty, `~/.config/kitty/kitty.conf`:
 
-```console
+```bash
 echo 'include themes/blueforest.conf' >>~/.config/kitty/kitty.conf
 ```
 

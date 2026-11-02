@@ -16,7 +16,7 @@ setting of its configuration file.
 btop reads the themes of the user from the `themes` directory of its
 configuration directory:
 
-```console
+```bash
 $XDG_CONFIG_HOME/btop/themes/blueforest.theme
 ```
 
@@ -26,7 +26,7 @@ not set.
 A theme is selected by name. The name of a theme is the name of its file, and
 the selection is the `color_theme` setting of the configuration file of btop:
 
-```console
+```bash
 color_theme = "blueforest.theme"
 ```
 
@@ -98,14 +98,14 @@ Download `blueforest-btop-theme-<version>.theme` from the
 [GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
 put it where btop reads the themes from:
 
-```console
+```bash
 mkdir -p ~/.config/btop/themes
 cp blueforest-btop-theme-<version>.theme ~/.config/btop/themes/blueforest.theme
 ```
 
 Then select the theme in the configuration of btop, `~/.config/btop/btop.conf`:
 
-```console
+```bash
 echo 'color_theme = "blueforest.theme"' >>~/.config/btop/btop.conf
 ```
 
@@ -118,7 +118,7 @@ The theme paints the background of the interface with the dark blue of
 BlueForest. A terminal with a background of its own can ask btop not to paint
 it, with the `theme_background` setting of the configuration file:
 
-```console
+```bash
 theme_background = False
 ```
 

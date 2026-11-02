@@ -13,3 +13,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
   theme of lualine
 - The theme has a module for nixvim as well, which installs it among the
   plugins of the editor and selects the colourscheme
+- The variables are painted with the colour of the variables, like the other
+  applications of the repository paint them, and not with the colour of the
+  identifiers

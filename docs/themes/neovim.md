@@ -60,7 +60,7 @@ Download `blueforest-neovim-theme-<version>.tar.gz` from the
 [GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
 extract it into a package directory of the Neovim runtimepath:
 
-```console
+```bash
 plugin_dir="$HOME/.local/share/nvim/site/pack/blueforest/start/blueforest-neovim-theme"
 mkdir -p "$plugin_dir"
 tar -xzf blueforest-neovim-theme-<version>.tar.gz -C "$plugin_dir"

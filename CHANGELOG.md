@@ -26,6 +26,13 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 
 ## Unreleased
 
+- The shell blocks of the documentation are marked `bash`, the marker every
+  application of the repository highlights. They were marked `console`, which
+  only Pygments and Shiki know, so they came out plain in the site and in
+  every editor but those two
+- The shell tokens are painted with the same colours in every application of
+  the repository: the command is a function, the arguments are parameters,
+  the punctuation is punctuation, and the variables are variables
 - The BlueForest theme now includes a theme for btop, packaged as
   `blueforest-btop-theme`. It is the theme file btop reads, and the Home
   Manager module installs it in the directory btop reads the themes from, and

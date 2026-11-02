@@ -15,7 +15,7 @@ eza reads **one** theme file, and it is always named `theme.yml`. There is no
 directory of themes and no name to select: the file is the theme. eza looks
 for it in the configuration directory of the user:
 
-```console
+```bash
 $XDG_CONFIG_HOME/eza/theme.yml
 ```
 
@@ -74,7 +74,7 @@ Download `blueforest-eza-theme-<version>.yml` from the
 [GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
 put it where eza reads the theme from, under the name eza expects:
 
-```console
+```bash
 mkdir -p ~/.config/eza
 cp blueforest-eza-theme-<version>.yml ~/.config/eza/theme.yml
 ```

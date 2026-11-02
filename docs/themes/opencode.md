@@ -52,7 +52,7 @@ Download `blueforest-opencode-theme-<version>.json` from the
 [GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
 put it in the themes directory of OpenCode, with the name of the theme:
 
-```console
+```bash
 mkdir -p ~/.config/opencode/themes
 cp blueforest-opencode-theme-<version>.json ~/.config/opencode/themes/blueforest.json
 ```

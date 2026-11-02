@@ -86,8 +86,6 @@
         "keyword.operator.word",
         "keyword.other",
         "meta.keyword",
-        "punctuation.definition.arguments.shell",
-        "punctuation.definition.logical-expression.shell",
         "support.function.powershell"
       ],
       "settings": {
@@ -111,10 +109,35 @@
     },
     {
       "name": "Identifiers",
-      "scope": ["variable.name", "variable.other.normal.shell"],
+      "scope": ["variable.name"],
       "settings": {
         "foreground": "#F7FF66",
         "fontStyle": "bold"
+      }
+    },
+    {
+      "name": "Shell arguments",
+      "scope": ["string.unquoted.argument.shell"],
+      "settings": {
+        "foreground": "#e7e7e7"
+      }
+    },
+    {
+      "name": "Shell options",
+      "scope": ["constant.other.option.shell"],
+      "settings": {
+        "foreground": "#ffcc33"
+      }
+    },
+    {
+      "name": "Shell punctuation",
+      "scope": [
+        "punctuation.definition.arguments.shell",
+        "punctuation.definition.logical-expression.shell",
+        "punctuation.terminator.statement.semicolon.shell"
+      ],
+      "settings": {
+        "foreground": "#e7e7e7"
       }
     },
     {
