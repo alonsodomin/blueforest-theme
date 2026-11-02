@@ -169,7 +169,6 @@ in
     in
     {
       packages = {
-        default = extension;
         blueforest-vscode-theme = extension;
         # The expensive check, kept out of `nix flake check` but buildable
         # on demand: nix build .#vscode-integration-check

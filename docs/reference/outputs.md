@@ -5,7 +5,6 @@ combined ones.
 
 | Output | Description |
 | --- | --- |
-| `packages.<system>.default` | The theme as a VS Code extension package |
 | `packages.<system>.blueforest-vscode-theme` | The theme as a VS Code extension package |
 | `packages.<system>.vscode-integration-check` | The check that builds VSCodium |
 | `packages.<system>.blueforest-bat-theme` | The theme for bat |
