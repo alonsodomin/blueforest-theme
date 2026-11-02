@@ -14,11 +14,13 @@
 }:
 let
   ci = import ./ci.nix { inherit lib; };
+  dependabot = import ./dependabot.nix { inherit lib; };
   docs = import ./docs.nix { inherit lib; };
   release = import ./release.nix { inherit lib; };
 in
 {
   ".github/workflows/ci.yml" = ci;
+  ".github/workflows/dependabot.yml" = dependabot;
   ".github/workflows/docs.yml" = docs;
   ".github/workflows/release.yml" = release;
 }

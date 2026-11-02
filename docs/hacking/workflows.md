@@ -95,3 +95,15 @@ Dependabot is in `.github/dependabot.yml`.
 
 Renovate cannot run commands in the hosted application, so the CI renders the
 workflows for its pull requests.
+
+Both of them open their pull requests with the auto-merge enabled, so they are
+merged on their own when the checks of the repository have passed. The merge
+gate of the CI is the check that has to pass, and it is the only one the
+repository requires.
+
+Renovate marks the pull requests for the auto-merge of GitHub itself.
+Dependabot cannot do it, so the workflow of `workflows/dependabot.nix` marks
+them instead: it runs `gh pr merge --auto` on the pull requests of Dependabot,
+and on no other. The merge is a squash one, because the rules of the
+repository do not allow the merge commits that the linear history of the
+branch forbids.

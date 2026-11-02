@@ -26,6 +26,10 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 
 ## Unreleased
 
+- The pull requests of Renovate and Dependabot are merged on their own, when
+  the merge gate of the CI has passed. Renovate marks them for the auto-merge
+  of GitHub itself, and the workflow of the repository marks the ones of
+  Dependabot, because Dependabot cannot do it
 - The aggregate NixOS and Home Manager modules of the repository no longer
   carry the modules of VS Code and Zed. A consumer that wants them imports
   `blueforest.nixosModules.vscode`, `blueforest.homeModules.vscode` or

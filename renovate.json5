@@ -19,6 +19,16 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
 
+  // Renovate merges the pull requests it opens on its own. It marks them for
+  // the auto-merge of GitHub, and GitHub merges them when the checks that the
+  // repository requires have passed: the merge gate of the CI is the one.
+  //
+  // The merge is a squash one, like the ones of the repository, and the
+  // rules of the repository do not allow the merge commits that the linear
+  // history of the branch forbids.
+  automerge: true,
+  platformAutomerge: true,
+
   // Only the actions of the workflows and the version of the sbt prompt
   // plugin. The inputs of the flakes are updated by Dependabot.
   enabledManagers: ["custom.regex"],
