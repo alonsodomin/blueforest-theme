@@ -11,20 +11,17 @@ nav:
   - Installation: installation.md
   - Themes:
       - Overview: themes/index.md
-      - VS Code: themes/vscode.md
       - bat: themes/bat.md
-      - Neovim: themes/neovim.md
-      - Starship: themes/starship.md
-      - OpenCode: themes/opencode.md
-      - sbt: themes/sbt.md
       - eza: themes/eza.md
-      - Zed: themes/zed.md
-      - Yazi: themes/yazi.md
       - kitty: themes/kitty.md
       - MkDocs: themes/mkdocs.md
-  - Reference:
-      - Outputs: reference/outputs.md
-      - Identifiers: reference/identifiers.md
+      - Neovim: themes/neovim.md
+      - OpenCode: themes/opencode.md
+      - sbt: themes/sbt.md
+      - Starship: themes/starship.md
+      - VS Code: themes/vscode.md
+      - Yazi: themes/yazi.md
+      - Zed: themes/zed.md
   - Hacking:
       - Overview: hacking/index.md
       - Repository layout: hacking/repository.md
@@ -32,6 +29,9 @@ nav:
       - Workflows: hacking/workflows.md
       - Releases: hacking/releases.md
       - Adding an application: hacking/adding-an-application.md
+  - Reference:
+      - Outputs: reference/outputs.md
+      - Identifiers: reference/identifiers.md
   - License: license.md
 
 theme:

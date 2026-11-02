@@ -6,17 +6,17 @@ installed.
 
 | Application | Recommended installation                             |
 | ----------- | ---------------------------------------------------- |
-| VS Code     | [Open VSX](vscode.md) or [Nix](vscode.md)            |
 | bat         | [Nix](bat.md) or [release asset](bat.md)             |
-| Neovim      | [Nix](neovim.md) or [release asset](neovim.md)       |
-| Starship    | [Nix](starship.md) or [release asset](starship.md)   |
-| OpenCode    | [Nix](opencode.md) or [release asset](opencode.md)   |
-| sbt         | [Nix](sbt.md) or [upstream plugin](sbt.md)           |
 | eza         | [Nix](eza.md) or [release asset](eza.md)             |
-| Zed         | [Extension Gallery](zed.md) or [Nix](zed.md)         |
-| Yazi        | [Nix](yazi.md) or [release asset](yazi.md)           |
 | kitty       | [Nix](kitty.md) or [release asset](kitty.md)         |
 | MkDocs      | [Nix](mkdocs.md) or [release asset](mkdocs.md)       |
+| Neovim      | [Nix](neovim.md) or [release asset](neovim.md)       |
+| OpenCode    | [Nix](opencode.md) or [release asset](opencode.md)   |
+| sbt         | [Nix](sbt.md) or [upstream plugin](sbt.md)           |
+| Starship    | [Nix](starship.md) or [release asset](starship.md)   |
+| VS Code     | [Open VSX](vscode.md) or [Nix](vscode.md)            |
+| Yazi        | [Nix](yazi.md) or [release asset](yazi.md)           |
+| Zed         | [Extension Gallery](zed.md) or [Nix](zed.md)         |
 
 The release assets are attached to the
 [GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases).

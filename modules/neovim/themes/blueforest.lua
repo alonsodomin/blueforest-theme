@@ -70,7 +70,7 @@ local groups = {
   String = { fg = palette.string },
   Character = { fg = palette.string },
   Number = { fg = palette.number },
-  Boolean = { fg = palette.number },
+  Boolean = { fg = palette.accent, bold = true },
   Float = { fg = palette.number },
 
   Identifier = { fg = palette.identifier, bold = true },
@@ -211,7 +211,7 @@ local treesitter = {
 
   ["@number"] = { fg = palette.number },
   ["@number.float"] = { fg = palette.number },
-  ["@boolean"] = { fg = palette.number },
+  ["@boolean"] = { fg = palette.accent, bold = true },
 
   ["@variable"] = { fg = palette.identifier, bold = true },
   ["@variable.member"] = { fg = palette.variable },

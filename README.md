@@ -13,17 +13,17 @@ application, is at
 
 | Application | Documentation |
 | --- | --- |
-| VS Code | [Install from Open VSX](https://alonsodomin.github.io/blueforest-theme/themes/vscode/) |
 | bat | <https://alonsodomin.github.io/blueforest-theme/themes/bat/> |
-| Neovim | <https://alonsodomin.github.io/blueforest-theme/themes/neovim/> |
-| Starship | <https://alonsodomin.github.io/blueforest-theme/themes/starship/> |
-| OpenCode | <https://alonsodomin.github.io/blueforest-theme/themes/opencode/> |
-| sbt | <https://alonsodomin.github.io/blueforest-theme/themes/sbt/> |
 | eza | <https://alonsodomin.github.io/blueforest-theme/themes/eza/> |
-| Zed | <https://alonsodomin.github.io/blueforest-theme/themes/zed/> |
-| Yazi | <https://alonsodomin.github.io/blueforest-theme/themes/yazi/> |
 | kitty | <https://alonsodomin.github.io/blueforest-theme/themes/kitty/> |
 | MkDocs | <https://alonsodomin.github.io/blueforest-theme/themes/mkdocs/> |
+| Neovim | <https://alonsodomin.github.io/blueforest-theme/themes/neovim/> |
+| OpenCode | <https://alonsodomin.github.io/blueforest-theme/themes/opencode/> |
+| sbt | <https://alonsodomin.github.io/blueforest-theme/themes/sbt/> |
+| Starship | <https://alonsodomin.github.io/blueforest-theme/themes/starship/> |
+| VS Code | [Install from Open VSX](https://alonsodomin.github.io/blueforest-theme/themes/vscode/) |
+| Yazi | <https://alonsodomin.github.io/blueforest-theme/themes/yazi/> |
+| Zed | <https://alonsodomin.github.io/blueforest-theme/themes/zed/> |
 
 ## Installation
 
