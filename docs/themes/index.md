@@ -7,6 +7,7 @@ installed.
 | Application | Recommended installation                             |
 | ----------- | ---------------------------------------------------- |
 | bat         | [Nix](bat.md) or [release asset](bat.md)             |
+| Claude Code | [Nix](claude-code.md) or [release asset](claude-code.md) |
 | eza         | [Nix](eza.md) or [release asset](eza.md)             |
 | kitty       | [Nix](kitty.md) or [release asset](kitty.md)         |
 | MkDocs      | [Nix](mkdocs.md) or [release asset](mkdocs.md)       |

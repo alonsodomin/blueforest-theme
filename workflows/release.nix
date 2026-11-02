@@ -182,6 +182,16 @@ let
           "dist/blueforest-mkdocs-theme-$VERSION.css"
       '';
     }
+    {
+      app = "claude-code";
+      title = "Claude Code";
+      asset = "dist/blueforest-claude-code-theme-$VERSION.json";
+      package = ''
+        mkdir -p dist
+        cp modules/claude-code/themes/blueforest.json \
+          "dist/blueforest-claude-code-theme-$VERSION.json"
+      '';
+    }
   ];
 
   applicationsByApp = listToAttrs (

@@ -134,6 +134,14 @@
       inputs.flake-parts.follows = "flake-parts";
       inputs.mkdocs-flake.follows = "mkdocs-flake";
     };
+
+    claude-code = {
+      url = "path:./modules/claude-code";
+
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
   outputs =
@@ -165,6 +173,7 @@
           inputs.yazi.flakeModule
           inputs.kitty.flakeModule
           inputs.mkdocs.flakeModule
+          inputs.claude-code.flakeModule
         ];
 
         systems = [
@@ -190,6 +199,7 @@
             config.flake.overlays.yazi
             config.flake.overlays.kitty
             config.flake.overlays.mkdocs
+            config.flake.overlays.claude-code
           ];
 
           flakeModules = {
@@ -204,6 +214,7 @@
             yazi = inputs.yazi.flakeModule;
             kitty = inputs.kitty.flakeModule;
             mkdocs = inputs.mkdocs.flakeModule;
+            claude-code = inputs.claude-code.flakeModule;
             default = {
               imports = [
                 inputs.bat.flakeModule
@@ -217,6 +228,7 @@
                 inputs.yazi.flakeModule
                 inputs.kitty.flakeModule
                 inputs.mkdocs.flakeModule
+                inputs.claude-code.flakeModule
               ];
             };
           };
@@ -241,6 +253,7 @@
               config.flake.homeModules.zed
               config.flake.homeModules.yazi
               config.flake.homeModules.kitty
+              config.flake.homeModules.claude-code
             ];
           };
         };
@@ -327,6 +340,7 @@
                   "blueforest-yazi-theme"
                   "blueforest-kitty-theme"
                   "blueforest-mkdocs-theme"
+                  "blueforest-claude-code-theme"
                 ];
               };
 

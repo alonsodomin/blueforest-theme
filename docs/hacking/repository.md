@@ -12,6 +12,7 @@ self-contained flake.
 ├── docs/                     # the documentation sources
 ├── modules/
 │   ├── bat/                  # the simplest application: a package and checks
+│   ├── claude-code/
 │   ├── eza/
 │   ├── kitty/
 │   ├── mkdocs/
@@ -57,6 +58,7 @@ compare the packaged copies against them:
   `modules/yazi/themes/blueforest.yazi/tmtheme.xml`
 - `modules/kitty/themes/blueforest.conf`
 - `modules/mkdocs/themes/blueforest.css`
+- `modules/claude-code/themes/blueforest.json`
 
 `modules/sbt` is the exception: it does not define a theme. It installs the
 upstream `sbt-prompt` plugin and selects its `BlueforestTheme` from
