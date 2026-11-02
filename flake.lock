@@ -41,6 +41,28 @@
       },
       "parent": []
     },
+    "btop": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "./modules/btop",
+        "type": "path"
+      },
+      "original": {
+        "path": "./modules/btop",
+        "type": "path"
+      },
+      "parent": []
+    },
     "claude-code": {
       "inputs": {
         "flake-parts": [
@@ -569,6 +591,7 @@
       "inputs": {
         "actions-nix": "actions-nix",
         "bat": "bat",
+        "btop": "btop",
         "claude-code": "claude-code",
         "devshell": "devshell",
         "eza": "eza",

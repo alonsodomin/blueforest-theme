@@ -9,6 +9,7 @@ its own changelog:
 | ----------- | ------------------------------------------ |
 | VS Code    | [modules/vscode/CHANGELOG.md](modules/vscode/CHANGELOG.md) |
 | bat        | [modules/bat/CHANGELOG.md](modules/bat/CHANGELOG.md) |
+| btop       | [modules/btop/CHANGELOG.md](modules/btop/CHANGELOG.md) |
 | Neovim     | [modules/neovim/CHANGELOG.md](modules/neovim/CHANGELOG.md) |
 | Starship   | [modules/starship/CHANGELOG.md](modules/starship/CHANGELOG.md) |
 | OpenCode   | [modules/opencode/CHANGELOG.md](modules/opencode/CHANGELOG.md) |
@@ -25,6 +26,10 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 
 ## Unreleased
 
+- The BlueForest theme now includes a theme for btop, packaged as
+  `blueforest-btop-theme`. It is the theme file btop reads, and the Home
+  Manager module installs it in the directory btop reads the themes from, and
+  selects it in the configuration of btop
 - The theme of Yazi depends on the theme of bat, instead of carrying a copy of
   it. The flavour of Yazi links to the TextMate theme of bat for the colours
   of the code preview, the package of the theme of Yazi carries the package of

@@ -46,6 +46,7 @@ pkgs.runCommand "blueforest-overlay-check"
       yaziUntouched = overlaid.yazi == base.yazi;
       kittyUntouched = overlaid.kitty == base.kitty;
       mkdocsUntouched = overlaid.mkdocs == base.mkdocs;
+      btopUntouched = overlaid.btop == base.btop;
     };
     expected = builtins.toJSON expected;
   }
@@ -61,6 +62,7 @@ pkgs.runCommand "blueforest-overlay-check"
       and .yaziUntouched
       and .kittyUntouched
       and .mkdocsUntouched
+      and .btopUntouched
       and (.packages | length) > 0
     ' >/dev/null
 

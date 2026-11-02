@@ -57,6 +57,8 @@ that the release never carries half of its assets.
 | Yazi | `blueforest-yazi-theme-<version>.tar.gz` |
 | kitty | `blueforest-kitty-theme-<version>.conf` |
 | MkDocs | `blueforest-mkdocs-theme-<version>.css` |
+| Claude Code | `blueforest-claude-code-theme-<version>.json` |
+| btop | `blueforest-btop-theme-<version>.theme` |
 
 The VS Code extension is also published to Open VSX and to the VS Marketplace.
 `modules/vscode/package.json` carries the placeholder `0.0.0`: the manifest is

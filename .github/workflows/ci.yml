@@ -41,6 +41,7 @@ jobs:
         - path:./modules/kitty
         - path:./modules/mkdocs
         - path:./modules/claude-code
+        - path:./modules/btop
   merge-gate:
     if: always()
     name: Merge gate

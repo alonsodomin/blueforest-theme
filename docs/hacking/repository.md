@@ -12,6 +12,7 @@ self-contained flake.
 ├── docs/                     # the documentation sources
 ├── modules/
 │   ├── bat/                  # the simplest application: a package and checks
+│   ├── btop/
 │   ├── claude-code/
 │   ├── eza/
 │   ├── kitty/
@@ -49,6 +50,7 @@ compare the packaged copies against them:
 
 - `modules/vscode/themes/Blueforest-color-theme.json`
 - `modules/bat/themes/BlueForest.tmTheme`
+- `modules/btop/themes/blueforest.theme`
 - `modules/neovim/themes/blueforest.lua` and
   `modules/neovim/themes/lualine-blueforest.lua`
 - `modules/starship/themes/blueforest.toml`

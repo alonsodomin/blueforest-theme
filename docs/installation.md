@@ -81,7 +81,7 @@ them does not have to take the others:
 The same works for `?dir=modules/bat`, `?dir=modules/starship`,
 `?dir=modules/opencode`, `?dir=modules/sbt`, `?dir=modules/neovim`,
 `?dir=modules/eza`, `?dir=modules/zed`, `?dir=modules/yazi`,
-`?dir=modules/kitty`, and `?dir=modules/mkdocs`.
+`?dir=modules/kitty`, `?dir=modules/mkdocs`, and `?dir=modules/btop`.
 
 The theme of bat is a package and nothing else, so it has no modules to
 import: take it from the outputs of the flake. The same is true of the
