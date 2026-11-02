@@ -10,17 +10,17 @@ The theme is available for the following applications:
 
 | Application | Documentation                  |
 | ----------- | ------------------------------ |
-| VS Code     | [VS Code](themes/vscode.md)    |
 | bat         | [bat](themes/bat.md)           |
-| Neovim      | [Neovim](themes/neovim.md)     |
-| Starship    | [Starship](themes/starship.md) |
-| OpenCode    | [OpenCode](themes/opencode.md) |
-| sbt         | [sbt](themes/sbt.md)           |
 | eza         | [eza](themes/eza.md)           |
-| Zed         | [Zed](themes/zed.md)           |
-| Yazi        | [Yazi](themes/yazi.md)         |
 | kitty       | [kitty](themes/kitty.md)       |
 | MkDocs      | [MkDocs](themes/mkdocs.md)     |
+| Neovim      | [Neovim](themes/neovim.md)     |
+| OpenCode    | [OpenCode](themes/opencode.md) |
+| sbt         | [sbt](themes/sbt.md)           |
+| Starship    | [Starship](themes/starship.md) |
+| VS Code     | [VS Code](themes/vscode.md)    |
+| Yazi        | [Yazi](themes/yazi.md)         |
+| Zed         | [Zed](themes/zed.md)           |
 
 Every application has its own installation page. Each page explains how to
 install the theme with Nix, how to install it by hand, and how to select it
