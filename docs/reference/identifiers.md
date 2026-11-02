@@ -44,3 +44,7 @@ modules of the repository.
   from `$XDG_CONFIG_HOME/kitty/themes/`. Select it with
   `include themes/blueforest.conf` in the configuration of kitty. The
   `themes` kitten lists it under the name `BlueForest`.
+- The MkDocs package is `blueforest-mkdocs-theme`. The MkDocs stylesheet is
+  `blueforest`, the name of the file `blueforest.css`, which MkDocs reads
+  through the `extra_css` option of its configuration. The theme only
+  recolours the dark scheme of Material for MkDocs.

@@ -20,6 +20,7 @@ The theme is available for the following applications:
 | Zed         | [Zed](themes/zed.md)           |
 | Yazi        | [Yazi](themes/yazi.md)         |
 | kitty       | [kitty](themes/kitty.md)       |
+| MkDocs      | [MkDocs](themes/mkdocs.md)     |
 
 Every application has its own installation page. Each page explains how to
 install the theme with Nix, how to install it by hand, and how to select it

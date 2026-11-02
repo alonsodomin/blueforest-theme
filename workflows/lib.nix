@@ -16,6 +16,7 @@ rec {
     "zed"
     "yazi"
     "kitty"
+    "mkdocs"
   ];
 
   # The actions that the workflows use. Their versions live here, so that they

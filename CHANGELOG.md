@@ -17,12 +17,22 @@ its own changelog:
 | Zed        | [modules/zed/CHANGELOG.md](modules/zed/CHANGELOG.md) |
 | Yazi       | [modules/yazi/CHANGELOG.md](modules/yazi/CHANGELOG.md) |
 | kitty      | [modules/kitty/CHANGELOG.md](modules/kitty/CHANGELOG.md) |
+| MkDocs     | [modules/mkdocs/CHANGELOG.md](modules/mkdocs/CHANGELOG.md) |
 
 Every configuration of the repository shares one version, which comes from the
 tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 
 ## Unreleased
 
+- The BlueForest theme now includes a theme for MkDocs, packaged as
+  `blueforest-mkdocs-theme`. It is the stylesheet that recolours the code
+  blocks of Material for MkDocs in the dark scheme, and the flake-parts module
+  of the application installs it in the sources of the documentation before
+  MkDocs builds the site
+- The documentation of the repository is built by the module of the application,
+  so that the site carries the theme of the repository itself
+- The CSS files of the repository are formatted with `prettier` and linted with
+  `stylelint`
 - Every theme page documents the installation with Nix before the manual
   installation. The pages of VS Code and Zed lead with the registry of their
   editor, and their installation with Nix is marked as the one for developing

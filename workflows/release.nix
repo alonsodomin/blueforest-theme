@@ -172,6 +172,16 @@ let
           "dist/blueforest-kitty-theme-$VERSION.conf"
       '';
     }
+    {
+      app = "mkdocs";
+      title = "MkDocs";
+      asset = "dist/blueforest-mkdocs-theme-$VERSION.css";
+      package = ''
+        mkdir -p dist
+        cp modules/mkdocs/themes/blueforest.css \
+          "dist/blueforest-mkdocs-theme-$VERSION.css"
+      '';
+    }
   ];
 
   applicationsByApp = listToAttrs (

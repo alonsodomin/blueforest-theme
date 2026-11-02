@@ -36,7 +36,8 @@ The formatter is `treefmt`, configured in `treefmt.nix`. It runs:
 - `nixfmt` for Nix
 - `deadnix` and `statix` for Nix
 - `taplo` for TOML
-- `prettier` for JSON, JSON5 and YAML
+- `prettier` for JSON, JSON5, YAML and CSS
+- `stylelint` for CSS
 - `xmllint` for XML and SVG
 - `stylua` for Lua
 - `shfmt` and `shellcheck` for shell
@@ -69,6 +70,7 @@ nix flake check "path:./modules/eza"
 nix flake check "path:./modules/zed"
 nix flake check "path:./modules/yazi"
 nix flake check "path:./modules/kitty"
+nix flake check "path:./modules/mkdocs"
 ```
 
 The `path:` prefix matters: the flakes are checked from the working tree, and
@@ -90,7 +92,8 @@ The names include `version`, `overlay`, `treefmt`, `workflows`,
 `opencode-module`, `sbt-package`, `sbt-module`, `eza-theme`, `eza-render`,
 `eza-module`, `zed-extension`, `zed-theme`, `zed-module`, `zed-colours`,
 `yazi-theme`, `yazi-render`, `yazi-module`, `yazi-tmtheme`, `kitty-theme`,
-`kitty-parse`, `kitty-module`, and `documentation`.
+`kitty-parse`, `kitty-module`, `mkdocs-theme`, `mkdocs-render`, and
+`documentation`.
 
 Root flake evaluation sees the working tree, so the changes of the working
 tree are part of it. `git add` new files before running `nix flake check` or

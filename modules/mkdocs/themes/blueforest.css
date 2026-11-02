@@ -1,0 +1,146 @@
+/*
+ * The BlueForest palette for the code blocks of the documentation site.
+ *
+ * Material for MkDocs paints the tokens of Pygments with the variables below,
+ * so the code blocks keep its markup and only take the colours of the theme.
+ *
+ * The overrides apply to the dark scheme alone: the light scheme keeps the
+ * palette of Material, which is the one the site is readable with.
+ */
+[data-md-color-scheme="slate"] {
+  /* The background and the foreground of the editor of the theme. */
+  --md-code-fg-color: #d0d0d0;
+  --md-code-bg-color: #141f2e;
+  --md-code-bg-color--light: #141f2ee6;
+  --md-code-bg-color--lighter: #141f2e8a;
+
+  /* The line that the reader focused. */
+  --md-code-hl-color: #ffcc33;
+  --md-code-hl-color--light: #ffcc331a;
+
+  /* The groups of tokens, named the way the theme names them. */
+  --md-code-hl-comment-color: #a0ffa0;
+  --md-code-hl-constant-color: #ffcc33;
+  --md-code-hl-function-color: #a2cff5;
+  --md-code-hl-generic-color: #d0d0d0;
+  --md-code-hl-keyword-color: #0099ff;
+  --md-code-hl-name-color: #d0d0d0;
+  --md-code-hl-number-color: #ff8080;
+  --md-code-hl-operator-color: #ffcc33;
+  --md-code-hl-punctuation-color: #e7e7e7;
+  --md-code-hl-special-color: #ffcc33;
+  --md-code-hl-string-color: #80ff80;
+  --md-code-hl-variable-color: #fffab1;
+
+  /* The diff of the theme. */
+  --md-typeset-del-color: #dc322f33;
+  --md-typeset-ins-color: #21918633;
+}
+
+/* Keywords, and the constants that are keywords, are bold. */
+[data-md-color-scheme="slate"] .highlight .k,
+[data-md-color-scheme="slate"] .highlight .kc,
+[data-md-color-scheme="slate"] .highlight .kd,
+[data-md-color-scheme="slate"] .highlight .kn,
+[data-md-color-scheme="slate"] .highlight .kp,
+[data-md-color-scheme="slate"] .highlight .kr,
+[data-md-color-scheme="slate"] .highlight .kt {
+  font-weight: 700;
+}
+
+[data-md-color-scheme="slate"] .highlight .kc {
+  color: var(--md-code-hl-keyword-color);
+}
+
+/* Comments are italic. */
+[data-md-color-scheme="slate"] .highlight .c,
+[data-md-color-scheme="slate"] .highlight .c1,
+[data-md-color-scheme="slate"] .highlight .ch,
+[data-md-color-scheme="slate"] .highlight .cm,
+[data-md-color-scheme="slate"] .highlight .cs {
+  font-style: italic;
+}
+
+/* A docstring is a string, and a preprocessor is a keyword. */
+[data-md-color-scheme="slate"] .highlight .sd {
+  color: var(--md-code-hl-string-color);
+}
+
+[data-md-color-scheme="slate"] .highlight .cp {
+  color: var(--md-code-hl-keyword-color);
+  font-weight: 700;
+}
+
+[data-md-color-scheme="slate"] .highlight .sh,
+[data-md-color-scheme="slate"] .highlight .sr,
+[data-md-color-scheme="slate"] .highlight .sx {
+  color: var(--md-code-hl-string-color);
+}
+
+/* Class names, exceptions, namespaces and tags. */
+[data-md-color-scheme="slate"] .highlight .nc,
+[data-md-color-scheme="slate"] .highlight .ne,
+[data-md-color-scheme="slate"] .highlight .nn,
+[data-md-color-scheme="slate"] .highlight .nt {
+  color: #91ccff;
+}
+
+/* A decorator names a function, and an entity is a constant. */
+[data-md-color-scheme="slate"] .highlight .nd {
+  color: #a2cff5;
+}
+
+[data-md-color-scheme="slate"] .highlight .ni {
+  color: #ffcc33;
+}
+
+/* A constant is not a built-in, and the language names a reserved identifier. */
+[data-md-color-scheme="slate"] .highlight .no {
+  color: #f7ff66;
+}
+
+[data-md-color-scheme="slate"] .highlight .bp {
+  color: #91ccff;
+  font-weight: 700;
+}
+
+/* The prompt of a console, and the headings of a diff. */
+[data-md-color-scheme="slate"] .highlight .gp,
+[data-md-color-scheme="slate"] .highlight .gh,
+[data-md-color-scheme="slate"] .highlight .gu {
+  color: var(--md-code-hl-keyword-color);
+}
+
+[data-md-color-scheme="slate"] .highlight .gh {
+  font-weight: 700;
+}
+
+/* Strong text, emphasised text, errors, and the traceback of a console. */
+[data-md-color-scheme="slate"] .highlight .gs {
+  color: #f7ff66;
+  font-weight: 700;
+}
+
+[data-md-color-scheme="slate"] .highlight .ge {
+  color: #f7ff66;
+  font-style: italic;
+}
+
+[data-md-color-scheme="slate"] .highlight .gr,
+[data-md-color-scheme="slate"] .highlight .gt {
+  color: #ff8080;
+}
+
+[data-md-color-scheme="slate"] .highlight .err {
+  color: #ff8080;
+  font-weight: 700;
+}
+
+/* The text of a diff is the colour of the entry of the theme. */
+[data-md-color-scheme="slate"] .highlight .gd {
+  color: #dc322f;
+}
+
+[data-md-color-scheme="slate"] .highlight .gi {
+  color: #219186;
+}
