@@ -80,6 +80,11 @@ therefore takes the application of bat as an input, and the flavour links to
 the theme of bat instead of carrying a copy of it. The check `yazi-tmtheme` of
 the repository checks that the link points to the theme of bat.
 
+The asset of the release of Yazi is unpacked by hand, so it cannot carry a
+link to the store: it carries the theme of bat itself. The check `yazi-asset`
+of the repository packages the theme the way the release workflow does, with
+the packaging of the workflow itself, and looks at what the asset carries.
+
 ## The flake module of an application
 
 `modules/<app>/flake-module.nix` describes what the application provides: its
@@ -162,6 +167,10 @@ The files in `.github/workflows/` are generated from the definitions in
 `workflows/` by `actions-nix`. They are not edited by hand: edit the
 definitions and run `nix run .#render-workflows`, or let the pre-commit hook of
 the development shell render them.
+
+The packaging of the assets of the release lives in `workflows/assets.nix`, and
+not in the workflow that uses it, so that the checks of the repository can
+package the applications as well, and look at what they produce.
 
 The documentation site is generated from `mkdocs.yml` and `docs/`, but its
 sources are hand-written. `mkdocs.yml` lives at the repository root, and the

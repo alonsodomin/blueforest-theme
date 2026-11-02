@@ -368,6 +368,14 @@
                 yazi = (top.config.flake.overlays.yazi pkgs pkgs).blueforest-yazi-theme;
                 bat = ./modules/bat/themes/BlueForest.tmTheme;
               };
+
+              # Fails if the asset of the release of Yazi does not carry the
+              # colours of the code preview.
+              yazi-asset = import ./tests/yazi-asset.nix {
+                inherit pkgs;
+                applications = import ./workflows/assets.nix;
+                modules = ./modules;
+              };
             }
             # Fails if the workflows of the repository are not the ones that
             # the definitions in `workflows/` render.

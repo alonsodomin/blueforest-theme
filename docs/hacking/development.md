@@ -92,8 +92,8 @@ The names include `version`, `overlay`, `treefmt`, `workflows`,
 `starship-module`, `opencode-theme`, `opencode-configuration`,
 `opencode-module`, `sbt-package`, `sbt-module`, `eza-theme`, `eza-render`,
 `eza-module`, `zed-extension`, `zed-theme`, `zed-module`, `zed-colours`,
-`yazi-theme`, `yazi-render`, `yazi-module`, `yazi-tmtheme`, `kitty-theme`,
-`kitty-parse`, `kitty-module`, `mkdocs-theme`, `mkdocs-render`, and
+`yazi-theme`, `yazi-render`, `yazi-module`, `yazi-tmtheme`, `yazi-asset`,
+`kitty-theme`, `kitty-parse`, `kitty-module`, `mkdocs-theme`, `mkdocs-render`, and
 `documentation`.
 
 Root flake evaluation sees the working tree, so the changes of the working
