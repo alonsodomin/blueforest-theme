@@ -157,3 +157,5 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
   `nix build .#documentation` and deploys it to GitHub Pages. The release
   workflow calls it as its last step, and the root flake checks the site with
   `mkdocs build --strict`
+- The code blocks of the documentation site use the BlueForest palette in dark
+  mode, and keep the palette of Material in light mode
