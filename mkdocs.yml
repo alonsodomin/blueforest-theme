@@ -28,6 +28,7 @@ nav:
       - Overview: hacking/index.md
       - Repository layout: hacking/repository.md
       - Development: hacking/development.md
+      - Documentation: hacking/documentation.md
       - Workflows: hacking/workflows.md
       - Releases: hacking/releases.md
       - Adding an application: hacking/adding-an-application.md
