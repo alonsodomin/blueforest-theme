@@ -23,20 +23,6 @@ which is `~/.config/eza/theme.yml` when `XDG_CONFIG_HOME` is not set. The
 `EZA_CONFIG_DIR` variable takes precedence over it: when it is set, eza reads
 the theme from `<EZA_CONFIG_DIR>/theme.yml` instead.
 
-## Install without Nix
-
-Download `blueforest-eza-theme-<version>.yml` from the
-[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
-put it where eza reads the theme from, under the name eza expects:
-
-```console
-mkdir -p ~/.config/eza
-cp blueforest-eza-theme-<version>.yml ~/.config/eza/theme.yml
-```
-
-That is all: eza reads the file every time it runs, so there is nothing to
-select and nothing to reload.
-
 ## Install with Nix
 
 The theme is part of the configuration of eza, so the Home Manager module
@@ -81,6 +67,20 @@ that takes precedence over the configuration directory of the user:
 
 There is no NixOS module: eza reads the theme from the configuration directory
 of the user, and there is no system-wide directory it reads.
+
+## Manual install
+
+Download `blueforest-eza-theme-<version>.yml` from the
+[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
+put it where eza reads the theme from, under the name eza expects:
+
+```console
+mkdir -p ~/.config/eza
+cp blueforest-eza-theme-<version>.yml ~/.config/eza/theme.yml
+```
+
+That is all: eza reads the file every time it runs, so there is nothing to
+select and nothing to reload.
 
 ## Invalid themes are ignored
 

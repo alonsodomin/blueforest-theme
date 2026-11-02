@@ -22,7 +22,7 @@ The theme is available for the following applications:
 | kitty       | [kitty](themes/kitty.md)       |
 
 Every application has its own installation page. Each page explains how to
-install the theme without Nix, how to install it with Nix, and how to select it
+install the theme with Nix, how to install it by hand, and how to select it
 once it is installed.
 
 ## Installing

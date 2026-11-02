@@ -23,6 +23,11 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 
 ## Unreleased
 
+- Every theme page documents the installation with Nix before the manual
+  installation. The pages of VS Code and Zed lead with the registry of their
+  editor, and their installation with Nix is marked as the one for developing
+  and testing the theme. The page of VS Code documents the installation with
+  `nix-vscode-extensions`, which installs the published extension
 - The BlueForest theme now includes a theme for kitty, packaged as
   `blueforest-kitty-theme`. It is the configuration file kitty reads, and the
   Home Manager module installs it in the directory kitty reads the themes
@@ -152,5 +157,3 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
   `nix build .#documentation` and deploys it to GitHub Pages. The release
   workflow calls it as its last step, and the root flake checks the site with
   `mkdocs build --strict`
-- Every theme page documents installation without Nix as well as with Nix. The
-  VS Code page recommends Open VSX first

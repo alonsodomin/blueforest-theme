@@ -105,9 +105,15 @@ application that is not in the table is not released.
 Add a page under `docs/themes/<app>.md` with:
 
 - a description of the theme
-- installation without Nix
 - installation with Nix
+- manual installation
 - how to select the theme
+
+The manual installation goes after the installation with Nix, and it is the
+section that explains how to install the published files by hand. An
+application that publishes its theme to a registry of its own, such as VS Code
+and Zed, leads with that registry instead, and its installation with Nix
+carries a note that the route is meant for developing and testing the theme.
 
 Add it to the navigation in `mkdocs.yml`, to the table in `docs/themes/index.md`,
 and to the table in the root `README.md`.

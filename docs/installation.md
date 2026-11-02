@@ -94,5 +94,5 @@ names of the packages, themes, and modules.
 ## Per-application instructions
 
 The [themes overview](themes/index.md) links to the installation page of every
-application. Each page explains how to install the theme without Nix, how to
-install it with Nix, and how to select it.
+application. Each page explains how to install the theme with Nix, how to
+install it by hand, and how to select it once it is installed.

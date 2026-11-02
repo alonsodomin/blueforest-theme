@@ -36,26 +36,6 @@ The file is a theme of kitty as well: it carries the metadata that the
 `themes` kitten reads, so `kitty +kitten themes` lists it under the name
 `BlueForest`, with its author, its licence, and a short description of it.
 
-## Install without Nix
-
-Download `blueforest-kitty-theme-<version>.conf` from the
-[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
-put it where kitty reads the themes from:
-
-```console
-mkdir -p ~/.config/kitty/themes
-cp blueforest-kitty-theme-<version>.conf ~/.config/kitty/themes/blueforest.conf
-```
-
-Then select the theme in the configuration of kitty, `~/.config/kitty/kitty.conf`:
-
-```console
-echo 'include themes/blueforest.conf' >>~/.config/kitty/kitty.conf
-```
-
-kitty reads its configuration every time it starts, so there is nothing to
-reload.
-
 ## Install with Nix
 
 The theme is part of the configuration of kitty, so the Home Manager module
@@ -105,6 +85,26 @@ of the theme:
 
 There is no NixOS module: the theme of the user lives in the configuration
 directory of the user, and that is where the themes kitten finds it.
+
+## Manual install
+
+Download `blueforest-kitty-theme-<version>.conf` from the
+[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
+put it where kitty reads the themes from:
+
+```console
+mkdir -p ~/.config/kitty/themes
+cp blueforest-kitty-theme-<version>.conf ~/.config/kitty/themes/blueforest.conf
+```
+
+Then select the theme in the configuration of kitty, `~/.config/kitty/kitty.conf`:
+
+```console
+echo 'include themes/blueforest.conf' >>~/.config/kitty/kitty.conf
+```
+
+kitty reads its configuration every time it starts, so there is nothing to
+reload.
 
 ## Invalid themes are ignored
 

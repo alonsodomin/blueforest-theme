@@ -49,6 +49,68 @@ For VSCodium, replace `code` with `codium`.
 
 ## Install with Nix
 
+!!! info
+
+    The theme is published as an extension, so the recommended way to install
+    it with Nix is [nix-vscode-extensions](#using-nix-vscode-extensions),
+    which installs the published extension. Installing it from this flake is
+    meant for developing and testing the theme.
+
+### Using nix-vscode-extensions
+
+[nix-vscode-extensions](https://github.com/nix-community/nix-vscode-extensions)
+carries the extensions of Open VSX and of the VS Marketplace as Nix
+expressions. The theme is one of them, under the name
+`alonsodomin.blueforest-theme`. Add the flake to your inputs:
+
+```nix
+{
+  inputs.nix-vscode-extensions = {
+    url = "github:nix-community/nix-vscode-extensions";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+}
+```
+
+Its overlay adds the extensions to a nixpkgs instance, and the theme is
+selected by its name:
+
+```nix
+{
+  nixpkgs.overlays = [ nix-vscode-extensions.overlays.default ];
+
+  programs.vscode = {
+    enable = true;
+    extensions = [
+      pkgs.open-vsx.alonsodomin.blueforest-theme
+    ];
+  };
+}
+```
+
+The same module works for VSCodium through its profile:
+
+```nix
+programs.vscodium = {
+  enable = true;
+  profiles.default.extensions = [
+    pkgs.open-vsx.alonsodomin.blueforest-theme
+  ];
+};
+```
+
+This installs the extension that was published to Open VSX, so it is the
+version of a release and not the one of the working tree. The extension
+declares VS Code 1.104.0 as its minimum version, so the editor has to be that
+version or newer.
+
+### Installing from this flake
+
+!!! warning
+
+    This is for developing and testing the theme only. It installs the theme
+    of the working tree of the repository, and not the published extension.
+
 The module of the application adds the overlay that provides
 `pkgs.blueforest-vscode-theme`. It does not enable or configure an editor, so
 that which editor installs the theme, and whether it is installed at all,
@@ -88,6 +150,10 @@ On NixOS, import `blueforest.nixosModules.vscode` and add the extension to
 
 If you only want the package, it is also available as
 `blueforest.packages.${system}.blueforest-vscode-theme`.
+
+The flake also publishes the extension in the shape
+[nix-vscode-extensions](#using-nix-vscode-extensions) uses, under
+`blueforest.extensions.${system}.open-vsx.alonsodomin.blueforest-theme`.
 
 ## Select the theme
 
