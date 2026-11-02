@@ -41,6 +41,28 @@
       },
       "parent": []
     },
+    "claude-code": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "./modules/claude-code",
+        "type": "path"
+      },
+      "original": {
+        "path": "./modules/claude-code",
+        "type": "path"
+      },
+      "parent": []
+    },
     "devshell": {
       "inputs": {
         "nixpkgs": [
@@ -547,6 +569,7 @@
       "inputs": {
         "actions-nix": "actions-nix",
         "bat": "bat",
+        "claude-code": "claude-code",
         "devshell": "devshell",
         "eza": "eza",
         "flake-parts": "flake-parts_2",

@@ -40,6 +40,7 @@ jobs:
         - path:./modules/yazi
         - path:./modules/kitty
         - path:./modules/mkdocs
+        - path:./modules/claude-code
   merge-gate:
     if: always()
     name: Merge gate

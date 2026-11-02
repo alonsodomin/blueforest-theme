@@ -8,9 +8,11 @@ combined ones.
 | `checks.<system>.<app>-<check>` | The checks of every application |
 | `devShells.default` | The development shell of the repository |
 | `extensions.<system>.open-vsx.alonsodomin.blueforest-theme` | The same shape `nix-vscode-extensions` uses |
+| `flakeModules.claude-code` | The module of the Claude Code theme, for flake-parts |
 | `flakeModules.mkdocs` | The module of the MkDocs theme, for flake-parts |
 | `homeModules.eza` | The module of the eza theme |
 | `homeModules.kitty` | The module of the kitty theme |
+| `homeModules.claude-code` | The module of the Claude Code theme |
 | `homeModules.sbt` | The module of the sbt prompt |
 | `homeModules.yazi` | The module of the Yazi flavour |
 | `homeModules.zed` | The module of the Zed theme |
@@ -21,6 +23,7 @@ combined ones.
 | `nixosModules.vscode`, `homeModules.vscode` | The module of the VS Code theme |
 | `nixvimModules.neovim` | The module of the Neovim theme, for nixvim |
 | `overlays.bat` | Adds `pkgs.blueforest-bat-theme` to a nixpkgs instance. The aggregate does not compose it |
+| `overlays.claude-code` | Adds `pkgs.blueforest-claude-code-theme` to a nixpkgs instance |
 | `overlays.default` | Adds the packages of the VS Code, Starship, OpenCode, sbt, Neovim, eza, Zed, Yazi, kitty, and MkDocs applications to a nixpkgs instance |
 | `overlays.eza` | Adds `pkgs.blueforest-eza-theme` to a nixpkgs instance |
 | `overlays.kitty` | Adds `pkgs.blueforest-kitty-theme` to a nixpkgs instance |
@@ -33,6 +36,7 @@ combined ones.
 | `overlays.yazi` | Adds `pkgs.blueforest-yazi-theme` to a nixpkgs instance |
 | `overlays.zed` | Adds `pkgs.blueforest-zed-theme` to a nixpkgs instance |
 | `packages.<system>.blueforest-bat-theme` | The theme for bat |
+| `packages.<system>.blueforest-claude-code-theme` | The theme for Claude Code |
 | `packages.<system>.blueforest-eza-theme` | The theme for eza |
 | `packages.<system>.blueforest-kitty-theme` | The theme for kitty |
 | `packages.<system>.blueforest-mkdocs-theme` | The theme for MkDocs |

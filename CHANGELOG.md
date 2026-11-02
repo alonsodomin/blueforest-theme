@@ -18,12 +18,17 @@ its own changelog:
 | Yazi       | [modules/yazi/CHANGELOG.md](modules/yazi/CHANGELOG.md) |
 | kitty      | [modules/kitty/CHANGELOG.md](modules/kitty/CHANGELOG.md) |
 | MkDocs     | [modules/mkdocs/CHANGELOG.md](modules/mkdocs/CHANGELOG.md) |
+| Claude Code | [modules/claude-code/CHANGELOG.md](modules/claude-code/CHANGELOG.md) |
 
 Every configuration of the repository shares one version, which comes from the
 tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 
 ## Unreleased
 
+- The BlueForest theme now includes a theme for Claude Code, packaged as
+  `blueforest-claude-code-theme`. It is the custom theme Claude Code reads,
+  and the Home Manager module installs it in the directory Claude Code reads
+  the themes from, and selects it in the settings of Claude Code
 - The BlueForest theme now includes a theme for MkDocs, packaged as
   `blueforest-mkdocs-theme`. It is the stylesheet that recolours the code
   blocks of Material for MkDocs in the dark scheme, and the flake-parts module

@@ -55,6 +55,31 @@ jobs:
         - path:./modules/yazi
         - path:./modules/kitty
         - path:./modules/mkdocs
+        - path:./modules/claude-code
+  claude-code:
+    name: 'Claude Code: Package'
+    needs:
+    - version
+    - create-release
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        submodules: true
+    - env:
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Package the theme
+      run: |-
+        mkdir -p dist
+        cp modules/claude-code/themes/blueforest.json \
+          "dist/blueforest-claude-code-theme-$VERSION.json"
+    - env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TAG: v${{ needs.version.outputs.version }}
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Upload the asset to the release
+      run: gh release upload "$TAG" "dist/blueforest-claude-code-theme-$VERSION.json"
+        --clobber
   create-release:
     name: Create the release
     needs:
@@ -264,6 +289,7 @@ jobs:
     - yazi
     - kitty
     - mkdocs
+    - claude-code
     runs-on: ubuntu-latest
     steps:
     - env:

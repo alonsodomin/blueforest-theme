@@ -11,6 +11,7 @@ The theme is available for the following applications:
 | Application | Documentation                  |
 | ----------- | ------------------------------ |
 | bat         | [bat](themes/bat.md)           |
+| Claude Code | [Claude Code](themes/claude-code.md) |
 | eza         | [eza](themes/eza.md)           |
 | kitty       | [kitty](themes/kitty.md)       |
 | MkDocs      | [MkDocs](themes/mkdocs.md)     |
