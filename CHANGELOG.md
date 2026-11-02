@@ -26,6 +26,14 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 
 ## Unreleased
 
+- The aggregate NixOS and Home Manager modules of the repository no longer
+  carry the modules of VS Code and Zed. A consumer that wants them imports
+  `blueforest.nixosModules.vscode`, `blueforest.homeModules.vscode` or
+  `blueforest.homeModules.zed` explicitly
+- The module of the theme of MkDocs is only a flake module, under the name
+  `flakeModules.mkdocs`, and it is not part of `flakeModules.default`. The
+  module of mkdocs-flake declares arguments, and a module that declares
+  arguments can only be imported once per flake
 - The extension of the theme of Zed is a submodule that tracks the branch
   `main` of its repository
 - The development shell generates and serves the documentation site with

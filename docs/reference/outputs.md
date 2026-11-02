@@ -10,6 +10,7 @@ combined ones.
 | `extensions.<system>.open-vsx.alonsodomin.blueforest-theme` | The same shape `nix-vscode-extensions` uses |
 | `flakeModules.btop` | The module of the btop theme, for flake-parts |
 | `flakeModules.claude-code` | The module of the Claude Code theme, for flake-parts |
+| `flakeModules.default` | The modules of every application, except the one of MkDocs |
 | `flakeModules.mkdocs` | The module of the MkDocs theme, for flake-parts |
 | `homeModules.btop` | The module of the btop theme |
 | `homeModules.eza` | The module of the eza theme |
@@ -18,7 +19,7 @@ combined ones.
 | `homeModules.sbt` | The module of the sbt prompt |
 | `homeModules.yazi` | The module of the Yazi flavour |
 | `homeModules.zed` | The module of the Zed theme |
-| `nixosModules.default`, `homeModules.default` | The modules of the applications that provide one |
+| `nixosModules.default`, `homeModules.default` | The modules of the applications that provide one. The modules of VS Code and Zed are not among them: they are imported explicitly |
 | `nixosModules.neovim`, `homeModules.neovim` | The module of the Neovim theme |
 | `nixosModules.opencode`, `homeModules.opencode` | The module of the OpenCode theme |
 | `nixosModules.starship`, `homeModules.starship` | The module of the Starship preset |
@@ -78,4 +79,7 @@ The module of the MkDocs theme is the exception: it is a helper that installs
 the stylesheet in the sources of a documentation site. It takes the
 `mkdocs-flake` input of the consumer when it has one, and the one of the
 application otherwise, so a consumer that imports it needs no `mkdocs-flake`
-input of its own.
+input of its own. It is not part of `flakeModules.default`, because the module
+of `mkdocs-flake` declares arguments, and a module that declares arguments can
+only be imported once per flake. A consumer that wants the theme of MkDocs
+imports `flakeModules.mkdocs`, which is the only way to get it.

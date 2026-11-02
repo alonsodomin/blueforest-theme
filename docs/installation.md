@@ -14,6 +14,7 @@ configuration.
       nixosConfigurations.myhost = nixpkgs.lib.nixosSystem {
         modules = [
           blueforest.nixosModules.default
+          blueforest.nixosModules.vscode
           {
             programs.vscode = {
               enable = true;
@@ -38,6 +39,7 @@ The same aggregate works for Home Manager as `blueforest.homeModules.default`:
 {
   imports = [
     blueforest.homeModules.default
+    blueforest.homeModules.vscode
   ];
 
   programs.vscodium = {
@@ -48,6 +50,11 @@ The same aggregate works for Home Manager as `blueforest.homeModules.default`:
   };
 }
 ```
+
+The modules of VS Code and Zed are not part of the aggregates: they are
+imported explicitly, as the examples above do. The module of the theme of
+MkDocs is not part of them either, and it is a flake module:
+`inputs.blueforest.flakeModules.mkdocs`.
 
 If you prefer to wire the overlay yourself:
 

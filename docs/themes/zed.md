@@ -66,6 +66,9 @@ The module does not enable Zed: it only adds the theme to the configuration of
 an editor the consumer already installed. Zed watches that directory, so the
 theme is picked up without restarting the editor.
 
+The module is not part of the aggregate modules of the repository: it is
+imported explicitly, as the example above does.
+
 If you only want the package, it is also available as
 `blueforest.packages.${system}.blueforest-zed-theme`. It carries the
 extension, which is the manifest and the theme:

@@ -35,6 +35,10 @@ which is the module that builds a documentation site with Nix. The module of
 this repository imports it, so a consumer that imports the module needs no
 `mkdocs-flake` input of its own.
 
+It is not part of `flakeModules.default` of the repository, because the module
+of mkdocs-flake declares arguments, and a module that declares arguments can
+only be imported once per flake. `flakeModules.mkdocs` is the way to get it.
+
 A project that uses flake-parts imports the module of this repository:
 
 ```nix

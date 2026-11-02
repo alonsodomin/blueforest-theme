@@ -116,6 +116,9 @@ The module of the application adds the overlay that provides
 that which editor installs the theme, and whether it is installed at all,
 stays your decision.
 
+The module is not part of the aggregate modules of the repository: it is
+imported explicitly, as the examples below do.
+
 With Home Manager:
 
 ```nix

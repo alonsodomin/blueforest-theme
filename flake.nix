@@ -242,16 +242,23 @@
                 inputs.zed.flakeModule
                 inputs.yazi.flakeModule
                 inputs.kitty.flakeModule
-                inputs.mkdocs.flakeModule
                 inputs.claude-code.flakeModule
                 inputs.btop.flakeModule
+
+                # The module of MkDocs is not here. It imports the module of
+                # mkdocs-flake, which declares its arguments, and a module
+                # that declares arguments can only be imported once per
+                # flake. A consumer that wants the theme of MkDocs imports
+                # `flakeModules.mkdocs`, which is the only way to get it.
               ];
             };
           };
 
+          # The aggregate modules carry the modules of the applications that
+          # provide one. The modules of VS Code and Zed are not among them:
+          # they are imported explicitly by the consumers that want them.
           nixosModules.default = {
             imports = [
-              config.flake.nixosModules.vscode
               config.flake.nixosModules.starship
               config.flake.nixosModules.opencode
               config.flake.nixosModules.neovim
@@ -260,13 +267,11 @@
 
           homeModules.default = {
             imports = [
-              config.flake.homeModules.vscode
               config.flake.homeModules.starship
               config.flake.homeModules.opencode
               config.flake.homeModules.sbt
               config.flake.homeModules.neovim
               config.flake.homeModules.eza
-              config.flake.homeModules.zed
               config.flake.homeModules.yazi
               config.flake.homeModules.kitty
               config.flake.homeModules.claude-code
