@@ -22,6 +22,14 @@ The theme is `PromptThemes.BlueforestTheme` in the upstream repository. See the
 [sbt-prompt repository](https://github.com/alonsodomin/sbt-prompt) for the
 prompt and the theme themselves.
 
+The theme is a port of the [Starship preset](starship.md) of this repository,
+and its segments follow it: the sbt logo, the current project, the current Git
+branch with the status of the repository, and the Scala version of the
+project, joined by powerline arrows. The status of the repository is read the
+way Starship reads it, so it shows the number of files that are staged,
+modified, deleted, renamed, untracked or in conflict, and the number of
+commits that are not pushed yet.
+
 The prompt uses true colour and Nerd Font glyphs, so the terminal has to
 support both.
 
