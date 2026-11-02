@@ -19,6 +19,7 @@ rec {
     "mkdocs"
     "claude-code"
     "btop"
+    "lazygit"
   ];
 
   # The actions that the workflows use. Their versions live here, so that they

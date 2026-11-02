@@ -42,6 +42,7 @@ jobs:
         - path:./modules/mkdocs
         - path:./modules/claude-code
         - path:./modules/btop
+        - path:./modules/lazygit
   merge-gate:
     if: always()
     name: Merge gate

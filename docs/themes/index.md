@@ -11,6 +11,7 @@ installed.
 | Claude Code | [Nix](claude-code.md) or [release asset](claude-code.md) |
 | eza         | [Nix](eza.md) or [release asset](eza.md)             |
 | kitty       | [Nix](kitty.md) or [release asset](kitty.md)         |
+| lazygit     | [Nix](lazygit.md) or [release asset](lazygit.md)     |
 | MkDocs      | [Nix](mkdocs.md) or [release asset](mkdocs.md)       |
 | Neovim      | [Nix](neovim.md) or [release asset](neovim.md)       |
 | OpenCode    | [Nix](opencode.md) or [release asset](opencode.md)   |
