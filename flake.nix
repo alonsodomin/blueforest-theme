@@ -154,6 +154,14 @@
       inputs.flake-parts.follows = "flake-parts";
       inputs.home-manager.follows = "home-manager";
     };
+
+    lazygit = {
+      url = "path:./modules/lazygit";
+
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
   outputs =
@@ -187,6 +195,7 @@
           inputs.mkdocs.flakeModule
           inputs.claude-code.flakeModule
           inputs.btop.flakeModule
+          inputs.lazygit.flakeModule
         ];
 
         systems = [
@@ -214,6 +223,7 @@
             config.flake.overlays.mkdocs
             config.flake.overlays.claude-code
             config.flake.overlays.btop
+            config.flake.overlays.lazygit
           ];
 
           flakeModules = {
@@ -230,6 +240,7 @@
             mkdocs = inputs.mkdocs.flakeModule;
             claude-code = inputs.claude-code.flakeModule;
             btop = inputs.btop.flakeModule;
+            lazygit = inputs.lazygit.flakeModule;
             default = {
               imports = [
                 inputs.bat.flakeModule
@@ -244,6 +255,7 @@
                 inputs.kitty.flakeModule
                 inputs.claude-code.flakeModule
                 inputs.btop.flakeModule
+                inputs.lazygit.flakeModule
 
                 # The module of MkDocs is not here. It imports the module of
                 # mkdocs-flake, which declares its arguments, and a module
@@ -276,6 +288,7 @@
               config.flake.homeModules.kitty
               config.flake.homeModules.claude-code
               config.flake.homeModules.btop
+              config.flake.homeModules.lazygit
             ];
           };
         };
@@ -380,6 +393,7 @@
                   "blueforest-mkdocs-theme"
                   "blueforest-claude-code-theme"
                   "blueforest-btop-theme"
+                  "blueforest-lazygit-theme"
 
                   # The theme of bat comes with the one of Yazi, which
                   # carries it for the colours of the code preview.
@@ -399,6 +413,15 @@
               zed-colours = import ./tests/zed-colours.nix {
                 inherit pkgs;
                 theme = (top.config.flake.overlays.zed pkgs pkgs).blueforest-zed-theme;
+                vscode = ./modules/vscode/themes/Blueforest-color-theme.json;
+                neovim = ./modules/neovim/themes/blueforest.lua;
+              };
+
+              # Fails if the colours of the theme of lazygit are not the
+              # colours of the other applications of the repository.
+              lazygit-colours = import ./tests/lazygit-colours.nix {
+                inherit pkgs;
+                theme = (top.config.flake.overlays.lazygit pkgs pkgs).blueforest-lazygit-theme;
                 vscode = ./modules/vscode/themes/Blueforest-color-theme.json;
                 neovim = ./modules/neovim/themes/blueforest.lua;
               };

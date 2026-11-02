@@ -80,6 +80,7 @@ jobs:
         - path:./modules/mkdocs
         - path:./modules/claude-code
         - path:./modules/btop
+        - path:./modules/lazygit
   claude-code:
     name: 'Claude Code: Package'
     needs:
@@ -225,6 +226,30 @@ jobs:
         VERSION: ${{ needs.version.outputs.version }}
       name: Upload the asset to the release
       run: gh release upload "$TAG" "dist/blueforest-kitty-theme-$VERSION.conf" --clobber
+  lazygit:
+    name: 'lazygit: Package'
+    needs:
+    - version
+    - create-release
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        submodules: true
+    - env:
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Package the theme
+      run: |-
+        mkdir -p dist
+        cp modules/lazygit/themes/blueforest.json \
+          "dist/blueforest-lazygit-theme-$VERSION.json"
+    - env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TAG: v${{ needs.version.outputs.version }}
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Upload the asset to the release
+      run: gh release upload "$TAG" "dist/blueforest-lazygit-theme-$VERSION.json"
+        --clobber
   mkdocs:
     name: 'MkDocs: Package'
     needs:
@@ -315,6 +340,7 @@ jobs:
     - mkdocs
     - claude-code
     - btop
+    - lazygit
     runs-on: ubuntu-latest
     steps:
     - env:

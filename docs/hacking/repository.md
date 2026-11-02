@@ -16,6 +16,7 @@ self-contained flake.
 │   ├── claude-code/
 │   ├── eza/
 │   ├── kitty/
+│   ├── lazygit/
 │   ├── mkdocs/
 │   ├── neovim/
 │   ├── opencode/
@@ -60,6 +61,13 @@ compare the packaged copies against them:
 - `modules/kitty/themes/blueforest.conf`
 - `modules/mkdocs/themes/blueforest.css`
 - `modules/claude-code/themes/blueforest.json`
+- `modules/lazygit/themes/blueforest.json`
+
+The theme of lazygit is a configuration file of lazygit that carries the theme
+under the `gui.theme` key, because lazygit has no theme file of its own. It is
+JSON, and JSON is a subset of YAML: lazygit reads the file as its own format,
+and Nix reads it at evaluation time, so that the colours of the Home Manager
+module and the colours of the file are the same ones.
 
 `modules/sbt` is the exception: it does not define a theme. It installs the
 upstream `sbt-prompt` plugin and selects its `BlueforestTheme` from

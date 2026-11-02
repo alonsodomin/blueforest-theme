@@ -194,4 +194,14 @@ in
         "dist/blueforest-btop-theme-$VERSION.theme"
     '';
   }
+  {
+    app = "lazygit";
+    title = "lazygit";
+    asset = "dist/blueforest-lazygit-theme-$VERSION.json";
+    package = ''
+      mkdir -p dist
+      cp modules/lazygit/themes/blueforest.json \
+        "dist/blueforest-lazygit-theme-$VERSION.json"
+    '';
+  }
 ]

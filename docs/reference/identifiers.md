@@ -48,6 +48,12 @@ modules of the repository.
   from `$XDG_CONFIG_HOME/kitty/themes/`. Select it with
   `include themes/blueforest.conf` in the configuration of kitty. The
   `themes` kitten lists it under the name `BlueForest`.
+- The lazygit package is `blueforest-lazygit-theme`. The lazygit theme is the
+  `gui.theme` mapping of the configuration file of lazygit, and the file of
+  the theme is `blueforest.json`, which lazygit reads as
+  `$XDG_CONFIG_HOME/lazygit/config.yml`. The module
+  `blueforest.homeModules.lazygit` adds it to the settings of lazygit when
+  `programs.lazygit.enable = true`.
 - The Claude Code package is `blueforest-claude-code-theme`. The Claude Code
   theme is `blueforest`, the name of the file `blueforest.json`, which Claude
   Code reads from `$HOME/.claude/themes/`. Select it with

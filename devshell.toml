@@ -27,6 +27,7 @@ packages = [
   "yazi",
   "kitty",
   "btop",
+  "lazygit",
 ]
 
 [[commands]]

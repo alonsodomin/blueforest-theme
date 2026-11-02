@@ -329,6 +329,28 @@
       },
       "parent": []
     },
+    "lazygit": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "./modules/lazygit",
+        "type": "path"
+      },
+      "original": {
+        "path": "./modules/lazygit",
+        "type": "path"
+      },
+      "parent": []
+    },
     "mkdocs": {
       "inputs": {
         "flake-parts": [
@@ -598,6 +620,7 @@
         "flake-parts": "flake-parts_2",
         "home-manager": "home-manager",
         "kitty": "kitty",
+        "lazygit": "lazygit",
         "mkdocs": "mkdocs",
         "mkdocs-flake": "mkdocs-flake",
         "neovim": "neovim",

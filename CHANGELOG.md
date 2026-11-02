@@ -20,6 +20,7 @@ its own changelog:
 | kitty      | [modules/kitty/CHANGELOG.md](modules/kitty/CHANGELOG.md) |
 | MkDocs     | [modules/mkdocs/CHANGELOG.md](modules/mkdocs/CHANGELOG.md) |
 | Claude Code | [modules/claude-code/CHANGELOG.md](modules/claude-code/CHANGELOG.md) |
+| lazygit    | [modules/lazygit/CHANGELOG.md](modules/lazygit/CHANGELOG.md) |
 
 Every configuration of the repository shares one version, which comes from the
 tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
@@ -55,6 +56,10 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
   `blueforest-btop-theme`. It is the theme file btop reads, and the Home
   Manager module installs it in the directory btop reads the themes from, and
   selects it in the configuration of btop
+- The BlueForest theme now includes a theme for lazygit, packaged as
+  `blueforest-lazygit-theme`. lazygit has no theme file of its own, so the
+  theme is the `gui.theme` mapping of its configuration file, and the Home
+  Manager module adds it to the settings of lazygit, colour by colour
 - The theme of Yazi depends on the theme of bat, instead of carrying a copy of
   it. The flavour of Yazi links to the TextMate theme of bat for the colours
   of the code preview, the package of the theme of Yazi carries the package of

@@ -15,6 +15,7 @@ The theme is available for the following applications:
 | Claude Code | [Claude Code](themes/claude-code.md) |
 | eza         | [eza](themes/eza.md)           |
 | kitty       | [kitty](themes/kitty.md)       |
+| lazygit     | [lazygit](themes/lazygit.md)   |
 | MkDocs      | [MkDocs](themes/mkdocs.md)     |
 | Neovim      | [Neovim](themes/neovim.md)     |
 | OpenCode    | [OpenCode](themes/opencode.md) |

@@ -16,6 +16,7 @@ nav:
       - Claude Code: themes/claude-code.md
       - eza: themes/eza.md
       - kitty: themes/kitty.md
+      - lazygit: themes/lazygit.md
       - MkDocs: themes/mkdocs.md
       - Neovim: themes/neovim.md
       - OpenCode: themes/opencode.md

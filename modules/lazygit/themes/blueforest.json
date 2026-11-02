@@ -1,0 +1,19 @@
+{
+  "gui": {
+    "theme": {
+      "activeBorderColor": ["#0099FF", "bold"],
+      "inactiveBorderColor": ["#333333"],
+      "searchingActiveBorderColor": ["#FFCC33", "bold"],
+      "optionsTextColor": ["#91CCFF"],
+      "selectedLineFgColor": ["bold"],
+      "selectedLineBgColor": ["#273e5c"],
+      "inactiveViewSelectedLineBgColor": ["#1b2b40"],
+      "cherryPickedCommitFgColor": ["#141F2E"],
+      "cherryPickedCommitBgColor": ["#219186"],
+      "markedBaseCommitFgColor": ["#141F2E"],
+      "markedBaseCommitBgColor": ["#c57633"],
+      "unstagedChangesColor": ["#FFCC33"],
+      "defaultFgColor": ["#D0D0D0"]
+    }
+  }
+}
