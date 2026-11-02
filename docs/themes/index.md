@@ -15,6 +15,7 @@ installed.
 | eza         | [Release asset or Nix](eza.md)                |
 | Zed         | [Extension Gallery or Nix](zed.md)           |
 | Yazi        | [Release asset or Nix](yazi.md)              |
+| kitty       | [Release asset or Nix](kitty.md)             |
 
 The release assets are attached to the
 [GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases).

@@ -162,6 +162,16 @@ let
         tar -czf "dist/blueforest-yazi-theme-$VERSION.tar.gz" -C staging .
       '';
     }
+    {
+      app = "kitty";
+      title = "kitty";
+      asset = "dist/blueforest-kitty-theme-$VERSION.conf";
+      package = ''
+        mkdir -p dist
+        cp modules/kitty/themes/blueforest.conf \
+          "dist/blueforest-kitty-theme-$VERSION.conf"
+      '';
+    }
   ];
 
   applicationsByApp = listToAttrs (

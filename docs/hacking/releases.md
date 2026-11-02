@@ -54,6 +54,8 @@ that the release never carries half of its assets.
 | sbt | `blueforest-sbt-prompt-<version>.tar.gz` |
 | eza | `blueforest-eza-theme-<version>.yml` |
 | Zed | `blueforest-zed-theme-<version>.tar.gz` |
+| Yazi | `blueforest-yazi-theme-<version>.tar.gz` |
+| kitty | `blueforest-kitty-theme-<version>.conf` |
 
 The VS Code extension is also published to Open VSX and to the VS Marketplace.
 `modules/vscode/package.json` carries the placeholder `0.0.0`: the manifest is

@@ -38,6 +38,7 @@ jobs:
         - path:./modules/eza
         - path:./modules/zed
         - path:./modules/yazi
+        - path:./modules/kitty
   merge-gate:
     if: always()
     name: Merge gate

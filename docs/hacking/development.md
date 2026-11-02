@@ -67,6 +67,8 @@ nix flake check "path:./modules/opencode"
 nix flake check "path:./modules/sbt"
 nix flake check "path:./modules/eza"
 nix flake check "path:./modules/zed"
+nix flake check "path:./modules/yazi"
+nix flake check "path:./modules/kitty"
 ```
 
 The `path:` prefix matters: the flakes are checked from the working tree, and
@@ -86,8 +88,9 @@ The names include `version`, `overlay`, `treefmt`, `workflows`,
 `neovim-module`, `starship-preset`, `starship-render`, `starship-wrapper`,
 `starship-module`, `opencode-theme`, `opencode-configuration`,
 `opencode-module`, `sbt-package`, `sbt-module`, `eza-theme`, `eza-render`,
-`eza-module`, `zed-extension`, `zed-theme`, `zed-module`, `zed-colours`, and
-`documentation`.
+`eza-module`, `zed-extension`, `zed-theme`, `zed-module`, `zed-colours`,
+`yazi-theme`, `yazi-render`, `yazi-module`, `yazi-tmtheme`, `kitty-theme`,
+`kitty-parse`, `kitty-module`, and `documentation`.
 
 Root flake evaluation sees the working tree, so the changes of the working
 tree are part of it. `git add` new files before running `nix flake check` or

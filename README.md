@@ -22,6 +22,7 @@ application, is at
 | eza | <https://alonsodomin.github.io/blueforest-theme/themes/eza/> |
 | Zed | <https://alonsodomin.github.io/blueforest-theme/themes/zed/> |
 | Yazi | <https://alonsodomin.github.io/blueforest-theme/themes/yazi/> |
+| kitty | <https://alonsodomin.github.io/blueforest-theme/themes/kitty/> |
 
 ## Installation
 
