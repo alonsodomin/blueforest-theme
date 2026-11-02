@@ -285,6 +285,28 @@
       },
       "parent": []
     },
+    "mkdocs": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "mkdocs-flake": [
+          "mkdocs-flake"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "./modules/mkdocs",
+        "type": "path"
+      },
+      "original": {
+        "path": "./modules/mkdocs",
+        "type": "path"
+      },
+      "parent": []
+    },
     "mkdocs-flake": {
       "inputs": {
         "flake-parts": "flake-parts_3",
@@ -530,6 +552,7 @@
         "flake-parts": "flake-parts_2",
         "home-manager": "home-manager",
         "kitty": "kitty",
+        "mkdocs": "mkdocs",
         "mkdocs-flake": "mkdocs-flake",
         "neovim": "neovim",
         "nixpkgs": "nixpkgs",

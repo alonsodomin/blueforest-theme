@@ -130,6 +130,8 @@ that the documentation describes.
 - Add an entry to `modules/<app>/CHANGELOG.md`.
 - If the application has a version that an external tool must track, add it to
   `renovate.json5`.
+- If the application publishes a module that other flakes import, add it to
+  the conventions of `AGENTS.md`, so that the next one follows the same shape.
 
 The application is released with the rest of the repository: there is no
 release script per application, and one tag releases every application.

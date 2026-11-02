@@ -126,6 +126,14 @@
       inputs.flake-parts.follows = "flake-parts";
       inputs.home-manager.follows = "home-manager";
     };
+
+    mkdocs = {
+      url = "path:./modules/mkdocs";
+
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.mkdocs-flake.follows = "mkdocs-flake";
+    };
   };
 
   outputs =
@@ -144,7 +152,6 @@
           inputs.home-manager.flakeModules.home-manager
           inputs.treefmt-nix.flakeModule
           inputs.actions-nix.flakeModules.default
-          inputs.mkdocs-flake.flakeModules.default
 
           # The modules the applications publish.
           inputs.vscode.flakeModule
@@ -157,6 +164,7 @@
           inputs.zed.flakeModule
           inputs.yazi.flakeModule
           inputs.kitty.flakeModule
+          inputs.mkdocs.flakeModule
         ];
 
         systems = [
@@ -181,6 +189,7 @@
             config.flake.overlays.zed
             config.flake.overlays.yazi
             config.flake.overlays.kitty
+            config.flake.overlays.mkdocs
           ];
 
           flakeModules = {
@@ -194,6 +203,7 @@
             zed = inputs.zed.flakeModule;
             yazi = inputs.yazi.flakeModule;
             kitty = inputs.kitty.flakeModule;
+            mkdocs = inputs.mkdocs.flakeModule;
             default = {
               imports = [
                 inputs.bat.flakeModule
@@ -206,6 +216,7 @@
                 inputs.zed.flakeModule
                 inputs.yazi.flakeModule
                 inputs.kitty.flakeModule
+                inputs.mkdocs.flakeModule
               ];
             };
           };
@@ -315,6 +326,7 @@
                   "blueforest-zed-theme"
                   "blueforest-yazi-theme"
                   "blueforest-kitty-theme"
+                  "blueforest-mkdocs-theme"
                 ];
               };
 

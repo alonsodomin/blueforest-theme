@@ -23,6 +23,7 @@ application, is at
 | Zed | <https://alonsodomin.github.io/blueforest-theme/themes/zed/> |
 | Yazi | <https://alonsodomin.github.io/blueforest-theme/themes/yazi/> |
 | kitty | <https://alonsodomin.github.io/blueforest-theme/themes/kitty/> |
+| MkDocs | <https://alonsodomin.github.io/blueforest-theme/themes/mkdocs/> |
 
 ## Installation
 

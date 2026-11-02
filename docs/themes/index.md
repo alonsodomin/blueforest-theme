@@ -16,6 +16,7 @@ installed.
 | Zed         | [Extension Gallery](zed.md) or [Nix](zed.md)         |
 | Yazi        | [Nix](yazi.md) or [release asset](yazi.md)           |
 | kitty       | [Nix](kitty.md) or [release asset](kitty.md)         |
+| MkDocs      | [Nix](mkdocs.md) or [release asset](mkdocs.md)       |
 
 The release assets are attached to the
 [GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases).

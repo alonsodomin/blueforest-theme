@@ -6,6 +6,30 @@
 # it. The formatter and the check that verifies the formatting come with the
 # module.
 {
+  pkgs,
+  ...
+}:
+let
+  # The configuration of Stylelint, the linter of the CSS files.
+  #
+  # Stylelint is not one of the programs of treefmt-nix, so the formatter is
+  # declared below with the configuration it needs. The rules are the ones of
+  # the standard configuration of Stylelint, without the ones that need the
+  # shareable configurations of Stylelint, which are not packaged with it.
+  stylelintConfig = pkgs.writeText "stylelint.json" (
+    builtins.toJSON {
+      rules = {
+        block-no-empty = true;
+        color-no-invalid-hex = true;
+        declaration-block-no-duplicate-properties = true;
+        no-duplicate-selectors = true;
+        property-no-unknown = true;
+        unit-no-unknown = true;
+      };
+    }
+  );
+in
+{
   settings.on-unmatched = "info";
 
   settings.excludes = [
@@ -21,6 +45,11 @@
     # workflows compares the rendering with what is committed. Formatting them
     # would make the two differ.
     ".github/workflows/*"
+
+    # The stylesheet of the documentation is a symlink to the stylesheet of
+    # the theme of MkDocs. The formatters would follow it, and the file they
+    # would write is the one of the theme, which is formatted on its own.
+    "docs/assets/stylesheets/blueforest.css"
   ];
 
   # The tree that the check of the module formats. It is the tree of the
@@ -63,12 +92,14 @@
   programs.prettier = {
     enable = true;
 
-    # The JSON, the JSON5 and the YAML files of the repository are formatted.
+    # The JSON, the JSON5, the YAML and the CSS files of the repository are
+    # formatted.
     includes = [
       "*.json"
       "*.json5"
       "*.yaml"
       "*.yml"
+      "*.css"
     ];
 
     settings = {
@@ -81,6 +112,20 @@
         }
       ];
     };
+  };
+
+  # The CSS files of the repository are linted with Stylelint.
+  #
+  # Stylelint is not one of the formatters of treefmt-nix, so the formatter is
+  # declared here. The rules are the ones of the standard configuration of
+  # Stylelint, without the ones that need its shareable configurations.
+  settings.formatter.stylelint = {
+    command = pkgs.stylelint;
+    options = [
+      "--config"
+      (toString stylelintConfig)
+    ];
+    includes = [ "*.css" ];
   };
 
   # The TextMate themes of the repository are XML files. The theme of bat is

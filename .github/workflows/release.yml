@@ -54,6 +54,7 @@ jobs:
         - path:./modules/zed
         - path:./modules/yazi
         - path:./modules/kitty
+        - path:./modules/mkdocs
   create-release:
     name: Create the release
     needs:
@@ -175,6 +176,29 @@ jobs:
         VERSION: ${{ needs.version.outputs.version }}
       name: Upload the asset to the release
       run: gh release upload "$TAG" "dist/blueforest-kitty-theme-$VERSION.conf" --clobber
+  mkdocs:
+    name: 'MkDocs: Package'
+    needs:
+    - version
+    - create-release
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        submodules: true
+    - env:
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Package the theme
+      run: |-
+        mkdir -p dist
+        cp modules/mkdocs/themes/blueforest.css \
+          "dist/blueforest-mkdocs-theme-$VERSION.css"
+    - env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TAG: v${{ needs.version.outputs.version }}
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Upload the asset to the release
+      run: gh release upload "$TAG" "dist/blueforest-mkdocs-theme-$VERSION.css" --clobber
   neovim:
     name: 'Neovim: Package'
     needs:
@@ -239,6 +263,7 @@ jobs:
     - zed
     - yazi
     - kitty
+    - mkdocs
     runs-on: ubuntu-latest
     steps:
     - env:

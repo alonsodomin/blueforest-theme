@@ -18,10 +18,11 @@ combined ones.
 | `packages.<system>.blueforest-zed-theme` | The theme for Zed, as an extension |
 | `packages.<system>.blueforest-yazi-theme` | The theme for Yazi, as a flavour |
 | `packages.<system>.blueforest-kitty-theme` | The theme for kitty |
+| `packages.<system>.blueforest-mkdocs-theme` | The theme for MkDocs |
 | `packages.<system>.neovim-nixvim-check` | The check that builds an editor with nixvim |
 | `packages.<system>.documentation` | The documentation site as a static site |
 | `packages.<system>.render-workflows` | The program that renders the workflows of the repository |
-| `overlays.default` | Adds the packages of the VS Code, Starship, OpenCode, sbt, Neovim, eza, Zed, Yazi, and kitty applications to a nixpkgs instance |
+| `overlays.default` | Adds the packages of the VS Code, Starship, OpenCode, sbt, Neovim, eza, Zed, Yazi, kitty, and MkDocs applications to a nixpkgs instance |
 | `overlays.vscode` | Adds `pkgs.blueforest-vscode-theme` to a nixpkgs instance |
 | `overlays.bat` | Adds `pkgs.blueforest-bat-theme` to a nixpkgs instance. The aggregate does not compose it |
 | `overlays.starship` | Adds `pkgs.blueforest-starship-preset` and `pkgs.blueforest-starship` to a nixpkgs instance |
@@ -32,6 +33,7 @@ combined ones.
 | `overlays.zed` | Adds `pkgs.blueforest-zed-theme` to a nixpkgs instance |
 | `overlays.yazi` | Adds `pkgs.blueforest-yazi-theme` to a nixpkgs instance |
 | `overlays.kitty` | Adds `pkgs.blueforest-kitty-theme` to a nixpkgs instance |
+| `overlays.mkdocs` | Adds `pkgs.blueforest-mkdocs-theme` to a nixpkgs instance |
 | `nixosModules.default`, `homeModules.default` | The modules of the applications that provide one |
 | `nixosModules.vscode`, `homeModules.vscode` | The module of the VS Code theme |
 | `nixosModules.starship`, `homeModules.starship` | The module of the Starship preset |
@@ -41,6 +43,7 @@ combined ones.
 | `homeModules.zed` | The module of the Zed theme |
 | `homeModules.yazi` | The module of the Yazi flavour |
 | `homeModules.kitty` | The module of the kitty theme |
+| `flakeModules.mkdocs` | The module of the MkDocs theme, for flake-parts |
 | `nixosModules.neovim`, `homeModules.neovim` | The module of the Neovim theme |
 | `nixvimModules.neovim` | The module of the Neovim theme, for nixvim |
 | `checks.<system>.<app>-<check>` | The checks of every application |
@@ -63,3 +66,9 @@ argument, so a consumer that imports it needs no `devshell`, `home-manager` or
 `nixvim` input of its own. The `inputs` of the module are the inputs of the
 consumer, so the packages of the application are built with the nixpkgs of the
 consumer.
+
+The module of the MkDocs theme is the exception: it is a helper that installs
+the stylesheet in the sources of a documentation site. It takes the
+`mkdocs-flake` input of the consumer when it has one, and the one of the
+application otherwise, so a consumer that imports it needs no `mkdocs-flake`
+input of its own.

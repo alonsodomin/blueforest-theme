@@ -21,6 +21,7 @@ nav:
       - Zed: themes/zed.md
       - Yazi: themes/yazi.md
       - kitty: themes/kitty.md
+      - MkDocs: themes/mkdocs.md
   - Reference:
       - Outputs: reference/outputs.md
       - Identifiers: reference/identifiers.md
@@ -64,6 +65,9 @@ theme:
       toggle:
         icon: material/weather-night
         name: Switch to light mode
+
+extra_css:
+  - assets/stylesheets/blueforest.css
 
 plugins:
   - search

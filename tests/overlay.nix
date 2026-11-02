@@ -45,6 +45,7 @@ pkgs.runCommand "blueforest-overlay-check"
       zedUntouched = overlaid.zed-editor == base.zed-editor;
       yaziUntouched = overlaid.yazi == base.yazi;
       kittyUntouched = overlaid.kitty == base.kitty;
+      mkdocsUntouched = overlaid.mkdocs == base.mkdocs;
     };
     expected = builtins.toJSON expected;
   }
@@ -59,6 +60,7 @@ pkgs.runCommand "blueforest-overlay-check"
       and .zedUntouched
       and .yaziUntouched
       and .kittyUntouched
+      and .mkdocsUntouched
       and (.packages | length) > 0
     ' >/dev/null
 
