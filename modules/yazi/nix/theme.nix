@@ -22,7 +22,7 @@
 
   # The package of the theme of bat, which carries the TextMate theme of the
   # code preview.
-  bat,
+  batTheme,
 }:
 pkgs.runCommand "blueforest-yazi-theme-${version}"
   {
@@ -46,9 +46,9 @@ pkgs.runCommand "blueforest-yazi-theme-${version}"
     # the flavour links to the theme of bat. The store is read-only, so the
     # directories have to be writable to carry the link.
     chmod u+w $out/blueforest.yazi $out/share/yazi/flavors/blueforest.yazi
-    ln -s ${bat}/share/bat/themes/BlueForest.tmTheme \
+    ln -s ${batTheme}/share/bat/themes/BlueForest.tmTheme \
       $out/blueforest.yazi/tmtheme.xml
-    ln -s ${bat}/share/bat/themes/BlueForest.tmTheme \
+    ln -s ${batTheme}/share/bat/themes/BlueForest.tmTheme \
       $out/share/yazi/flavors/blueforest.yazi/tmtheme.xml
 
     # The attribution of the theme travels with the package.

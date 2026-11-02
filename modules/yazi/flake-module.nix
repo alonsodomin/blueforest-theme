@@ -125,16 +125,23 @@ in
     # The overlay of bat is part of it, because the theme of the code preview
     # of Yazi is the theme of bat: the package of Yazi carries it, and a
     # consumer that applies the overlay gets both packages.
-    overlays.yazi = final: _prev: {
-      blueforest-yazi-theme = import ./nix/theme.nix {
-        inherit (final) lib;
-        pkgs = final;
-        inherit version;
+    overlays.yazi = final: _prev:
+      let
+        # The overlay of bat, which brings the package of the theme of bat.
+        bat = config.flake.overlays.bat final _prev;
 
-        # The TextMate theme of the code preview is the one of bat.
-        bat = final.blueforest-bat-theme;
-      };
-    } // (config.flake.overlays.bat final _prev);
+        # The package of the theme of bat, which carries the TextMate theme
+        # of the code preview.
+        batTheme = bat.blueforest-bat-theme;
+      in
+      {
+        blueforest-yazi-theme = import ./nix/theme.nix {
+          inherit (final) lib;
+          pkgs = final;
+          inherit version batTheme;
+        };
+      }
+      // bat;
 
     # Yazi reads the theme from the configuration directory of the user, and
     # there is no system-wide directory it reads, so the application publishes
