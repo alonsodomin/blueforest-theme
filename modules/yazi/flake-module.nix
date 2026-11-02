@@ -97,7 +97,12 @@ in
       checks = {
         # The flavour of the package is the flavour of the repository.
         yazi-theme = import ./nix/checks/theme.nix {
-          inherit pkgs theme source batTheme;
+          inherit
+            pkgs
+            theme
+            source
+            batTheme
+            ;
         };
 
         # Yazi reads the flavour of the package and paints with it.
@@ -125,7 +130,8 @@ in
     # The overlay of bat is part of it, because the theme of the code preview
     # of Yazi is the theme of bat: the package of Yazi carries it, and a
     # consumer that applies the overlay gets both packages.
-    overlays.yazi = final: _prev:
+    overlays.yazi =
+      final: _prev:
       let
         # The overlay of bat, which brings the package of the theme of bat.
         bat = config.flake.overlays.bat final _prev;

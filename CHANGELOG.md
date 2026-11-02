@@ -25,6 +25,14 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 
 ## Unreleased
 
+- The theme of Yazi depends on the theme of bat, instead of carrying a copy of
+  it. The flavour of Yazi links to the TextMate theme of bat for the colours
+  of the code preview, the package of the theme of Yazi carries the package of
+  the theme of bat, and the overlay of Yazi adds the package of the theme of
+  bat as well
+- The keys of a JSON document are painted with the colour of the types in the
+  theme of bat, like the theme of VS Code does, and the strings keep the
+  colour of the strings
 - The BlueForest theme now includes a theme for Claude Code, packaged as
   `blueforest-claude-code-theme`. It is the custom theme Claude Code reads,
   and the Home Manager module installs it in the directory Claude Code reads

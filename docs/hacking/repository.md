@@ -54,8 +54,7 @@ compare the packaged copies against them:
 - `modules/starship/themes/blueforest.toml`
 - `modules/opencode/themes/blueforest.json`
 - `modules/eza/themes/blueforest.yml`
-- `modules/yazi/themes/blueforest.yazi/flavor.toml` and
-  `modules/yazi/themes/blueforest.yazi/tmtheme.xml`
+- `modules/yazi/themes/blueforest.yazi/flavor.toml`
 - `modules/kitty/themes/blueforest.conf`
 - `modules/mkdocs/themes/blueforest.css`
 - `modules/claude-code/themes/blueforest.json`
@@ -75,10 +74,11 @@ Nix cannot fetch the contents of a submodule of a git tree, so the checks of
 the repository run against the working tree, where the submodule is checked
 out. The checkout of the CI brings the submodules with it.
 
-The `tmtheme.xml` of the flavour of Yazi is the theme the repository ships
-for bat, and the two of them are the same file: an application cannot depend
-on another one, so the file is copied, and the check `yazi-tmtheme` of the
-repository compares the two copies.
+The flavour of Yazi paints the code of its preview with a TextMate theme,
+and it is the theme the repository ships for bat. The application of Yazi
+therefore takes the application of bat as an input, and the flavour links to
+the theme of bat instead of carrying a copy of it. The check `yazi-tmtheme` of
+the repository checks that the link points to the theme of bat.
 
 ## The flake module of an application
 
@@ -148,7 +148,8 @@ imports = [
 The aggregate modules are explicit. The root flake composes the overlays of
 the applications that have one, and the Home Manager and NixOS modules of the
 applications that provide them. The theme of bat is a package alone, so it has
-no module in the aggregates.
+no module in the aggregates. Its overlay is part of the one of Yazi, which
+carries the theme of bat for the colours of the code preview.
 
 The root flake also owns the pins of the repository. An application keeps a
 lock file of its own, for consumers that take it on its own, and the `update`

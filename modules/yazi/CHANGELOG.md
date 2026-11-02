@@ -12,3 +12,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - The Home Manager module installs the flavour in the directory Yazi reads the
   flavours from, and it selects it in the theme of the user. It writes nothing
   when Yazi is not enabled
+- The theme depends on the theme of bat: the package of the theme of Yazi
+  carries the package of the theme of bat, and the flavour links to the
+  TextMate theme of bat for the colours of the code preview, instead of
+  carrying a copy of it
+- The overlay of the application adds the package of the theme of bat as well,
+  next to the package of the theme of Yazi

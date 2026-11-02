@@ -12,7 +12,10 @@ over both of them.
 | File | What it is |
 | --- | --- |
 | `flavor.toml` | The colours of the flavour, in the format Yazi reads |
-| `tmtheme.xml` | The colours of the code preview, as a TextMate theme |
+
+The colours of the code preview are the ones of the
+[BlueForest theme for bat][bat], which is a TextMate theme. The package of
+the theme of Yazi links to it, so the two of them cannot drift apart.
 
 ## Usage
 
@@ -36,5 +39,6 @@ port of BlueForest by [mathias[at]decodified[dot]com][author], published at
 [Creative Commons Attribution 3.0 Unported][cc-by-3.0] licence.
 
 [author]: https://github.com/sirthias
+[bat]: https://github.com/alonsodomin/blueforest-theme/tree/master/modules/bat
 [cc-by-3.0]: https://creativecommons.org/licenses/by/3.0/
 [cc-by-4.0]: https://creativecommons.org/licenses/by/4.0/

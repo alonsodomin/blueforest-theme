@@ -10,3 +10,5 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - The theme is installed in the configuration directory of bat, which is where
   bat reads the themes from, and the cache of bat is rebuilt, so that the
   theme is picked up without further work
+- The keys of a JSON document are painted with the colour of the types, like
+  the theme of VS Code does, and the strings keep the colour of the strings

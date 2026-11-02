@@ -36,6 +36,14 @@ The BlueForest colours of that theme are a port of BlueForest by
 [mathias[at]decodified[dot]com][author], under the same attribution as the
 other ports of this repository.
 
+### The theme for Yazi
+
+The flavour of `modules/yazi/` paints the code of its preview with the
+TextMate theme of `modules/bat/`, which is a port of the same theme under the
+same attribution. The application of Yazi takes the application of bat as an
+input, and the flavour links to the theme of bat instead of carrying a copy of
+it, so there is only one file of the theme of the code preview.
+
 ### The theme for Zed
 
 The theme of `modules/zed/` is not written in this repository either. It is

@@ -2,17 +2,18 @@
 
 ## The theme
 
-`themes/blueforest.yazi/flavor.toml` and `themes/blueforest.yazi/tmtheme.xml`
-are licensed under the
+`themes/blueforest.yazi/flavor.toml` is licensed under the
 [Creative Commons Attribution 4.0 International][cc-by-4.0] licence.
 
-They are a port of BlueForest by [mathias[at]decodified[dot]com][author],
+It is a port of BlueForest by [mathias[at]decodified[dot]com][author],
 published at <https://github.com/sirthias/BlueForest> under the
 [Creative Commons Attribution 3.0 Unported][cc-by-3.0] licence. The colours
 have been adapted to the format that Yazi reads.
 
-The `tmtheme.xml` of the flavour is the theme the repository ships for
-[bat](../bat), which is a port of the same theme as well.
+The colours of the code preview are the ones of the theme the repository
+ships for [bat](../bat), which is a port of the same theme as well. The
+flavour links to it, and the package of the theme of bat carries its own
+attribution.
 
 The material is provided as is and without warranties of any kind. The
 disclaimer of warranties is Section 5 of the CC BY 4.0 legal code, at
