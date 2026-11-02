@@ -12,32 +12,6 @@ that mode only.
     OpenCode 1 reads `tui.json` instead of `cli.json`, and this theme does not
     support it.
 
-## Install without Nix
-
-Download `blueforest-opencode-theme-<version>.json` from the
-[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
-put it in the themes directory of OpenCode, with the name of the theme:
-
-```console
-mkdir -p ~/.config/opencode/themes
-cp blueforest-opencode-theme-<version>.json ~/.config/opencode/themes/blueforest.json
-```
-
-Select it in `~/.config/opencode/cli.json`:
-
-```json
-{
-  "$schema": "https://opencode.ai/v2/cli.json",
-  "theme": {
-    "name": "blueforest",
-    "mode": "dark"
-  }
-}
-```
-
-For a theme that belongs to a project, put the file in
-`.opencode/themes/blueforest.json` inside the project instead.
-
 ## Install with Nix
 
 The theme is part of the configuration of OpenCode, so the Home Manager module
@@ -71,6 +45,32 @@ If you want the file itself, the package is
 
 The NixOS module only adds the overlay. OpenCode reads the configuration of
 the user, and there is no system-wide directory it reads.
+
+## Manual install
+
+Download `blueforest-opencode-theme-<version>.json` from the
+[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
+put it in the themes directory of OpenCode, with the name of the theme:
+
+```console
+mkdir -p ~/.config/opencode/themes
+cp blueforest-opencode-theme-<version>.json ~/.config/opencode/themes/blueforest.json
+```
+
+Select it in `~/.config/opencode/cli.json`:
+
+```json
+{
+  "$schema": "https://opencode.ai/v2/cli.json",
+  "theme": {
+    "name": "blueforest",
+    "mode": "dark"
+  }
+}
+```
+
+For a theme that belongs to a project, put the file in
+`.opencode/themes/blueforest.json` inside the project instead.
 
 ## Invalid themes are ignored
 

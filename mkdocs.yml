@@ -68,6 +68,9 @@ theme:
 plugins:
   - search
 
+validation:
+  anchors: warn
+
 markdown_extensions:
   - admonition
   - attr_list

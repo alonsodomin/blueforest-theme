@@ -41,27 +41,6 @@ light = "blueforest"
 
 Both modes are selected, because the flavour is a dark one.
 
-## Install without Nix
-
-Download `blueforest-yazi-theme-<version>.tar.gz` from the
-[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
-unpack it into the directory Yazi reads the flavours from:
-
-```console
-mkdir -p ~/.config/yazi/flavors
-tar -xzf blueforest-yazi-theme-<version>.tar.gz -C ~/.config/yazi/flavors
-```
-
-Then select the flavour in the theme of the user:
-
-```console
-cat >~/.config/yazi/theme.toml <<'EOF'
-[flavor]
-dark  = "blueforest"
-light = "blueforest"
-EOF
-```
-
 ## Install with Nix
 
 The theme is part of the configuration of Yazi, so the Home Manager module
@@ -110,6 +89,27 @@ share/yazi/flavors/blueforest.yazi/
 
 There is no NixOS module: Yazi reads the theme from the configuration
 directory of the user, and there is no system-wide directory it reads.
+
+## Manual install
+
+Download `blueforest-yazi-theme-<version>.tar.gz` from the
+[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
+unpack it into the directory Yazi reads the flavours from:
+
+```console
+mkdir -p ~/.config/yazi/flavors
+tar -xzf blueforest-yazi-theme-<version>.tar.gz -C ~/.config/yazi/flavors
+```
+
+Then select the flavour in the theme of the user:
+
+```console
+cat >~/.config/yazi/theme.toml <<'EOF'
+[flavor]
+dark  = "blueforest"
+light = "blueforest"
+EOF
+```
 
 ## The code preview
 

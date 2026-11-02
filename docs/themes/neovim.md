@@ -21,39 +21,6 @@ plugins that are common enough to be worth a colour.
 It also describes the seven `RainbowDelimiter*` groups, because the
 rainbow-delimiters plugin reads their colours from the colourscheme.
 
-## Install without Nix
-
-Download `blueforest-neovim-theme-<version>.tar.gz` from the
-[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
-extract it into a package directory of the Neovim runtimepath:
-
-```console
-plugin_dir="$HOME/.local/share/nvim/site/pack/blueforest/start/blueforest-neovim-theme"
-mkdir -p "$plugin_dir"
-tar -xzf blueforest-neovim-theme-<version>.tar.gz -C "$plugin_dir"
-```
-
-With `lazy.nvim`, add the directory as a local plugin:
-
-```lua
-{
-  dir = vim.fn.expand("~/.local/share/nvim/site/pack/blueforest/start/blueforest-neovim-theme"),
-  name = "blueforest",
-}
-```
-
-Select the colourscheme in your configuration:
-
-```lua
-vim.cmd.colorscheme("blueforest")
-```
-
-or, from Vimscript:
-
-```vim
-colorscheme blueforest
-```
-
 ## Install with Nix
 
 The Home Manager module adds the theme to the plugins of Neovim. It does not
@@ -86,6 +53,39 @@ If you wire the plugin by hand, the package is
 
 The NixOS module only adds the overlay. Neovim reads the configuration of the
 user, and there is no system-wide directory it reads.
+
+## Manual install
+
+Download `blueforest-neovim-theme-<version>.tar.gz` from the
+[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
+extract it into a package directory of the Neovim runtimepath:
+
+```console
+plugin_dir="$HOME/.local/share/nvim/site/pack/blueforest/start/blueforest-neovim-theme"
+mkdir -p "$plugin_dir"
+tar -xzf blueforest-neovim-theme-<version>.tar.gz -C "$plugin_dir"
+```
+
+With `lazy.nvim`, add the directory as a local plugin:
+
+```lua
+{
+  dir = vim.fn.expand("~/.local/share/nvim/site/pack/blueforest/start/blueforest-neovim-theme"),
+  name = "blueforest",
+}
+```
+
+Select the colourscheme in your configuration:
+
+```lua
+vim.cmd.colorscheme("blueforest")
+```
+
+or, from Vimscript:
+
+```vim
+colorscheme blueforest
+```
 
 ## The statusline
 

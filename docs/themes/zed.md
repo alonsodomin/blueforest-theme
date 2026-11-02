@@ -26,7 +26,30 @@ because that is how Zed ships extensions: the editor clones the repository and
 reads the theme from it. That repository is a submodule of this one, so every
 change of the extension is reviewed here.
 
+## Install from a release
+
+Every release of the repository attaches the extension as
+`blueforest-zed-theme-<version>.tar.gz`. It carries the manifest of the
+extension and the theme, in the layout Zed installs an extension in. Unpack it
+in the extensions directory of Zed:
+
+```console
+mkdir -p ~/.local/share/zed/extensions/installed/blueforest-theme
+tar -xzf blueforest-zed-theme-<version>.tar.gz \
+  -C ~/.local/share/zed/extensions/installed/blueforest-theme
+```
+
+The extensions directory is `~/.local/share/zed/extensions` on Linux,
+`~/Library/Application Support/Zed/extensions` on macOS, and
+`%LOCALAPPDATA%\Zed\extensions` on Windows.
+
 ## Install with Nix
+
+!!! info
+
+    The theme is part of an extension that is published to the Extension
+    Gallery of Zed, which is the recommended way to install it. Installing it
+    with Nix is meant for developing and testing the theme.
 
 The Home Manager module writes the theme to the themes directory of Zed, which
 is where Zed reads the themes of the user from:
@@ -51,23 +74,6 @@ extension, which is the manifest and the theme:
 extension.toml
 themes/blueforest.json
 ```
-
-## Install from a release
-
-Every release of the repository attaches the extension as
-`blueforest-zed-theme-<version>.tar.gz`. It carries the manifest of the
-extension and the theme, in the layout Zed installs an extension in. Unpack it
-in the extensions directory of Zed:
-
-```console
-mkdir -p ~/.local/share/zed/extensions/installed/blueforest-theme
-tar -xzf blueforest-zed-theme-<version>.tar.gz \
-  -C ~/.local/share/zed/extensions/installed/blueforest-theme
-```
-
-The extensions directory is `~/.local/share/zed/extensions` on Linux,
-`~/Library/Application Support/Zed/extensions` on macOS, and
-`%LOCALAPPDATA%\Zed\extensions` on Windows.
 
 ## Select the theme
 
