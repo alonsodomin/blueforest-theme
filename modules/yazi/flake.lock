@@ -10,14 +10,20 @@
         ]
       },
       "locked": {
-        "path": "../bat",
-        "type": "path"
+        "dir": "modules/bat",
+        "lastModified": 1793636798,
+        "narHash": "sha256-8MkPM/Y10XooDZzKRJL8u8Q+7JDTFu5B4h3BjuZjk5s=",
+        "owner": "alonsodomin",
+        "repo": "blueforest-theme",
+        "rev": "d998f734172c4e4eb7fe60c0e4a20093a95b74fb",
+        "type": "github"
       },
       "original": {
-        "path": "../bat",
-        "type": "path"
-      },
-      "parent": []
+        "dir": "modules/bat",
+        "owner": "alonsodomin",
+        "repo": "blueforest-theme",
+        "type": "github"
+      }
     },
     "flake-parts": {
       "inputs": {

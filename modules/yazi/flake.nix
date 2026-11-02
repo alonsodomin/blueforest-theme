@@ -14,8 +14,12 @@
     # The theme of the code preview of Yazi is the theme of bat, so the
     # application takes the one of bat as an input, instead of carrying a
     # copy of it.
+    #
+    # The repository owns the pin of the theme of bat, so the application
+    # follows it when it is used from the repository, and keeps a pin of its
+    # own for the consumers that take it on its own.
     bat = {
-      url = "path:../bat";
+      url = "github:alonsodomin/blueforest-theme?dir=modules/bat";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-parts.follows = "flake-parts";
     };
