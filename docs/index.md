@@ -42,7 +42,7 @@ alone.
 
 ## Supported languages
 
-The theme has been optimised for:
+The theme has been optimized (and actively being used) for:
 
 - Bash
 - C / C++
@@ -53,9 +53,12 @@ The theme has been optimised for:
 - HTML
 - Java
 - JSON
+- Kotlin
 - Markdown
+- Nix
 - Powershell
 - Python
+- Rust
 - Scala
 - HTML / XML
 - YAML

@@ -94,9 +94,15 @@
   color: #ffcc33;
 }
 
-/* A constant is not a built-in, and the language names a reserved identifier. */
+/* Boolean and other constants that are keywords take the keyword colour. */
 [data-md-color-scheme="slate"] .highlight .no {
-  color: #f7ff66;
+  color: var(--md-code-hl-keyword-color);
+  font-weight: 700;
+}
+
+/* Attribute and symbol names (e.g. Nix attributes) are not strings. */
+[data-md-color-scheme="slate"] .highlight .ss {
+  color: var(--md-code-hl-variable-color);
 }
 
 [data-md-color-scheme="slate"] .highlight .bp {
