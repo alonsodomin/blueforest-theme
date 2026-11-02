@@ -1,0 +1,117 @@
+# The BlueForest theme for btop.
+#
+# It is a theme file of btop, the format btop reads, and the name of the
+# theme is the name of the file: blueforest.theme.
+#
+# The colours are the ones of BlueForest: the dark blue of the background, the
+# pale grey of the text, the blue of the keywords, the green of the strings,
+# the amber of the operators, the red of the numbers, and the pale yellow of
+# the variables.
+#
+# btop ignores a key it does not know, and a colour it cannot resolve, and it
+# does so silently: it falls back to the colours it ships with. Every key btop
+# knows is set here, so that nothing is left to chance.
+#
+# The comments of a theme file have to start at the first column, and they
+# cannot carry a square bracket: btop reads the file line by line, and it
+# looks for the opening bracket of the key.
+
+# Main background
+theme[main_bg]="#141F2E"
+
+# Main text color
+theme[main_fg]="#D0D0D0"
+
+# Title color for boxes
+theme[title]="#D0D0D0"
+
+# Highlight color for keyboard shortcuts
+theme[hi_fg]="#91CCFF"
+
+# Background color of selected item in processes box
+theme[selected_bg]="#375780"
+
+# Foreground color of selected item in processes box
+theme[selected_fg]="#D0D0D0"
+
+# Color of inactive/disabled text
+theme[inactive_fg]="#56697D"
+
+# Color of text appearing on top of graphs
+theme[graph_text]="#91CCFF"
+
+# Background color of the percentage meters
+theme[meter_bg]="#1B2B40"
+
+# Misc colors for processes box including mini cpu graphs
+theme[proc_misc]="#4FD6A0"
+
+# Cpu box outline color
+theme[cpu_box]="#0099FF"
+
+# Memory/disks box outline color
+theme[mem_box]="#4FD6A0"
+
+# Net up/down box outline color
+theme[net_box]="#C57633"
+
+# Processes box outline color
+theme[proc_box]="#91CCFF"
+
+# Box divider line and small boxes line color
+theme[div_line]="#1B2B40"
+
+# Temperature graph colors
+theme[temp_start]="#4FD6A0"
+theme[temp_mid]="#FFCC33"
+theme[temp_end]="#FF8080"
+
+# CPU graph colors
+theme[cpu_start]="#4FD6A0"
+theme[cpu_mid]="#FFCC33"
+theme[cpu_end]="#FF8080"
+
+# Mem/Disk free meter
+theme[free_start]="#1B7A70"
+theme[free_mid]="#4FD6A0"
+theme[free_end]="#91CCFF"
+
+# Mem/Disk cached meter
+theme[cached_start]="#1B2B40"
+theme[cached_mid]="#375780"
+theme[cached_end]="#56697D"
+
+# Mem/Disk available meter
+theme[available_start]="#219186"
+theme[available_mid]="#4FD6A0"
+theme[available_end]="#91CCFF"
+
+# Mem/Disk used meter
+theme[used_start]="#B3871F"
+theme[used_mid]="#FFCC33"
+theme[used_end]="#FF8080"
+
+# Download graph colors
+theme[download_start]="#0099FF"
+theme[download_mid]="#91CCFF"
+theme[download_end]="#D0D0D0"
+
+# Upload graph colors
+theme[upload_start]="#1B7A70"
+theme[upload_mid]="#4FD6A0"
+theme[upload_end]="#91CCFF"
+
+# Process box color gradient for threads, mem and cpu usage
+theme[process_start]="#4FD6A0"
+theme[process_mid]="#FFCC33"
+theme[process_end]="#FF8080"
+
+# Process box banner colors
+theme[proc_pause_bg]="#B02A28"
+theme[proc_follow_bg]="#0099FF"
+theme[proc_banner_bg]="#375780"
+theme[proc_banner_fg]="#D0D0D0"
+
+# Process following attributes
+theme[followed_bg]="#375780"
+theme[followed_fg]="#D0D0D0"

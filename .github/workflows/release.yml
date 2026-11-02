@@ -27,6 +27,29 @@ jobs:
         VERSION: ${{ needs.version.outputs.version }}
       name: Upload the asset to the release
       run: gh release upload "$TAG" "dist/blueforest-bat-theme-$VERSION.tmTheme" --clobber
+  btop:
+    name: 'btop: Package'
+    needs:
+    - version
+    - create-release
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        submodules: true
+    - env:
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Package the theme
+      run: |-
+        mkdir -p dist
+        cp modules/btop/themes/blueforest.theme \
+          "dist/blueforest-btop-theme-$VERSION.theme"
+    - env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TAG: v${{ needs.version.outputs.version }}
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Upload the asset to the release
+      run: gh release upload "$TAG" "dist/blueforest-btop-theme-$VERSION.theme" --clobber
   checks:
     name: Checks (${{ matrix.flake }})
     runs-on: ubuntu-latest
@@ -56,6 +79,7 @@ jobs:
         - path:./modules/kitty
         - path:./modules/mkdocs
         - path:./modules/claude-code
+        - path:./modules/btop
   claude-code:
     name: 'Claude Code: Package'
     needs:
@@ -290,6 +314,7 @@ jobs:
     - kitty
     - mkdocs
     - claude-code
+    - btop
     runs-on: ubuntu-latest
     steps:
     - env:

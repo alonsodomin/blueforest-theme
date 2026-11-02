@@ -184,4 +184,14 @@ in
         "dist/blueforest-claude-code-theme-$VERSION.json"
     '';
   }
+  {
+    app = "btop";
+    title = "btop";
+    asset = "dist/blueforest-btop-theme-$VERSION.theme";
+    package = ''
+      mkdir -p dist
+      cp modules/btop/themes/blueforest.theme \
+        "dist/blueforest-btop-theme-$VERSION.theme"
+    '';
+  }
 ]

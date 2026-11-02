@@ -14,6 +14,7 @@ application, is at
 | Application | Documentation |
 | --- | --- |
 | bat | <https://alonsodomin.github.io/blueforest-theme/themes/bat/> |
+| btop | <https://alonsodomin.github.io/blueforest-theme/themes/btop/> |
 | Claude Code | <https://alonsodomin.github.io/blueforest-theme/themes/claude-code/> |
 | eza | <https://alonsodomin.github.io/blueforest-theme/themes/eza/> |
 | kitty | <https://alonsodomin.github.io/blueforest-theme/themes/kitty/> |

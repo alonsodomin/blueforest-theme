@@ -26,6 +26,7 @@ packages = [
   "eza",
   "yazi",
   "kitty",
+  "btop",
 ]
 
 [[commands]]

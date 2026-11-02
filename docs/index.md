@@ -11,6 +11,7 @@ The theme is available for the following applications:
 | Application | Documentation                  |
 | ----------- | ------------------------------ |
 | bat         | [bat](themes/bat.md)           |
+| btop        | [btop](themes/btop.md)         |
 | Claude Code | [Claude Code](themes/claude-code.md) |
 | eza         | [eza](themes/eza.md)           |
 | kitty       | [kitty](themes/kitty.md)       |
@@ -69,6 +70,7 @@ The theme has syntax highlighting for:
 - Scala
 - Smithy
 - Swift
+- TOML
 - TypeScript
 - XML
 - YAML

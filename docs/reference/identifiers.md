@@ -9,6 +9,10 @@ modules of the repository.
   `"workbench.colorTheme": "BlueForest"`.
 - The bat theme is `BlueForest`, the name of the file
   `BlueForest.tmTheme`.
+- The btop package is `blueforest-btop-theme`. The btop theme is
+  `blueforest.theme`, the name of the file, which btop reads from
+  `$XDG_CONFIG_HOME/btop/themes/`. Select it with
+  `color_theme = "blueforest.theme"` in the configuration of btop.
 - The Starship packages are `blueforest-starship-preset` and
   `blueforest-starship`.
 - The Starship preset is `blueforest`. Select it with

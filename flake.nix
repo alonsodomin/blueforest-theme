@@ -146,6 +146,14 @@
       inputs.flake-parts.follows = "flake-parts";
       inputs.home-manager.follows = "home-manager";
     };
+
+    btop = {
+      url = "path:./modules/btop";
+
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
   outputs =
@@ -178,6 +186,7 @@
           inputs.kitty.flakeModule
           inputs.mkdocs.flakeModule
           inputs.claude-code.flakeModule
+          inputs.btop.flakeModule
         ];
 
         systems = [
@@ -204,6 +213,7 @@
             config.flake.overlays.kitty
             config.flake.overlays.mkdocs
             config.flake.overlays.claude-code
+            config.flake.overlays.btop
           ];
 
           flakeModules = {
@@ -219,6 +229,7 @@
             kitty = inputs.kitty.flakeModule;
             mkdocs = inputs.mkdocs.flakeModule;
             claude-code = inputs.claude-code.flakeModule;
+            btop = inputs.btop.flakeModule;
             default = {
               imports = [
                 inputs.bat.flakeModule
@@ -233,6 +244,7 @@
                 inputs.kitty.flakeModule
                 inputs.mkdocs.flakeModule
                 inputs.claude-code.flakeModule
+                inputs.btop.flakeModule
               ];
             };
           };
@@ -258,6 +270,7 @@
               config.flake.homeModules.yazi
               config.flake.homeModules.kitty
               config.flake.homeModules.claude-code
+              config.flake.homeModules.btop
             ];
           };
         };
@@ -345,6 +358,7 @@
                   "blueforest-kitty-theme"
                   "blueforest-mkdocs-theme"
                   "blueforest-claude-code-theme"
+                  "blueforest-btop-theme"
 
                   # The theme of bat comes with the one of Yazi, which
                   # carries it for the colours of the code preview.
