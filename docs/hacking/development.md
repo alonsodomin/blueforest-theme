@@ -185,6 +185,10 @@ are the Markdown files under `docs/`. The root flake builds the site with
 `--strict`, so broken internal links and pages missing from the navigation fail
 the check.
 
+The development shell generates and serves the site with `generate-docs`,
+`serve-docs` and `watch-docs`. See [Documentation](documentation.md) for the
+details.
+
 ### The code blocks of the documentation
 
 The code blocks of the documentation are marked with the language they are

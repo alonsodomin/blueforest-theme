@@ -20,6 +20,8 @@ application, the release tooling, and the formatters.
   root flake fit together.
 - [Development](development.md) covers formatting, checks, and the
   documentation build.
+- [Documentation](documentation.md) covers the commands that generate and serve
+  the documentation site.
 - [Workflows](workflows.md) explains how the GitHub Actions files are
   generated.
 - [Releases](releases.md) covers versions, changelogs, and the release

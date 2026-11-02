@@ -46,6 +46,30 @@ command = '''
 '''
 
 [[commands]]
+name = "generate-docs"
+category = "documentation"
+help = "Generate the documentation site"
+command = '''
+  exec "${PRJ_ROOT:-.}/tools/docs.sh" generate "$@"
+'''
+
+[[commands]]
+name = "serve-docs"
+category = "documentation"
+help = "Serve the documentation site locally"
+command = '''
+  exec "${PRJ_ROOT:-.}/tools/docs.sh" serve "$@"
+'''
+
+[[commands]]
+name = "watch-docs"
+category = "documentation"
+help = "Serve the documentation site and generate it again on every change"
+command = '''
+  exec "${PRJ_ROOT:-.}/tools/docs.sh" watch "$@"
+'''
+
+[[commands]]
 package = "nixfmt"
 category = "formatters"
 help = "Nix code formatter"

@@ -286,7 +286,23 @@
           in
           {
             # The development shell of the repository, declared in TOML.
-            devshells.default = inputs.devshell.lib.importTOML ./devshell.toml;
+            #
+            # The mkdocs of the documentation flake is the one that carries the
+            # theme of Material for MkDocs, which the site of the repository
+            # uses; the plain one cannot build it.
+            devshells.default =
+              let
+                devshell = inputs.devshell.lib.importTOML ./devshell.toml { inherit lib; };
+                mkdocs = inputs.mkdocs-flake.packages.${pkgs.stdenv.hostPlatform.system}.mkdocs;
+              in
+              devshell
+              // {
+                config = devshell.config // {
+                  devshell = devshell.config.devshell // {
+                    packages = devshell.config.devshell.packages ++ [ mkdocs ];
+                  };
+                };
+              };
 
             # The helper that releases the repository. It is the same helper
             # that the command of the development shell runs, so that it can be

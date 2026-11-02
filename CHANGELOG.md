@@ -26,6 +26,10 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 
 ## Unreleased
 
+- The development shell generates and serves the documentation site with
+  `generate-docs`, `serve-docs` and `watch-docs`. The site is written under
+  `$PRJ_DATA_DIR`, which is `.data` by default, and the directory is ignored by
+  git
 - The shell blocks of the documentation are marked `bash`, the marker every
   application of the repository highlights. They were marked `console`, which
   only Pygments and Shiki know, so they came out plain in the site and in

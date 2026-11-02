@@ -6,4 +6,5 @@
 result
 result-*
 site/
+.data/
 .vscode-exts/
