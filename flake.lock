@@ -263,6 +263,28 @@
         "type": "github"
       }
     },
+    "kitty": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "./modules/kitty",
+        "type": "path"
+      },
+      "original": {
+        "path": "./modules/kitty",
+        "type": "path"
+      },
+      "parent": []
+    },
     "mkdocs-flake": {
       "inputs": {
         "flake-parts": "flake-parts_3",
@@ -507,6 +529,7 @@
         "eza": "eza",
         "flake-parts": "flake-parts_2",
         "home-manager": "home-manager",
+        "kitty": "kitty",
         "mkdocs-flake": "mkdocs-flake",
         "neovim": "neovim",
         "nixpkgs": "nixpkgs",

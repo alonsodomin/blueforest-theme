@@ -25,6 +25,7 @@ packages = [
   "sbt",
   "eza",
   "yazi",
+  "kitty",
 ]
 
 [[commands]]

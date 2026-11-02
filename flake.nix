@@ -118,6 +118,14 @@
       inputs.flake-parts.follows = "flake-parts";
       inputs.home-manager.follows = "home-manager";
     };
+
+    kitty = {
+      url = "path:./modules/kitty";
+
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
   outputs =
@@ -148,6 +156,7 @@
           inputs.eza.flakeModule
           inputs.zed.flakeModule
           inputs.yazi.flakeModule
+          inputs.kitty.flakeModule
         ];
 
         systems = [
@@ -171,6 +180,7 @@
             config.flake.overlays.eza
             config.flake.overlays.zed
             config.flake.overlays.yazi
+            config.flake.overlays.kitty
           ];
 
           flakeModules = {
@@ -183,6 +193,7 @@
             eza = inputs.eza.flakeModule;
             zed = inputs.zed.flakeModule;
             yazi = inputs.yazi.flakeModule;
+            kitty = inputs.kitty.flakeModule;
             default = {
               imports = [
                 inputs.bat.flakeModule
@@ -194,6 +205,7 @@
                 inputs.eza.flakeModule
                 inputs.zed.flakeModule
                 inputs.yazi.flakeModule
+                inputs.kitty.flakeModule
               ];
             };
           };
@@ -217,6 +229,7 @@
               config.flake.homeModules.eza
               config.flake.homeModules.zed
               config.flake.homeModules.yazi
+              config.flake.homeModules.kitty
             ];
           };
         };
@@ -301,6 +314,7 @@
                   "blueforest-eza-theme"
                   "blueforest-zed-theme"
                   "blueforest-yazi-theme"
+                  "blueforest-kitty-theme"
                 ];
               };
 

@@ -13,6 +13,7 @@ self-contained flake.
 ├── modules/
 │   ├── bat/                  # the simplest application: a package and checks
 │   ├── eza/
+│   ├── kitty/
 │   ├── neovim/
 │   ├── opencode/
 │   ├── sbt/
@@ -53,6 +54,7 @@ compare the packaged copies against them:
 - `modules/eza/themes/blueforest.yml`
 - `modules/yazi/themes/blueforest.yazi/flavor.toml` and
   `modules/yazi/themes/blueforest.yazi/tmtheme.xml`
+- `modules/kitty/themes/blueforest.conf`
 
 `modules/sbt` is the exception: it does not define a theme. It installs the
 upstream `sbt-prompt` plugin and selects its `BlueforestTheme` from

@@ -39,3 +39,8 @@ modules of the repository.
   `blueforest`, the name of the directory `blueforest.yazi`, which Yazi reads
   from `$XDG_CONFIG_HOME/yazi/flavors/`. Select it with
   `[flavor] dark = "blueforest"` in the theme of the user.
+- The kitty package is `blueforest-kitty-theme`. The kitty theme is
+  `blueforest`, the name of the file `blueforest.conf`, which kitty reads
+  from `$XDG_CONFIG_HOME/kitty/themes/`. Select it with
+  `include themes/blueforest.conf` in the configuration of kitty. The
+  `themes` kitten lists it under the name `BlueForest`.

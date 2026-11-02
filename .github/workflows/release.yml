@@ -53,6 +53,7 @@ jobs:
         - path:./modules/eza
         - path:./modules/zed
         - path:./modules/yazi
+        - path:./modules/kitty
   create-release:
     name: Create the release
     needs:
@@ -151,6 +152,29 @@ jobs:
         VERSION: ${{ needs.version.outputs.version }}
       name: Upload the asset to the release
       run: gh release upload "$TAG" "dist/blueforest-eza-theme-$VERSION.yml" --clobber
+  kitty:
+    name: 'kitty: Package'
+    needs:
+    - version
+    - create-release
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        submodules: true
+    - env:
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Package the theme
+      run: |-
+        mkdir -p dist
+        cp modules/kitty/themes/blueforest.conf \
+          "dist/blueforest-kitty-theme-$VERSION.conf"
+    - env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TAG: v${{ needs.version.outputs.version }}
+        VERSION: ${{ needs.version.outputs.version }}
+      name: Upload the asset to the release
+      run: gh release upload "$TAG" "dist/blueforest-kitty-theme-$VERSION.conf" --clobber
   neovim:
     name: 'Neovim: Package'
     needs:
@@ -214,6 +238,7 @@ jobs:
     - eza
     - zed
     - yazi
+    - kitty
     runs-on: ubuntu-latest
     steps:
     - env:

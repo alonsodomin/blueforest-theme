@@ -20,6 +20,7 @@ nav:
       - eza: themes/eza.md
       - Zed: themes/zed.md
       - Yazi: themes/yazi.md
+      - kitty: themes/kitty.md
   - Reference:
       - Outputs: reference/outputs.md
       - Identifiers: reference/identifiers.md
