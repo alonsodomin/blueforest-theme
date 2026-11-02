@@ -70,6 +70,7 @@ The theme has syntax highlighting for:
 - Scala
 - Smithy
 - Swift
+- TOML
 - TypeScript
 - XML
 - YAML
