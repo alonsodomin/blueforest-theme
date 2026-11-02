@@ -64,6 +64,7 @@ The theme has syntax highlighting for:
 - Powershell
 - PureScript
 - Python
+- Ruby
 - Rust
 - Scala
 - Smithy
