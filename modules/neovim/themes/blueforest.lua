@@ -213,7 +213,7 @@ local treesitter = {
   ["@number.float"] = { fg = palette.number },
   ["@boolean"] = { fg = palette.accent, bold = true },
 
-  ["@variable"] = { fg = palette.identifier, bold = true },
+  ["@variable"] = { fg = palette.variable },
   ["@variable.member"] = { fg = palette.variable },
   ["@variable.builtin"] = { fg = palette.accent_light, bold = true },
   ["@variable.parameter"] = { fg = palette.parameter },

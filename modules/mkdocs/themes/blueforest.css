@@ -52,6 +52,11 @@
   color: var(--md-code-hl-keyword-color);
 }
 
+/* A number is a number, and Material paints no class of its own. */
+[data-md-color-scheme="slate"] .highlight .m {
+  color: var(--md-code-hl-number-color);
+}
+
 /* Comments are italic. */
 [data-md-color-scheme="slate"] .highlight .c,
 [data-md-color-scheme="slate"] .highlight .c1,

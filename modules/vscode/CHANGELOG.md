@@ -14,6 +14,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
   of the release into the manifest of the extension before it is packaged
 - The extension does not ship the Nix expressions of the application any more,
   and a check verifies it
+- The shell scopes are painted the way the other applications of the repository
+  paint them: the arguments are parameters, the punctuation is punctuation,
+  the options are operators, and the variables are variables
 
 ## 0.3.2 - [28-09-2026]
 

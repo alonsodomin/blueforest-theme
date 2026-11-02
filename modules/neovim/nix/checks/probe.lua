@@ -27,6 +27,19 @@ local expected = {
   DiagnosticError = { fg = 0xff8080 },
   RainbowDelimiterRed = { fg = 0xdc322f },
   RainbowDelimiterViolet = { fg = 0xa2cff5 },
+
+  -- The groups of the shell, which the other applications of the repository
+  -- paint with the same colours: the command is a function, the arguments
+  -- are parameters, and the variables are variables.
+  ["@comment"] = { fg = 0xa0ffa0 },
+  ["@function.call"] = { fg = 0xa2cff5 },
+  ["@keyword.conditional"] = { fg = 0x0099ff },
+  ["@number"] = { fg = 0xff8080 },
+  ["@operator"] = { fg = 0xffcc33 },
+  ["@punctuation.bracket"] = { fg = 0xe7e7e7 },
+  ["@string"] = { fg = 0x80ff80 },
+  ["@variable"] = { fg = 0xfffab1 },
+  ["@variable.parameter"] = { fg = 0xe7e7e7 },
 }
 
 for group, colours in pairs(expected) do

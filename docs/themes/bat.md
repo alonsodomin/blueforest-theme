@@ -57,7 +57,7 @@ Download `blueforest-bat-theme-<version>.tmTheme` from the
 [GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases),
 put it in the themes directory of bat, and rebuild the cache:
 
-```console
+```bash
 theme_dir="$(bat --config-dir)/themes"
 mkdir -p "$theme_dir"
 cp blueforest-bat-theme-<version>.tmTheme "$theme_dir/BlueForest.tmTheme"

@@ -33,7 +33,7 @@ Every release of the repository attaches the extension as
 extension and the theme, in the layout Zed installs an extension in. Unpack it
 in the extensions directory of Zed:
 
-```console
+```bash
 mkdir -p ~/.local/share/zed/extensions/installed/blueforest-theme
 tar -xzf blueforest-zed-theme-<version>.tar.gz \
   -C ~/.local/share/zed/extensions/installed/blueforest-theme

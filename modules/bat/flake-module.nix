@@ -63,6 +63,12 @@ in
           inherit pkgs theme source;
         };
 
+        # The theme paints the shell blocks of a Markdown file the way the
+        # other applications of the repository paint them.
+        bat-render = import ./nix/checks/render.nix {
+          inherit pkgs source;
+        };
+
         # The theme is installed in the configuration directory of the user.
         bat-theme-home = import ./nix/checks/home.nix {
           inherit pkgs theme source;

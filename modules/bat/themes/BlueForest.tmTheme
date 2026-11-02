@@ -222,6 +222,50 @@
       </dict>
       <dict>
         <key>name</key>
+        <string>Shell command</string>
+        <key>scope</key>
+        <string>variable.function.shell</string>
+        <key>settings</key>
+        <dict>
+          <key>foreground</key>
+          <string>#a2cff5</string>
+        </dict>
+      </dict>
+      <dict>
+        <key>name</key>
+        <string>Shell arguments</string>
+        <key>scope</key>
+        <string>meta.function-call.arguments.shell</string>
+        <key>settings</key>
+        <dict>
+          <key>foreground</key>
+          <string>#e7e7e7</string>
+        </dict>
+      </dict>
+      <dict>
+        <key>name</key>
+        <string>Shell option</string>
+        <key>scope</key>
+        <string>variable.parameter.option.shell, punctuation.definition.parameter.shell</string>
+        <key>settings</key>
+        <dict>
+          <key>foreground</key>
+          <string>#ffcc33</string>
+        </dict>
+      </dict>
+      <dict>
+        <key>name</key>
+        <string>Shell brackets</string>
+        <key>scope</key>
+        <string>source.shell support.function</string>
+        <key>settings</key>
+        <dict>
+          <key>foreground</key>
+          <string>#e7e7e7</string>
+        </dict>
+      </dict>
+      <dict>
+        <key>name</key>
         <string>Function (Method)</string>
         <key>scope</key>
         <string>entity.name.function.method</string>

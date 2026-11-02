@@ -2,7 +2,7 @@
 
 The repository has one development shell for everything:
 
-```console
+```bash
 nix develop
 ```
 
@@ -27,7 +27,7 @@ The shell prints a menu with the commands it provides:
 
 ## Formatting
 
-```console
+```bash
 nix fmt
 ```
 
@@ -52,14 +52,14 @@ their definitions.
 
 The fast checks are:
 
-```console
+```bash
 nix flake check "path:."
 ```
 
 The root flake checks every application at once, and every application can be
 checked on its own the way a consumer that installs only one of them gets it:
 
-```console
+```bash
 nix flake check "path:./modules/vscode"
 nix flake check "path:./modules/bat"
 nix flake check "path:./modules/neovim"
@@ -82,7 +82,7 @@ submodule has to be checked out for the checks to see it.
 
 A single check can be built on its own:
 
-```console
+```bash
 nix build "path:.#checks.x86_64-linux.<name>"
 ```
 
@@ -111,7 +111,7 @@ Two checks build an editor, so they are only run on purpose:
 
 Both need `--impure`, because they read the environment:
 
-```console
+```bash
 BLUEFOREST_VSCODE_INTEGRATION_CHECK=1 \
 BLUEFOREST_NEOVIM_NIXVIM_CHECK=1 \
 nix flake check --impure "path:."
@@ -119,7 +119,7 @@ nix flake check --impure "path:."
 
 They can also be built on their own:
 
-```console
+```bash
 nix build "path:.#vscode-integration-check"
 nix build "path:.#neovim-nixvim-check"
 ```
@@ -143,7 +143,7 @@ request.
 
 The extension of VS Code is built by Nix:
 
-```console
+```bash
 nix build "path:.#blueforest-vscode-theme"
 ```
 
@@ -151,7 +151,7 @@ The result holds the extension in `share/vscode/extensions`. An editor reads
 the extensions of a profile from a directory of its own, which it writes to,
 so the extension is linked into one:
 
-```console
+```bash
 mkdir -p .vscode-exts
 ln -sfn "$(nix build "path:.#blueforest-vscode-theme" --print-out-paths)/share/vscode/extensions"/* .vscode-exts/
 code --extensions-dir="$PWD/.vscode-exts"
@@ -160,7 +160,7 @@ code --extensions-dir="$PWD/.vscode-exts"
 To try a change to the theme without building it, point the editor at the
 directory of the extension instead:
 
-```console
+```bash
 code --extensionDevelopmentPath="$PWD/modules/vscode"
 ```
 
@@ -168,7 +168,7 @@ code --extensionDevelopmentPath="$PWD/modules/vscode"
 
 The documentation site is built with MkDocs:
 
-```console
+```bash
 nix build .#documentation
 ```
 
@@ -176,7 +176,7 @@ The result is a static site in `result/`.
 
 To work on the documentation with a live reload:
 
-```console
+```bash
 nix run .#watch-documentation
 ```
 
@@ -185,12 +185,28 @@ are the Markdown files under `docs/`. The root flake builds the site with
 `--strict`, so broken internal links and pages missing from the navigation fail
 the check.
 
+### The code blocks of the documentation
+
+The code blocks of the documentation are marked with the language they are
+written in, so that every application of the repository highlights them. The
+shell blocks are marked `bash`, which is the marker that the editor of VS
+Code, the preview of VS Code, Pygments, bat, Neovim, Zed and Shiki all know.
+
+A marker that only a few of them know leaves the blocks plain in the others.
+`console`, for instance, is an alias of the session lexer of Pygments and of
+the session grammar of Shiki, and nothing else knows it: a block marked with
+it comes out as a single piece of text in the site, in the editor of VS Code
+and in every other application.
+
+The `fences` check of the repository fails when a block carries a marker the
+applications do not know.
+
 ## Workflows
 
 The workflows of the repository are defined in Nix under `workflows/` and
 rendered into `.github/workflows/`. Render them with:
 
-```console
+```bash
 nix run .#render-workflows
 ```
 

@@ -36,7 +36,7 @@ The theme of Yazi therefore depends on the theme of bat:
 Yazi reads the flavours from the `flavors` directory of its configuration
 directory:
 
-```console
+```bash
 $XDG_CONFIG_HOME/yazi/flavors/blueforest.yazi/
 ```
 
@@ -119,14 +119,14 @@ Download `blueforest-yazi-theme-<version>.tar.gz` from the
 [GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
 unpack it into the directory Yazi reads the flavours from:
 
-```console
+```bash
 mkdir -p ~/.config/yazi/flavors
 tar -xzf blueforest-yazi-theme-<version>.tar.gz -C ~/.config/yazi/flavors
 ```
 
 Then select the flavour in the theme of the user:
 
-```console
+```bash
 cat >~/.config/yazi/theme.toml <<'EOF'
 [flavor]
 dark  = "blueforest"

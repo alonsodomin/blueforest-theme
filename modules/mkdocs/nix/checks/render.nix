@@ -46,6 +46,11 @@ pkgs.runCommand "blueforest-mkdocs-render-check"
     in
       blueforest
     ```
+
+    ```bash
+    nix build "path:."
+    export VARIABLE=1
+    ```
     MARKDOWN
 
     # The hook of the module installs the stylesheet in the sources of the
@@ -61,6 +66,16 @@ pkgs.runCommand "blueforest-mkdocs-render-check"
     # The palette is the dark scheme of Material, and the code is highlighted.
     grep -q 'data-md-color-scheme="slate"' "$TMPDIR/site/index.html"
     grep -q 'class="k"' "$TMPDIR/site/index.html"
+
+    # The shell blocks are highlighted as shell code: the keyword, the
+    # builtin, the string and the number each carry a class of their own.
+    grep -q 'class="nb">export<' "$TMPDIR/site/index.html"
+    grep -q 'class="s2">' "$TMPDIR/site/index.html"
+    grep -q 'class="m">1<' "$TMPDIR/site/index.html"
+
+    # And the stylesheet paints the numbers, which Material paints with no
+    # class of its own.
+    grep -q '\.highlight \.m {' ${theme}/blueforest.css
 
     touch $out
   ''

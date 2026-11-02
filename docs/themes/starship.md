@@ -51,7 +51,7 @@ Download `blueforest-starship-preset-<version>.toml` from the
 [GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
 use it as the configuration of Starship:
 
-```console
+```bash
 mkdir -p ~/.config
 cp blueforest-starship-preset-<version>.toml ~/.config/starship.toml
 ```
@@ -60,7 +60,7 @@ The preset is a complete Starship configuration. If you already have a
 configuration, merge the sections you want into it instead of replacing it.
 You can also keep the file elsewhere and point `STARSHIP_CONFIG` at it:
 
-```console
+```bash
 export STARSHIP_CONFIG="$HOME/.config/blueforest-starship.toml"
 ```
 

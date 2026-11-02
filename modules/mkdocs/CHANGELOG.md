@@ -10,3 +10,5 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
   the dark scheme, packaged as `blueforest-mkdocs-theme`
 - The flake module installs the stylesheet in the documentation sources through
   the `mkdocs-flake` pre-build hook, and it leaves the hook of the project alone
+- The numbers of the code blocks are painted with the colour of the numbers,
+  which Material paints with no class of its own

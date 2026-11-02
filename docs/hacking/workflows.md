@@ -7,7 +7,7 @@ files in `.github/workflows/` are rendered from those definitions by
 The files in `.github/workflows/` are generated. Never edit them by hand: edit
 the definitions and run:
 
-```console
+```bash
 nix run .#render-workflows
 ```
 

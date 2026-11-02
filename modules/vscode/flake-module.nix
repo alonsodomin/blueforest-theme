@@ -178,6 +178,13 @@ in
       checks = {
         vscode-extension = extensionCheck;
         vscode-configuration = configurationCheck;
+
+        # The theme paints the shell scopes with the colours of the
+        # repository.
+        vscode-theme = import ./nix/checks/theme.nix {
+          inherit pkgs;
+          source = ./themes/Blueforest-color-theme.json;
+        };
       }
       // (
         if builtins.getEnv "BLUEFOREST_VSCODE_INTEGRATION_CHECK" == "1" then

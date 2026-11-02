@@ -61,8 +61,8 @@ A project that uses flake-parts imports the module of this repository:
 
 The site is then the `documentation` package of the flake:
 
-```console
-$ nix build .#documentation
+```bash
+nix build .#documentation
 ```
 
 The options of the module are `blueforest.mkdocs.*`, and they are set in the
@@ -136,7 +136,7 @@ Download `blueforest-mkdocs-theme-<version>.css` from the
 [GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
 put it in the sources of the site, where `extra_css` points at it:
 
-```console
+```bash
 mkdir -p docs/assets/stylesheets
 cp blueforest-mkdocs-theme-<version>.css docs/assets/stylesheets/blueforest.css
 ```

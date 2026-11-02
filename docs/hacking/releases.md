@@ -16,13 +16,13 @@ release.
 
 From the development shell:
 
-```console
+```bash
 release
 ```
 
 or, outside the shell:
 
-```console
+```bash
 nix run .#release
 ```
 
@@ -70,13 +70,13 @@ the release workflow patches it with the version of the release.
 Every flake of the repository has a lock file of its own: the root one, and one
 per application. The `update` helper updates all of them:
 
-```console
+```bash
 update
 ```
 
 A single application can be updated on its own:
 
-```console
+```bash
 update vscode
 ```
 
