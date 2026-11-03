@@ -87,20 +87,21 @@ The colours of the terminal itself are:
 
 The light palette is not a copy of the dark one with the colours inverted: it
 is a palette of its own, with colours that keep their meaning and read well
-on a light surface. Its background is `#EFEFEF`, a soft white, and its text is
+on a light surface. Its background is `#E8ECF2`, a soft white that leans
+towards the blue, and its text is
 `#141F2E`, the navy of the dark palette. The accent stays the same, so that a
 name, a border, or a link looks the same in both of them.
 
 | Role | Colour | Role | Colour |
 | --- | --- | --- | --- |
 | Primary | `#0099FF` <span class="blueforest-swatch" style="background-color:#0099FF"></span> | On primary | `#141F2E` <span class="blueforest-swatch" style="background-color:#141F2E"></span> |
-| Secondary | `#3A5F8A` <span class="blueforest-swatch" style="background-color:#3A5F8A"></span> | On secondary | `#EFEFEF` <span class="blueforest-swatch" style="background-color:#EFEFEF"></span> |
+| Secondary | `#3A5F8A` <span class="blueforest-swatch" style="background-color:#3A5F8A"></span> | On secondary | `#E8ECF2` <span class="blueforest-swatch" style="background-color:#E8ECF2"></span> |
 | Tertiary | `#B3871F` <span class="blueforest-swatch" style="background-color:#B3871F"></span> | On tertiary | `#141F2E` <span class="blueforest-swatch" style="background-color:#141F2E"></span> |
-| Error | `#DC322F` <span class="blueforest-swatch" style="background-color:#DC322F"></span> | On error | `#EFEFEF` <span class="blueforest-swatch" style="background-color:#EFEFEF"></span> |
-| Surface | `#EFEFEF` <span class="blueforest-swatch" style="background-color:#EFEFEF"></span> | On surface | `#141F2E` <span class="blueforest-swatch" style="background-color:#141F2E"></span> |
-| Surface variant | `#E7E7E7` <span class="blueforest-swatch" style="background-color:#E7E7E7"></span> | On surface variant | `#56697D` <span class="blueforest-swatch" style="background-color:#56697D"></span> |
+| Error | `#DC322F` <span class="blueforest-swatch" style="background-color:#DC322F"></span> | On error | `#E8ECF2` <span class="blueforest-swatch" style="background-color:#E8ECF2"></span> |
+| Surface | `#E8ECF2` <span class="blueforest-swatch" style="background-color:#E8ECF2"></span> | On surface | `#141F2E` <span class="blueforest-swatch" style="background-color:#141F2E"></span> |
+| Surface variant | `#E0E4EA` <span class="blueforest-swatch" style="background-color:#E0E4EA"></span> | On surface variant | `#56697D` <span class="blueforest-swatch" style="background-color:#56697D"></span> |
 | Outline | `#7F8FA3` <span class="blueforest-swatch" style="background-color:#7F8FA3"></span> | Shadow | `#141F2E` <span class="blueforest-swatch" style="background-color:#141F2E"></span> |
-| Hover | `#D0D0D0` <span class="blueforest-swatch" style="background-color:#D0D0D0"></span> | On hover | `#141F2E` <span class="blueforest-swatch" style="background-color:#141F2E"></span> |
+| Hover | `#C9CDD3` <span class="blueforest-swatch" style="background-color:#C9CDD3"></span> | On hover | `#141F2E` <span class="blueforest-swatch" style="background-color:#141F2E"></span> |
 
 The colours of the terminal of the light palette are darker than the ones of
 the dark palette, because a light background needs more contrast:
@@ -121,9 +122,9 @@ The colours of the terminal itself are:
 | Element | Colour |
 | --- | --- |
 | Foreground | `#141F2E` <span class="blueforest-swatch" style="background-color:#141F2E"></span> |
-| Background | `#EFEFEF` <span class="blueforest-swatch" style="background-color:#EFEFEF"></span> |
-| Selection | `#D0D0D0` <span class="blueforest-swatch" style="background-color:#D0D0D0"></span> on `#141F2E` |
-| Cursor | `#141F2E` <span class="blueforest-swatch" style="background-color:#141F2E"></span> on `#EFEFEF` |
+| Background | `#E8ECF2` <span class="blueforest-swatch" style="background-color:#E8ECF2"></span> |
+| Selection | `#C9CDD3` <span class="blueforest-swatch" style="background-color:#C9CDD3"></span> on `#141F2E` |
+| Cursor | `#141F2E` <span class="blueforest-swatch" style="background-color:#141F2E"></span> on `#E8ECF2` |
 
 Every pair of a role and of its counterpart clears a contrast ratio of 3.0, so
 that the text of the interface reads well in both of the palettes.

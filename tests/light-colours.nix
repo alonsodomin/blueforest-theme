@@ -14,7 +14,8 @@
 #
 # The amber of the library is the one exception, and it is named here: it is
 # the amber of BlueForest, and it is the same in both variants of the syntax
-# palette.
+# palette. The text of a selection is the same amber, because it is the only
+# yellow of the repository that reads on the blue of a selection.
 {
   pkgs,
   # The light theme of VS Code, which is the reference of the light themes.
