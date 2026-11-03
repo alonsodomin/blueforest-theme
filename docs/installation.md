@@ -88,8 +88,8 @@ them does not have to take the others:
 The same works for `?dir=modules/bat`, `?dir=modules/starship`,
 `?dir=modules/opencode`, `?dir=modules/sbt`, `?dir=modules/neovim`,
 `?dir=modules/eza`, `?dir=modules/zed`, `?dir=modules/yazi`,
-`?dir=modules/kitty`, `?dir=modules/mkdocs`, `?dir=modules/btop`, and
-`?dir=modules/lazygit`.
+`?dir=modules/kitty`, `?dir=modules/mkdocs`, `?dir=modules/btop`,
+`?dir=modules/lazygit`, and `?dir=modules/md-tui`.
 
 The theme of bat is a package and nothing else, so it has no modules to
 import: take it from the outputs of the flake. The same is true of the

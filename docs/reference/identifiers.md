@@ -54,6 +54,10 @@ modules of the repository.
   `$XDG_CONFIG_HOME/lazygit/config.yml`. The module
   `blueforest.homeModules.lazygit` adds it to the settings of lazygit when
   `programs.lazygit.enable = true`.
+- The md-tui package is `blueforest-md-tui-theme`. The md-tui theme is
+  `blueforest`, the name of the file `blueforest.json`, which md-tui reads
+  from `$HOME/.config/mdt/themes/`. Select it with `blueforest.md-tui.enable =
+  true;`, which makes the module write the theme and the selection of it.
 - The Claude Code package is `blueforest-claude-code-theme`. The Claude Code
   theme is `blueforest`, the name of the file `blueforest.json`, which Claude
   Code reads from `$HOME/.claude/themes/`. Select it with

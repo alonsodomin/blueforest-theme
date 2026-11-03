@@ -28,6 +28,7 @@ packages = [
   "kitty",
   "btop",
   "lazygit",
+  "md-tui",
 ]
 
 [[commands]]

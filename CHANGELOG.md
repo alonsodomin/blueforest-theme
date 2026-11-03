@@ -21,6 +21,7 @@ its own changelog:
 | MkDocs     | [modules/mkdocs/CHANGELOG.md](modules/mkdocs/CHANGELOG.md) |
 | Claude Code | [modules/claude-code/CHANGELOG.md](modules/claude-code/CHANGELOG.md) |
 | lazygit    | [modules/lazygit/CHANGELOG.md](modules/lazygit/CHANGELOG.md) |
+| md-tui     | [modules/md-tui/CHANGELOG.md](modules/md-tui/CHANGELOG.md) |
 
 Every configuration of the repository shares one version, which comes from the
 tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
@@ -60,6 +61,10 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
   `blueforest-lazygit-theme`. lazygit has no theme file of its own, so the
   theme is the `gui.theme` mapping of its configuration file, and the Home
   Manager module adds it to the settings of lazygit, colour by colour
+- The BlueForest theme now includes a theme for md-tui, packaged as
+  `blueforest-md-tui-theme`. It is the palette md-tui reads from the `themes`
+  directory of its configuration directory, and the Home Manager module
+  installs it there and selects it
 - The theme of Yazi depends on the theme of bat, instead of carrying a copy of
   it. The flavour of Yazi links to the TextMate theme of bat for the colours
   of the code preview, the package of the theme of Yazi carries the package of

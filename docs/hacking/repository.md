@@ -17,6 +17,7 @@ self-contained flake.
 │   ├── eza/
 │   ├── kitty/
 │   ├── lazygit/
+│   ├── md-tui/
 │   ├── mkdocs/
 │   ├── neovim/
 │   ├── opencode/
@@ -62,12 +63,17 @@ compare the packaged copies against them:
 - `modules/mkdocs/themes/blueforest.css`
 - `modules/claude-code/themes/blueforest.json`
 - `modules/lazygit/themes/blueforest.json`
+- `modules/md-tui/themes/blueforest.json`
 
 The theme of lazygit is a configuration file of lazygit that carries the theme
 under the `gui.theme` key, because lazygit has no theme file of its own. It is
 JSON, and JSON is a subset of YAML: lazygit reads the file as its own format,
 and Nix reads it at evaluation time, so that the colours of the Home Manager
 module and the colours of the file are the same ones.
+
+The theme of md-tui is a palette of md-tui, the format the chooser of its
+themes saves. The name of the palette is the name of the file, and md-tui
+selects it with the `selected-theme` file of its configuration directory.
 
 `modules/sbt` is the exception: it does not define a theme. It installs the
 upstream `sbt-prompt` plugin and selects its `BlueforestTheme` from

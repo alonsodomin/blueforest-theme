@@ -74,6 +74,7 @@ nix flake check "path:./modules/mkdocs"
 nix flake check "path:./modules/claude-code"
 nix flake check "path:./modules/btop"
 nix flake check "path:./modules/lazygit"
+nix flake check "path:./modules/md-tui"
 ```
 
 The `path:` prefix matters: the flakes are checked from the working tree, and

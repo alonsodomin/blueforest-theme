@@ -351,6 +351,28 @@
       },
       "parent": []
     },
+    "md-tui": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "./modules/md-tui",
+        "type": "path"
+      },
+      "original": {
+        "path": "./modules/md-tui",
+        "type": "path"
+      },
+      "parent": []
+    },
     "mkdocs": {
       "inputs": {
         "flake-parts": [
@@ -621,6 +643,7 @@
         "home-manager": "home-manager",
         "kitty": "kitty",
         "lazygit": "lazygit",
+        "md-tui": "md-tui",
         "mkdocs": "mkdocs",
         "mkdocs-flake": "mkdocs-flake",
         "neovim": "neovim",
