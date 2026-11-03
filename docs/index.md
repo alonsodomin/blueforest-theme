@@ -65,7 +65,7 @@ that every application of the repository paints with:
 
 | Colour | Normal | Bright |
 | --- | --- | --- |
-| Black | `#1B2B40` <span class="blueforest-swatch" style="background-color:#1B2B40"></span> | `#56697D` <span class="blueforest-swatch" style="background-color:#56697D"></span> |
+| Black | `#233244` <span class="blueforest-swatch" style="background-color:#233244"></span> | `#56697D` <span class="blueforest-swatch" style="background-color:#56697D"></span> |
 | Red | `#B02A28` <span class="blueforest-swatch" style="background-color:#B02A28"></span> | `#FF8080` <span class="blueforest-swatch" style="background-color:#FF8080"></span> |
 | Green | `#219186` <span class="blueforest-swatch" style="background-color:#219186"></span> | `#80FF80` <span class="blueforest-swatch" style="background-color:#80FF80"></span> |
 | Yellow | `#B3871F` <span class="blueforest-swatch" style="background-color:#B3871F"></span> | `#FFCC33` <span class="blueforest-swatch" style="background-color:#FFCC33"></span> |
