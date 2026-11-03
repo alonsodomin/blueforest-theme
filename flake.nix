@@ -495,6 +495,7 @@
                 mdTui = ./modules/md-tui/themes/blueforest-light.json;
                 neovim = ./modules/neovim/themes/blueforest-light.lua;
                 yazi = ./modules/yazi/themes/blueforest-light.yazi/flavor.toml;
+                mkdocs = ./modules/mkdocs/themes/blueforest.css;
                 palette = ./modules/noctalia/themes/blueforest.json;
               };
 

@@ -8,7 +8,8 @@ It recolours the code blocks of the site: the background, the foreground, and
 the colours of the tokens of the syntax highlighting. The theme follows the
 palette of BlueForest, the one of the other applications of this repository.
 
-The stylesheet applies to the dark scheme of Material alone. The light scheme
+The stylesheet has a variant per mode: the dark scheme of Material gets the
+dark palette, and the light scheme gets the light one. The rest of the site
 keeps the palette of Material, which is the one the site is readable with.
 
 ## How MkDocs reads the theme

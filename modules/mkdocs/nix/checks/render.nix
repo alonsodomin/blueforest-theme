@@ -3,6 +3,10 @@
 # Checks the stylesheet in a site built the way mkdocs-flake builds one: the
 # hook of the module copies the stylesheet into the sources of the site, and
 # MkDocs picks it up through `extra_css`.
+#
+# The site of the repository renders with the dark theme, and the check
+# builds a site per mode, so that the light variant of the theme is checked
+# as well.
 {
   pkgs,
   theme,
@@ -76,6 +80,12 @@ pkgs.runCommand "blueforest-mkdocs-render-check"
     # And the stylesheet paints the numbers, which Material paints with no
     # class of its own.
     grep -q '\.highlight \.m {' ${theme}/blueforest.css
+
+    # The light variant of the theme is there as well, and it paints the
+    # code blocks with the colours of the light palette.
+    grep -q '\[data-md-color-scheme="default"\]' ${theme}/blueforest.css
+    grep -q -- '--md-code-bg-color: #e8ecf2;' ${theme}/blueforest.css
+    grep -q -- '--md-code-hl-string-color: #1e5c1e;' ${theme}/blueforest.css
 
     touch $out
   ''
