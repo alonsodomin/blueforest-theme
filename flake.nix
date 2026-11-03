@@ -484,6 +484,14 @@
                 palette = ./modules/noctalia/themes/blueforest.json;
               };
 
+              # Fails if the colours of the light themes are not the colours
+              # of the light palette of Noctalia.
+              light-colours = import ./tests/light-colours.nix {
+                inherit pkgs;
+                vscode = ./modules/vscode/themes/Blueforest-light-color-theme.json;
+                palette = ./modules/noctalia/themes/blueforest.json;
+              };
+
               # Fails if the theme of the code preview of Yazi is not the
               # theme of the code preview of bat.
               yazi-tmtheme = import ./tests/yazi-tmtheme.nix {

@@ -83,13 +83,17 @@ in
             jq -e '.name == "blueforest-theme"' "$dir/package.json" >/dev/null
             jq -e '.version == "${extension.version}"' "$dir/package.json" >/dev/null
             jq -e '.contributes.themes[0].id == "BlueForest"' "$dir/package.json" >/dev/null
+            jq -e '.contributes.themes[0].uiTheme == "vs-dark"' "$dir/package.json" >/dev/null
+            jq -e '.contributes.themes[1].id == "BlueForestLight"' "$dir/package.json" >/dev/null
+            jq -e '.contributes.themes[1].uiTheme == "vs-light"' "$dir/package.json" >/dev/null
 
-            test -f "$dir/themes/Blueforest-color-theme.json"
-            jq -e 'type == "object"' "$dir/themes/Blueforest-color-theme.json" >/dev/null
-
-            # The theme that gets installed is the theme of this
-            # repository.
-            cmp "$dir/themes/Blueforest-color-theme.json" ${./themes/Blueforest-color-theme.json}
+            # The extension carries a theme per mode, and the themes that get
+            # installed are the themes of this repository.
+            for theme in Blueforest-color-theme.json Blueforest-light-color-theme.json; do
+              test -f "$dir/themes/$theme"
+              jq -e 'type == "object"' "$dir/themes/$theme" >/dev/null
+              cmp "$dir/themes/$theme" ${./themes}/$theme
+            done
 
             # The extension carries no file of the development of the
             # repository. The Nix expressions of the application in
@@ -179,11 +183,12 @@ in
         vscode-extension = extensionCheck;
         vscode-configuration = configurationCheck;
 
-        # The theme paints the shell scopes with the colours of the
+        # The themes paint the shell scopes with the colours of the
         # repository.
         vscode-theme = import ./nix/checks/theme.nix {
           inherit pkgs;
-          source = ./themes/Blueforest-color-theme.json;
+          dark = ./themes/Blueforest-color-theme.json;
+          light = ./themes/Blueforest-light-color-theme.json;
         };
       }
       // (

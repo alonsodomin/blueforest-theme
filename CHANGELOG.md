@@ -29,6 +29,10 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 
 ## Unreleased
 
+- The themes have a light variant now. The theme of VS Code is the reference
+  of the effort, and it is published with the extension as **BlueForest
+  Light**: the colours of the light palette of the repository, with the
+  swatches of the documentation
 - The palettes of the documentation site are shown with swatches, so that
   every colour of them is seen and not only read. A check verifies that the
   swatches are the colours of the palette of Noctalia

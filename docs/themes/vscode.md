@@ -8,6 +8,9 @@ The colours are the ones of BlueForest: the dark blue of the background, the
 vivid blue of the keywords, the green of the strings, the amber of the
 operators, the red of the numbers, and the pale yellow of the variables.
 
+The extension carries two themes: **BlueForest**, which is the dark one, and
+**BlueForest Light**, which is the light variant of the same palette.
+
 ## Install from Open VSX
 
 !!! tip "Recommended"
@@ -167,4 +170,23 @@ in your settings:
 {
   "workbench.colorTheme": "BlueForest"
 }
+```
+
+## The light variant
+
+The extension carries a second theme, **BlueForest Light**, which is the light
+variant of the palette. It is a theme of its own in the picker, and it is
+selected the same way:
+
+```json
+{
+  "workbench.colorTheme": "BlueForestLight"
+}
+```
+
+Its colours are the light palette of the repository: the soft white of the
+background, the navy of the text, the muted blue of the keywords, the deep
+green of the strings and the amber of the operators. The
+[palette reference](../index.md#colour-palettes) has every colour of it, with
+the swatches.
 ```

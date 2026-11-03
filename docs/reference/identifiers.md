@@ -38,6 +38,9 @@ application. A configuration that enables both fails to evaluate.
 - The VS Code extension is `alonsodomin.blueforest-theme`.
 - The theme inside VS Code is `BlueForest`. Select it with
   `"workbench.colorTheme": "BlueForest"`.
+- The light variant of the theme of VS Code is `BlueForestLight`, and it is
+  labelled **BlueForest Light** in the picker. Select it with
+  `"workbench.colorTheme": "BlueForestLight"`.
 - The bat theme is `BlueForest`, the name of the file
   `BlueForest.tmTheme`. Select it with `programs.bat.config.theme =
   "BlueForest";`, or let the module `blueforest.homeModules.bat` select it

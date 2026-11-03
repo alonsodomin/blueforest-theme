@@ -86,7 +86,7 @@ The names include `version`, `overlay`, `treefmt`, `workflows`,
 `lazygit-render`, `lazygit-module`, `lazygit-colours`, `md-tui-theme`,
 `md-tui-render`, `md-tui-module`, `md-tui-colours`, `noctalia-theme`,
 `noctalia-palette-v2`, `noctalia-render`, `noctalia-module`, `noctalia-colours`,
-`palette-swatches`, and `documentation`.
+`palette-swatches`, `light-colours`, and `documentation`.
 
 Root flake evaluation sees the working tree. `git add` new files before
 running `nix flake check` or `nix build "path:.#..."`, so that the tree
