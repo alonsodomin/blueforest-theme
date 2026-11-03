@@ -51,31 +51,37 @@ roles of the palette are:
 
 | Role | Colour | Role | Colour |
 | --- | --- | --- | --- |
-| Primary | `#0099FF` | On primary | `#141F2E` |
-| Secondary | `#91CCFF` | On secondary | `#141F2E` |
-| Tertiary | `#FFCC33` | On tertiary | `#141F2E` |
-| Error | `#FF8080` | On error | `#141F2E` |
-| Surface | `#141F2E` | On surface | `#D0D0D0` |
-| Surface variant | `#1C2D42` | On surface variant | `#91CCFF` |
-| Outline | `#333333` | Shadow | `#0A101D` |
-| Hover | `#375780` | On hover | `#D0D0D0` |
+| Primary | `#0099FF` <span class="blueforest-swatch" style="background-color:#0099FF"></span> | On primary | `#141F2E` <span class="blueforest-swatch" style="background-color:#141F2E"></span> |
+| Secondary | `#91CCFF` <span class="blueforest-swatch" style="background-color:#91CCFF"></span> | On secondary | `#141F2E` <span class="blueforest-swatch" style="background-color:#141F2E"></span> |
+| Tertiary | `#FFCC33` <span class="blueforest-swatch" style="background-color:#FFCC33"></span> | On tertiary | `#141F2E` <span class="blueforest-swatch" style="background-color:#141F2E"></span> |
+| Error | `#FF8080` <span class="blueforest-swatch" style="background-color:#FF8080"></span> | On error | `#141F2E` <span class="blueforest-swatch" style="background-color:#141F2E"></span> |
+| Surface | `#141F2E` <span class="blueforest-swatch" style="background-color:#141F2E"></span> | On surface | `#D0D0D0` <span class="blueforest-swatch" style="background-color:#D0D0D0"></span> |
+| Surface variant | `#1C2D42` <span class="blueforest-swatch" style="background-color:#1C2D42"></span> | On surface variant | `#91CCFF` <span class="blueforest-swatch" style="background-color:#91CCFF"></span> |
+| Outline | `#333333` <span class="blueforest-swatch" style="background-color:#333333"></span> | Shadow | `#0A101D` <span class="blueforest-swatch" style="background-color:#0A101D"></span> |
+| Hover | `#375780` <span class="blueforest-swatch" style="background-color:#375780"></span> | On hover | `#D0D0D0` <span class="blueforest-swatch" style="background-color:#D0D0D0"></span> |
 
 The colours of the terminal are the ANSI ones, and they are the same sixteen
 that every application of the repository paints with:
 
 | Colour | Normal | Bright |
 | --- | --- | --- |
-| Black | `#1B2B40` | `#56697D` |
-| Red | `#B02A28` | `#FF8080` |
-| Green | `#219186` | `#80FF80` |
-| Yellow | `#B3871F` | `#FFCC33` |
-| Blue | `#0099FF` | `#91CCFF` |
-| Magenta | `#C57633` | `#DDBB88` |
-| Cyan | `#1B7A70` | `#4FD6A0` |
-| White | `#7F8FA3` | `#D0D0D0` |
+| Black | `#1B2B40` <span class="blueforest-swatch" style="background-color:#1B2B40"></span> | `#56697D` <span class="blueforest-swatch" style="background-color:#56697D"></span> |
+| Red | `#B02A28` <span class="blueforest-swatch" style="background-color:#B02A28"></span> | `#FF8080` <span class="blueforest-swatch" style="background-color:#FF8080"></span> |
+| Green | `#219186` <span class="blueforest-swatch" style="background-color:#219186"></span> | `#80FF80` <span class="blueforest-swatch" style="background-color:#80FF80"></span> |
+| Yellow | `#B3871F` <span class="blueforest-swatch" style="background-color:#B3871F"></span> | `#FFCC33` <span class="blueforest-swatch" style="background-color:#FFCC33"></span> |
+| Blue | `#0099FF` <span class="blueforest-swatch" style="background-color:#0099FF"></span> | `#91CCFF` <span class="blueforest-swatch" style="background-color:#91CCFF"></span> |
+| Magenta | `#C57633` <span class="blueforest-swatch" style="background-color:#C57633"></span> | `#DDBB88` <span class="blueforest-swatch" style="background-color:#DDBB88"></span> |
+| Cyan | `#1B7A70` <span class="blueforest-swatch" style="background-color:#1B7A70"></span> | `#4FD6A0` <span class="blueforest-swatch" style="background-color:#4FD6A0"></span> |
+| White | `#7F8FA3` <span class="blueforest-swatch" style="background-color:#7F8FA3"></span> | `#D0D0D0` <span class="blueforest-swatch" style="background-color:#D0D0D0"></span> |
 
-The foreground of the terminal is `#D0D0D0`, its background is `#141F2E`, the
-selection is `#375780` on `#141F2E`, and the cursor is `#D0D0D0` on `#141F2E`.
+The colours of the terminal itself are:
+
+| Element | Colour |
+| --- | --- |
+| Foreground | `#D0D0D0` <span class="blueforest-swatch" style="background-color:#D0D0D0"></span> |
+| Background | `#141F2E` <span class="blueforest-swatch" style="background-color:#141F2E"></span> |
+| Selection | `#375780` <span class="blueforest-swatch" style="background-color:#375780"></span> on `#141F2E` |
+| Cursor | `#D0D0D0` <span class="blueforest-swatch" style="background-color:#D0D0D0"></span> on `#141F2E` |
 
 ### The light palette
 
@@ -87,31 +93,37 @@ name, a border, or a link looks the same in both of them.
 
 | Role | Colour | Role | Colour |
 | --- | --- | --- | --- |
-| Primary | `#0099FF` | On primary | `#141F2E` |
-| Secondary | `#3A5F8A` | On secondary | `#EFEFEF` |
-| Tertiary | `#B3871F` | On tertiary | `#141F2E` |
-| Error | `#DC322F` | On error | `#EFEFEF` |
-| Surface | `#EFEFEF` | On surface | `#141F2E` |
-| Surface variant | `#E7E7E7` | On surface variant | `#56697D` |
-| Outline | `#7F8FA3` | Shadow | `#141F2E` |
-| Hover | `#D0D0D0` | On hover | `#141F2E` |
+| Primary | `#0099FF` <span class="blueforest-swatch" style="background-color:#0099FF"></span> | On primary | `#141F2E` <span class="blueforest-swatch" style="background-color:#141F2E"></span> |
+| Secondary | `#3A5F8A` <span class="blueforest-swatch" style="background-color:#3A5F8A"></span> | On secondary | `#EFEFEF` <span class="blueforest-swatch" style="background-color:#EFEFEF"></span> |
+| Tertiary | `#B3871F` <span class="blueforest-swatch" style="background-color:#B3871F"></span> | On tertiary | `#141F2E` <span class="blueforest-swatch" style="background-color:#141F2E"></span> |
+| Error | `#DC322F` <span class="blueforest-swatch" style="background-color:#DC322F"></span> | On error | `#EFEFEF` <span class="blueforest-swatch" style="background-color:#EFEFEF"></span> |
+| Surface | `#EFEFEF` <span class="blueforest-swatch" style="background-color:#EFEFEF"></span> | On surface | `#141F2E` <span class="blueforest-swatch" style="background-color:#141F2E"></span> |
+| Surface variant | `#E7E7E7` <span class="blueforest-swatch" style="background-color:#E7E7E7"></span> | On surface variant | `#56697D` <span class="blueforest-swatch" style="background-color:#56697D"></span> |
+| Outline | `#7F8FA3` <span class="blueforest-swatch" style="background-color:#7F8FA3"></span> | Shadow | `#141F2E` <span class="blueforest-swatch" style="background-color:#141F2E"></span> |
+| Hover | `#D0D0D0` <span class="blueforest-swatch" style="background-color:#D0D0D0"></span> | On hover | `#141F2E` <span class="blueforest-swatch" style="background-color:#141F2E"></span> |
 
 The colours of the terminal of the light palette are darker than the ones of
 the dark palette, because a light background needs more contrast:
 
 | Colour | Normal | Bright |
 | --- | --- | --- |
-| Black | `#1B2B40` | `#333333` |
-| Red | `#B02A28` | `#DC322F` |
-| Green | `#1E5C1E` | `#22AA44` |
-| Yellow | `#808000` | `#B3871F` |
-| Blue | `#3A5F8A` | `#0099FF` |
-| Magenta | `#C57633` | `#CB4B16` |
-| Cyan | `#1B7A70` | `#219186` |
-| White | `#7F8FA3` | `#56697D` |
+| Black | `#1B2B40` <span class="blueforest-swatch" style="background-color:#1B2B40"></span> | `#333333` <span class="blueforest-swatch" style="background-color:#333333"></span> |
+| Red | `#B02A28` <span class="blueforest-swatch" style="background-color:#B02A28"></span> | `#DC322F` <span class="blueforest-swatch" style="background-color:#DC322F"></span> |
+| Green | `#1E5C1E` <span class="blueforest-swatch" style="background-color:#1E5C1E"></span> | `#22AA44` <span class="blueforest-swatch" style="background-color:#22AA44"></span> |
+| Yellow | `#808000` <span class="blueforest-swatch" style="background-color:#808000"></span> | `#B3871F` <span class="blueforest-swatch" style="background-color:#B3871F"></span> |
+| Blue | `#3A5F8A` <span class="blueforest-swatch" style="background-color:#3A5F8A"></span> | `#0099FF` <span class="blueforest-swatch" style="background-color:#0099FF"></span> |
+| Magenta | `#C57633` <span class="blueforest-swatch" style="background-color:#C57633"></span> | `#CB4B16` <span class="blueforest-swatch" style="background-color:#CB4B16"></span> |
+| Cyan | `#1B7A70` <span class="blueforest-swatch" style="background-color:#1B7A70"></span> | `#219186` <span class="blueforest-swatch" style="background-color:#219186"></span> |
+| White | `#7F8FA3` <span class="blueforest-swatch" style="background-color:#7F8FA3"></span> | `#56697D` <span class="blueforest-swatch" style="background-color:#56697D"></span> |
 
-The foreground of the terminal is `#141F2E`, its background is `#EFEFEF`, the
-selection is `#141F2E` on `#D0D0D0`, and the cursor is `#141F2E` on `#EFEFEF`.
+The colours of the terminal itself are:
+
+| Element | Colour |
+| --- | --- |
+| Foreground | `#141F2E` <span class="blueforest-swatch" style="background-color:#141F2E"></span> |
+| Background | `#EFEFEF` <span class="blueforest-swatch" style="background-color:#EFEFEF"></span> |
+| Selection | `#D0D0D0` <span class="blueforest-swatch" style="background-color:#D0D0D0"></span> on `#141F2E` |
+| Cursor | `#141F2E` <span class="blueforest-swatch" style="background-color:#141F2E"></span> on `#EFEFEF` |
 
 Every pair of a role and of its counterpart clears a contrast ratio of 3.0, so
 that the text of the interface reads well in both of the palettes.

@@ -29,6 +29,9 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 
 ## Unreleased
 
+- The palettes of the documentation site are shown with swatches, so that
+  every colour of them is seen and not only read. A check verifies that the
+  swatches are the colours of the palette of Noctalia
 - The options of the repository live under `blueforest-theme` now, and not
   under `blueforest`. The options of the module of MkDocs are the ones that
   changed name: `blueforest.mkdocs.enable`, `blueforest.mkdocs.docsDir` and

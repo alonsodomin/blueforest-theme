@@ -476,6 +476,14 @@
                 kitty = ./modules/kitty/themes/blueforest.conf;
               };
 
+              # Fails if the swatches of the palettes of the documentation are
+              # not the colours of the palette of Noctalia.
+              palette-swatches = import ./tests/palette-swatches.nix {
+                inherit pkgs;
+                docs = ./docs/index.md;
+                palette = ./modules/noctalia/themes/blueforest.json;
+              };
+
               # Fails if the theme of the code preview of Yazi is not the
               # theme of the code preview of bat.
               yazi-tmtheme = import ./tests/yazi-tmtheme.nix {
