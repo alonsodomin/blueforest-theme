@@ -57,7 +57,9 @@ application. A configuration that enables both fails to evaluate.
   `blueforest-theme.starship.enable = true;`.
 - The OpenCode package is `blueforest-opencode-theme`.
 - The OpenCode theme is `blueforest`, the name of the file. Select it with
-  `programs.opencode.cli.theme = { name = "blueforest"; mode = "dark"; };`.
+  `programs.opencode.cli.theme = { name = "blueforest"; mode = "system"; };`.
+  The theme carries a dark variant and a light one, and `system` follows the
+  appearance of the terminal.
 - The sbt package is `blueforest-sbt-prompt`. The module
   `blueforest.homeModules.sbt` installs it when `programs.sbt.enable = true`.
 - The sbt prompt is the `BlueforestTheme` of the

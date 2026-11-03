@@ -46,14 +46,14 @@ pkgs.runCommand "blueforest-opencode-configuration-check"
       .themeTarget == "/home/blueforest/.config/opencode/themes/blueforest.json"
       and .themeIsTheRepositoryTheme
       and .selectedTheme == "blueforest"
-      and .selectedMode == "dark"
+      and .selectedMode == "system"
     ' >/dev/null
 
     # And the settings of the terminal are the ones OpenCode 2 reads.
     jq -e '
       ."$schema" == "https://opencode.ai/v2/cli.json"
       and .theme.name == "blueforest"
-      and .theme.mode == "dark"
+      and .theme.mode == "system"
     ' "$cliFile" >/dev/null
 
     # The template of Noctalia for OpenCode and the theme of the repository

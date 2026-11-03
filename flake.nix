@@ -489,6 +489,7 @@
               light-colours = import ./tests/light-colours.nix {
                 inherit pkgs;
                 vscode = ./modules/vscode/themes/Blueforest-light-color-theme.json;
+                opencode = ./modules/opencode/themes/blueforest.json;
                 palette = ./modules/noctalia/themes/blueforest.json;
               };
 

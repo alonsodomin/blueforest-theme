@@ -85,10 +85,11 @@ in
         themes.blueforest = lib.mkDefault ../../themes/blueforest.json;
 
         # The selection of the theme, in the file OpenCode 2 reads at
-        # runtime.
+        # runtime. The theme has a variant per mode, so it follows the
+        # appearance of the terminal.
         cli.theme = lib.mkDefault {
           name = "blueforest";
-          mode = "dark";
+          mode = "system";
         };
       };
     })
