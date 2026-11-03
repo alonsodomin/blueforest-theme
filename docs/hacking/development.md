@@ -91,9 +91,9 @@ nix build "path:.#checks.x86_64-linux.<name>"
 
 The names include `version`, `overlay`, `treefmt`, `workflows`,
 `workflows-lint`, `vscode-extension`, `vscode-configuration`, `bat-theme`,
-`bat-theme-home`, `bat-theme-nixos`, `neovim-theme`, `neovim-configuration`,
-`neovim-module`, `starship-preset`, `starship-render`, `starship-wrapper`,
-`starship-module`, `opencode-theme`, `opencode-configuration`,
+`bat-theme-home`, `bat-theme-nixos`, `bat-module`, `neovim-theme`,
+`neovim-configuration`, `neovim-module`, `starship-preset`, `starship-render`,
+`starship-wrapper`, `starship-module`, `opencode-theme`, `opencode-configuration`,
 `opencode-module`, `sbt-package`, `sbt-module`, `eza-theme`, `eza-render`,
 `eza-module`, `zed-extension`, `zed-theme`, `zed-module`, `zed-colours`,
 `yazi-theme`, `yazi-render`, `yazi-module`, `yazi-tmtheme`, `yazi-asset`,
@@ -101,7 +101,8 @@ The names include `version`, `overlay`, `treefmt`, `workflows`,
 `btop-theme`, `btop-render`, `btop-module`, `lazygit-theme`,
 `lazygit-render`, `lazygit-module`, `lazygit-colours`, `md-tui-theme`,
 `md-tui-render`, `md-tui-module`, `md-tui-colours`, `noctalia-theme`,
-`noctalia-render`, `noctalia-module`, `noctalia-colours`, and `documentation`.
+`noctalia-palette-v2`, `noctalia-render`, `noctalia-module`, `noctalia-colours`,
+and `documentation`.
 
 Root flake evaluation sees the working tree, so the changes of the working
 tree are part of it. `git add` new files before running `nix flake check` or

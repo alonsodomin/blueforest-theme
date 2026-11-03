@@ -16,6 +16,12 @@
 # roles of the interface with the `m` prefix, and the colours of the terminal.
 # Noctalia rejects a palette that does not carry the terminal colours, so the
 # block is not optional.
+#
+# The package also carries the same palette in format 2, the format that names
+# every key after the colour role it sets and that the community palette
+# registry of Noctalia requires. Every released Noctalia reads format 1, so
+# that is the file the package installs; format 2 is there for the registry
+# and for the releases that read it.
 {
   lib,
   pkgs,
@@ -38,6 +44,10 @@ pkgs.runCommand "blueforest-noctalia-theme-${version}"
     mkdir -p $out/share/noctalia/palettes
     cp ${../themes/blueforest.json} $out/blueforest.json
     cp ${../themes/blueforest.json} $out/share/noctalia/palettes/blueforest.json
+
+    # The same palette in format 2, which the registry of the community
+    # palettes of Noctalia requires.
+    cp ${../themes/blueforest-v2.json} $out/blueforest-v2.json
 
     # The attribution of the theme travels with the package.
     mkdir -p $out/share/doc/blueforest

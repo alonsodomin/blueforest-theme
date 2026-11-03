@@ -34,11 +34,16 @@ own configuration.
   ];
 
   programs.neovim.enable = true;
+  blueforest.neovim.enable = true;
 }
 ```
 
 The module adds the theme with `lib.mkDefault`, so it does not replace the
 plugins you add yourself.
+
+The switch of the theme is `blueforest.neovim.enable`, and not
+`programs.neovim.enable`, so that every theme of the repository is turned on
+and off on its own.
 
 If you wire the plugin by hand, the package is
 `blueforest.packages.${system}.blueforest-neovim-theme`:

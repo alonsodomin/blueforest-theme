@@ -32,6 +32,10 @@ pkgs.runCommand "blueforest-opencode-configuration-check"
     nativeBuildInputs = [ pkgs.jq ];
     inherit result;
 
+    # Whether the conflict with the template of Noctalia for OpenCode fails
+    # the evaluation of the configuration.
+    inherit (evaluated) conflict;
+
     # The file Home Manager writes for the settings of the terminal.
     inherit (evaluated) cliFile;
   }
@@ -51,6 +55,13 @@ pkgs.runCommand "blueforest-opencode-configuration-check"
       and .theme.name == "blueforest"
       and .theme.mode == "dark"
     ' "$cliFile" >/dev/null
+
+    # The template of Noctalia for OpenCode and the theme of the repository
+    # cannot be enabled at the same time.
+    if [ "$conflict" != "yes" ]; then
+      echo "the conflict with the Noctalia template for OpenCode did not fail" >&2
+      exit 1
+    fi
 
     touch $out
   ''

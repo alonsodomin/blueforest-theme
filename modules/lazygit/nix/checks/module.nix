@@ -29,18 +29,35 @@ let
       modules = [
         module
         identity
-        extra
-      ];
+      ]
+      ++ extra;
     }).config;
 
-  enabled = evaluate { programs.lazygit.enable = true; };
-  disabled = evaluate { };
+  enabled = evaluate [
+    {
+      programs.lazygit.enable = true;
+      blueforest.lazygit.enable = true;
+    }
+  ];
+
+  disabled = evaluate [ ];
+
+  # A consumer that asks for the theme but does not enable lazygit: the theme
+  # has no consumer, so the module writes nothing.
+  themeOnly = evaluate [
+    {
+      blueforest.lazygit.enable = true;
+    }
+  ];
 
   # A consumer that brings a colour of its own.
-  own = evaluate {
-    programs.lazygit.enable = true;
-    programs.lazygit.settings.gui.theme.activeBorderColor = [ "#FF0000" ];
-  };
+  own = evaluate [
+    {
+      programs.lazygit.enable = true;
+      blueforest.lazygit.enable = true;
+      programs.lazygit.settings.gui.theme.activeBorderColor = [ "#FF0000" ];
+    }
+  ];
 
   # The theme of the repository, as lazygit reads it.
   theme = (builtins.fromJSON (builtins.readFile source)).gui.theme;
@@ -52,6 +69,9 @@ let
     enabled = enabled.programs.lazygit.settings.gui.theme;
     disabled = {
       defined = disabled.programs.lazygit.settings ? gui;
+    };
+    themeOnly = {
+      defined = themeOnly.programs.lazygit.settings ? gui;
     };
     own = own.programs.lazygit.settings.gui.theme;
     expected = theme;
@@ -71,6 +91,7 @@ pkgs.runCommand "blueforest-lazygit-module-check"
     echo "$result" | jq -e '
       .enabled == .expected
       and (.disabled.defined | not)
+      and (.themeOnly.defined | not)
     ' >/dev/null
 
     # And a consumer that brings a colour of its own keeps it, and keeps the

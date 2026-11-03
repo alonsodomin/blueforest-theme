@@ -6,6 +6,13 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
+- The palette carries a light variant as well, which is a palette of
+  its own and not a copy of the dark one
+- The package carries the palette in the format 2 of the community
+  palette registry as well, under the name `blueforest-v2.json`, and
+  the file of the format 2 is generated from the canonical one
+- The palette is installed only when `blueforest.noctalia.enable` is
+  true
 - Initial release: the palette of Noctalia, packaged as
   `blueforest-noctalia-theme`
 - The Home Manager module installs the palette in the directory Noctalia reads

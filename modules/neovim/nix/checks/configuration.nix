@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MPL-2.0
 #
 # Checks that the configuration documented in the documentation installs the theme
-# where Neovim reads it from, and that it writes nothing when Neovim is not
-# enabled.
+# where Neovim reads it from, and that it writes nothing when the theme or
+# Neovim itself is not enabled.
 {
   pkgs,
   homeManager,
@@ -20,14 +20,28 @@ let
           home.homeDirectory = "/home/blueforest";
           home.stateVersion = "26.11";
         }
-        extra
-      ];
+      ]
+      ++ extra;
     }).config;
 
   # The consumer has to enable Neovim: the theme is a plugin of it, and Home
   # Manager writes the plugins of an enabled Neovim only.
-  enabled = evaluate { programs.neovim.enable = true; };
-  disabled = evaluate { };
+  enabled = evaluate [
+    {
+      programs.neovim.enable = true;
+      blueforest.neovim.enable = true;
+    }
+  ];
+
+  disabled = evaluate [ ];
+
+  # A consumer that asks for the theme but does not enable Neovim: the theme
+  # has no consumer, so the module writes nothing.
+  themeOnly = evaluate [
+    {
+      blueforest.neovim.enable = true;
+    }
+  ];
 
   # The directory Home Manager writes the plugins of Neovim into.
   packDir = enabled.xdg.dataFile."nvim/site/pack/hm".source;
@@ -38,9 +52,11 @@ let
   result = builtins.toJSON {
     inherit plugins;
 
-    # The module does not enable Neovim, so a configuration that does not
-    # enable it gets no plugins at all.
+    # The module does not enable Neovim, so a configuration that does not ask
+    # for the theme gets no plugins at all.
     disabledWritesNothing = !(disabled.xdg.dataFile ? "nvim/site/pack/hm");
+
+    themeOnlyWritesNothing = !(themeOnly.xdg.dataFile ? "nvim/site/pack/hm");
   };
 in
 pkgs.runCommand "blueforest-neovim-configuration-check"
@@ -54,6 +70,7 @@ pkgs.runCommand "blueforest-neovim-configuration-check"
     echo "$result" | jq -e '
       (.plugins | index("blueforest-neovim-theme")) != null
       and .disabledWritesNothing
+      and .themeOnlyWritesNothing
     ' >/dev/null
 
     # And the theme ends up in the directory of the runtimepath where Neovim

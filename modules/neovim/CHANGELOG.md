@@ -8,6 +8,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
+- The theme is added to the plugins of Neovim only when
+  `blueforest.neovim.enable` is true
 - Initial release: the BlueForest theme for Neovim, packaged as
   `blueforest-neovim-theme`. It carries the colourscheme of Neovim and the
   theme of lualine

@@ -96,10 +96,12 @@ in
           inherit pkgs wrapper source;
         };
 
-        # The modules add the overlay of the application.
+        # The modules add the overlay of the application, and the Home
+        # Manager module selects the preset of the repository.
         starship-module = import ./nix/checks/module.nix {
           inherit lib;
           pkgs = basePkgs;
+          homeManager = appInputs.home-manager;
           modules = {
             nixos = config.flake.nixosModules.starship;
             home = config.flake.homeModules.starship;
@@ -139,8 +141,10 @@ in
       nixpkgs.overlays = [ config.flake.overlays.starship ];
     };
 
-    homeModules.starship = {
-      nixpkgs.overlays = [ config.flake.overlays.starship ];
+    # The preset of the repository is selected by the Home Manager module of
+    # the application, which also adds the overlay of the application.
+    homeModules.starship = import ./nix/module.nix {
+      overlay = config.flake.overlays.starship;
     };
   };
 }

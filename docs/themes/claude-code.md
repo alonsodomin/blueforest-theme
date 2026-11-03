@@ -53,13 +53,22 @@ module installs it where Claude Code reads the themes from, and selects it:
   ];
 
   programs.claude-code.enable = true;
+  blueforest.claude-code.enable = true;
 }
 ```
 
 The module does not enable Claude Code: whether the program is installed at
 all stays your decision. It writes the theme to
 `~/.claude/themes/blueforest.json`, selects it in the settings of Claude Code,
-and it writes nothing when `programs.claude-code.enable` is false.
+and it writes nothing when `programs.claude-code.enable` is false or when
+`blueforest.claude-code.enable` is false.
+
+The switch of the theme is `blueforest.claude-code.enable`, and not
+`programs.claude-code.enable`, so that the theme and the template of the
+community catalogue of Noctalia for Claude Code are alternatives: a consumer
+that wants the community template keeps `blueforest.claude-code.enable` off,
+and a consumer that wants this theme turns it on. A configuration that enables
+both fails to evaluate: the two of them write the settings of Claude Code.
 
 The theme is selected with `lib.mkDefault`, so a configuration that selects a
 theme of its own keeps it:

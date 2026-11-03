@@ -68,13 +68,18 @@ installs the flavour where Yazi reads it, and selects it:
   ];
 
   programs.yazi.enable = true;
+  blueforest.yazi.enable = true;
 }
 ```
 
 The module does not enable Yazi: whether the program is installed at all stays
 your decision. It writes the flavour to
 `~/.config/yazi/flavors/blueforest.yazi/`, and it writes nothing when
-`programs.yazi.enable` is false.
+`programs.yazi.enable` is false or when `blueforest.yazi.enable` is false.
+
+The switch of the theme is `blueforest.yazi.enable`, and not
+`programs.yazi.enable`, so that every theme of the repository is turned on and
+off on its own.
 
 The flavour it writes is the one of the package, so it carries the theme of
 bat as a link, and the module adds the overlay of the application to the

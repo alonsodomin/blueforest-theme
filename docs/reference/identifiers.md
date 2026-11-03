@@ -3,12 +3,44 @@
 The names that a configuration needs to refer to the packages, themes, and
 modules of the repository.
 
+## Switches
+
+Every theme of the repository has a switch of its own, and the switch is off
+by default:
+
+| Switch | Theme |
+| --- | --- |
+| `blueforest.bat.enable` | The theme of bat |
+| `blueforest.btop.enable` | The theme of btop |
+| `blueforest.claude-code.enable` | The theme of Claude Code |
+| `blueforest.eza.enable` | The theme of eza |
+| `blueforest.kitty.enable` | The theme of kitty |
+| `blueforest.lazygit.enable` | The theme of lazygit |
+| `blueforest.md-tui.enable` | The theme of md-tui |
+| `blueforest.neovim.enable` | The theme of Neovim |
+| `blueforest.noctalia.enable` | The palette of Noctalia |
+| `blueforest.opencode.enable` | The theme of OpenCode |
+| `blueforest.sbt.enable` | The prompt of sbt |
+| `blueforest.starship.enable` | The preset of Starship |
+| `blueforest.yazi.enable` | The flavour of Yazi |
+
+The themes of VS Code, of Zed, and of MkDocs have no switch: they are
+installed as a package, as an extension, and as a stylesheet.
+
+A theme and a template of the community catalogue of Noctalia are
+alternatives, because the two of them write the configuration of the same
+application. A configuration that enables both fails to evaluate.
+
+## Names
+
 - The VS Code package is `blueforest-vscode-theme`.
 - The VS Code extension is `alonsodomin.blueforest-theme`.
 - The theme inside VS Code is `BlueForest`. Select it with
   `"workbench.colorTheme": "BlueForest"`.
 - The bat theme is `BlueForest`, the name of the file
-  `BlueForest.tmTheme`.
+  `BlueForest.tmTheme`. Select it with `programs.bat.config.theme =
+  "BlueForest";`, or let the module `blueforest.homeModules.bat` select it
+  with `blueforest.bat.enable = true;`.
 - The btop package is `blueforest-btop-theme`. The btop theme is
   `blueforest.theme`, the name of the file, which btop reads from
   `$XDG_CONFIG_HOME/btop/themes/`. Select it with
@@ -16,7 +48,9 @@ modules of the repository.
 - The Starship packages are `blueforest-starship-preset` and
   `blueforest-starship`.
 - The Starship preset is `blueforest`. Select it with
-  `programs.starship.presets = [ "blueforest" ];`.
+  `programs.starship.presets = [ "blueforest" ];`, or let the module
+  `blueforest.homeModules.starship` select it with
+  `blueforest.starship.enable = true;`.
 - The OpenCode package is `blueforest-opencode-theme`.
 - The OpenCode theme is `blueforest`, the name of the file. Select it with
   `programs.opencode.cli.theme = { name = "blueforest"; mode = "dark"; };`.
@@ -63,7 +97,10 @@ modules of the repository.
   from `$XDG_CONFIG_HOME/noctalia/palettes/`. Select it with
   `[theme] source = "custom"` and `custom_palette = "blueforest"` in the
   configuration of Noctalia. The module `blueforest.homeModules.noctalia`
-  writes the palette and the selection when `programs.noctalia.enable = true`.
+  writes the palette and the selection when `programs.noctalia.enable = true`
+  and `blueforest.noctalia.enable = true`. The package carries the palette in
+  the format 2 of the community palette registry as well, under the name
+  `blueforest-v2.json`.
 - The Claude Code package is `blueforest-claude-code-theme`. The Claude Code
   theme is `blueforest`, the name of the file `blueforest.json`, which Claude
   Code reads from `$HOME/.claude/themes/`. Select it with

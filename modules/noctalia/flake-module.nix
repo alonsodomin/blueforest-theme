@@ -72,14 +72,37 @@ in
 
       # The theme of the repository.
       source = ./themes/blueforest.json;
+
+      # The same theme in the format that the community palette registry of
+      # Noctalia requires, generated from the canonical file.
+      sourceV2 = ./themes/blueforest-v2.json;
+      format2 = ./themes/format2.jq;
     in
     {
       packages.blueforest-noctalia-theme = theme;
 
       checks = {
-        # The theme of the package is the theme of the repository.
+        # The theme of the package is the theme of the repository, in both of
+        # its formats.
         noctalia-theme = import ./nix/checks/theme.nix {
-          inherit pkgs theme source;
+          inherit
+            pkgs
+            theme
+            source
+            sourceV2
+            ;
+        };
+
+        # The format 2 palette is the one the filter renders from the
+        # canonical file, and it passes the rulebook of the community palette
+        # registry of Noctalia.
+        noctalia-palette-v2 = import ./nix/checks/palette-v2.nix {
+          inherit
+            pkgs
+            source
+            sourceV2
+            format2
+            ;
         };
       }
       // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {

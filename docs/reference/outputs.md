@@ -8,6 +8,7 @@ combined ones.
 | `checks.<system>.<app>-<check>` | The checks of every application |
 | `devShells.default` | The development shell of the repository |
 | `extensions.<system>.open-vsx.alonsodomin.blueforest-theme` | The same shape `nix-vscode-extensions` uses |
+| `flakeModules.bat` | The module of the bat theme, for flake-parts |
 | `flakeModules.btop` | The module of the btop theme, for flake-parts |
 | `flakeModules.claude-code` | The module of the Claude Code theme, for flake-parts |
 | `flakeModules.default` | The modules of every application, except the one of MkDocs |
@@ -15,6 +16,7 @@ combined ones.
 | `flakeModules.md-tui` | The module of the md-tui theme, for flake-parts |
 | `flakeModules.mkdocs` | The module of the MkDocs theme, for flake-parts |
 | `flakeModules.noctalia` | The module of the Noctalia theme, for flake-parts |
+| `homeModules.bat` | The module of the bat theme |
 | `homeModules.btop` | The module of the btop theme |
 | `homeModules.eza` | The module of the eza theme |
 | `homeModules.kitty` | The module of the kitty theme |

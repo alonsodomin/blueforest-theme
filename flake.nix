@@ -60,6 +60,7 @@
 
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-parts.follows = "flake-parts";
+      inputs.home-manager.follows = "home-manager";
     };
 
     starship = {
@@ -315,6 +316,7 @@
               config.flake.homeModules.lazygit
               config.flake.homeModules.md-tui
               config.flake.homeModules.noctalia
+              config.flake.homeModules.bat
             ];
           };
         };

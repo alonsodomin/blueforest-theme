@@ -35,12 +35,18 @@ writes it where eza reads it from:
   ];
 
   programs.eza.enable = true;
+  blueforest.eza.enable = true;
 }
 ```
 
 The module does not enable eza: whether the program is installed at all stays
 your decision. It writes the theme to `~/.config/eza/theme.yml`, and it writes
-nothing when `programs.eza.enable` is false.
+nothing when `programs.eza.enable` is false or when `blueforest.eza.enable` is
+false.
+
+The switch of the theme is `blueforest.eza.enable`, and not
+`programs.eza.enable`, so that every theme of the repository is turned on and
+off on its own.
 
 Home Manager has an option of its own for the theme of eza,
 `programs.eza.theme`, which writes the same file. The theme of this

@@ -51,6 +51,43 @@ where bat reads the themes from, and rebuilds the cache of bat, without which
 bat does not pick the theme up. The setup hook does both when the package is
 installed, so the theme is available without further work.
 
+The Home Manager module does the same, and it selects the theme for you:
+
+```nix
+{
+  imports = [
+    blueforest.homeModules.bat
+  ];
+
+  programs.bat.enable = true;
+  blueforest.bat.enable = true;
+}
+```
+
+The module does not enable bat: whether the program is installed at all stays
+your decision. It writes the theme to `~/.config/bat/themes/BlueForest.tmTheme`
+and selects it in the configuration of bat, and it writes nothing when
+`programs.bat.enable` is false or when `blueforest.bat.enable` is false.
+
+The theme and the selection are installed with `lib.mkDefault`, so a
+configuration that brings a theme or a setting of its own keeps it:
+
+```nix
+{
+  programs.bat.config.theme = "Another";
+}
+```
+
+The switch of the theme is `blueforest.bat.enable`, and not
+`programs.bat.enable`, so that the theme and the template of the community
+catalogue of Noctalia for bat are alternatives: a consumer that wants the
+community template keeps `blueforest.bat.enable` off, and a consumer that
+wants this theme turns it on. A configuration that enables both fails to
+evaluate: the two of them write the configuration of bat.
+
+There is no NixOS module: bat reads the themes from the configuration directory
+of the user, and there is no system-wide directory it reads.
+
 ## Manual install
 
 Download `blueforest-bat-theme-<version>.tmTheme` from the

@@ -30,20 +30,37 @@ let
       modules = [
         module
         identity
-        extra
-      ];
+      ]
+      ++ extra;
     }).config;
 
-  enabled = evaluate { programs.yazi.enable = true; };
-  disabled = evaluate { };
+  enabled = evaluate [
+    {
+      programs.yazi.enable = true;
+      blueforest.yazi.enable = true;
+    }
+  ];
+
+  disabled = evaluate [ ];
+
+  # A consumer that asks for the theme but does not enable Yazi: the theme
+  # has no consumer, so the module writes nothing.
+  themeOnly = evaluate [
+    {
+      blueforest.yazi.enable = true;
+    }
+  ];
 
   # A consumer that brings a theme of its own.
-  own = evaluate {
-    programs.yazi.enable = true;
-    programs.yazi.theme = {
-      mgr.cwd.fg = "#ff0000";
-    };
-  };
+  own = evaluate [
+    {
+      programs.yazi.enable = true;
+      blueforest.yazi.enable = true;
+      programs.yazi.theme = {
+        mgr.cwd.fg = "#ff0000";
+      };
+    }
+  ];
 
   result = builtins.toJSON {
     enabled = {
@@ -51,11 +68,16 @@ let
       theme = "${enabled.xdg.configHome}/yazi/theme.toml";
     };
 
-    # The module does not enable Yazi, so a configuration that does not enable
-    # it gets neither the flavour nor the theme.
+    # The module does not enable Yazi, so a configuration that does not ask
+    # for the theme gets neither the flavour nor the theme.
     disabled = {
       flavour = disabled.xdg.configFile ? "yazi/flavors/blueforest.yazi";
       theme = disabled.xdg.configFile ? "yazi/theme.toml";
+    };
+
+    themeOnly = {
+      flavour = themeOnly.xdg.configFile ? "yazi/flavors/blueforest.yazi";
+      theme = themeOnly.xdg.configFile ? "yazi/theme.toml";
     };
 
     own = {
@@ -88,6 +110,8 @@ pkgs.runCommand "blueforest-yazi-module-check"
       and .enabled.theme == "/home/blueforest/.config/yazi/theme.toml"
       and (.disabled.flavour | not)
       and (.disabled.theme | not)
+      and (.themeOnly.flavour | not)
+      and (.themeOnly.theme | not)
       and .own.theme == "/home/blueforest/.config/yazi/theme.toml"
     ' >/dev/null
 

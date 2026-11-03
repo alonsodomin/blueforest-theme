@@ -1,12 +1,16 @@
 # SPDX-License-Identifier: MPL-2.0
 #
 # Checks that the Home Manager module installs the theme where kitty reads
-# it, that it selects the theme, and that it writes nothing when kitty is
-# not enabled.
+# it, that it selects the theme, and that it writes nothing when the theme or
+# kitty itself is not enabled.
 #
 # The check covers a consumer that sets a colour of its own: the colour of
 # the consumer wins over the colour of the theme, because the theme is
 # included before the settings of kitty are written.
+#
+# The check also covers the conflict with the template of the community
+# catalogue of Noctalia for kitty: a configuration that enables both fails to
+# evaluate.
 {
   pkgs,
   homeManager,
@@ -29,18 +33,55 @@ let
       modules = [
         module
         identity
-        extra
-      ];
+      ]
+      ++ extra;
     }).config;
 
-  enabled = evaluate { programs.kitty.enable = true; };
-  disabled = evaluate { };
+  enabled = evaluate [
+    {
+      programs.kitty.enable = true;
+      blueforest.kitty.enable = true;
+    }
+  ];
+
+  disabled = evaluate [ ];
+
+  # A consumer that asks for the theme but does not enable kitty: the theme
+  # has no consumer, so the module writes nothing.
+  themeOnly = evaluate [
+    {
+      blueforest.kitty.enable = true;
+    }
+  ];
 
   # A consumer that brings a colour of its own.
-  own = evaluate {
-    programs.kitty.enable = true;
-    programs.kitty.settings.background = "#FF0000";
-  };
+  own = evaluate [
+    {
+      programs.kitty.enable = true;
+      blueforest.kitty.enable = true;
+      programs.kitty.settings.background = "#FF0000";
+    }
+  ];
+
+  # A configuration that enables the theme of the repository and the template
+  # of Noctalia for kitty: it fails to evaluate.
+  conflict =
+    if
+      (builtins.tryEval
+        (evaluate [
+          {
+            programs.kitty.enable = true;
+            blueforest.kitty.enable = true;
+          }
+          {
+            programs.noctalia.settings.theme.templates.builtin_ids = [ "kitty" ];
+          }
+        ]).home.username
+      ).success
+    then
+      "no"
+    else
+      "yes";
 
   result = builtins.toJSON {
     enabled = {
@@ -49,10 +90,14 @@ let
       config = enabled.xdg.configFile."kitty/kitty.conf".text;
     };
 
-    # The module does not enable kitty, so a configuration that does not
-    # enable it gets no theme.
+    # The module does not enable kitty, so a configuration that does not ask
+    # for the theme gets no theme.
     disabled = {
       defined = disabled.xdg.configFile ? "kitty/themes/blueforest.conf";
+    };
+
+    themeOnly = {
+      defined = themeOnly.xdg.configFile ? "kitty/themes/blueforest.conf";
     };
 
     own = {
@@ -66,7 +111,8 @@ pkgs.runCommand "blueforest-kitty-module-check"
       pkgs.coreutils
       pkgs.jq
     ];
-    inherit result;
+
+    inherit conflict result;
   }
   ''
     # The theme ends up in the directory kitty reads the themes from, which
@@ -74,6 +120,7 @@ pkgs.runCommand "blueforest-kitty-module-check"
     echo "$result" | jq -e '
       .enabled.target == "/home/blueforest/.config/kitty/themes/blueforest.conf"
       and (.disabled.defined | not)
+      and (.themeOnly.defined | not)
     ' >/dev/null
 
     # And the theme that ends up installed is the theme of the repository.
@@ -92,6 +139,13 @@ pkgs.runCommand "blueforest-kitty-module-check"
     include_line=$(grep -n '^include themes/blueforest.conf$' "$TMPDIR/own.conf" | cut -d: -f1)
     background_line=$(grep -n '^background #FF0000$' "$TMPDIR/own.conf" | cut -d: -f1)
     test "$include_line" -lt "$background_line"
+
+    # The template of Noctalia for kitty and the theme of the repository
+    # cannot be enabled at the same time.
+    if [ "$conflict" != "yes" ]; then
+      echo "the conflict with the Noctalia template for kitty did not fail" >&2
+      exit 1
+    fi
 
     touch $out
   ''

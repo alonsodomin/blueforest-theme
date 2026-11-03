@@ -33,6 +33,14 @@ The aggregate modules add the overlays of the applications. They do not
 enable the programs themselves: which editor or terminal installs the theme,
 and whether it is installed at all, stays your decision.
 
+Every theme of the repository has a switch of its own,
+`blueforest.<application>.enable`, and it is off by default. The switch is
+separate from `programs.<application>.enable`, so that a theme and a template
+of the community catalogue of Noctalia are alternatives, and so that a
+configuration that wants the theme of one application only does not get the
+themes of all of them. The pages of the applications explain the switch of
+each of them.
+
 The same aggregate works for Home Manager as `blueforest.homeModules.default`:
 
 ```nix
@@ -91,9 +99,10 @@ The same works for `?dir=modules/bat`, `?dir=modules/starship`,
 `?dir=modules/kitty`, `?dir=modules/mkdocs`, `?dir=modules/btop`,
 `?dir=modules/lazygit`, `?dir=modules/md-tui`, and `?dir=modules/noctalia`.
 
-The theme of bat is a package and nothing else, so it has no modules to
-import: take it from the outputs of the flake. The same is true of the
-packages of the other applications when you only want the theme files.
+The theme of bat is a package and a Home Manager module, so it has a module
+to import: `blueforest.homeModules.bat`. The packages of the other
+applications are there too, and they can be taken on their own when you only
+want the theme files.
 
 See the [outputs reference](reference/outputs.md) for the complete list of
 outputs, and the [identifiers reference](reference/identifiers.md) for the

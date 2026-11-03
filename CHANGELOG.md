@@ -29,6 +29,25 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 
 ## Unreleased
 
+- Every theme of the repository has a switch of its own,
+  `blueforest.<application>.enable`, and it is off by default. The switch is
+  separate from `programs.<application>.enable`, so that the theme of one
+  application can be turned on without the themes of the others, and so that
+  the theme and a template of the community catalogue of Noctalia are
+  alternatives. The switch does not apply to VS Code, to Zed, and to MkDocs
+- A configuration that enables the theme of the repository and a template of
+  the community catalogue of Noctalia for the same application fails to
+  evaluate. The applications with a template are bat, btop, Claude Code,
+  kitty, OpenCode, and Starship
+- The palette of Noctalia carries a light variant as well, which is a palette
+  of its own and not a copy of the dark one. The package carries the palette
+  in the format 2 of the community palette registry as well, and the file of
+  the format 2 is generated from the canonical one
+- The theme of bat has a Home Manager module now, which installs it in the
+  directory bat reads the themes from and selects it in the configuration of
+  bat
+- The Home Manager module of Starship selects the preset of the repository and
+  the package that carries it
 - The pull requests of Renovate and Dependabot are merged on their own, when
   the merge gate of the CI has passed. Renovate marks them for the auto-merge
   of GitHub itself, and the workflow of the repository marks the ones of
