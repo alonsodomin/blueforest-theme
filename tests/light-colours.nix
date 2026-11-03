@@ -25,8 +25,14 @@
   pkgs,
   # The light theme of VS Code, which is the reference of the light themes.
   vscode,
-  # The light theme of OpenCode, which has a ramp of shades of its own.
+  # The theme of OpenCode, which has a ramp of shades of its own.
   opencode,
+  # The light theme of bat.
+  bat,
+  # The light theme of Claude Code.
+  claudeCode,
+  # The light palette of md-tui.
+  mdTui,
   # The canonical palette of the repository.
   palette,
 }:
@@ -46,10 +52,14 @@ pkgs.runCommand "blueforest-light-colours-check"
     } | tr '[:lower:]' '[:upper:]' | sort -u >"$TMPDIR/palette"
 
     # The colours of the light themes. The theme of OpenCode inherits the
-    # tokens of its base, and its ramp of shades is its own.
+    # tokens of its base, and its ramp of shades is its own. The theme of bat
+    # is a property list, so its colours are read with grep.
     {
       jq -r '.. | strings | select(test("^#[0-9A-Fa-f]{6}$"))' ${vscode}
       jq -r '.base * .light | del(.hue) | .. | strings | select(test("^#[0-9A-Fa-f]{6}$"))' ${opencode}
+      grep -oE '#[0-9A-Fa-f]{6}' ${bat}
+      jq -r '.. | strings | select(test("^#[0-9A-Fa-f]{6}$"))' ${claudeCode}
+      jq -r '.. | strings | select(test("^#[0-9A-Fa-f]{6}$"))' ${mdTui}
     } | tr '[:lower:]' '[:upper:]' | sort -u >"$TMPDIR/themes"
 
     missing="$(comm -23 "$TMPDIR/themes" "$TMPDIR/palette")"

@@ -92,6 +92,7 @@ in
         # not enabled.
         md-tui-module = import ./nix/checks/module.nix {
           inherit source;
+          sourceLight = ./themes/blueforest-light.json;
           pkgs = basePkgs;
           homeManager = appInputs.home-manager;
           module = config.flake.homeModules.md-tui;

@@ -8,14 +8,18 @@
 # without its extension. This module writes the theme there and selects it,
 # so that bat picks the theme up without any further work.
 #
-# The module is inert unless `blueforest-theme.bat.enable` is true: it does not
-# enable bat, it only adds the theme to the configuration of a bat that the
-# consumer already enabled.
+# The module is inert unless `blueforest-theme.bat.enable` is true: it does
+# not enable bat, it only adds the theme to the configuration of a bat that
+# the consumer already enabled.
 #
 # The switch is the one of this repository, and not `programs.bat.enable`, so
 # that the theme and the template of the community catalogue of Noctalia for
 # bat are alternatives. A consumer that enables both gets an error, because
 # the two of them write the same configuration of bat.
+#
+# The theme has a variant per mode, and `blueforest-theme.bat.variant`
+# selects the one that is installed: the dark one, which is named
+# `BlueForest`, or the light one, which is named `BlueForestLight`.
 #
 # Home Manager has options of its own for the themes of bat and for the
 # configuration of the program. The definitions here are default ones, so a
@@ -26,6 +30,11 @@
   ...
 }:
 let
+  cfg = config.programs.bat;
+
+  # The variant of the theme that is installed.
+  variant = config.blueforest-theme.bat.variant;
+
   # The ids of the templates of Noctalia that the consumer enabled. The
   # configuration of Noctalia is one opaque value, and it may be an attribute
   # set, a string or a path: only the attribute set carries the ids, and the
@@ -50,6 +59,15 @@ in
 {
   options.blueforest-theme.bat = {
     enable = lib.mkEnableOption "the BlueForest theme for bat";
+
+    variant = lib.mkOption {
+      type = lib.types.enum [
+        "dark"
+        "light"
+      ];
+      default = "dark";
+      description = "The variant of the theme of bat that is installed.";
+    };
   };
 
   config = lib.mkMerge [
@@ -69,17 +87,29 @@ in
       ];
     }
 
-    (lib.mkIf (config.blueforest-theme.bat.enable && config.programs.bat.enable) {
+    (lib.mkIf (config.blueforest-theme.bat.enable && cfg.enable) {
       # The theme, in the directory bat reads the themes from. The name of
       # the attribute is the name of the file, and bat needs the extension to
       # list the theme.
-      programs.bat.themes.BlueForest = lib.mkDefault {
-        src = ../themes;
-        file = "BlueForest.tmTheme";
-      };
+      programs.bat.themes = lib.mkMerge [
+        (lib.mkIf (variant == "dark") {
+          BlueForest = lib.mkDefault {
+            src = ../themes;
+            file = "BlueForest.tmTheme";
+          };
+        })
+        (lib.mkIf (variant == "light") {
+          BlueForestLight = lib.mkDefault {
+            src = ../themes;
+            file = "BlueForestLight.tmTheme";
+          };
+        })
+      ];
 
       # The selection of the theme, in the configuration of bat.
-      programs.bat.config.theme = lib.mkDefault "BlueForest";
+      programs.bat.config.theme = lib.mkDefault (
+        if variant == "dark" then "BlueForest" else "BlueForestLight"
+      );
     })
   ];
 }

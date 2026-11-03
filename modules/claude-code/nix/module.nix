@@ -8,9 +8,9 @@
 # is the name of the file without its extension. This module writes the theme
 # there and selects it.
 #
-# The module is inert unless `blueforest-theme.claude-code.enable` is true: it does
-# not enable Claude Code, it only adds the theme to the configuration of a
-# Claude Code that the consumer already enabled.
+# The module is inert unless `blueforest-theme.claude-code.enable` is true: it
+# does not enable Claude Code, it only adds the theme to the configuration of
+# a Claude Code that the consumer already enabled.
 #
 # The switch is the one of this repository, and not `programs.claude-code.enable`,
 # so that the theme and the template of the community catalogue of Noctalia
@@ -19,6 +19,10 @@
 #
 # The theme is selected with `lib.mkDefault`, so a consumer that selects a
 # theme of its own keeps it.
+#
+# The theme has a variant per mode, and `blueforest-theme.claude-code.variant`
+# selects the one that is installed: the dark one, which is named
+# `blueforest`, or the light one, which is named `blueforest-light`.
 {
   config,
   lib,
@@ -26,6 +30,9 @@
 }:
 let
   cfg = config.programs.claude-code;
+
+  # The variant of the theme that is installed.
+  variant = config.blueforest-theme.claude-code.variant;
 
   # The ids of the templates of Noctalia that the consumer enabled. The
   # configuration of Noctalia is one opaque value, and it may be an attribute
@@ -51,6 +58,15 @@ in
 {
   options.blueforest-theme.claude-code = {
     enable = lib.mkEnableOption "the BlueForest theme for Claude Code";
+
+    variant = lib.mkOption {
+      type = lib.types.enum [
+        "dark"
+        "light"
+      ];
+      default = "dark";
+      description = "The variant of the theme of Claude Code that is installed.";
+    };
   };
 
   config = lib.mkMerge [
@@ -66,17 +82,27 @@ in
             Claude Code are both enabled, and the two of them write the
             settings of Claude Code. Disable the template in the configuration
             of Noctalia (remove "claude-code" from `[theme.templates]
-            community_ids`), or set `blueforest-theme.claude-code.enable = false`.'';
+            community_ids`), or set `blueforest-theme.claude-code.enable =
+            false`.'';
         }
       ];
     }
 
     (lib.mkIf (config.blueforest-theme.claude-code.enable && cfg.enable) {
       # The theme, in the directory Claude Code reads the themes from.
-      home.file."${cfg.configDir}/themes/blueforest.json".source = ../themes/blueforest.json;
+      home.file = lib.mkMerge [
+        (lib.mkIf (variant == "dark") {
+          "${cfg.configDir}/themes/blueforest.json".source = ../themes/blueforest.json;
+        })
+        (lib.mkIf (variant == "light") {
+          "${cfg.configDir}/themes/blueforest-light.json".source = ../themes/blueforest-light.json;
+        })
+      ];
 
       # The selection of the theme, in the settings of Claude Code.
-      programs.claude-code.settings.theme = lib.mkDefault "custom:blueforest";
+      programs.claude-code.settings.theme = lib.mkDefault (
+        if variant == "dark" then "custom:blueforest" else "custom:blueforest-light"
+      );
     })
   ];
 }

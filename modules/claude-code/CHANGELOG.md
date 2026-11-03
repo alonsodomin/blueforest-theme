@@ -6,6 +6,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
+- The theme has a light variant now, `blueforest-light`, and the switch of the
+  variant selects the one that is installed
 - The theme is installed only when `blueforest-theme.claude-code.enable` is
   true. A configuration that enables the theme and the template of the
   community catalogue of Noctalia for Claude Code fails to evaluate

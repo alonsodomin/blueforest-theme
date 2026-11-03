@@ -8,6 +8,10 @@
 # they win over the ones of the repository, because the module writes both
 # with `lib.mkDefault`.
 #
+# The check covers the variants of the theme: the dark one and the light one
+# are two themes, and the switch of the variant selects the one that is
+# installed.
+#
 # The check also covers the conflict with the template of the community
 # catalogue of Noctalia for bat: a configuration that enables both fails to
 # evaluate.
@@ -16,6 +20,7 @@
   homeManager,
   module,
   source,
+  sourceLight,
 }:
 let
   # The identity of the user of the configuration, so that the paths of the
@@ -41,6 +46,15 @@ let
     {
       programs.bat.enable = true;
       blueforest-theme.bat.enable = true;
+    }
+  ];
+
+  # A consumer that asks for the light variant of the theme.
+  light = evaluate [
+    {
+      programs.bat.enable = true;
+      blueforest-theme.bat.enable = true;
+      blueforest-theme.bat.variant = "light";
     }
   ];
 
@@ -90,6 +104,15 @@ let
       config = enabled.xdg.configFile."bat/config".text;
     };
 
+    # The light variant is a theme of its own, and it is the one that is
+    # installed when the consumer asks for it.
+    light = {
+      target = "${light.xdg.configHome}/bat/themes/BlueForestLight.tmTheme";
+      source = light.xdg.configFile."bat/themes/BlueForestLight.tmTheme".source;
+      config = light.xdg.configFile."bat/config".text;
+      darkInstalled = light.xdg.configFile ? "bat/themes/BlueForest.tmTheme";
+    };
+
     # The module does not enable bat, so a configuration that does not ask
     # for the theme gets no files.
     disabled = {
@@ -133,6 +156,16 @@ pkgs.runCommand "blueforest-bat-module-check"
     # The configuration of bat selects the theme.
     echo "$result" | jq -r '.enabled.config' >"$TMPDIR/bat.conf"
     grep -q '^--theme=BlueForest$' "$TMPDIR/bat.conf"
+
+    # The light variant is installed instead of the dark one, and it is the
+    # one that is selected.
+    echo "$result" | jq -e '
+      .light.target == "/home/blueforest/.config/bat/themes/BlueForestLight.tmTheme"
+      and (.light.darkInstalled | not)
+    ' >/dev/null
+    cmp "$(echo "$result" | jq -r '.light.source')" ${sourceLight}
+    echo "$result" | jq -r '.light.config' >"$TMPDIR/light.conf"
+    grep -q '^--theme=BlueForestLight$' "$TMPDIR/light.conf"
 
     # And a consumer that selects a theme of its own keeps it.
     echo "$result" | jq -r '.own.config' >"$TMPDIR/own.conf"

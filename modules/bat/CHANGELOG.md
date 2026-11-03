@@ -6,6 +6,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
+- The theme has a light variant now, `BlueForestLight`, and the switch of the
+  variant selects the one that is installed
 - The theme has a Home Manager module now, which installs it in the
   directory bat reads the themes from, selects it in the configuration
   of bat, and it writes nothing when bat is not enabled

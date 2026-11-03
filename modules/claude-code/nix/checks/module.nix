@@ -16,6 +16,7 @@
   homeManager,
   module,
   source,
+  sourceLight,
 }:
 let
   # The identity of the user of the configuration, so that the paths of the
@@ -45,6 +46,15 @@ let
   ];
 
   disabled = evaluate [ ];
+
+  # A consumer that asks for the light variant of the theme.
+  light = evaluate [
+    {
+      programs.claude-code.enable = true;
+      blueforest-theme.claude-code.enable = true;
+      blueforest-theme.claude-code.variant = "light";
+    }
+  ];
 
   # A consumer that asks for the theme but does not enable Claude Code: the
   # theme has no consumer, so the module writes nothing.
@@ -86,11 +96,23 @@ let
   # The path of the theme in the configuration of the user.
   themePath = "${enabled.programs.claude-code.configDir}/themes/blueforest.json";
 
+  # And the path of the light variant of it.
+  lightPath = "${light.programs.claude-code.configDir}/themes/blueforest-light.json";
+
   result = builtins.toJSON {
     enabled = {
       target = themePath;
       source = enabled.home.file.${themePath}.source;
       theme = enabled.programs.claude-code.settings.theme or "MISSING";
+    };
+
+    # The light variant is a theme of its own, and it is the one that is
+    # installed when the consumer asks for it.
+    light = {
+      target = lightPath;
+      source = light.home.file.${lightPath}.source;
+      theme = light.programs.claude-code.settings.theme or "MISSING";
+      darkInstalled = light.home.file ? ${themePath};
     };
 
     # The module does not enable Claude Code, so a configuration that does not
@@ -133,6 +155,15 @@ pkgs.runCommand "blueforest-claude-code-module-check"
 
     # And the theme that ends up installed is the theme of the repository.
     cmp "$(echo "$result" | jq -r '.enabled.source')" ${source}
+
+    # The light variant is installed instead of the dark one, and it is the
+    # one that is selected.
+    echo "$result" | jq -e '
+      .light.target == "/home/blueforest/.claude/themes/blueforest-light.json"
+      and (.light.darkInstalled | not)
+      and .light.theme == "custom:blueforest-light"
+    ' >/dev/null
+    cmp "$(echo "$result" | jq -r '.light.source')" ${sourceLight}
 
     # The configuration of Claude Code selects the theme.
     echo "$result" | jq -e '.enabled.theme == "custom:blueforest"' >/dev/null

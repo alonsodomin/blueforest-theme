@@ -490,6 +490,9 @@
                 inherit pkgs;
                 vscode = ./modules/vscode/themes/Blueforest-light-color-theme.json;
                 opencode = ./modules/opencode/themes/blueforest.json;
+                bat = ./modules/bat/themes/BlueForestLight.tmTheme;
+                claudeCode = ./modules/claude-code/themes/blueforest-light.json;
+                mdTui = ./modules/md-tui/themes/blueforest-light.json;
                 palette = ./modules/noctalia/themes/blueforest.json;
               };
 

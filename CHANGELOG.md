@@ -29,6 +29,8 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 
 ## Unreleased
 
+- The themes of bat, of Claude Code and of md-tui have a light variant now,
+  and the switch of the variant selects the one that is installed
 - The themes have a light variant now. The theme of VS Code is the reference
   of the effort, and it is published with the extension as **BlueForest
   Light**: the colours of the light palette of the repository, with the

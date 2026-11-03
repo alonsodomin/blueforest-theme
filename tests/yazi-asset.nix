@@ -23,6 +23,9 @@ let
   # The packaging of the theme of Yazi.
   yazi = builtins.head (builtins.filter (definition: definition.app == "yazi") applications);
 
+  # The asset of the packaging.
+  asset = builtins.head yazi.assets;
+
   # The version the check packages with. The version of a release is the one
   # of its tag, and the packaging does not care about it.
   version = "0.0.0";
@@ -40,16 +43,16 @@ pkgs.runCommand "blueforest-yazi-asset-check" { } ''
   ${yazi.package}
 
   # The asset carries the flavour.
-  tar -tzf "${yazi.asset}" | grep -q 'blueforest.yazi/flavor.toml'
+  tar -tzf "${asset}" | grep -q 'blueforest.yazi/flavor.toml'
 
   # And the colours of the code preview, as a regular file: the asset is
   # unpacked by hand, and a link to the store would be of no use there.
-  tar -tvzf "${yazi.asset}" \
+  tar -tvzf "${asset}" \
     | grep 'blueforest.yazi/tmtheme.xml' \
     | grep -q '^-'
 
   # And the theme it carries is the theme of bat.
-  tar -xzOf "${yazi.asset}" './blueforest.yazi/tmtheme.xml' \
+  tar -xzOf "${asset}" './blueforest.yazi/tmtheme.xml' \
     | cmp - ${modules}/bat/themes/BlueForest.tmTheme
 
   touch $out

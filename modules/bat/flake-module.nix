@@ -104,6 +104,7 @@ in
         # and selects it.
         bat-module = import ./nix/checks/module.nix {
           inherit source;
+          sourceLight = ./themes/BlueForestLight.tmTheme;
           pkgs = basePkgs;
           homeManager = appInputs.home-manager;
           module = config.flake.homeModules.bat;

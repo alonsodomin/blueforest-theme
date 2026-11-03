@@ -28,6 +28,16 @@ The themes of VS Code and of Zed have no switch: they are installed as a
 package and as an extension. The stylesheet of MkDocs has one of its own,
 `blueforest-theme.mkdocs.enable`, and it is enabled by default.
 
+The themes of bat, of Claude Code and of md-tui have a switch of the variant
+as well, `blueforest-theme.<application>.variant`, and it is `dark` by
+default:
+
+| Switch | Values |
+| --- | --- |
+| `blueforest-theme.bat.variant` | `dark`, `light` |
+| `blueforest-theme.claude-code.variant` | `dark`, `light` |
+| `blueforest-theme.md-tui.variant` | `dark`, `light` |
+
 A theme and a template of the community catalogue of Noctalia are
 alternatives, because the two of them write the configuration of the same
 application. A configuration that enables both fails to evaluate.
@@ -44,7 +54,8 @@ application. A configuration that enables both fails to evaluate.
 - The bat theme is `BlueForest`, the name of the file
   `BlueForest.tmTheme`. Select it with `programs.bat.config.theme =
   "BlueForest";`, or let the module `blueforest.homeModules.bat` select it
-  with `blueforest-theme.bat.enable = true;`.
+  with `blueforest-theme.bat.enable = true;`. The light variant of the theme
+  is `BlueForestLight`, the name of the file `BlueForestLight.tmTheme`.
 - The btop package is `blueforest-btop-theme`. The btop theme is
   `blueforest.theme`, the name of the file, which btop reads from
   `$XDG_CONFIG_HOME/btop/themes/`. Select it with
@@ -97,20 +108,22 @@ application. A configuration that enables both fails to evaluate.
 - The md-tui package is `blueforest-md-tui-theme`. The md-tui theme is
   `blueforest`, the name of the file `blueforest.json`, which md-tui reads
   from `$HOME/.config/mdt/themes/`. Select it with `blueforest-theme.md-tui.enable =
-  true;`, which makes the module write the theme and the selection of it.
+  true;`, which makes the module write the theme and the selection of it. The
+  light variant of the theme is `blueforest-light`.
 - The Noctalia package is `blueforest-noctalia-theme`. The Noctalia palette is
   `blueforest`, the name of the file `blueforest.json`, which Noctalia reads
   from `$XDG_CONFIG_HOME/noctalia/palettes/`. Select it with
   `[theme] source = "custom"` and `custom_palette = "blueforest"` in the
   configuration of Noctalia. The module `blueforest.homeModules.noctalia`
   writes the palette and the selection when `programs.noctalia.enable = true`
-  and `blueforest-theme.noctalia.enable = true`. The package carries the palette in
-  the format 2 of the community palette registry as well, under the name
-  `blueforest-v2.json`.
+  and `blueforest-theme.noctalia.enable = true`. The package carries the
+  palette in the format 2 of the community palette registry as well, under
+  the name `blueforest-v2.json`.
 - The Claude Code package is `blueforest-claude-code-theme`. The Claude Code
   theme is `blueforest`, the name of the file `blueforest.json`, which Claude
   Code reads from `$HOME/.claude/themes/`. Select it with
-  `"theme": "custom:blueforest"` in `$HOME/.claude/settings.json`.
+  `"theme": "custom:blueforest"` in `$HOME/.claude/settings.json`. The light
+  variant of the theme is `blueforest-light`.
 - The MkDocs package is `blueforest-mkdocs-theme`. The MkDocs stylesheet is
   `blueforest`, the name of the file `blueforest.css`, which MkDocs reads
   through the `extra_css` option of its configuration. The theme only

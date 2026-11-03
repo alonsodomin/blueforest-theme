@@ -63,6 +63,24 @@ all stays your decision. It writes the theme to
 and it writes nothing when `programs.claude-code.enable` is false or when
 `blueforest-theme.claude-code.enable` is false.
 
+## The light variant
+
+The theme has a light variant, `blueforest-light`, with the colours of the
+light palette of the repository. The switch of the variant selects the one
+that is installed:
+
+```nix
+{
+  programs.claude-code.enable = true;
+  blueforest-theme.claude-code.enable = true;
+  blueforest-theme.claude-code.variant = "light";
+}
+```
+
+The variant is `dark` by default, and the dark theme is the one it installs.
+The [palette reference](../index.md#colour-palettes) has every colour of the
+light variant, with the swatches.
+
 The switch of the theme is `blueforest-theme.claude-code.enable`, and not
 `programs.claude-code.enable`, so that the theme and the template of the
 community catalogue of Noctalia for Claude Code are alternatives: a consumer

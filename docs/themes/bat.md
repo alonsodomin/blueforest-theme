@@ -69,9 +69,26 @@ your decision. It writes the theme to `~/.config/bat/themes/BlueForest.tmTheme`
 and selects it in the configuration of bat, and it writes nothing when
 `programs.bat.enable` is false or when `blueforest-theme.bat.enable` is false.
 
+## The light variant
+
+The theme has a light variant, `BlueForestLight`, with the colours of the
+light palette of the repository. The switch of the variant selects the one
+that is installed:
+
+```nix
+{
+  programs.bat.enable = true;
+  blueforest-theme.bat.enable = true;
+  blueforest-theme.bat.variant = "light";
+}
+```
+
+The variant is `dark` by default, and the dark theme is the one it installs.
+The [palette reference](../index.md#colour-palettes) has every colour of the
+light variant, with the swatches.
+
 The theme and the selection are installed with `lib.mkDefault`, so a
 configuration that brings a theme or a setting of its own keeps it:
-
 ```nix
 {
   programs.bat.config.theme = "Another";

@@ -17,7 +17,7 @@ in
   {
     app = "vscode";
     title = "VS Code";
-    asset = "dist/blueforest-theme-$VERSION.vsix";
+    assets = [ "dist/blueforest-theme-$VERSION.vsix" ];
     steps = [
       {
         uses = common.actions.setupNode;
@@ -64,17 +64,22 @@ in
   {
     app = "bat";
     title = "bat";
-    asset = "dist/blueforest-bat-theme-$VERSION.tmTheme";
+    assets = [
+      "dist/blueforest-bat-theme-$VERSION.tmTheme"
+      "dist/blueforest-bat-theme-light-$VERSION.tmTheme"
+    ];
     package = ''
       mkdir -p dist
       cp modules/bat/themes/BlueForest.tmTheme \
         "dist/blueforest-bat-theme-$VERSION.tmTheme"
+      cp modules/bat/themes/BlueForestLight.tmTheme \
+        "dist/blueforest-bat-theme-light-$VERSION.tmTheme"
     '';
   }
   {
     app = "starship";
     title = "Starship";
-    asset = "dist/blueforest-starship-preset-$VERSION.toml";
+    assets = [ "dist/blueforest-starship-preset-$VERSION.toml" ];
     package = ''
       mkdir -p dist
       cp modules/starship/themes/blueforest.toml \
@@ -84,7 +89,7 @@ in
   {
     app = "opencode";
     title = "OpenCode";
-    asset = "dist/blueforest-opencode-theme-$VERSION.json";
+    assets = [ "dist/blueforest-opencode-theme-$VERSION.json" ];
     package = ''
       mkdir -p dist
       cp modules/opencode/themes/blueforest.json \
@@ -94,7 +99,7 @@ in
   {
     app = "neovim";
     title = "Neovim";
-    asset = "dist/blueforest-neovim-theme-$VERSION.tar.gz";
+    assets = [ "dist/blueforest-neovim-theme-$VERSION.tar.gz" ];
     package = ''
       mkdir -p dist staging/colors staging/lua/lualine/themes
       cp modules/neovim/themes/blueforest.lua staging/colors/blueforest.lua
@@ -106,7 +111,7 @@ in
   {
     app = "sbt";
     title = "sbt";
-    asset = "dist/blueforest-sbt-prompt-$VERSION.tar.gz";
+    assets = [ "dist/blueforest-sbt-prompt-$VERSION.tar.gz" ];
     package = ''
       mkdir -p dist staging/plugins
       cp modules/sbt/config/sbt-prompt.sbt staging/plugins/sbt-prompt.sbt
@@ -117,7 +122,7 @@ in
   {
     app = "eza";
     title = "eza";
-    asset = "dist/blueforest-eza-theme-$VERSION.yml";
+    assets = [ "dist/blueforest-eza-theme-$VERSION.yml" ];
     package = ''
       mkdir -p dist
       cp modules/eza/themes/blueforest.yml \
@@ -127,7 +132,7 @@ in
   {
     app = "zed";
     title = "Zed";
-    asset = "dist/blueforest-zed-theme-$VERSION.tar.gz";
+    assets = [ "dist/blueforest-zed-theme-$VERSION.tar.gz" ];
     package = ''
       mkdir -p dist staging/themes
       cp modules/zed/extension/extension.toml staging/extension.toml
@@ -139,7 +144,7 @@ in
   {
     app = "yazi";
     title = "Yazi";
-    asset = "dist/blueforest-yazi-theme-$VERSION.tar.gz";
+    assets = [ "dist/blueforest-yazi-theme-$VERSION.tar.gz" ];
     package = ''
       mkdir -p dist staging
       cp -r modules/yazi/themes/blueforest.yazi \
@@ -157,7 +162,7 @@ in
   {
     app = "kitty";
     title = "kitty";
-    asset = "dist/blueforest-kitty-theme-$VERSION.conf";
+    assets = [ "dist/blueforest-kitty-theme-$VERSION.conf" ];
     package = ''
       mkdir -p dist
       cp modules/kitty/themes/blueforest.conf \
@@ -167,7 +172,7 @@ in
   {
     app = "mkdocs";
     title = "MkDocs";
-    asset = "dist/blueforest-mkdocs-theme-$VERSION.css";
+    assets = [ "dist/blueforest-mkdocs-theme-$VERSION.css" ];
     package = ''
       mkdir -p dist
       cp modules/mkdocs/themes/blueforest.css \
@@ -177,17 +182,22 @@ in
   {
     app = "claude-code";
     title = "Claude Code";
-    asset = "dist/blueforest-claude-code-theme-$VERSION.json";
+    assets = [
+      "dist/blueforest-claude-code-theme-$VERSION.json"
+      "dist/blueforest-claude-code-theme-light-$VERSION.json"
+    ];
     package = ''
       mkdir -p dist
       cp modules/claude-code/themes/blueforest.json \
         "dist/blueforest-claude-code-theme-$VERSION.json"
+      cp modules/claude-code/themes/blueforest-light.json \
+        "dist/blueforest-claude-code-theme-light-$VERSION.json"
     '';
   }
   {
     app = "btop";
     title = "btop";
-    asset = "dist/blueforest-btop-theme-$VERSION.theme";
+    assets = [ "dist/blueforest-btop-theme-$VERSION.theme" ];
     package = ''
       mkdir -p dist
       cp modules/btop/themes/blueforest.theme \
@@ -197,7 +207,7 @@ in
   {
     app = "lazygit";
     title = "lazygit";
-    asset = "dist/blueforest-lazygit-theme-$VERSION.json";
+    assets = [ "dist/blueforest-lazygit-theme-$VERSION.json" ];
     package = ''
       mkdir -p dist
       cp modules/lazygit/themes/blueforest.json \
@@ -207,17 +217,22 @@ in
   {
     app = "md-tui";
     title = "md-tui";
-    asset = "dist/blueforest-md-tui-theme-$VERSION.json";
+    assets = [
+      "dist/blueforest-md-tui-theme-$VERSION.json"
+      "dist/blueforest-md-tui-theme-light-$VERSION.json"
+    ];
     package = ''
       mkdir -p dist
       cp modules/md-tui/themes/blueforest.json \
         "dist/blueforest-md-tui-theme-$VERSION.json"
+      cp modules/md-tui/themes/blueforest-light.json \
+        "dist/blueforest-md-tui-theme-light-$VERSION.json"
     '';
   }
   {
     app = "noctalia";
     title = "Noctalia";
-    asset = "dist/blueforest-noctalia-theme-$VERSION.json";
+    assets = [ "dist/blueforest-noctalia-theme-$VERSION.json" ];
     package = ''
       mkdir -p dist
       cp modules/noctalia/themes/blueforest.json \
