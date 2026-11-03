@@ -30,6 +30,7 @@ pkgs.runCommand "blueforest-bat-theme-${version}"
   ''
     mkdir -p $out/share/bat/themes
     cp ${../themes/BlueForest.tmTheme} $out/share/bat/themes/BlueForest.tmTheme
+    cp ${../themes/BlueForestLight.tmTheme} $out/share/bat/themes/BlueForestLight.tmTheme
 
     # The attribution of the theme travels with the package.
     mkdir -p $out/share/doc/blueforest
@@ -52,6 +53,7 @@ pkgs.runCommand "blueforest-bat-theme-${version}"
 
       mkdir -p "$config_dir/themes"
       cp -f "$out/share/bat/themes/BlueForest.tmTheme" "$config_dir/themes/BlueForest.tmTheme"
+      cp -f "$out/share/bat/themes/BlueForestLight.tmTheme" "$config_dir/themes/BlueForestLight.tmTheme"
 
       # bat keeps the list of the themes it knows in a cache, and it only
       # picks the theme up once the cache has been rebuilt. The rebuild is

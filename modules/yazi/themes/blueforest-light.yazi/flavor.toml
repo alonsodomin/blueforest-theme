@@ -1,0 +1,220 @@
+# The light variant of the BlueForest flavour for Yazi.
+#
+# A flavour is a theme of its own, in the directory
+# `~/.config/yazi/flavors/blueforest.yazi/`. Yazi merges it with the preset it
+# ships with, and the theme of the user takes precedence over both of them.
+#
+# The colours are the ones of BlueForest: the blue of the keywords and the
+# directories, the green of the strings, the amber of the operators, the red
+# of the numbers, and the pale yellow of the variables.
+
+#:schema https://yazi-rs.github.io/schemas/theme.json
+# vim:fileencoding=utf-8:foldmethod=marker
+
+# : App {{{
+
+[app]
+overall = { bg = "#e8ecf2" }
+
+# : }}}
+
+# : Manager {{{
+
+[mgr]
+cwd = { fg = "#3a5f8a" }
+find_keyword = { fg = "#c57633", bold = true, italic = true, underline = true }
+find_position = { fg = "#1e5c1e", bg = "reset", bold = true, italic = true }
+symlink_target = { fg = "#219186", italic = true }
+
+marker_copied = { fg = "#1e5c1e", bg = "#1e5c1e" }
+marker_cut = { fg = "#b02a28", bg = "#b02a28" }
+marker_marked = { fg = "#e0e4ea", bg = "#e0e4ea" }
+marker_selected = { fg = "#c57633", bg = "#c57633" }
+marker_symbol = "│"
+
+count_copied = { fg = "#e8ecf2", bg = "#1e5c1e" }
+count_cut = { fg = "#e8ecf2", bg = "#b02a28" }
+count_selected = { fg = "#e8ecf2", bg = "#c57633" }
+
+border_symbol = "│"
+border_style = { fg = "#56697d" }
+
+# : }}}
+
+# : Tabs {{{
+
+[tabs]
+active = { fg = "#3a5f8a", bg = "#e8ecf2", bold = true }
+inactive = { fg = "#56697d", bg = "#e0e4ea" }
+
+sep_inner = { open = "", close = "" }
+sep_outer = { open = "", close = "" }
+
+# : }}}
+
+# : Mode {{{
+
+[mode]
+normal_main = { fg = "#e8ecf2", bg = "#3a5f8a", bold = true }
+normal_alt = { fg = "#3a5f8a", bg = "#c9cdd3" }
+
+select_main = { fg = "#e8ecf2", bg = "#1e5c1e", bold = true }
+select_alt = { fg = "#1e5c1e", bg = "#c9cdd3" }
+
+unset_main = { fg = "#e8ecf2", bg = "#b02a28", bold = true }
+unset_alt = { fg = "#b02a28", bg = "#c9cdd3" }
+
+# : }}}
+
+# : Indicator of the hovered file {{{
+
+[indicator]
+parent = { fg = "#56697d" }
+current = { fg = "#3a5f8a" }
+preview = { fg = "#219186", underline = true }
+padding = { open = "▐", close = "▌" }
+
+# : }}}
+
+# : Status bar {{{
+
+[status]
+overall = { fg = "#141f2e", bg = "#e0e4ea" }
+sep_left = { open = "", close = "" }
+sep_right = { open = "", close = "" }
+
+perm_sep = { fg = "#56697d" }
+perm_type = { fg = "#219186" }
+perm_read = { fg = "#1e5c1e" }
+perm_write = { fg = "#c57633" }
+perm_exec = { fg = "#1b7a70" }
+
+progress_label = { fg = "#141f2e", bold = true }
+progress_normal = { fg = "#1e5c1e", bg = "#e8ecf2" }
+progress_error = { fg = "#b02a28", bg = "#e8ecf2" }
+
+# : }}}
+
+# : Which {{{
+
+[which]
+border = { fg = "#3a5f8a" }
+cols = 3
+mask = { fg = "#56697d" }
+cand = { fg = "#1e5c1e" }
+rest = { fg = "#56697d" }
+desc = { fg = "#219186" }
+separator = "  "
+separator_style = { fg = "#56697d" }
+
+# : }}}
+
+# : Confirmation {{{
+
+[confirm]
+border = { fg = "#3a5f8a" }
+title = { fg = "#3a5f8a", bold = true }
+body = { fg = "#141f2e" }
+list = { fg = "#141f2e" }
+btn_yes = { fg = "#e8ecf2", bg = "#1e5c1e", bold = true }
+btn_no = { fg = "#b02a28" }
+btn_labels = ["  [Y]es  ", "  (N)o  "]
+
+# : }}}
+
+# : Spotter {{{
+
+[spot]
+border = { fg = "#3a5f8a" }
+title = { fg = "#3a5f8a", bold = true }
+
+tbl_col = { fg = "#219186" }
+tbl_cell = { fg = "#c57633", bold = true }
+
+# : }}}
+
+# : Notification {{{
+
+[notify]
+title_info = { fg = "#1e5c1e" }
+title_warn = { fg = "#c57633" }
+title_error = { fg = "#b02a28" }
+
+# : }}}
+
+# : Picker {{{
+
+[pick]
+border = { fg = "#3a5f8a" }
+active = { fg = "#e0e4ea", bold = true }
+inactive = { fg = "#141f2e" }
+
+# : }}}
+
+# : Input {{{
+
+[input]
+border = { fg = "#3a5f8a" }
+title = { fg = "#3a5f8a", bold = true }
+value = { fg = "#141f2e" }
+selected = { fg = "#e8ecf2", bg = "#219186" }
+
+# : }}}
+
+# : Completion {{{
+
+[cmp]
+border = { fg = "#3a5f8a" }
+active = { fg = "#e8ecf2", bg = "#219186" }
+inactive = { fg = "#141f2e" }
+
+# : }}}
+
+# : Task manager {{{
+
+[tasks]
+border = { fg = "#3a5f8a" }
+title = { fg = "#3a5f8a", bold = true }
+hovered = { fg = "#e0e4ea", bold = true }
+
+# : }}}
+
+# : Help menu {{{
+
+[help]
+border = { fg = "#3a5f8a" }
+chord = { fg = "#219186" }
+action = { fg = "#141f2e" }
+hovered = { fg = "#e8ecf2", bg = "#219186", bold = true }
+
+# : }}}
+
+# : File-specific styles {{{
+
+[filetype]
+rules = [
+  # Image
+  { mime = "**/image/*", fg = "#3a5f8a" },
+  # Video
+  { mime = "**/video/*", fg = "#219186", bold = true },
+  # Audio
+  { mime = "**/audio/*", fg = "#1b7a70" },
+  # Archive
+  { mime = "**/application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", fg = "#808000" },
+  # Document
+  { mime = "**/application/{pdf,doc,rtf}", fg = "#141f2e" },
+  # Virtual file system
+  { mime = "vfs/{absent,stale}", fg = "#56697d" },
+  # Broken symbolic link
+  { url = "*", is = "orphan", fg = "#b02a28" },
+  # File that could not be read
+  { url = "*", is = "dummy", fg = "#b02a28" },
+  # Directory
+  { url = "*/", fg = "#3a5f8a", bold = true },
+  # Executable
+  { url = "*", is = "exec", fg = "#1e5c1e" },
+  # Fallback
+  { url = "*", fg = "#141f2e" },
+]
+
+# : }}}

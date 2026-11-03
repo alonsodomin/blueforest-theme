@@ -82,6 +82,7 @@ in
         # The theme of the package is the theme of the repository.
         bat-theme = import ./nix/checks/theme.nix {
           inherit pkgs theme source;
+          sourceLight = ./themes/BlueForestLight.tmTheme;
         };
 
         # The theme paints the shell blocks of a Markdown file the way the

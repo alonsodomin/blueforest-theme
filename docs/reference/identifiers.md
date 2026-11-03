@@ -94,7 +94,9 @@ application. A configuration that enables both fails to evaluate.
 - The Yazi package is `blueforest-yazi-theme`. The Yazi flavour is
   `blueforest`, the name of the directory `blueforest.yazi`, which Yazi reads
   from `$XDG_CONFIG_HOME/yazi/flavors/`. Select it with
-  `[flavor] dark = "blueforest"` in the theme of the user.
+  `[flavor] dark = "blueforest"` in the theme of the user. The light variant
+  of the flavour is `blueforest-light`, the name of the directory
+  `blueforest-light.yazi`.
 - The kitty package is `blueforest-kitty-theme`. The kitty theme is
   `blueforest`, the name of the file `blueforest.conf`, which kitty reads
   from `$XDG_CONFIG_HOME/kitty/themes/`. Select it with

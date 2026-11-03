@@ -47,19 +47,23 @@ in
     }
 
     (lib.mkIf (config.blueforest-theme.yazi.enable && cfg.enable) {
-      # The flavour goes into the directory Yazi reads the flavours from. It
-      # is the flavour of the package, which links to the theme of bat for
+      # The flavours go into the directory Yazi reads the flavours from. They
+      # are the flavours of the package, which link to the theme of bat for
       # the colours of the code preview.
       xdg.configFile."yazi/flavors/blueforest.yazi" = lib.mkDefault {
         source = "${pkgs.blueforest-yazi-theme}/share/yazi/flavors/blueforest.yazi";
       };
 
-      # And the theme of the user selects it. The flavour is a dark one, so
-      # it is selected in both modes.
+      xdg.configFile."yazi/flavors/blueforest-light.yazi" = lib.mkDefault {
+        source = "${pkgs.blueforest-yazi-theme}/share/yazi/flavors/blueforest-light.yazi";
+      };
+
+      # And the theme of the user selects them. There is a flavour per mode,
+      # so the theme follows the mode of Yazi.
       programs.yazi.theme = lib.mkDefault {
         flavor = {
           dark = "blueforest";
-          light = "blueforest";
+          light = "blueforest-light";
         };
       };
     })

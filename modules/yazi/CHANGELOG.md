@@ -6,6 +6,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
+- The theme has a light variant now, `blueforest-light`, and the theme of the user
+  selects the flavour that matches the mode of Yazi
 - The flavour is installed only when `blueforest-theme.yazi.enable` is true
 - Initial release: the theme of Yazi, packaged as `blueforest-yazi-theme`. It
   is a flavour, the format Yazi reads, and it carries the colours of the code

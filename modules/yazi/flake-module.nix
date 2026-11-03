@@ -103,6 +103,7 @@ in
             source
             batTheme
             ;
+          sourceLight = ./themes/blueforest-light.yazi;
         };
 
         # Yazi reads the flavour of the package and paints with it.
@@ -114,6 +115,7 @@ in
         # The Home Manager module installs the flavour where Yazi reads it.
         yazi-module = import ./nix/checks/module.nix {
           inherit source batTheme;
+          sourceLight = ./themes/blueforest-light.yazi;
           pkgs = basePkgs;
           homeManager = appInputs.home-manager;
           module = config.flake.homeModules.yazi;

@@ -35,6 +35,8 @@
   mdTui,
   # The light colourscheme of Neovim, which is a Lua file.
   neovim,
+  # The light flavour of Yazi, which is a TOML file.
+  yazi,
   # The canonical palette of the repository.
   palette,
 }:
@@ -63,6 +65,7 @@ pkgs.runCommand "blueforest-light-colours-check"
       jq -r '.. | strings | select(test("^#[0-9A-Fa-f]{6}$"))' ${claudeCode}
       jq -r '.. | strings | select(test("^#[0-9A-Fa-f]{6}$"))' ${mdTui}
       grep -oE '#[0-9A-Fa-f]{6}' ${neovim}
+      grep -oE '#[0-9A-Fa-f]{6}' ${yazi}
     } | tr '[:lower:]' '[:upper:]' | sort -u >"$TMPDIR/themes"
 
     missing="$(comm -23 "$TMPDIR/themes" "$TMPDIR/palette")"

@@ -12,6 +12,7 @@
   homeManager,
   module,
   source,
+  sourceLight,
   batTheme,
 }:
 let
@@ -65,18 +66,21 @@ let
   result = builtins.toJSON {
     enabled = {
       flavour = "${enabled.xdg.configHome}/yazi/flavors/blueforest.yazi";
+      flavourLight = "${enabled.xdg.configHome}/yazi/flavors/blueforest-light.yazi";
       theme = "${enabled.xdg.configHome}/yazi/theme.toml";
     };
 
     # The module does not enable Yazi, so a configuration that does not ask
-    # for the theme gets neither the flavour nor the theme.
+    # for the theme gets neither the flavours nor the theme.
     disabled = {
       flavour = disabled.xdg.configFile ? "yazi/flavors/blueforest.yazi";
+      flavourLight = disabled.xdg.configFile ? "yazi/flavors/blueforest-light.yazi";
       theme = disabled.xdg.configFile ? "yazi/theme.toml";
     };
 
     themeOnly = {
       flavour = themeOnly.xdg.configFile ? "yazi/flavors/blueforest.yazi";
+      flavourLight = themeOnly.xdg.configFile ? "yazi/flavors/blueforest-light.yazi";
       theme = themeOnly.xdg.configFile ? "yazi/theme.toml";
     };
 
@@ -101,28 +105,40 @@ pkgs.runCommand "blueforest-yazi-module-check"
 
     # The flavour the module installs.
     flavour = enabled.xdg.configFile."yazi/flavors/blueforest.yazi".source;
+
+    # And the light one.
+    flavourLight = enabled.xdg.configFile."yazi/flavors/blueforest-light.yazi".source;
   }
   ''
     # The flavour ends up in the directory Yazi reads the flavours from, and
     # the theme of the user is written next to it.
     echo "$result" | jq -e '
       .enabled.flavour == "/home/blueforest/.config/yazi/flavors/blueforest.yazi"
+      and .enabled.flavourLight == "/home/blueforest/.config/yazi/flavors/blueforest-light.yazi"
       and .enabled.theme == "/home/blueforest/.config/yazi/theme.toml"
       and (.disabled.flavour | not)
+      and (.disabled.flavourLight | not)
       and (.disabled.theme | not)
       and (.themeOnly.flavour | not)
+      and (.themeOnly.flavourLight | not)
       and (.themeOnly.theme | not)
       and .own.theme == "/home/blueforest/.config/yazi/theme.toml"
     ' >/dev/null
 
-    # And the theme that ends up installed selects the flavour.
+    # And the theme that ends up installed selects a flavour per mode.
     grep -q 'blueforest' "$themeFile"
+    grep -q 'blueforest-light' "$themeFile"
 
     # The flavour that ends up installed is the flavour of the repository,
     # and the colours of its code preview are the ones of the theme of bat.
     diff -r --exclude=tmtheme.xml "$flavour" ${source}
     test "$(readlink "$flavour/tmtheme.xml")" = \
       "${batTheme}/share/bat/themes/BlueForest.tmTheme"
+
+    # And so is the light one, with the light theme of bat for its preview.
+    diff -r --exclude=tmtheme.xml "$flavourLight" ${sourceLight}
+    test "$(readlink "$flavourLight/tmtheme.xml")" = \
+      "${batTheme}/share/bat/themes/BlueForestLight.tmTheme"
 
     # The theme of a consumer that brings one of its own is the one of the
     # consumer, and the two of them do not collide.

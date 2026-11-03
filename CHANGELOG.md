@@ -29,6 +29,8 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 
 ## Unreleased
 
+- The theme of Yazi has a light variant now, `blueforest-light`, and the theme
+  of the user selects the flavour that matches the mode of Yazi
 - The theme of Neovim has a light variant now, `blueforest-light`, and the
   theme of lualine comes with it
 - The themes of bat, of Claude Code and of md-tui have a light variant now,

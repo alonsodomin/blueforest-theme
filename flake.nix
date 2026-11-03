@@ -494,6 +494,7 @@
                 claudeCode = ./modules/claude-code/themes/blueforest-light.json;
                 mdTui = ./modules/md-tui/themes/blueforest-light.json;
                 neovim = ./modules/neovim/themes/blueforest-light.lua;
+                yazi = ./modules/yazi/themes/blueforest-light.yazi/flavor.toml;
                 palette = ./modules/noctalia/themes/blueforest.json;
               };
 
@@ -503,6 +504,7 @@
                 inherit pkgs;
                 yazi = (top.config.flake.overlays.yazi pkgs pkgs).blueforest-yazi-theme;
                 bat = ./modules/bat/themes/BlueForest.tmTheme;
+                batLight = ./modules/bat/themes/BlueForestLight.tmTheme;
               };
 
               # Fails if the asset of the release of Yazi does not carry the

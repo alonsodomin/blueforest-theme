@@ -86,6 +86,25 @@ bat as a link, and the module adds the overlay of the application to the
 nixpkgs instance of Home Manager, so that the packages of both themes are
 there.
 
+## The light variant
+
+The package carries a light flavour as well, `blueforest-light`, with the
+colours of the light palette of the repository. The module installs both of
+them, and the theme of the user selects the one that matches the mode of
+Yazi:
+
+```toml
+[flavor]
+dark = "blueforest"
+light = "blueforest-light"
+```
+
+The code preview of the light flavour is painted with the light theme of bat,
+the one that is named `BlueForestLight`.
+
+The [palette reference](../index.md#colour-palettes) has every colour of the
+light variant, with the swatches.
+
 Home Manager has an option of its own for the theme of Yazi,
 `programs.yazi.theme`, which writes the file the selection goes into. The
 theme of this application is a default one, so a consumer that sets that

@@ -6,6 +6,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
+- The package carries the light variant of the theme as well,
+  `BlueForestLight`
 - The theme has a light variant now, `BlueForestLight`, and the switch of the
   variant selects the one that is installed
 - The theme has a Home Manager module now, which installs it in the
