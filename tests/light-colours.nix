@@ -41,6 +41,8 @@
   mkdocs,
   # The theme of Zed, which carries a theme per mode.
   zed,
+  # The light theme of kitty, which paints the terminal.
+  kitty,
   # The canonical palette of the repository.
   palette,
 }:
@@ -70,6 +72,7 @@ pkgs.runCommand "blueforest-light-colours-check"
       jq -r '.. | strings | select(test("^#[0-9A-Fa-f]{6}$"))' ${mdTui}
       grep -oE '#[0-9A-Fa-f]{6}' ${neovim}
       grep -oE '#[0-9A-Fa-f]{6}' ${yazi}
+      grep -oE '#[0-9A-Fa-f]{6}' ${kitty}
 
       # The stylesheet of MkDocs carries a set of variables per mode, and
       # only the light one is the colours of the light palette.

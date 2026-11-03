@@ -167,11 +167,16 @@ in
   {
     app = "kitty";
     title = "kitty";
-    assets = [ "dist/blueforest-kitty-theme-$VERSION.conf" ];
+    assets = [
+      "dist/blueforest-kitty-theme-$VERSION.conf"
+      "dist/blueforest-kitty-theme-light-$VERSION.conf"
+    ];
     package = ''
       mkdir -p dist
       cp modules/kitty/themes/blueforest.conf \
         "dist/blueforest-kitty-theme-$VERSION.conf"
+      cp modules/kitty/themes/blueforest-light.conf \
+        "dist/blueforest-kitty-theme-light-$VERSION.conf"
     '';
   }
   {

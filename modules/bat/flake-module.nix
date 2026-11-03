@@ -89,6 +89,7 @@ in
         # other applications of the repository paint them.
         bat-render = import ./nix/checks/render.nix {
           inherit pkgs source;
+          sourceLight = ./themes/BlueForestLight.tmTheme;
         };
 
         # The theme is installed in the configuration directory of the user.

@@ -16,6 +16,7 @@
   homeManager,
   module,
   source,
+  sourceLight,
 }:
 let
   # The identity of the user of the configuration, so that the paths of the
@@ -41,6 +42,15 @@ let
     {
       programs.kitty.enable = true;
       blueforest-theme.kitty.enable = true;
+    }
+  ];
+
+  # A consumer that asks for the light variant of the theme.
+  light = evaluate [
+    {
+      programs.kitty.enable = true;
+      blueforest-theme.kitty.enable = true;
+      blueforest-theme.kitty.variant = "light";
     }
   ];
 
@@ -103,6 +113,15 @@ let
     own = {
       config = own.xdg.configFile."kitty/kitty.conf".text;
     };
+
+    # The light variant is a theme of its own, and it is the one that is
+    # installed when the consumer asks for it.
+    light = {
+      target = "${light.xdg.configHome}/kitty/themes/blueforest-light.conf";
+      source = light.xdg.configFile."kitty/themes/blueforest-light.conf".source;
+      config = light.xdg.configFile."kitty/kitty.conf".text;
+      darkInstalled = light.xdg.configFile ? "kitty/themes/blueforest.conf";
+    };
   };
 in
 pkgs.runCommand "blueforest-kitty-module-check"
@@ -129,6 +148,16 @@ pkgs.runCommand "blueforest-kitty-module-check"
     # The configuration of kitty selects the theme.
     echo "$result" | jq -r '.enabled.config' >"$TMPDIR/kitty.conf"
     grep -q '^include themes/blueforest.conf$' "$TMPDIR/kitty.conf"
+
+    # And the light variant is installed instead of the dark one, and it is
+    # the one that is selected.
+    echo "$result" | jq -e '
+      .light.target == "/home/blueforest/.config/kitty/themes/blueforest-light.conf"
+      and (.light.darkInstalled | not)
+    ' >/dev/null
+    cmp "$(echo "$result" | jq -r '.light.source')" ${sourceLight}
+    echo "$result" | jq -r '.light.config' >"$TMPDIR/light.conf"
+    grep -q '^include themes/blueforest-light.conf$' "$TMPDIR/light.conf"
 
     # And the theme comes before the colours of the consumer, so that the
     # consumer wins.

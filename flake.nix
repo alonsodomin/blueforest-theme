@@ -476,6 +476,9 @@
                 vscode = ./modules/vscode/themes/Blueforest-color-theme.json;
                 neovim = ./modules/neovim/themes/blueforest.lua;
                 kitty = ./modules/kitty/themes/blueforest.conf;
+                vscodeLight = ./modules/vscode/themes/Blueforest-light-color-theme.json;
+                neovimLight = ./modules/neovim/themes/blueforest-light.lua;
+                kittyLight = ./modules/kitty/themes/blueforest-light.conf;
               };
 
               # Fails if the swatches of the palettes of the documentation are
@@ -499,6 +502,7 @@
                 yazi = ./modules/yazi/themes/blueforest-light.yazi/flavor.toml;
                 mkdocs = ./modules/mkdocs/themes/blueforest.css;
                 zed = ./modules/zed/extension/themes/blueforest.json;
+                kitty = ./modules/kitty/themes/blueforest-light.conf;
                 palette = ./modules/noctalia/themes/blueforest.json;
               };
 

@@ -59,5 +59,16 @@ pkgs.runCommand "blueforest-neovim-nixvim-check"
       and .lualine.bg == "ffcc33"
     ' "$BLUEFOREST_RESULT" >/dev/null
 
+    # And the light variant is a colourscheme of its own, which the editor
+    # reads, and lualine finds the theme of the statusline of it.
+    jq -e '
+      .light.colorsName == "blueforest-light"
+      and .light.normal.fg == "141f2e"
+      and .light.normal.bg == "e8ecf2"
+      and .light.rainbow.fg == "b02a28"
+      and .light.lualine.bg == "#FFCC33"
+      and .light.auto.bg == "#FFCC33"
+    ' "$BLUEFOREST_RESULT" >/dev/null
+
     touch $out
   ''

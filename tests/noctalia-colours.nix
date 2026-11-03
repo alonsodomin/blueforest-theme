@@ -16,9 +16,7 @@
 #
 # The palette has a variant per mode, and the ports have a theme per mode, so
 # the variants are compared with each other: the dark palette with the dark
-# themes, and the light palette with the light ones. The repository has the
-# dark themes today, so the light variant has nothing to be compared with
-# yet, and the check skips it until the light themes land.
+# themes, and the light palette with the light ones.
 {
   pkgs,
   # The package of the theme of Noctalia.
@@ -29,6 +27,12 @@
   neovim,
   # The dark theme of kitty.
   kitty,
+  # The light theme of VS Code.
+  vscodeLight,
+  # The light theme of Neovim.
+  neovimLight,
+  # The light theme of kitty.
+  kittyLight,
 }:
 pkgs.runCommand "blueforest-noctalia-colours-check"
   {
@@ -40,9 +44,8 @@ pkgs.runCommand "blueforest-noctalia-colours-check"
   ''
     noctalia="${theme}/share/noctalia/palettes/blueforest.json"
 
-    # The colours of the themes of the repository, per mode. The dark themes
-    # are the ones the repository has today; the light ones come with the
-    # light themes of the applications.
+    # The colours of the themes of the repository, per mode. Every mode is
+    # compared with the themes of the same mode.
     colours_of_themes() {
       case "$1" in
         dark)
@@ -53,18 +56,17 @@ pkgs.runCommand "blueforest-noctalia-colours-check"
           }
           ;;
         light)
-          # The light themes of the applications do not exist yet.
+          {
+            jq -r '.. | strings | select(test("^#[0-9A-Fa-f]{6,8}$"))' ${vscodeLight}
+            grep -oE '#[0-9A-Fa-f]{6}' ${neovimLight}
+            grep -oE '#[0-9A-Fa-f]{6}' ${kittyLight}
+          }
           ;;
       esac | tr '[:lower:]' '[:upper:]' | cut -c1-7 | sort -u
     }
 
     for mode in dark light; do
       colours_of_themes "$mode" >"$TMPDIR/$mode-themes"
-
-      # A mode without themes has nothing to be compared with.
-      if [ ! -s "$TMPDIR/$mode-themes" ]; then
-        continue
-      fi
 
       # Every colour of the palette of Noctalia is one of them.
       jq -r ".$mode | .. | strings | select(test(\"^#[0-9A-Fa-f]{6,8}$\"))" "$noctalia" \

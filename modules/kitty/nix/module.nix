@@ -28,6 +28,13 @@
 let
   cfg = config.programs.kitty;
 
+  # The variant of the theme that is installed.
+  variant = config.blueforest-theme.kitty.variant;
+
+  # The name of the file of the theme, which is the name of the include line
+  # that selects it.
+  file = if variant == "dark" then "blueforest.conf" else "blueforest-light.conf";
+
   # The ids of the templates of Noctalia that the consumer enabled. The
   # configuration of Noctalia is one opaque value, and it may be an attribute
   # set, a string or a path: only the attribute set carries the ids, and the
@@ -52,6 +59,15 @@ in
 {
   options.blueforest-theme.kitty = {
     enable = lib.mkEnableOption "the BlueForest theme for kitty";
+
+    variant = lib.mkOption {
+      type = lib.types.enum [
+        "dark"
+        "light"
+      ];
+      default = "dark";
+      description = "The variant of the theme of kitty that is installed.";
+    };
   };
 
   config = lib.mkMerge [
@@ -72,8 +88,15 @@ in
     }
 
     (lib.mkIf (config.blueforest-theme.kitty.enable && cfg.enable) {
-      xdg.configFile."kitty/themes/blueforest.conf" = lib.mkDefault {
-        source = ../themes/blueforest.conf;
+      # The theme, in the directory kitty reads the themes from. The name of
+      # the attribute is the name of the file, and the variant decides which
+      # one of them is installed.
+      xdg.configFile."kitty/themes/blueforest.conf" = lib.mkIf (variant == "dark") {
+        source = lib.mkDefault ../themes/blueforest.conf;
+      };
+
+      xdg.configFile."kitty/themes/blueforest-light.conf" = lib.mkIf (variant == "light") {
+        source = lib.mkDefault ../themes/blueforest-light.conf;
       };
 
       # Home Manager writes the configuration of kitty with an order of its
@@ -81,7 +104,7 @@ in
       # background of the colours of the terminal, and anything the consumer
       # sets is painted over it.
       programs.kitty.extraConfig = lib.mkOrder 505 ''
-        include themes/blueforest.conf
+        include themes/${file}
       '';
     })
   ];

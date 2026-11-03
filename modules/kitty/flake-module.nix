@@ -80,17 +80,20 @@ in
         # The theme of the package is the theme of the repository.
         kitty-theme = import ./nix/checks/theme.nix {
           inherit pkgs theme source;
+          sourceLight = ./themes/blueforest-light.conf;
         };
 
         # kitty reads the theme of the repository and paints with it.
         kitty-parse = import ./nix/checks/parse.nix {
           inherit pkgs source;
+          sourceLight = ./themes/blueforest-light.conf;
         };
 
         # The Home Manager module installs the theme where kitty reads it,
         # and selects it.
         kitty-module = import ./nix/checks/module.nix {
           inherit source;
+          sourceLight = ./themes/blueforest-light.conf;
           pkgs = basePkgs;
           homeManager = appInputs.home-manager;
           module = config.flake.homeModules.kitty;

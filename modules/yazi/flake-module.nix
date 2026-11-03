@@ -90,6 +90,10 @@ in
 
       # The flavour of the package, which links to the theme of bat.
       flavour = "${theme}/share/yazi/flavors/blueforest.yazi";
+
+      # And the light flavour of the package, which links to the light theme
+      # of bat.
+      flavourLight = "${theme}/share/yazi/flavors/blueforest-light.yazi";
     in
     {
       packages.blueforest-yazi-theme = theme;
@@ -106,10 +110,11 @@ in
           sourceLight = ./themes/blueforest-light.yazi;
         };
 
-        # Yazi reads the flavour of the package and paints with it.
+        # Yazi reads the flavours of the package and paints with them.
         yazi-render = import ./nix/checks/render.nix {
           inherit pkgs;
           source = flavour;
+          sourceLight = flavourLight;
         };
 
         # The Home Manager module installs the flavour where Yazi reads it.

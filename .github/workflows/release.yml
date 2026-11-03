@@ -237,13 +237,15 @@ jobs:
         mkdir -p dist
         cp modules/kitty/themes/blueforest.conf \
           "dist/blueforest-kitty-theme-$VERSION.conf"
+        cp modules/kitty/themes/blueforest-light.conf \
+          "dist/blueforest-kitty-theme-light-$VERSION.conf"
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TAG: v${{ needs.version.outputs.version }}
         VERSION: ${{ needs.version.outputs.version }}
       name: Upload the assets to the release
       run: |-
-        for asset in dist/blueforest-kitty-theme-$VERSION.conf; do
+        for asset in dist/blueforest-kitty-theme-$VERSION.conf dist/blueforest-kitty-theme-light-$VERSION.conf; do
           gh release upload "$TAG" "$asset" --clobber
         done
   lazygit:

@@ -34,6 +34,8 @@ pkgs.runCommand "blueforest-claude-code-theme-${version}"
     mkdir -p $out/share/claude/themes
     cp ${../themes/blueforest.json} $out/blueforest.json
     cp ${../themes/blueforest.json} $out/share/claude/themes/blueforest.json
+    cp ${../themes/blueforest-light.json} $out/blueforest-light.json
+    cp ${../themes/blueforest-light.json} $out/share/claude/themes/blueforest-light.json
 
     # The attribution of the theme travels with the package.
     mkdir -p $out/share/doc/blueforest

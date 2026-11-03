@@ -39,9 +39,10 @@ same accent, `#0099FF`, the blue of the name.
 
 The [Noctalia palette](themes/noctalia.md) carries both of them, and it is the
 reference of the colours of the other applications: every theme of the
-repository paints the terminal with the sixteen colours of the palette of its
-own variant, and the colours of the dark variant are the ones of the VS Code
-theme and of the Neovim theme.
+repository paints with the colours of the palette of its own variant, and the
+colours of the dark variant are the ones of the VS Code theme and of the
+Neovim theme. The sixteen colours of the terminal are the ones of the palette
+as well, and kitty paints the terminal with them.
 
 ### The dark palette
 

@@ -7,9 +7,12 @@
 # not know, and it does so silently: the interface falls back to the colours
 # of the built-in theme. The check therefore reads the theme with the very
 # same rules Claude Code reads it with, and looks at what comes out of it.
+#
+# The theme has a variant per mode, and every one of them is checked.
 {
   pkgs,
   source,
+  sourceLight,
   theme,
 }:
 let
@@ -86,56 +89,62 @@ pkgs.runCommand "blueforest-claude-code-theme-check"
     # The theme of the package is the theme of the repository.
     cmp ${theme}/blueforest.json ${source}
     cmp ${theme}/share/claude/themes/blueforest.json ${source}
+    cmp ${theme}/blueforest-light.json ${sourceLight}
+    cmp ${theme}/share/claude/themes/blueforest-light.json ${sourceLight}
 
     # And the attribution of the theme travels with it.
     test -f ${theme}/share/doc/blueforest/NOTICE.md
     test -f ${theme}/share/doc/blueforest/LICENSE
 
-    # The theme is one Claude Code reads: it has a name, it has a base, and it
-    # has the overrides of the colours.
-    jq -e '
-      has("name")
-      and has("base")
-      and has("overrides")
-      and (.overrides | type == "object")
-    ' ${source} >/dev/null
+    # Every variant of the theme is one Claude Code reads: it has a name, it
+    # has a base, and it has the overrides of the colours.
+    for variant in ${source} ${sourceLight}; do
+      jq -e '
+        has("name")
+        and has("base")
+        and has("overrides")
+        and (.overrides | type == "object")
+      ' "$variant" >/dev/null
 
-    # The base is one of the built-in themes of Claude Code.
-    jq -e '
-      .base
-      | . == "dark"
-        or . == "light"
-        or . == "dark-daltonized"
-        or . == "light-daltonized"
-        or . == "dark-ansi"
-        or . == "light-ansi"
-    ' ${source} >/dev/null
+      # The base is one of the built-in themes of Claude Code.
+      jq -e '
+        .base
+        | . == "dark"
+          or . == "light"
+          or . == "dark-daltonized"
+          or . == "light-daltonized"
+          or . == "dark-ansi"
+          or . == "light-ansi"
+      ' "$variant" >/dev/null
 
-    # Every token of the theme is one Claude Code knows. A token it does not
-    # know is ignored, and the theme is then a theme with a hole in it.
-    unknown=$(echo "$overrides" | jq -r --argjson known "$known" '
-      keys_unsorted[]
-      | select(. as $token | $known | index($token) | not)
-    ')
-    if [ -n "$unknown" ]; then
-      echo "the theme has tokens Claude Code does not read:" >&2
-      echo "$unknown" >&2
-      exit 1
-    fi
+      # Every token of the theme is one Claude Code knows. A token it does
+      # not know is ignored, and the theme is then a theme with a hole in it.
+      unknown=$(jq -r --argjson known "$known" '
+        .overrides
+        | keys_unsorted[]
+        | select(. as $token | $known | index($token) | not)
+      ' "$variant")
+      if [ -n "$unknown" ]; then
+        echo "the theme has tokens Claude Code does not read:" >&2
+        echo "$unknown" >&2
+        exit 1
+      fi
 
-    # And every colour of the theme is one Claude Code can resolve. A colour
-    # it cannot resolve is ignored, and the token keeps the colour of the
-    # built-in theme.
-    bad=$(echo "$overrides" | jq -r '
-      to_entries[]
-      | select(.value | test("^#[0-9a-fA-F]{6}$") | not)
-      | .key
-    ')
-    if [ -n "$bad" ]; then
-      echo "the theme has colours Claude Code cannot resolve:" >&2
-      echo "$bad" >&2
-      exit 1
-    fi
+      # And every colour of the theme is one Claude Code can resolve. A
+      # colour it cannot resolve is ignored, and the token keeps the colour
+      # of the built-in theme.
+      bad=$(jq -r '
+        .overrides
+        | to_entries[]
+        | select(.value | test("^#[0-9a-fA-F]{6}$") | not)
+        | .key
+      ' "$variant")
+      if [ -n "$bad" ]; then
+        echo "the theme has colours Claude Code cannot resolve:" >&2
+        echo "$bad" >&2
+        exit 1
+      fi
+    done
 
     touch $out
   ''

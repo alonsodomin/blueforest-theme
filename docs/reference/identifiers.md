@@ -28,14 +28,15 @@ The themes of VS Code and of Zed have no switch: they are installed as a
 package and as an extension. The stylesheet of MkDocs has one of its own,
 `blueforest-theme.mkdocs.enable`, and it is enabled by default.
 
-The themes of bat, of Claude Code and of md-tui have a switch of the variant
-as well, `blueforest-theme.<application>.variant`, and it is `dark` by
-default:
+The themes of bat, of Claude Code, of kitty and of md-tui have a switch of
+the variant as well, `blueforest-theme.<application>.variant`, and it is
+`dark` by default:
 
 | Switch | Values |
 | --- | --- |
 | `blueforest-theme.bat.variant` | `dark`, `light` |
 | `blueforest-theme.claude-code.variant` | `dark`, `light` |
+| `blueforest-theme.kitty.variant` | `dark`, `light` |
 | `blueforest-theme.md-tui.variant` | `dark`, `light` |
 
 A theme and a template of the community catalogue of Noctalia are
@@ -102,7 +103,9 @@ application. A configuration that enables both fails to evaluate.
   `blueforest`, the name of the file `blueforest.conf`, which kitty reads
   from `$XDG_CONFIG_HOME/kitty/themes/`. Select it with
   `include themes/blueforest.conf` in the configuration of kitty. The
-  `themes` kitten lists it under the name `BlueForest`.
+  `themes` kitten lists it under the name `BlueForest`. The light variant of
+  the theme is `blueforest-light`, the name of the file `blueforest-light.conf`,
+  and the `themes` kitten lists it under the name `BlueForest Light`.
 - The lazygit package is `blueforest-lazygit-theme`. The lazygit theme is the
   `gui.theme` mapping of the configuration file of lazygit, and the file of
   the theme is `blueforest.json`, which lazygit reads as
@@ -130,5 +133,6 @@ application. A configuration that enables both fails to evaluate.
   variant of the theme is `blueforest-light`.
 - The MkDocs package is `blueforest-mkdocs-theme`. The MkDocs stylesheet is
   `blueforest`, the name of the file `blueforest.css`, which MkDocs reads
-  through the `extra_css` option of its configuration. The theme only
-  recolours the dark scheme of Material for MkDocs.
+  through the `extra_css` option of its configuration. The theme recolours
+  both schemes of Material for MkDocs: the dark one, `slate`, and the light
+  one, `default`.

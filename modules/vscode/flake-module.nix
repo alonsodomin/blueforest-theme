@@ -165,6 +165,11 @@ in
             test -n "$extensions_dir"
 
             test -f "$extensions_dir/alonsodomin.blueforest-theme/themes/Blueforest-color-theme.json"
+
+            # And the light variant of the theme is in the extension too, or
+            # the picker of VS Code would show a theme it cannot read.
+            test -f "$extensions_dir/alonsodomin.blueforest-theme/themes/Blueforest-light-color-theme.json"
+
             jq -e '.[0].identifier.id == "alonsodomin.blueforest-theme"' \
               "$extensions_dir/extensions.json" >/dev/null
 
