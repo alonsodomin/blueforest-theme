@@ -6,7 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
-- The theme is added only when `blueforest.lazygit.enable` is true
+- The theme is added only when `blueforest-theme.lazygit.enable` is true
 - Initial release: the theme of lazygit, packaged as `blueforest-lazygit-theme`
 - The Home Manager module adds the theme to the settings of lazygit, colour by
   colour, and it writes nothing when lazygit is not enabled

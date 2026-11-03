@@ -58,7 +58,7 @@ let
   enabled = evaluateHome [
     {
       programs.starship.enable = true;
-      blueforest.starship.enable = true;
+      blueforest-theme.starship.enable = true;
     }
   ];
 
@@ -69,7 +69,7 @@ let
   # preset has no consumer, so the module selects nothing.
   themeOnly = evaluateHome [
     {
-      blueforest.starship.enable = true;
+      blueforest-theme.starship.enable = true;
     }
   ];
 
@@ -81,7 +81,7 @@ let
         (evaluateHome [
           {
             programs.starship.enable = true;
-            blueforest.starship.enable = true;
+            blueforest-theme.starship.enable = true;
           }
           {
             programs.noctalia.settings.theme.templates.builtin_ids = [ "starship" ];

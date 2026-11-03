@@ -8,7 +8,7 @@
 # is the name of the file without its extension. This module writes the theme
 # there and selects it.
 #
-# The module is inert unless `blueforest.claude-code.enable` is true: it does
+# The module is inert unless `blueforest-theme.claude-code.enable` is true: it does
 # not enable Claude Code, it only adds the theme to the configuration of a
 # Claude Code that the consumer already enabled.
 #
@@ -49,12 +49,8 @@ let
     (templates.builtin_ids or [ ]) ++ (templates.community_ids or [ ]);
 in
 {
-  options.blueforest.claude-code = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Whether to install the BlueForest theme for Claude Code.";
-    };
+  options.blueforest-theme.claude-code = {
+    enable = lib.mkEnableOption "the BlueForest theme for Claude Code";
   };
 
   config = lib.mkMerge [
@@ -63,18 +59,19 @@ in
       # Claude Code, so the two of them cannot be enabled at the same time.
       assertions = [
         {
-          assertion = !(config.blueforest.claude-code.enable && lib.elem "claude-code" enabledTemplates);
+          assertion =
+            !(config.blueforest-theme.claude-code.enable && lib.elem "claude-code" enabledTemplates);
           message = ''
             The BlueForest theme for Claude Code and the Noctalia template for
             Claude Code are both enabled, and the two of them write the
             settings of Claude Code. Disable the template in the configuration
             of Noctalia (remove "claude-code" from `[theme.templates]
-            community_ids`), or set `blueforest.claude-code.enable = false`.'';
+            community_ids`), or set `blueforest-theme.claude-code.enable = false`.'';
         }
       ];
     }
 
-    (lib.mkIf (config.blueforest.claude-code.enable && cfg.enable) {
+    (lib.mkIf (config.blueforest-theme.claude-code.enable && cfg.enable) {
       # The theme, in the directory Claude Code reads the themes from.
       home.file."${cfg.configDir}/themes/blueforest.json".source = ../themes/blueforest.json;
 

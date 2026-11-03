@@ -24,7 +24,7 @@ writes it and selects it:
   ];
 
   programs.opencode.enable = true;
-  blueforest.opencode.enable = true;
+  blueforest-theme.opencode.enable = true;
 }
 ```
 
@@ -33,10 +33,10 @@ stays your decision. It writes the theme to
 `~/.config/opencode/themes/blueforest.json` and the selection to
 `~/.config/opencode/cli.json`.
 
-The switch of the theme is `blueforest.opencode.enable`, and not
+The switch of the theme is `blueforest-theme.opencode.enable`, and not
 `programs.opencode.enable`, so that the theme and the template of the
 community catalogue of Noctalia for OpenCode are alternatives: a consumer that
-wants the community template keeps `blueforest.opencode.enable` off, and a
+wants the community template keeps `blueforest-theme.opencode.enable` off, and a
 consumer that wants this theme turns it on. A configuration that enables both
 fails to evaluate: the two of them write the configuration of OpenCode.
 

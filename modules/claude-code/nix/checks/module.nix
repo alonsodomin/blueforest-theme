@@ -40,7 +40,7 @@ let
   enabled = evaluate [
     {
       programs.claude-code.enable = true;
-      blueforest.claude-code.enable = true;
+      blueforest-theme.claude-code.enable = true;
     }
   ];
 
@@ -50,7 +50,7 @@ let
   # theme has no consumer, so the module writes nothing.
   themeOnly = evaluate [
     {
-      blueforest.claude-code.enable = true;
+      blueforest-theme.claude-code.enable = true;
     }
   ];
 
@@ -58,7 +58,7 @@ let
   own = evaluate [
     {
       programs.claude-code.enable = true;
-      blueforest.claude-code.enable = true;
+      blueforest-theme.claude-code.enable = true;
       programs.claude-code.settings.theme = "custom:another-theme";
     }
   ];
@@ -71,7 +71,7 @@ let
         (evaluate [
           {
             programs.claude-code.enable = true;
-            blueforest.claude-code.enable = true;
+            blueforest-theme.claude-code.enable = true;
           }
           {
             programs.noctalia.settings.theme.templates.community_ids = [ "claude-code" ];

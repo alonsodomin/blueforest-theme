@@ -8,7 +8,7 @@
 # palette. This module writes the theme there and selects it, so that md-tui
 # picks the theme up without any further work.
 #
-# The module is inert unless `blueforest.md-tui.enable` is true: it does not
+# The module is inert unless `blueforest-theme.md-tui.enable` is true: it does not
 # enable md-tui, it only adds the theme to the configuration of an md-tui
 # that the consumer already enabled.
 #
@@ -29,15 +29,11 @@
   ...
 }:
 {
-  options.blueforest.md-tui = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Whether to install the BlueForest theme for md-tui.";
-    };
+  options.blueforest-theme.md-tui = {
+    enable = lib.mkEnableOption "the BlueForest theme for md-tui";
   };
 
-  config = lib.mkIf config.blueforest.md-tui.enable {
+  config = lib.mkIf config.blueforest-theme.md-tui.enable {
     # The theme, in the directory md-tui reads the palettes from. The name of
     # the file is the name of the theme.
     home.file.".config/mdt/themes/blueforest.json" = lib.mkDefault {

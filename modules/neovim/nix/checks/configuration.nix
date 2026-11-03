@@ -29,7 +29,7 @@ let
   enabled = evaluate [
     {
       programs.neovim.enable = true;
-      blueforest.neovim.enable = true;
+      blueforest-theme.neovim.enable = true;
     }
   ];
 
@@ -39,7 +39,7 @@ let
   # has no consumer, so the module writes nothing.
   themeOnly = evaluate [
     {
-      blueforest.neovim.enable = true;
+      blueforest-theme.neovim.enable = true;
     }
   ];
 

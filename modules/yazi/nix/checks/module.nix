@@ -37,7 +37,7 @@ let
   enabled = evaluate [
     {
       programs.yazi.enable = true;
-      blueforest.yazi.enable = true;
+      blueforest-theme.yazi.enable = true;
     }
   ];
 
@@ -47,7 +47,7 @@ let
   # has no consumer, so the module writes nothing.
   themeOnly = evaluate [
     {
-      blueforest.yazi.enable = true;
+      blueforest-theme.yazi.enable = true;
     }
   ];
 
@@ -55,7 +55,7 @@ let
   own = evaluate [
     {
       programs.yazi.enable = true;
-      blueforest.yazi.enable = true;
+      blueforest-theme.yazi.enable = true;
       programs.yazi.theme = {
         mgr.cwd.fg = "#ff0000";
       };

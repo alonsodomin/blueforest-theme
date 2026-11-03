@@ -8,7 +8,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - The Home Manager module selects the preset of the repository and the
   package that carries it, and it does so only when
-  `blueforest.starship.enable` is true. A configuration that enables
+  `blueforest-theme.starship.enable` is true. A configuration that enables
   the preset and a template of the community catalogue of Noctalia for
   Starship fails to evaluate
 - Initial release: the BlueForest preset for Starship, packaged as

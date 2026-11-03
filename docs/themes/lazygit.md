@@ -56,16 +56,16 @@ adds it to the settings of lazygit:
   ];
 
   programs.lazygit.enable = true;
-  blueforest.lazygit.enable = true;
+  blueforest-theme.lazygit.enable = true;
 }
 ```
 
 The module does not enable lazygit: whether the program is installed at all
 stays your decision. It adds the theme to the settings of lazygit, and it
 writes nothing when `programs.lazygit.enable` is false or when
-`blueforest.lazygit.enable` is false.
+`blueforest-theme.lazygit.enable` is false.
 
-The switch of the theme is `blueforest.lazygit.enable`, and not
+The switch of the theme is `blueforest-theme.lazygit.enable`, and not
 `programs.lazygit.enable`, so that every theme of the repository is turned on
 and off on its own.
 

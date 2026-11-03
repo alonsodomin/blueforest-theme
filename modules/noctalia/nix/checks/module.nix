@@ -35,19 +35,19 @@ let
 
   enabled = evaluate {
     programs.noctalia.enable = true;
-    blueforest.noctalia.enable = true;
+    blueforest-theme.noctalia.enable = true;
   };
 
   disabled = evaluate { };
 
   # A consumer that asks for the theme but does not enable Noctalia: the
   # palette has no consumer, so the module writes nothing.
-  themeOnly = evaluate { blueforest.noctalia.enable = true; };
+  themeOnly = evaluate { blueforest-theme.noctalia.enable = true; };
 
   # A consumer that brings a palette and a selection of its own.
   own = evaluate {
     programs.noctalia.enable = true;
-    blueforest.noctalia.enable = true;
+    blueforest-theme.noctalia.enable = true;
     programs.noctalia.customPalettes.blueforest = "the palette of the consumer";
     xdg.configFile."noctalia/blueforest.toml".text = ''
       [theme]

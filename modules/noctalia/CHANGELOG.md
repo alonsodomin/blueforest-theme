@@ -11,7 +11,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - The package carries the palette in the format 2 of the community
   palette registry as well, under the name `blueforest-v2.json`, and
   the file of the format 2 is generated from the canonical one
-- The palette is installed only when `blueforest.noctalia.enable` is
+- The palette is installed only when `blueforest-theme.noctalia.enable` is
   true
 - Initial release: the palette of Noctalia, packaged as
   `blueforest-noctalia-theme`

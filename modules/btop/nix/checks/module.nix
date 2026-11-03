@@ -40,7 +40,7 @@ let
   enabled = evaluate [
     {
       programs.btop.enable = true;
-      blueforest.btop.enable = true;
+      blueforest-theme.btop.enable = true;
     }
   ];
 
@@ -50,7 +50,7 @@ let
   # has no consumer, so the module writes nothing.
   themeOnly = evaluate [
     {
-      blueforest.btop.enable = true;
+      blueforest-theme.btop.enable = true;
     }
   ];
 
@@ -58,7 +58,7 @@ let
   own = evaluate [
     {
       programs.btop.enable = true;
-      blueforest.btop.enable = true;
+      blueforest-theme.btop.enable = true;
       programs.btop.settings.color_theme = "another.theme";
     }
   ];
@@ -71,7 +71,7 @@ let
         (evaluate [
           {
             programs.btop.enable = true;
-            blueforest.btop.enable = true;
+            blueforest-theme.btop.enable = true;
           }
           {
             programs.noctalia.settings.theme.templates.builtin_ids = [ "btop" ];

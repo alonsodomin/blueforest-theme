@@ -9,7 +9,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - The theme has a Home Manager module now, which installs it in the
   directory bat reads the themes from, selects it in the configuration
   of bat, and it writes nothing when bat is not enabled
-- The theme is installed only when `blueforest.bat.enable` is true. A
+- The theme is installed only when `blueforest-theme.bat.enable` is true. A
   configuration that enables the theme and the template of the
   community catalogue of Noctalia for bat fails to evaluate
 - Initial release: the theme of bat, packaged as `blueforest-bat-theme`

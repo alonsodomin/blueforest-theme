@@ -29,8 +29,15 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 
 ## Unreleased
 
+- The options of the repository live under `blueforest-theme` now, and not
+  under `blueforest`. The options of the module of MkDocs are the ones that
+  changed name: `blueforest.mkdocs.enable`, `blueforest.mkdocs.docsDir` and
+  `blueforest.mkdocs.path` are `blueforest-theme.mkdocs.enable`,
+  `blueforest-theme.mkdocs.docsDir` and `blueforest-theme.mkdocs.path` now.
+  The old names are gone, and a configuration that uses them fails to
+  evaluate
 - Every theme of the repository has a switch of its own,
-  `blueforest.<application>.enable`, and it is off by default. The switch is
+  `blueforest-theme.<application>.enable`, and it is off by default. The switch is
   separate from `programs.<application>.enable`, so that the theme of one
   application can be turned on without the themes of the others, and so that
   the theme and a template of the community catalogue of Noctalia are

@@ -8,7 +8,7 @@
 # palette there and adds the file that selects it, so that Noctalia picks the
 # theme up without any further work.
 #
-# The module is inert unless `blueforest.noctalia.enable` is true, and unless
+# The module is inert unless `blueforest-theme.noctalia.enable` is true, and unless
 # `programs.noctalia.enable` is true as well: it does not enable Noctalia, it
 # only adds the theme to the configuration of a Noctalia that the consumer
 # already enabled.
@@ -16,7 +16,7 @@
 # The switch is the one of this repository, and not `programs.noctalia.enable`,
 # so that the theme and a template of the community catalogue of Noctalia are
 # alternatives: a consumer that wants the community template keeps
-# `blueforest.noctalia.enable` off, and a consumer that wants this palette
+# `blueforest-theme.noctalia.enable` off, and a consumer that wants this palette
 # turns it on and disables the template for the applications it themes from
 # here.
 #
@@ -39,15 +39,11 @@ let
   cfg = config.programs.noctalia;
 in
 {
-  options.blueforest.noctalia = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Whether to install the BlueForest theme for Noctalia.";
-    };
+  options.blueforest-theme.noctalia = {
+    enable = lib.mkEnableOption "the BlueForest theme for Noctalia";
   };
 
-  config = lib.mkIf (config.blueforest.noctalia.enable && cfg.enable) {
+  config = lib.mkIf (config.blueforest-theme.noctalia.enable && cfg.enable) {
     # The palette, in the directory Noctalia reads the palettes of the user
     # from. The name of the attribute is the name of the palette, which is the
     # name the selection refers to.

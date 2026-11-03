@@ -45,15 +45,15 @@ selection in the global configuration of both generations of sbt:
   ];
 
   programs.sbt.enable = true;
-  blueforest.sbt.enable = true;
+  blueforest-theme.sbt.enable = true;
 }
 ```
 
 The module does not enable sbt: it only writes the files when
-`programs.sbt.enable` is true and when `blueforest.sbt.enable` is true. It
+`programs.sbt.enable` is true and when `blueforest-theme.sbt.enable` is true. It
 writes both generations, because a consumer may run either of them.
 
-The switch of the prompt is `blueforest.sbt.enable`, and not
+The switch of the prompt is `blueforest-theme.sbt.enable`, and not
 `programs.sbt.enable`, so that every theme of the repository is turned on and
 off on its own.
 

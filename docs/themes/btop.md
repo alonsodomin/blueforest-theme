@@ -50,7 +50,7 @@ installs it where btop reads the themes from, and selects it:
   ];
 
   programs.btop.enable = true;
-  blueforest.btop.enable = true;
+  blueforest-theme.btop.enable = true;
 }
 ```
 
@@ -58,12 +58,12 @@ The module does not enable btop: whether the program is installed at all stays
 your decision. It writes the theme to
 `~/.config/btop/themes/blueforest.theme`, selects it in the configuration of
 btop, and it writes nothing when `programs.btop.enable` is false or when
-`blueforest.btop.enable` is false.
+`blueforest-theme.btop.enable` is false.
 
-The switch of the theme is `blueforest.btop.enable`, and not
+The switch of the theme is `blueforest-theme.btop.enable`, and not
 `programs.btop.enable`, so that the theme and the template of the community
 catalogue of Noctalia for btop are alternatives: a consumer that wants the
-community template keeps `blueforest.btop.enable` off, and a consumer that
+community template keeps `blueforest-theme.btop.enable` off, and a consumer that
 wants this theme turns it on. A configuration that enables both fails to
 evaluate: the two of them write the configuration of btop.
 

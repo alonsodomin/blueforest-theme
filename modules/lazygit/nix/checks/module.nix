@@ -36,7 +36,7 @@ let
   enabled = evaluate [
     {
       programs.lazygit.enable = true;
-      blueforest.lazygit.enable = true;
+      blueforest-theme.lazygit.enable = true;
     }
   ];
 
@@ -46,7 +46,7 @@ let
   # has no consumer, so the module writes nothing.
   themeOnly = evaluate [
     {
-      blueforest.lazygit.enable = true;
+      blueforest-theme.lazygit.enable = true;
     }
   ];
 
@@ -54,7 +54,7 @@ let
   own = evaluate [
     {
       programs.lazygit.enable = true;
-      blueforest.lazygit.enable = true;
+      blueforest-theme.lazygit.enable = true;
       programs.lazygit.settings.gui.theme.activeBorderColor = [ "#FF0000" ];
     }
   ];

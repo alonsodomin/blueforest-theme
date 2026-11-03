@@ -8,7 +8,7 @@
 # settings of lazygit, so that lazygit picks the theme up without any further
 # work.
 #
-# The module is inert unless `blueforest.lazygit.enable` is true: it does not
+# The module is inert unless `blueforest-theme.lazygit.enable` is true: it does not
 # enable lazygit, it only adds the theme to the configuration of a lazygit
 # that the consumer already enabled.
 #
@@ -32,15 +32,11 @@ let
   theme = (builtins.fromJSON (builtins.readFile ../themes/blueforest.json)).gui.theme;
 in
 {
-  options.blueforest.lazygit = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Whether to install the BlueForest theme for lazygit.";
-    };
+  options.blueforest-theme.lazygit = {
+    enable = lib.mkEnableOption "the BlueForest theme for lazygit";
   };
 
-  config = lib.mkIf (config.blueforest.lazygit.enable && cfg.enable) {
+  config = lib.mkIf (config.blueforest-theme.lazygit.enable && cfg.enable) {
     # The border of the window that has the focus.
     programs.lazygit.settings.gui.theme.activeBorderColor = lib.mkDefault theme.activeBorderColor;
 

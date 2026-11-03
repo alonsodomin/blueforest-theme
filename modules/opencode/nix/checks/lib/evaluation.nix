@@ -33,7 +33,7 @@ let
         programs.opencode.enable = true;
 
         # And it has to ask for the theme of this repository.
-        blueforest.opencode.enable = true;
+        blueforest-theme.opencode.enable = true;
       }
     ];
   };
@@ -60,7 +60,7 @@ let
               home.stateVersion = "26.11";
 
               programs.opencode.enable = true;
-              blueforest.opencode.enable = true;
+              blueforest-theme.opencode.enable = true;
 
               programs.noctalia.settings.theme.templates.community_ids = [ "opencode" ];
             }

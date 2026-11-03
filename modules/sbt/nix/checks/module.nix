@@ -32,7 +32,7 @@ let
   enabled = evaluate [
     {
       programs.sbt.enable = true;
-      blueforest.sbt.enable = true;
+      blueforest-theme.sbt.enable = true;
     }
   ];
 
@@ -42,7 +42,7 @@ let
   # have no consumer, so the module writes nothing.
   themeOnly = evaluate [
     {
-      blueforest.sbt.enable = true;
+      blueforest-theme.sbt.enable = true;
     }
   ];
 

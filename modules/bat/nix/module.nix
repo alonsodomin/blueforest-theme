@@ -8,7 +8,7 @@
 # without its extension. This module writes the theme there and selects it,
 # so that bat picks the theme up without any further work.
 #
-# The module is inert unless `blueforest.bat.enable` is true: it does not
+# The module is inert unless `blueforest-theme.bat.enable` is true: it does not
 # enable bat, it only adds the theme to the configuration of a bat that the
 # consumer already enabled.
 #
@@ -48,12 +48,8 @@ let
     (templates.builtin_ids or [ ]) ++ (templates.community_ids or [ ]);
 in
 {
-  options.blueforest.bat = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Whether to install the BlueForest theme for bat.";
-    };
+  options.blueforest-theme.bat = {
+    enable = lib.mkEnableOption "the BlueForest theme for bat";
   };
 
   config = lib.mkMerge [
@@ -62,18 +58,18 @@ in
       # bat, so the two of them cannot be enabled at the same time.
       assertions = [
         {
-          assertion = !(config.blueforest.bat.enable && lib.elem "bat" enabledTemplates);
+          assertion = !(config.blueforest-theme.bat.enable && lib.elem "bat" enabledTemplates);
           message = ''
             The BlueForest theme for bat and the Noctalia template for bat are
             both enabled, and the two of them write the configuration of bat.
             Disable the template in the configuration of Noctalia (remove
             "bat" from `[theme.templates] community_ids`), or set
-            `blueforest.bat.enable = false`.'';
+            `blueforest-theme.bat.enable = false`.'';
         }
       ];
     }
 
-    (lib.mkIf (config.blueforest.bat.enable && config.programs.bat.enable) {
+    (lib.mkIf (config.blueforest-theme.bat.enable && config.programs.bat.enable) {
       # The theme, in the directory bat reads the themes from. The name of
       # the attribute is the name of the file, and bat needs the extension to
       # list the theme.

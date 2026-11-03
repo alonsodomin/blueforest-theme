@@ -40,7 +40,7 @@ let
   enabled = evaluate [
     {
       programs.bat.enable = true;
-      blueforest.bat.enable = true;
+      blueforest-theme.bat.enable = true;
     }
   ];
 
@@ -50,7 +50,7 @@ let
   # has no consumer, so the module writes nothing.
   themeOnly = evaluate [
     {
-      blueforest.bat.enable = true;
+      blueforest-theme.bat.enable = true;
     }
   ];
 
@@ -58,7 +58,7 @@ let
   own = evaluate [
     {
       programs.bat.enable = true;
-      blueforest.bat.enable = true;
+      blueforest-theme.bat.enable = true;
       programs.bat.config.theme = "Another";
     }
   ];
@@ -71,7 +71,7 @@ let
         (evaluate [
           {
             programs.bat.enable = true;
-            blueforest.bat.enable = true;
+            blueforest-theme.bat.enable = true;
           }
           {
             programs.noctalia.settings.theme.templates.community_ids = [ "bat" ];

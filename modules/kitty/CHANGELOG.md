@@ -6,7 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
-- The theme is installed only when `blueforest.kitty.enable` is true. A
+- The theme is installed only when `blueforest-theme.kitty.enable` is true. A
   configuration that enables the theme and the template of the
   community catalogue of Noctalia for kitty fails to evaluate
 - Initial release: the theme of kitty, packaged as `blueforest-kitty-theme`

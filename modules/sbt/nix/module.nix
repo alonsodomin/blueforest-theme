@@ -6,7 +6,7 @@
 # upstream at https://github.com/alonsodomin/sbt-prompt. This module only
 # installs the plugin declaration and the selection of its BlueforestTheme.
 #
-# The module is inert unless `blueforest.sbt.enable` is true: it does not
+# The module is inert unless `blueforest-theme.sbt.enable` is true: it does not
 # enable sbt, it only adds the files to the global configuration of an sbt
 # that the consumer already enabled.
 #
@@ -35,15 +35,11 @@ let
   sbt2 = "sbt/2";
 in
 {
-  options.blueforest.sbt = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Whether to install the BlueForest prompt for sbt.";
-    };
+  options.blueforest-theme.sbt = {
+    enable = lib.mkEnableOption "the BlueForest prompt for sbt";
   };
 
-  config = lib.mkIf (config.blueforest.sbt.enable && cfg.enable) {
+  config = lib.mkIf (config.blueforest-theme.sbt.enable && cfg.enable) {
     home.file = {
       "${sbt1}/plugins/sbt-prompt.sbt".source = plugin;
       "${sbt1}/blueforest-prompt.sbt".source = settings;

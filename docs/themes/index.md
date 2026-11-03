@@ -30,7 +30,7 @@ is the recommended way to install them; the Nix route of their pages is meant
 for developing and testing the theme.
 
 Every theme of the repository has a switch of its own,
-`blueforest.<application>.enable`, and it is off by default. The switch is
+`blueforest-theme.<application>.enable`, and it is off by default. The switch is
 separate from `programs.<application>.enable`, so that a theme and a template
 of the community catalogue of Noctalia are alternatives, and so that a
 configuration that wants the theme of one application only does not get the

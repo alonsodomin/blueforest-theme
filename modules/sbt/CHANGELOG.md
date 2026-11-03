@@ -7,7 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
-- The prompt is installed only when `blueforest.sbt.enable` is true
+- The prompt is installed only when `blueforest-theme.sbt.enable` is true
 - The BlueForest prompt shows the status of the repository, the way the
   Starship preset of the repository does: the number of files that are staged,
   modified, deleted, renamed, untracked or in conflict, and the number of

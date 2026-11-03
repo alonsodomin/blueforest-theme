@@ -60,14 +60,14 @@ The Home Manager module does the same, and it selects the theme for you:
   ];
 
   programs.bat.enable = true;
-  blueforest.bat.enable = true;
+  blueforest-theme.bat.enable = true;
 }
 ```
 
 The module does not enable bat: whether the program is installed at all stays
 your decision. It writes the theme to `~/.config/bat/themes/BlueForest.tmTheme`
 and selects it in the configuration of bat, and it writes nothing when
-`programs.bat.enable` is false or when `blueforest.bat.enable` is false.
+`programs.bat.enable` is false or when `blueforest-theme.bat.enable` is false.
 
 The theme and the selection are installed with `lib.mkDefault`, so a
 configuration that brings a theme or a setting of its own keeps it:
@@ -78,10 +78,10 @@ configuration that brings a theme or a setting of its own keeps it:
 }
 ```
 
-The switch of the theme is `blueforest.bat.enable`, and not
+The switch of the theme is `blueforest-theme.bat.enable`, and not
 `programs.bat.enable`, so that the theme and the template of the community
 catalogue of Noctalia for bat are alternatives: a consumer that wants the
-community template keeps `blueforest.bat.enable` off, and a consumer that
+community template keeps `blueforest-theme.bat.enable` off, and a consumer that
 wants this theme turns it on. A configuration that enables both fails to
 evaluate: the two of them write the configuration of bat.
 

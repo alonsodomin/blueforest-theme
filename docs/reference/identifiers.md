@@ -10,22 +10,23 @@ by default:
 
 | Switch | Theme |
 | --- | --- |
-| `blueforest.bat.enable` | The theme of bat |
-| `blueforest.btop.enable` | The theme of btop |
-| `blueforest.claude-code.enable` | The theme of Claude Code |
-| `blueforest.eza.enable` | The theme of eza |
-| `blueforest.kitty.enable` | The theme of kitty |
-| `blueforest.lazygit.enable` | The theme of lazygit |
-| `blueforest.md-tui.enable` | The theme of md-tui |
-| `blueforest.neovim.enable` | The theme of Neovim |
-| `blueforest.noctalia.enable` | The palette of Noctalia |
-| `blueforest.opencode.enable` | The theme of OpenCode |
-| `blueforest.sbt.enable` | The prompt of sbt |
-| `blueforest.starship.enable` | The preset of Starship |
-| `blueforest.yazi.enable` | The flavour of Yazi |
+| `blueforest-theme.bat.enable` | The theme of bat |
+| `blueforest-theme.btop.enable` | The theme of btop |
+| `blueforest-theme.claude-code.enable` | The theme of Claude Code |
+| `blueforest-theme.eza.enable` | The theme of eza |
+| `blueforest-theme.kitty.enable` | The theme of kitty |
+| `blueforest-theme.lazygit.enable` | The theme of lazygit |
+| `blueforest-theme.md-tui.enable` | The theme of md-tui |
+| `blueforest-theme.neovim.enable` | The theme of Neovim |
+| `blueforest-theme.noctalia.enable` | The palette of Noctalia |
+| `blueforest-theme.opencode.enable` | The theme of OpenCode |
+| `blueforest-theme.sbt.enable` | The prompt of sbt |
+| `blueforest-theme.starship.enable` | The preset of Starship |
+| `blueforest-theme.yazi.enable` | The flavour of Yazi |
 
-The themes of VS Code, of Zed, and of MkDocs have no switch: they are
-installed as a package, as an extension, and as a stylesheet.
+The themes of VS Code and of Zed have no switch: they are installed as a
+package and as an extension. The stylesheet of MkDocs has one of its own,
+`blueforest-theme.mkdocs.enable`, and it is enabled by default.
 
 A theme and a template of the community catalogue of Noctalia are
 alternatives, because the two of them write the configuration of the same
@@ -40,7 +41,7 @@ application. A configuration that enables both fails to evaluate.
 - The bat theme is `BlueForest`, the name of the file
   `BlueForest.tmTheme`. Select it with `programs.bat.config.theme =
   "BlueForest";`, or let the module `blueforest.homeModules.bat` select it
-  with `blueforest.bat.enable = true;`.
+  with `blueforest-theme.bat.enable = true;`.
 - The btop package is `blueforest-btop-theme`. The btop theme is
   `blueforest.theme`, the name of the file, which btop reads from
   `$XDG_CONFIG_HOME/btop/themes/`. Select it with
@@ -50,7 +51,7 @@ application. A configuration that enables both fails to evaluate.
 - The Starship preset is `blueforest`. Select it with
   `programs.starship.presets = [ "blueforest" ];`, or let the module
   `blueforest.homeModules.starship` select it with
-  `blueforest.starship.enable = true;`.
+  `blueforest-theme.starship.enable = true;`.
 - The OpenCode package is `blueforest-opencode-theme`.
 - The OpenCode theme is `blueforest`, the name of the file. Select it with
   `programs.opencode.cli.theme = { name = "blueforest"; mode = "dark"; };`.
@@ -90,7 +91,7 @@ application. A configuration that enables both fails to evaluate.
   `programs.lazygit.enable = true`.
 - The md-tui package is `blueforest-md-tui-theme`. The md-tui theme is
   `blueforest`, the name of the file `blueforest.json`, which md-tui reads
-  from `$HOME/.config/mdt/themes/`. Select it with `blueforest.md-tui.enable =
+  from `$HOME/.config/mdt/themes/`. Select it with `blueforest-theme.md-tui.enable =
   true;`, which makes the module write the theme and the selection of it.
 - The Noctalia package is `blueforest-noctalia-theme`. The Noctalia palette is
   `blueforest`, the name of the file `blueforest.json`, which Noctalia reads
@@ -98,7 +99,7 @@ application. A configuration that enables both fails to evaluate.
   `[theme] source = "custom"` and `custom_palette = "blueforest"` in the
   configuration of Noctalia. The module `blueforest.homeModules.noctalia`
   writes the palette and the selection when `programs.noctalia.enable = true`
-  and `blueforest.noctalia.enable = true`. The package carries the palette in
+  and `blueforest-theme.noctalia.enable = true`. The package carries the palette in
   the format 2 of the community palette registry as well, under the name
   `blueforest-v2.json`.
 - The Claude Code package is `blueforest-claude-code-theme`. The Claude Code

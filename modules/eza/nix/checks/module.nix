@@ -35,7 +35,7 @@ let
   enabled = evaluate [
     {
       programs.eza.enable = true;
-      blueforest.eza.enable = true;
+      blueforest-theme.eza.enable = true;
     }
   ];
 
@@ -45,7 +45,7 @@ let
   # no consumer, so the module writes nothing.
   themeOnly = evaluate [
     {
-      blueforest.eza.enable = true;
+      blueforest-theme.eza.enable = true;
     }
   ];
 
@@ -53,7 +53,7 @@ let
   own = evaluate [
     {
       programs.eza.enable = true;
-      blueforest.eza.enable = true;
+      blueforest-theme.eza.enable = true;
       programs.eza.theme = {
         filekinds.normal.foreground = "Red";
       };

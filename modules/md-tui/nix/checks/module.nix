@@ -33,12 +33,12 @@ let
       ];
     }).config;
 
-  enabled = evaluate { blueforest.md-tui.enable = true; };
+  enabled = evaluate { blueforest-theme.md-tui.enable = true; };
   disabled = evaluate { };
 
   # A consumer that selects a theme of its own.
   own = evaluate {
-    blueforest.md-tui.enable = true;
+    blueforest-theme.md-tui.enable = true;
     home.file.".config/mdt/selected-theme".text = "another\n";
   };
 

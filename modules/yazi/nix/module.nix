@@ -9,7 +9,7 @@
 # This module installs the flavour there, and it selects the flavour in the
 # theme of the user, so that Yazi picks it up without any further work.
 #
-# The module is inert unless `blueforest.yazi.enable` is true: it does not
+# The module is inert unless `blueforest-theme.yazi.enable` is true: it does not
 # enable Yazi, it only adds the flavour to the configuration of a Yazi that
 # the consumer already enabled.
 #
@@ -35,12 +35,8 @@ let
   cfg = config.programs.yazi;
 in
 {
-  options.blueforest.yazi = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Whether to install the BlueForest theme for Yazi.";
-    };
+  options.blueforest-theme.yazi = {
+    enable = lib.mkEnableOption "the BlueForest theme for Yazi";
   };
 
   config = lib.mkMerge [
@@ -50,7 +46,7 @@ in
       nixpkgs.overlays = [ overlay ];
     }
 
-    (lib.mkIf (config.blueforest.yazi.enable && cfg.enable) {
+    (lib.mkIf (config.blueforest-theme.yazi.enable && cfg.enable) {
       # The flavour goes into the directory Yazi reads the flavours from. It
       # is the flavour of the package, which links to the theme of bat for
       # the colours of the code preview.

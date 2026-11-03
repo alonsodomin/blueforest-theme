@@ -8,7 +8,7 @@
 # line that selects it, so that kitty picks the theme up without any further
 # work.
 #
-# The module is inert unless `blueforest.kitty.enable` is true: it does not
+# The module is inert unless `blueforest-theme.kitty.enable` is true: it does not
 # enable kitty, it only adds the theme to the configuration of a kitty that
 # the consumer already enabled.
 #
@@ -50,12 +50,8 @@ let
     (templates.builtin_ids or [ ]) ++ (templates.community_ids or [ ]);
 in
 {
-  options.blueforest.kitty = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Whether to install the BlueForest theme for kitty.";
-    };
+  options.blueforest-theme.kitty = {
+    enable = lib.mkEnableOption "the BlueForest theme for kitty";
   };
 
   config = lib.mkMerge [
@@ -64,18 +60,18 @@ in
       # kitty, so the two of them cannot be enabled at the same time.
       assertions = [
         {
-          assertion = !(config.blueforest.kitty.enable && lib.elem "kitty" enabledTemplates);
+          assertion = !(config.blueforest-theme.kitty.enable && lib.elem "kitty" enabledTemplates);
           message = ''
             The BlueForest theme for kitty and the Noctalia template for kitty
             are both enabled, and the two of them write the configuration of
             kitty. Disable the template in the configuration of Noctalia
             (remove "kitty" from `[theme.templates] builtin_ids`), or set
-            `blueforest.kitty.enable = false`.'';
+            `blueforest-theme.kitty.enable = false`.'';
         }
       ];
     }
 
-    (lib.mkIf (config.blueforest.kitty.enable && cfg.enable) {
+    (lib.mkIf (config.blueforest-theme.kitty.enable && cfg.enable) {
       xdg.configFile."kitty/themes/blueforest.conf" = lib.mkDefault {
         source = ../themes/blueforest.conf;
       };

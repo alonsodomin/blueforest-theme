@@ -48,7 +48,7 @@ installs it where kitty reads it from, and selects it:
   ];
 
   programs.kitty.enable = true;
-  blueforest.kitty.enable = true;
+  blueforest-theme.kitty.enable = true;
 }
 ```
 
@@ -56,12 +56,12 @@ The module does not enable kitty: whether the program is installed at all
 stays your decision. It writes the theme to
 `~/.config/kitty/themes/blueforest.conf`, adds the `include` line that selects
 it to the configuration of kitty, and it writes nothing when
-`programs.kitty.enable` is false or when `blueforest.kitty.enable` is false.
+`programs.kitty.enable` is false or when `blueforest-theme.kitty.enable` is false.
 
-The switch of the theme is `blueforest.kitty.enable`, and not
+The switch of the theme is `blueforest-theme.kitty.enable`, and not
 `programs.kitty.enable`, so that the theme and the template of the community
 catalogue of Noctalia for kitty are alternatives: a consumer that wants the
-community template keeps `blueforest.kitty.enable` off, and a consumer that
+community template keeps `blueforest-theme.kitty.enable` off, and a consumer that
 wants this theme turns it on. A configuration that enables both fails to
 evaluate: the two of them write the configuration of kitty.
 

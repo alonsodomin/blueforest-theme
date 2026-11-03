@@ -6,7 +6,7 @@
 # of the user. This module writes it there, so that eza picks the theme up
 # without any further work.
 #
-# The module is inert unless `blueforest.eza.enable` is true: it does not
+# The module is inert unless `blueforest-theme.eza.enable` is true: it does not
 # enable eza, it only adds the theme to the configuration of an eza that the
 # consumer already enabled.
 #
@@ -22,15 +22,11 @@ let
   cfg = config.programs.eza;
 in
 {
-  options.blueforest.eza = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Whether to install the BlueForest theme for eza.";
-    };
+  options.blueforest-theme.eza = {
+    enable = lib.mkEnableOption "the BlueForest theme for eza";
   };
 
-  config = lib.mkIf (config.blueforest.eza.enable && cfg.enable) {
+  config = lib.mkIf (config.blueforest-theme.eza.enable && cfg.enable) {
     xdg.configFile."eza/theme.yml" = lib.mkDefault {
       source = ../themes/blueforest.yml;
     };

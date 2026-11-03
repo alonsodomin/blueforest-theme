@@ -47,7 +47,7 @@ installs it where md-tui reads the palettes from, and selects it:
     blueforest.homeModules.md-tui
   ];
 
-  blueforest.md-tui.enable = true;
+  blueforest-theme.md-tui.enable = true;
 }
 ```
 
@@ -55,10 +55,10 @@ The module does not enable md-tui: whether the program is installed at all
 stays your decision. It writes the theme to
 `~/.config/mdt/themes/blueforest.json`, selects it in
 `~/.config/mdt/selected-theme`, and it writes nothing when
-`blueforest.md-tui.enable` is false.
+`blueforest-theme.md-tui.enable` is false.
 
 Home Manager has no module for md-tui, so the switch of this module is
-`blueforest.md-tui.enable` and not `programs.md-tui.enable`: the option of
+`blueforest-theme.md-tui.enable` and not `programs.md-tui.enable`: the option of
 Home Manager would clash with the one of this module if Home Manager ever
 gained a module of its own.
 

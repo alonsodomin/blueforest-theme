@@ -9,7 +9,7 @@
 # the theme:
 #
 #   programs.opencode.enable = true;
-#   blueforest.opencode.enable = true;
+#   blueforest-theme.opencode.enable = true;
 #
 # The module does not touch `programs.opencode.package` either: the OpenCode
 # of the consumer is the one it wants.
@@ -52,12 +52,8 @@ let
     (templates.builtin_ids or [ ]) ++ (templates.community_ids or [ ]);
 in
 {
-  options.blueforest.opencode = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Whether to install the BlueForest theme for OpenCode.";
-    };
+  options.blueforest-theme.opencode = {
+    enable = lib.mkEnableOption "the BlueForest theme for OpenCode";
   };
 
   config = lib.mkMerge [
@@ -70,19 +66,19 @@ in
       # of OpenCode, so the two of them cannot be enabled at the same time.
       assertions = [
         {
-          assertion = !(config.blueforest.opencode.enable && lib.elem "opencode" enabledTemplates);
+          assertion = !(config.blueforest-theme.opencode.enable && lib.elem "opencode" enabledTemplates);
           message = ''
             The BlueForest theme for OpenCode and the Noctalia template for
             OpenCode are both enabled, and the two of them write the
             configuration of OpenCode. Disable the template in the
             configuration of Noctalia (remove "opencode" from
             `[theme.templates] community_ids`), or set
-            `blueforest.opencode.enable = false`.'';
+            `blueforest-theme.opencode.enable = false`.'';
         }
       ];
     }
 
-    (lib.mkIf (config.blueforest.opencode.enable && config.programs.opencode.enable) {
+    (lib.mkIf (config.blueforest-theme.opencode.enable && config.programs.opencode.enable) {
       programs.opencode = {
         # The theme, under the name OpenCode reads the name of the theme
         # from: the name of the file.

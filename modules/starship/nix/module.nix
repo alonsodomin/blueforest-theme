@@ -8,7 +8,7 @@
 # selects the package that carries it, so that Starship picks the preset up
 # without any further work.
 #
-# The module is inert unless `blueforest.starship.enable` is true: it does not
+# The module is inert unless `blueforest-theme.starship.enable` is true: it does not
 # enable Starship, it only adds the preset to the configuration of a Starship
 # that the consumer already enabled.
 #
@@ -51,12 +51,8 @@ let
     (templates.builtin_ids or [ ]) ++ (templates.community_ids or [ ]);
 in
 {
-  options.blueforest.starship = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Whether to install the BlueForest preset for Starship.";
-    };
+  options.blueforest-theme.starship = {
+    enable = lib.mkEnableOption "the BlueForest preset for Starship";
   };
 
   config = lib.mkMerge [
@@ -74,7 +70,7 @@ in
         {
           assertion =
             !(
-              config.blueforest.starship.enable
+              config.blueforest-theme.starship.enable
               && (lib.elem "starship" enabledTemplates || lib.elem "starship-m3" enabledTemplates)
             );
           message = ''
@@ -84,12 +80,12 @@ in
             configuration of Noctalia (remove "starship" from
             `[theme.templates] builtin_ids`, or "starship-m3" from
             `[theme.templates] community_ids`), or set
-            `blueforest.starship.enable = false`.'';
+            `blueforest-theme.starship.enable = false`.'';
         }
       ];
     }
 
-    (lib.mkIf (config.blueforest.starship.enable && config.programs.starship.enable) {
+    (lib.mkIf (config.blueforest-theme.starship.enable && config.programs.starship.enable) {
       # The package of the consumer is the one that carries the preset of the
       # repository.
       programs.starship.package = lib.mkDefault pkgs.blueforest-starship;

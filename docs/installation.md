@@ -34,7 +34,7 @@ enable the programs themselves: which editor or terminal installs the theme,
 and whether it is installed at all, stays your decision.
 
 Every theme of the repository has a switch of its own,
-`blueforest.<application>.enable`, and it is off by default. The switch is
+`blueforest-theme.<application>.enable`, and it is off by default. The switch is
 separate from `programs.<application>.enable`, so that a theme and a template
 of the community catalogue of Noctalia are alternatives, and so that a
 configuration that wants the theme of one application only does not get the

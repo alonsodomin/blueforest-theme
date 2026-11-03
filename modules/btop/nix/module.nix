@@ -8,7 +8,7 @@
 # This module writes the theme there and selects it, so that btop picks the
 # theme up without any further work.
 #
-# The module is inert unless `blueforest.btop.enable` is true: it does not
+# The module is inert unless `blueforest-theme.btop.enable` is true: it does not
 # enable btop, it only adds the theme to the configuration of a btop that the
 # consumer already enabled.
 #
@@ -48,12 +48,8 @@ let
     (templates.builtin_ids or [ ]) ++ (templates.community_ids or [ ]);
 in
 {
-  options.blueforest.btop = {
-    enable = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Whether to install the BlueForest theme for btop.";
-    };
+  options.blueforest-theme.btop = {
+    enable = lib.mkEnableOption "the BlueForest theme for btop";
   };
 
   config = lib.mkMerge [
@@ -62,18 +58,18 @@ in
       # btop, so the two of them cannot be enabled at the same time.
       assertions = [
         {
-          assertion = !(config.blueforest.btop.enable && lib.elem "btop" enabledTemplates);
+          assertion = !(config.blueforest-theme.btop.enable && lib.elem "btop" enabledTemplates);
           message = ''
             The BlueForest theme for btop and the Noctalia template for btop
             are both enabled, and the two of them write the configuration of
             btop. Disable the template in the configuration of Noctalia
             (remove "btop" from `[theme.templates] builtin_ids`), or set
-            `blueforest.btop.enable = false`.'';
+            `blueforest-theme.btop.enable = false`.'';
         }
       ];
     }
 
-    (lib.mkIf (config.blueforest.btop.enable && config.programs.btop.enable) {
+    (lib.mkIf (config.blueforest-theme.btop.enable && config.programs.btop.enable) {
       # The theme, in the directory btop reads the themes from. The name of
       # the attribute is the name of the file, and btop needs the extension to
       # list the theme.

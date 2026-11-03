@@ -40,7 +40,7 @@ let
   enabled = evaluate [
     {
       programs.kitty.enable = true;
-      blueforest.kitty.enable = true;
+      blueforest-theme.kitty.enable = true;
     }
   ];
 
@@ -50,7 +50,7 @@ let
   # has no consumer, so the module writes nothing.
   themeOnly = evaluate [
     {
-      blueforest.kitty.enable = true;
+      blueforest-theme.kitty.enable = true;
     }
   ];
 
@@ -58,7 +58,7 @@ let
   own = evaluate [
     {
       programs.kitty.enable = true;
-      blueforest.kitty.enable = true;
+      blueforest-theme.kitty.enable = true;
       programs.kitty.settings.background = "#FF0000";
     }
   ];
@@ -71,7 +71,7 @@ let
         (evaluate [
           {
             programs.kitty.enable = true;
-            blueforest.kitty.enable = true;
+            blueforest-theme.kitty.enable = true;
           }
           {
             programs.noctalia.settings.theme.templates.builtin_ids = [ "kitty" ];

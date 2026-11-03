@@ -61,7 +61,7 @@ installs it where Noctalia reads the palettes from, and selects it:
   ];
 
   programs.noctalia.enable = true;
-  blueforest.noctalia.enable = true;
+  blueforest-theme.noctalia.enable = true;
 }
 ```
 
@@ -69,13 +69,13 @@ The module does not enable Noctalia: whether the shell is installed at all
 stays your decision. It writes the palette to
 `~/.config/noctalia/palettes/blueforest.json`, selects it in
 `~/.config/noctalia/blueforest.toml`, and it writes nothing when
-`programs.noctalia.enable` is false or when `blueforest.noctalia.enable` is
+`programs.noctalia.enable` is false or when `blueforest-theme.noctalia.enable` is
 false.
 
-The switch of the theme is `blueforest.noctalia.enable`, and not
+The switch of the theme is `blueforest-theme.noctalia.enable`, and not
 `programs.noctalia.enable`, so that the palette and a template of the
 community catalogue of Noctalia are alternatives: a consumer that wants the
-community template keeps `blueforest.noctalia.enable` off, and a consumer that
+community template keeps `blueforest-theme.noctalia.enable` off, and a consumer that
 wants this palette turns it on.
 
 The palette and the selection are installed with `lib.mkDefault`, so a
