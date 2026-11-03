@@ -204,4 +204,14 @@ in
         "dist/blueforest-lazygit-theme-$VERSION.json"
     '';
   }
+  {
+    app = "md-tui";
+    title = "md-tui";
+    asset = "dist/blueforest-md-tui-theme-$VERSION.json";
+    package = ''
+      mkdir -p dist
+      cp modules/md-tui/themes/blueforest.json \
+        "dist/blueforest-md-tui-theme-$VERSION.json"
+    '';
+  }
 ]

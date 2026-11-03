@@ -19,6 +19,7 @@ application, is at
 | eza | <https://alonsodomin.github.io/blueforest-theme/themes/eza/> |
 | kitty | <https://alonsodomin.github.io/blueforest-theme/themes/kitty/> |
 | lazygit | <https://alonsodomin.github.io/blueforest-theme/themes/lazygit/> |
+| md-tui | <https://alonsodomin.github.io/blueforest-theme/themes/md-tui/> |
 | MkDocs | <https://alonsodomin.github.io/blueforest-theme/themes/mkdocs/> |
 | Neovim | <https://alonsodomin.github.io/blueforest-theme/themes/neovim/> |
 | OpenCode | <https://alonsodomin.github.io/blueforest-theme/themes/opencode/> |

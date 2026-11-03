@@ -17,6 +17,7 @@ nav:
       - eza: themes/eza.md
       - kitty: themes/kitty.md
       - lazygit: themes/lazygit.md
+      - md-tui: themes/md-tui.md
       - MkDocs: themes/mkdocs.md
       - Neovim: themes/neovim.md
       - OpenCode: themes/opencode.md

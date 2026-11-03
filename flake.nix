@@ -162,6 +162,14 @@
       inputs.flake-parts.follows = "flake-parts";
       inputs.home-manager.follows = "home-manager";
     };
+
+    md-tui = {
+      url = "path:./modules/md-tui";
+
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
   outputs =
@@ -196,6 +204,7 @@
           inputs.claude-code.flakeModule
           inputs.btop.flakeModule
           inputs.lazygit.flakeModule
+          inputs.md-tui.flakeModule
         ];
 
         systems = [
@@ -224,6 +233,7 @@
             config.flake.overlays.claude-code
             config.flake.overlays.btop
             config.flake.overlays.lazygit
+            config.flake.overlays.md-tui
           ];
 
           flakeModules = {
@@ -241,6 +251,7 @@
             claude-code = inputs.claude-code.flakeModule;
             btop = inputs.btop.flakeModule;
             lazygit = inputs.lazygit.flakeModule;
+            md-tui = inputs.md-tui.flakeModule;
             default = {
               imports = [
                 inputs.bat.flakeModule
@@ -256,6 +267,7 @@
                 inputs.claude-code.flakeModule
                 inputs.btop.flakeModule
                 inputs.lazygit.flakeModule
+                inputs.md-tui.flakeModule
 
                 # The module of MkDocs is not here. It imports the module of
                 # mkdocs-flake, which declares its arguments, and a module
@@ -289,6 +301,7 @@
               config.flake.homeModules.claude-code
               config.flake.homeModules.btop
               config.flake.homeModules.lazygit
+              config.flake.homeModules.md-tui
             ];
           };
         };
@@ -394,6 +407,7 @@
                   "blueforest-claude-code-theme"
                   "blueforest-btop-theme"
                   "blueforest-lazygit-theme"
+                  "blueforest-md-tui-theme"
 
                   # The theme of bat comes with the one of Yazi, which
                   # carries it for the colours of the code preview.
@@ -424,6 +438,16 @@
                 theme = (top.config.flake.overlays.lazygit pkgs pkgs).blueforest-lazygit-theme;
                 vscode = ./modules/vscode/themes/Blueforest-color-theme.json;
                 neovim = ./modules/neovim/themes/blueforest.lua;
+              };
+
+              # Fails if the colours of the theme of md-tui are not the
+              # colours of the other applications of the repository.
+              md-tui-colours = import ./tests/md-tui-colours.nix {
+                inherit pkgs;
+                theme = (top.config.flake.overlays.md-tui pkgs pkgs).blueforest-md-tui-theme;
+                vscode = ./modules/vscode/themes/Blueforest-color-theme.json;
+                neovim = ./modules/neovim/themes/blueforest.lua;
+                kitty = ./modules/kitty/themes/blueforest.conf;
               };
 
               # Fails if the theme of the code preview of Yazi is not the

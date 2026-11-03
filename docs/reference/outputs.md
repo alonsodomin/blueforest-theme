@@ -12,11 +12,13 @@ combined ones.
 | `flakeModules.claude-code` | The module of the Claude Code theme, for flake-parts |
 | `flakeModules.default` | The modules of every application, except the one of MkDocs |
 | `flakeModules.lazygit` | The module of the lazygit theme, for flake-parts |
+| `flakeModules.md-tui` | The module of the md-tui theme, for flake-parts |
 | `flakeModules.mkdocs` | The module of the MkDocs theme, for flake-parts |
 | `homeModules.btop` | The module of the btop theme |
 | `homeModules.eza` | The module of the eza theme |
 | `homeModules.kitty` | The module of the kitty theme |
 | `homeModules.lazygit` | The module of the lazygit theme |
+| `homeModules.md-tui` | The module of the md-tui theme |
 | `homeModules.claude-code` | The module of the Claude Code theme |
 | `homeModules.sbt` | The module of the sbt prompt |
 | `homeModules.yazi` | The module of the Yazi flavour |
@@ -30,10 +32,11 @@ combined ones.
 | `overlays.bat` | Adds `pkgs.blueforest-bat-theme` to a nixpkgs instance. The aggregate does not compose it |
 | `overlays.btop` | Adds `pkgs.blueforest-btop-theme` to a nixpkgs instance |
 | `overlays.claude-code` | Adds `pkgs.blueforest-claude-code-theme` to a nixpkgs instance |
-| `overlays.default` | Adds the packages of the VS Code, Starship, OpenCode, sbt, Neovim, eza, Zed, Yazi, kitty, MkDocs, Claude Code, btop, lazygit, and bat applications to a nixpkgs instance |
+| `overlays.default` | Adds the packages of the VS Code, Starship, OpenCode, sbt, Neovim, eza, Zed, Yazi, kitty, MkDocs, Claude Code, btop, lazygit, md-tui, and bat applications to a nixpkgs instance |
 | `overlays.eza` | Adds `pkgs.blueforest-eza-theme` to a nixpkgs instance |
 | `overlays.kitty` | Adds `pkgs.blueforest-kitty-theme` to a nixpkgs instance |
 | `overlays.lazygit` | Adds `pkgs.blueforest-lazygit-theme` to a nixpkgs instance |
+| `overlays.md-tui` | Adds `pkgs.blueforest-md-tui-theme` to a nixpkgs instance |
 | `overlays.mkdocs` | Adds `pkgs.blueforest-mkdocs-theme` to a nixpkgs instance |
 | `overlays.neovim` | Adds `pkgs.blueforest-neovim-theme` to a nixpkgs instance |
 | `overlays.opencode` | Adds `pkgs.blueforest-opencode-theme` to a nixpkgs instance |
@@ -48,6 +51,7 @@ combined ones.
 | `packages.<system>.blueforest-eza-theme` | The theme for eza |
 | `packages.<system>.blueforest-kitty-theme` | The theme for kitty |
 | `packages.<system>.blueforest-lazygit-theme` | The theme for lazygit |
+| `packages.<system>.blueforest-md-tui-theme` | The theme for md-tui |
 | `packages.<system>.blueforest-mkdocs-theme` | The theme for MkDocs |
 | `packages.<system>.blueforest-neovim-theme` | The theme for Neovim |
 | `packages.<system>.blueforest-opencode-theme` | The theme for OpenCode |

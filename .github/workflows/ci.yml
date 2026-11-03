@@ -43,6 +43,7 @@ jobs:
         - path:./modules/claude-code
         - path:./modules/btop
         - path:./modules/lazygit
+        - path:./modules/md-tui
   merge-gate:
     if: always()
     name: Merge gate
