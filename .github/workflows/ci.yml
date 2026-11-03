@@ -44,6 +44,7 @@ jobs:
         - path:./modules/btop
         - path:./modules/lazygit
         - path:./modules/md-tui
+        - path:./modules/noctalia
   merge-gate:
     if: always()
     name: Merge gate

@@ -20,6 +20,7 @@ nav:
       - md-tui: themes/md-tui.md
       - MkDocs: themes/mkdocs.md
       - Neovim: themes/neovim.md
+      - Noctalia: themes/noctalia.md
       - OpenCode: themes/opencode.md
       - sbt: themes/sbt.md
       - Starship: themes/starship.md

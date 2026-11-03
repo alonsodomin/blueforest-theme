@@ -21,6 +21,7 @@ rec {
     "btop"
     "lazygit"
     "md-tui"
+    "noctalia"
   ];
 
   # The actions that the workflows use. Their versions live here, so that they

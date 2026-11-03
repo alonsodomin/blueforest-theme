@@ -534,6 +534,28 @@
         "type": "github"
       }
     },
+    "noctalia": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "./modules/noctalia",
+        "type": "path"
+      },
+      "original": {
+        "path": "./modules/noctalia",
+        "type": "path"
+      },
+      "parent": []
+    },
     "opencode": {
       "inputs": {
         "flake-parts": [
@@ -649,6 +671,7 @@
         "neovim": "neovim",
         "nixpkgs": "nixpkgs",
         "nixvim": "nixvim",
+        "noctalia": "noctalia",
         "opencode": "opencode",
         "sbt": "sbt",
         "starship": "starship",

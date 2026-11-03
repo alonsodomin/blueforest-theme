@@ -20,6 +20,7 @@ self-contained flake.
 │   ├── md-tui/
 │   ├── mkdocs/
 │   ├── neovim/
+│   ├── noctalia/
 │   ├── opencode/
 │   ├── sbt/
 │   ├── starship/
@@ -64,6 +65,7 @@ compare the packaged copies against them:
 - `modules/claude-code/themes/blueforest.json`
 - `modules/lazygit/themes/blueforest.json`
 - `modules/md-tui/themes/blueforest.json`
+- `modules/noctalia/themes/blueforest.json`
 
 The theme of lazygit is a configuration file of lazygit that carries the theme
 under the `gui.theme` key, because lazygit has no theme file of its own. It is

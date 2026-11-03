@@ -61,6 +61,7 @@ that the release never carries half of its assets.
 | btop | `blueforest-btop-theme-<version>.theme` |
 | lazygit | `blueforest-lazygit-theme-<version>.json` |
 | md-tui | `blueforest-md-tui-theme-<version>.json` |
+| Noctalia | `blueforest-noctalia-theme-<version>.json` |
 
 The VS Code extension is also published to Open VSX and to the VS Marketplace.
 `modules/vscode/package.json` carries the placeholder `0.0.0`: the manifest is

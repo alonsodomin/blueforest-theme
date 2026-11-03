@@ -75,6 +75,7 @@ nix flake check "path:./modules/claude-code"
 nix flake check "path:./modules/btop"
 nix flake check "path:./modules/lazygit"
 nix flake check "path:./modules/md-tui"
+nix flake check "path:./modules/noctalia"
 ```
 
 The `path:` prefix matters: the flakes are checked from the working tree, and
@@ -98,7 +99,9 @@ The names include `version`, `overlay`, `treefmt`, `workflows`,
 `yazi-theme`, `yazi-render`, `yazi-module`, `yazi-tmtheme`, `yazi-asset`,
 `kitty-theme`, `kitty-parse`, `kitty-module`, `mkdocs-theme`, `mkdocs-render`,
 `btop-theme`, `btop-render`, `btop-module`, `lazygit-theme`,
-`lazygit-render`, `lazygit-module`, `lazygit-colours`, and `documentation`.
+`lazygit-render`, `lazygit-module`, `lazygit-colours`, `md-tui-theme`,
+`md-tui-render`, `md-tui-module`, `md-tui-colours`, `noctalia-theme`,
+`noctalia-render`, `noctalia-module`, `noctalia-colours`, and `documentation`.
 
 Root flake evaluation sees the working tree, so the changes of the working
 tree are part of it. `git add` new files before running `nix flake check` or
