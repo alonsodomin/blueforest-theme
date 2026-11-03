@@ -41,6 +41,23 @@ own configuration.
 The module adds the theme with `lib.mkDefault`, so it does not replace the
 plugins you add yourself.
 
+## The light variant
+
+The package carries a light variant of the theme as well, `blueforest-light`,
+with the colours of the light palette of the repository. It is a colourscheme
+of its own, so it is selected the same way:
+
+```lua
+vim.cmd.colorscheme("blueforest-light")
+```
+
+It sets the mode of the editor to `light` as well, so the editor follows the
+colours of the theme. The theme of lualine comes with it, and lualine finds it
+on its own, the way it finds the dark one.
+
+The [palette reference](../index.md#colour-palettes) has every colour of the
+light variant, with the swatches.
+
 The switch of the theme is `blueforest-theme.neovim.enable`, and not
 `programs.neovim.enable`, so that every theme of the repository is turned on
 and off on its own.

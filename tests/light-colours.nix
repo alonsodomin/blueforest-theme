@@ -33,6 +33,8 @@
   claudeCode,
   # The light palette of md-tui.
   mdTui,
+  # The light colourscheme of Neovim, which is a Lua file.
+  neovim,
   # The canonical palette of the repository.
   palette,
 }:
@@ -52,14 +54,15 @@ pkgs.runCommand "blueforest-light-colours-check"
     } | tr '[:lower:]' '[:upper:]' | sort -u >"$TMPDIR/palette"
 
     # The colours of the light themes. The theme of OpenCode inherits the
-    # tokens of its base, and its ramp of shades is its own. The theme of bat
-    # is a property list, so its colours are read with grep.
+    # tokens of its base, and its ramp of shades is its own. The themes of bat
+    # and of Neovim are not JSON, so their colours are read with grep.
     {
       jq -r '.. | strings | select(test("^#[0-9A-Fa-f]{6}$"))' ${vscode}
       jq -r '.base * .light | del(.hue) | .. | strings | select(test("^#[0-9A-Fa-f]{6}$"))' ${opencode}
       grep -oE '#[0-9A-Fa-f]{6}' ${bat}
       jq -r '.. | strings | select(test("^#[0-9A-Fa-f]{6}$"))' ${claudeCode}
       jq -r '.. | strings | select(test("^#[0-9A-Fa-f]{6}$"))' ${mdTui}
+      grep -oE '#[0-9A-Fa-f]{6}' ${neovim}
     } | tr '[:lower:]' '[:upper:]' | sort -u >"$TMPDIR/themes"
 
     missing="$(comm -23 "$TMPDIR/themes" "$TMPDIR/palette")"

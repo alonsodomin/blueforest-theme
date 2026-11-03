@@ -78,7 +78,8 @@ application. A configuration that enables both fails to evaluate.
   option to select another theme: the module selects that one.
 - The Neovim package is `blueforest-neovim-theme`.
 - The Neovim colourscheme is `blueforest`, the name of the file. Select it
-  with `vim.cmd.colorscheme("blueforest")`.
+  with `vim.cmd.colorscheme("blueforest")`. The light variant of the theme is
+  `blueforest-light`, and it sets the mode of the editor to `light`.
 - The lualine theme is `blueforest` as well, and lualine finds it on its own.
 - The eza package is `blueforest-eza-theme`. The eza theme is `blueforest`,
   the name of the file. eza reads it as `theme.yml`, from

@@ -29,6 +29,8 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 
 ## Unreleased
 
+- The theme of Neovim has a light variant now, `blueforest-light`, and the
+  theme of lualine comes with it
 - The themes of bat, of Claude Code and of md-tui have a light variant now,
   and the switch of the variant selects the one that is installed
 - The themes have a light variant now. The theme of VS Code is the reference

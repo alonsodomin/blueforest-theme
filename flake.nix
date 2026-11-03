@@ -493,6 +493,7 @@
                 bat = ./modules/bat/themes/BlueForestLight.tmTheme;
                 claudeCode = ./modules/claude-code/themes/blueforest-light.json;
                 mdTui = ./modules/md-tui/themes/blueforest-light.json;
+                neovim = ./modules/neovim/themes/blueforest-light.lua;
                 palette = ./modules/noctalia/themes/blueforest.json;
               };
 

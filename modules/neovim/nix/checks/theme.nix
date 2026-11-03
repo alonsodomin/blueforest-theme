@@ -26,6 +26,8 @@ pkgs.runCommand "blueforest-neovim-theme-check"
     # The files of the package are the files of the repository.
     cmp ${theme}/colors/blueforest.lua ${sources.colorscheme}
     cmp ${theme}/lua/lualine/themes/blueforest.lua ${sources.lualine}
+    cmp ${theme}/colors/blueforest-light.lua ${sources.colorschemeLight}
+    cmp ${theme}/lua/lualine/themes/blueforest-light.lua ${sources.lualineLight}
 
     # The attribution of the theme travels with the package.
     test -f ${theme}/share/doc/blueforest/NOTICE.md
@@ -34,6 +36,8 @@ pkgs.runCommand "blueforest-neovim-theme-check"
     # The sources of the theme are clean Lua.
     luacheck --std luajit --globals vim --no-color --no-cache ${sources.colorscheme}
     luacheck --std luajit --globals vim --no-color --no-cache ${sources.lualine}
+    luacheck --std luajit --globals vim --no-color --no-cache ${sources.colorschemeLight}
+    luacheck --std luajit --globals vim --no-color --no-cache ${sources.lualineLight}
     luacheck --std luajit --globals vim --no-color --no-cache ${./probe.lua}
 
     # And Neovim reads the theme, and lualine reads its own.

@@ -20,6 +20,8 @@ let
     mkdir -p $out/colors $out/lua/lualine/themes $out/share/doc/blueforest
     cp ${../themes/blueforest.lua} $out/colors/blueforest.lua
     cp ${../themes/lualine-blueforest.lua} $out/lua/lualine/themes/blueforest.lua
+    cp ${../themes/blueforest-light.lua} $out/colors/blueforest-light.lua
+    cp ${../themes/lualine-blueforest-light.lua} $out/lua/lualine/themes/blueforest-light.lua
 
     # The attribution of the theme travels with the package.
     cp ${../NOTICE.md} $out/share/doc/blueforest/NOTICE.md

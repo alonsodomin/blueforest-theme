@@ -74,6 +74,8 @@ in
       sources = {
         colorscheme = ./themes/blueforest.lua;
         lualine = ./themes/lualine-blueforest.lua;
+        colorschemeLight = ./themes/blueforest-light.lua;
+        lualineLight = ./themes/lualine-blueforest-light.lua;
       };
 
       # The check that nixvim reads the theme. It builds an editor, so it is
