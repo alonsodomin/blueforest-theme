@@ -39,6 +39,8 @@
   yazi,
   # The stylesheet of MkDocs, which carries a set of variables per mode.
   mkdocs,
+  # The theme of Zed, which carries a theme per mode.
+  zed,
   # The canonical palette of the repository.
   palette,
 }:
@@ -73,6 +75,10 @@ pkgs.runCommand "blueforest-light-colours-check"
       # only the light one is the colours of the light palette.
       sed -n '/\[data-md-color-scheme="default"\]/,/^}/p' ${mkdocs} \
         | grep -oE '#[0-9A-Fa-f]{6}'
+
+      # And the theme of Zed carries a theme per mode, and only the light
+      # one is the colours of the light palette.
+      jq -r '.themes[1].style | .. | strings | select(test("^#[0-9A-Fa-f]{6}$"))' ${zed}
     } | tr '[:lower:]' '[:upper:]' | sort -u >"$TMPDIR/themes"
 
     missing="$(comm -23 "$TMPDIR/themes" "$TMPDIR/palette")"

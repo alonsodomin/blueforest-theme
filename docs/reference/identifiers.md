@@ -90,7 +90,8 @@ application. A configuration that enables both fails to evaluate.
   `BlueForest - Dark`, the name it has in the theme picker of Zed. The
   extension lives in its own repository,
   [alonsodomin/zed-blueforest-theme](https://github.com/alonsodomin/zed-blueforest-theme),
-  which is a submodule of the application.
+  which is a submodule of the application. The light variant of the theme is
+  `BlueForest - Light`.
 - The Yazi package is `blueforest-yazi-theme`. The Yazi flavour is
   `blueforest`, the name of the directory `blueforest.yazi`, which Yazi reads
   from `$XDG_CONFIG_HOME/yazi/flavors/`. Select it with

@@ -9,6 +9,9 @@ The colours are the ones of BlueForest: the dark blue of the background, the
 vivid blue of the keywords, the green of the strings, the amber of the
 operators, the red of the numbers, and the pale yellow of the variables.
 
+The extension carries a second theme as well, **BlueForest - Light**, with
+the colours of the light palette of the repository.
+
 ## Install from the Extension Gallery
 
 !!! tip "Recommended"
@@ -88,3 +91,18 @@ Open the theme picker with `cmd-k cmd-t` (`ctrl-k ctrl-t`) and select
   "theme": "BlueForest - Dark"
 }
 ```
+
+## The light variant
+
+The extension carries a light variant of the theme as well, **BlueForest -
+Light**, with the colours of the light palette of the repository. It is a
+theme of its own in the picker, and it is selected the same way:
+
+```json
+{
+  "theme": "BlueForest - Light"
+}
+```
+
+The [palette reference](../index.md#colour-palettes) has every colour of the
+light variant, with the swatches.

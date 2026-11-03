@@ -29,6 +29,8 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 
 ## Unreleased
 
+- The theme of Zed has a light variant now, **BlueForest - Light**, and it
+  comes with the extension
 - The stylesheet of MkDocs has a light variant now, and the light scheme of
   Material gets the colours of the light palette of the repository
 - The theme of Yazi has a light variant now, `blueforest-light`, and the theme

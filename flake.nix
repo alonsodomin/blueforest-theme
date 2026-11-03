@@ -445,6 +445,8 @@
                 theme = (top.config.flake.overlays.zed pkgs pkgs).blueforest-zed-theme;
                 vscode = ./modules/vscode/themes/Blueforest-color-theme.json;
                 neovim = ./modules/neovim/themes/blueforest.lua;
+                vscodeLight = ./modules/vscode/themes/Blueforest-light-color-theme.json;
+                neovimLight = ./modules/neovim/themes/blueforest-light.lua;
               };
 
               # Fails if the colours of the theme of lazygit are not the
@@ -496,6 +498,7 @@
                 neovim = ./modules/neovim/themes/blueforest-light.lua;
                 yazi = ./modules/yazi/themes/blueforest-light.yazi/flavor.toml;
                 mkdocs = ./modules/mkdocs/themes/blueforest.css;
+                zed = ./modules/zed/extension/themes/blueforest.json;
                 palette = ./modules/noctalia/themes/blueforest.json;
               };
 

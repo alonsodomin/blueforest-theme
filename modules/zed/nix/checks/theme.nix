@@ -4,7 +4,7 @@
 #
 # The manifest declares the theme and the id of the extension, which is the
 # name of the directory Zed installs the extension in. The theme is the format
-# Zed reads: a family of themes with a name, and one dark theme in it.
+# Zed reads: a family of themes with a name, and a theme per mode in it.
 {
   pkgs,
   theme,
@@ -26,12 +26,18 @@ pkgs.runCommand "blueforest-zed-theme-check"
 
     jq -e '.name == "BlueForest"' ${theme}/themes/blueforest.json >/dev/null
 
-    jq -e '.themes | length == 1' ${theme}/themes/blueforest.json >/dev/null
+    jq -e '.themes | length == 2' ${theme}/themes/blueforest.json >/dev/null
 
     jq -e '.themes[0].name == "BlueForest - Dark"' \
       ${theme}/themes/blueforest.json >/dev/null
 
     jq -e '.themes[0].appearance == "dark"' \
+      ${theme}/themes/blueforest.json >/dev/null
+
+    jq -e '.themes[1].name == "BlueForest - Light"' \
+      ${theme}/themes/blueforest.json >/dev/null
+
+    jq -e '.themes[1].appearance == "light"' \
       ${theme}/themes/blueforest.json >/dev/null
 
     touch $out
