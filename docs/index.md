@@ -19,6 +19,7 @@ The theme is available for the following applications:
 | md-tui      | [md-tui](themes/md-tui.md)     |
 | MkDocs      | [MkDocs](themes/mkdocs.md)     |
 | Neovim      | [Neovim](themes/neovim.md)     |
+| Noctalia    | [Noctalia](themes/noctalia.md) |
 | OpenCode    | [OpenCode](themes/opencode.md) |
 | sbt         | [sbt](themes/sbt.md)           |
 | Starship    | [Starship](themes/starship.md) |

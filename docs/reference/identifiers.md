@@ -58,6 +58,12 @@ modules of the repository.
   `blueforest`, the name of the file `blueforest.json`, which md-tui reads
   from `$HOME/.config/mdt/themes/`. Select it with `blueforest.md-tui.enable =
   true;`, which makes the module write the theme and the selection of it.
+- The Noctalia package is `blueforest-noctalia-theme`. The Noctalia palette is
+  `blueforest`, the name of the file `blueforest.json`, which Noctalia reads
+  from `$XDG_CONFIG_HOME/noctalia/palettes/`. Select it with
+  `[theme] source = "custom"` and `custom_palette = "blueforest"` in the
+  configuration of Noctalia. The module `blueforest.homeModules.noctalia`
+  writes the palette and the selection when `programs.noctalia.enable = true`.
 - The Claude Code package is `blueforest-claude-code-theme`. The Claude Code
   theme is `blueforest`, the name of the file `blueforest.json`, which Claude
   Code reads from `$HOME/.claude/themes/`. Select it with

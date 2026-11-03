@@ -214,4 +214,14 @@ in
         "dist/blueforest-md-tui-theme-$VERSION.json"
     '';
   }
+  {
+    app = "noctalia";
+    title = "Noctalia";
+    asset = "dist/blueforest-noctalia-theme-$VERSION.json";
+    package = ''
+      mkdir -p dist
+      cp modules/noctalia/themes/blueforest.json \
+        "dist/blueforest-noctalia-theme-$VERSION.json"
+    '';
+  }
 ]

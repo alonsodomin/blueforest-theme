@@ -15,6 +15,7 @@ installed.
 | md-tui      | [Nix](md-tui.md) or [release asset](md-tui.md)       |
 | MkDocs      | [Nix](mkdocs.md) or [release asset](mkdocs.md)       |
 | Neovim      | [Nix](neovim.md) or [release asset](neovim.md)       |
+| Noctalia    | [Nix](noctalia.md) or [release asset](noctalia.md)   |
 | OpenCode    | [Nix](opencode.md) or [release asset](opencode.md)   |
 | sbt         | [Nix](sbt.md) or [upstream plugin](sbt.md)           |
 | Starship    | [Nix](starship.md) or [release asset](starship.md)   |

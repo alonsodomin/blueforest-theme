@@ -22,6 +22,7 @@ application, is at
 | md-tui | <https://alonsodomin.github.io/blueforest-theme/themes/md-tui/> |
 | MkDocs | <https://alonsodomin.github.io/blueforest-theme/themes/mkdocs/> |
 | Neovim | <https://alonsodomin.github.io/blueforest-theme/themes/neovim/> |
+| Noctalia | <https://alonsodomin.github.io/blueforest-theme/themes/noctalia/> |
 | OpenCode | <https://alonsodomin.github.io/blueforest-theme/themes/opencode/> |
 | sbt | <https://alonsodomin.github.io/blueforest-theme/themes/sbt/> |
 | Starship | <https://alonsodomin.github.io/blueforest-theme/themes/starship/> |

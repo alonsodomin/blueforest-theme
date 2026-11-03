@@ -170,6 +170,14 @@
       inputs.flake-parts.follows = "flake-parts";
       inputs.home-manager.follows = "home-manager";
     };
+
+    noctalia = {
+      url = "path:./modules/noctalia";
+
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
   outputs =
@@ -205,6 +213,7 @@
           inputs.btop.flakeModule
           inputs.lazygit.flakeModule
           inputs.md-tui.flakeModule
+          inputs.noctalia.flakeModule
         ];
 
         systems = [
@@ -234,6 +243,7 @@
             config.flake.overlays.btop
             config.flake.overlays.lazygit
             config.flake.overlays.md-tui
+            config.flake.overlays.noctalia
           ];
 
           flakeModules = {
@@ -252,6 +262,7 @@
             btop = inputs.btop.flakeModule;
             lazygit = inputs.lazygit.flakeModule;
             md-tui = inputs.md-tui.flakeModule;
+            noctalia = inputs.noctalia.flakeModule;
             default = {
               imports = [
                 inputs.bat.flakeModule
@@ -268,6 +279,7 @@
                 inputs.btop.flakeModule
                 inputs.lazygit.flakeModule
                 inputs.md-tui.flakeModule
+                inputs.noctalia.flakeModule
 
                 # The module of MkDocs is not here. It imports the module of
                 # mkdocs-flake, which declares its arguments, and a module
@@ -302,6 +314,7 @@
               config.flake.homeModules.btop
               config.flake.homeModules.lazygit
               config.flake.homeModules.md-tui
+              config.flake.homeModules.noctalia
             ];
           };
         };
@@ -408,6 +421,7 @@
                   "blueforest-btop-theme"
                   "blueforest-lazygit-theme"
                   "blueforest-md-tui-theme"
+                  "blueforest-noctalia-theme"
 
                   # The theme of bat comes with the one of Yazi, which
                   # carries it for the colours of the code preview.
@@ -445,6 +459,16 @@
               md-tui-colours = import ./tests/md-tui-colours.nix {
                 inherit pkgs;
                 theme = (top.config.flake.overlays.md-tui pkgs pkgs).blueforest-md-tui-theme;
+                vscode = ./modules/vscode/themes/Blueforest-color-theme.json;
+                neovim = ./modules/neovim/themes/blueforest.lua;
+                kitty = ./modules/kitty/themes/blueforest.conf;
+              };
+
+              # Fails if the colours of the theme of Noctalia are not the
+              # colours of the other applications of the repository.
+              noctalia-colours = import ./tests/noctalia-colours.nix {
+                inherit pkgs;
+                theme = (top.config.flake.overlays.noctalia pkgs pkgs).blueforest-noctalia-theme;
                 vscode = ./modules/vscode/themes/Blueforest-color-theme.json;
                 neovim = ./modules/neovim/themes/blueforest.lua;
                 kitty = ./modules/kitty/themes/blueforest.conf;
