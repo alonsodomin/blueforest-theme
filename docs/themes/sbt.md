@@ -7,7 +7,7 @@ does not define the prompt: it declares the plugin and selects its theme.
 The plugin is declared as:
 
 ```scala
-addSbtPlugin("com.github.alonsodomin" % "sbt-prompt" % "3.1.0")
+addSbtPlugin("com.github.alonsodomin" % "sbt-prompt" % "3.2.1")
 ```
 
 and the prompt is selected with:
@@ -86,7 +86,7 @@ the theme in `build.sbt`:
 
 ```scala
 // project/plugins.sbt
-addSbtPlugin("com.github.alonsodomin" % "sbt-prompt" % "3.1.0")
+addSbtPlugin("com.github.alonsodomin" % "sbt-prompt" % "3.2.1")
 ```
 
 ```scala

@@ -7,6 +7,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
+- The module installs version `3.2.1` of the `sbt-prompt` plugin, whose sbt 2
+  artifact is built with a Scala version that the whole sbt 2.0.x line can read
 - The prompt is installed only when `blueforest-theme.sbt.enable` is true
 - The BlueForest prompt shows the status of the repository, the way the
   Starship preset of the repository does: the number of files that are staged,

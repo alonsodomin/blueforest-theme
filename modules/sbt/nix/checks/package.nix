@@ -17,7 +17,7 @@ pkgs.runCommand "blueforest-sbt-prompt-package-check"
     cmp ${prompt}/share/sbt/blueforest-prompt.sbt ${sources.settings}
 
     # The plugin is the one of the upstream repository.
-    grep -q 'addSbtPlugin("com.github.alonsodomin" % "sbt-prompt" % "3.1.0")' \
+    grep -q 'addSbtPlugin("com.github.alonsodomin" % "sbt-prompt" % "3.2.1")' \
       ${prompt}/share/sbt/plugins/sbt-prompt.sbt
 
     # And the theme is the one the plugin ships.
