@@ -66,7 +66,9 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 - A configuration that enables the theme of the repository and a template of
   the community catalogue of Noctalia for the same application fails to
   evaluate. The applications with a template are bat, btop, Claude Code,
-  kitty, OpenCode, and Starship
+  kitty, OpenCode, and Starship. Starship is the exception: the preset of the
+  repository is a package and does not write the configuration, so only the
+  palette of the repository conflicts with the template
 - The palette of Noctalia carries a light variant as well, which is a palette
   of its own and not a copy of the dark one. The package carries the palette
   in the format 2 of the community palette registry as well, and the file of
@@ -81,6 +83,13 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
   variant and selects it, and the new
   `blueforest-theme.starship.preset.enable` installs the package that carries
   the preset. Neither of them selects the preset
+- The names of the keys of the palettes of Starship are the ones of the palette
+  of the community catalogue of Noctalia for Starship now, so that the preset
+  of the repository paints with the palette of Noctalia as well. The preset of
+  the repository can be enabled with a template of the catalogue, because it
+  names the keys of the palette that the template writes. The palette of the
+  repository still conflicts with the template, because the two of them write
+  the configuration of Starship
 - The prompt of Starship is two lines, and the duration of the last command
   and the Nix shell are at the right of the information line now. They are a
   segment of the format and not a right prompt of its own, because every shell

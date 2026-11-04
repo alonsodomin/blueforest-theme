@@ -3,13 +3,39 @@
 # It carries the same keys as the dark palette, so that the preset of the
 # repository paints the same segments in both variants. Select it with
 # `palette = "blueforest-light"` in the configuration of Starship.
+#
+# The names of the keys are the ones of the palette of the community
+# catalogue of Noctalia for Starship, so that the preset of the repository
+# paints with the palette of Noctalia as well, and with any other palette
+# that follows the same vocabulary.
 [palettes.blueforest-light]
-primary = "#0099FF"
-on_primary = "#141F2E"
-secondary = "#3A5F8A"
-tertiary = "#B3871F"
-error = "#B02A28"
-success = "#1E5C1E"
-surface = "#E8ECF2"
-surface_variant = "#E0E4EA"
-hover = "#C9CDD3"
+blue = "#0099FF"
+red = "#B02A28"
+green = "#1E5C1E"
+yellow = "#808000"
+cyan = "#1B7A70"
+magenta = "#C57633"
+white = "#7F8FA3"
+black = "#1B2B40"
+rosewater = "#B3871F"
+flamingo = "#B02A28"
+pink = "#CB4B16"
+mauve = "#C57633"
+maroon = "#DC322F"
+peach = "#B3871F"
+teal = "#1B7A70"
+sky = "#219186"
+sapphire = "#0099FF"
+lavender = "#CB4B16"
+text = "#3A5F8A"
+subtext1 = "#7F8FA3"
+subtext0 = "#333333"
+overlay2 = "#333333"
+overlay1 = "#333333"
+overlay0 = "#1B2B40"
+surface2 = "#1B2B40"
+surface1 = "#E0E4EA"
+surface0 = "#E8ECF2"
+base = "#141F2E"
+mantle = "#E8ECF2"
+crust = "#C9CDD3"

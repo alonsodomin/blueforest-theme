@@ -1,0 +1,43 @@
+# The light variant of the palette of the community catalogue of Noctalia for
+# Starship, with the colours of BlueForest.
+#
+# The catalogue renders one palette for the active mode of Noctalia, so the
+# light variant of it carries the light colours of the terminal. The names of
+# the keys are the ones of the template of the catalogue:
+#
+#   https://github.com/noctalia-dev/community-templates/blob/main/starship/starship.toml
+#
+# The check of the repository renders the preset of the repository with it, so
+# that the preset is proved to paint with the palette of the catalogue and
+# not only with the palettes of the repository.
+[palettes.noctalia]
+blue = "#3A5F8A"
+red = "#B02A28"
+green = "#1E5C1E"
+yellow = "#808000"
+cyan = "#1B7A70"
+magenta = "#C57633"
+white = "#7F8FA3"
+black = "#1B2B40"
+rosewater = "#B3871F"
+flamingo = "#DC322F"
+pink = "#CB4B16"
+mauve = "#C57633"
+maroon = "#DC322F"
+peach = "#B3871F"
+teal = "#1B7A70"
+sky = "#219186"
+sapphire = "#0099FF"
+lavender = "#CB4B16"
+text = "#141F2E"
+subtext1 = "#7F8FA3"
+subtext0 = "#333333"
+overlay2 = "#333333"
+overlay1 = "#333333"
+overlay0 = "#1B2B40"
+surface2 = "#1B2B40"
+surface1 = "#1B2B40"
+surface0 = "#E8ECF2"
+base = "#E8ECF2"
+mantle = "#E8ECF2"
+crust = "#E8ECF2"

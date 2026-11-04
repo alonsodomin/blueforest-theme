@@ -80,6 +80,9 @@ application. A configuration that enables both fails to evaluate.
   variant with `blueforest-theme.starship.palette.enable = true;`, and a
   consumer that selects a palette of its own with
   `programs.starship.settings.palette = "blueforest";` keeps its selection.
+  The names of the keys of a palette are the ones of the palette of the
+  community catalogue of Noctalia for Starship, so that the preset paints with
+  the palette of Noctalia as well.
 - The OpenCode package is `blueforest-opencode-theme`.
 - The OpenCode theme is `blueforest`, the name of the file. Select it with
   `programs.opencode.cli.theme = { name = "blueforest"; mode = "system"; };`.

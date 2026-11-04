@@ -4,15 +4,55 @@
 # this table, so the palette and the preset are installed apart: the preset
 # only reads the names, and the palette is what gives them a colour.
 #
+# The names of the keys are the ones of the palette of the community
+# catalogue of Noctalia for Starship, so that the preset of the repository
+# paints with the palette of Noctalia as well, and with any other palette
+# that follows the same vocabulary.
+#
+# The nine keys the preset names carry the colours of BlueForest, and the
+# rest carry the colours of the terminal of BlueForest, under the names of
+# the community catalogue:
+#
+#   blue         primary         the block of the system and the user
+#   base         on_primary      the text of that block
+#   text         secondary       the directory
+#   peach        tertiary        the branch, the status and the duration
+#   flamingo     error           the languages that failed and the root user
+#   green        success         the languages that worked
+#   mantle       surface         the background of the directory
+#   surface1     surface_variant the background of the branch
+#   crust        hover           the background of the languages
+#
 # Select the palette with `palette = "blueforest"` in the configuration of
 # Starship, and the light variant of it with `palette = "blueforest-light"`.
 [palettes.blueforest]
-primary = "#0099FF"
-on_primary = "#0A101D"
-secondary = "#91CCFF"
-tertiary = "#FFCC33"
-error = "#FF8080"
-success = "#80FF80"
-surface = "#1B2B40"
-surface_variant = "#273E5C"
-hover = "#375780"
+blue = "#0099FF"
+red = "#B02A28"
+green = "#80FF80"
+yellow = "#B3871F"
+cyan = "#1B7A70"
+magenta = "#C57633"
+white = "#7F8FA3"
+black = "#233244"
+rosewater = "#FFCC33"
+flamingo = "#FF8080"
+pink = "#DDBB88"
+mauve = "#C57633"
+maroon = "#FF8080"
+peach = "#FFCC33"
+teal = "#1B7A70"
+sky = "#4FD6A0"
+sapphire = "#91CCFF"
+lavender = "#DDBB88"
+text = "#91CCFF"
+subtext1 = "#7F8FA3"
+subtext0 = "#56697D"
+overlay2 = "#56697D"
+overlay1 = "#56697D"
+overlay0 = "#233244"
+surface2 = "#233244"
+surface1 = "#273E5C"
+surface0 = "#141F2E"
+base = "#0A101D"
+mantle = "#1B2B40"
+crust = "#375780"

@@ -13,6 +13,30 @@ palette. The prompt is two lines: the information line, and the line of the
 character. The duration of the last command and the Nix shell are at the right
 of the information line.
 
+## The names of the colours
+
+The names of the keys of the palette are the ones of the palette of the
+[community catalogue of Noctalia](https://github.com/noctalia-dev/community-templates)
+for Starship, so the preset paints with the palette of Noctalia as well, and
+with any other palette that follows the same vocabulary. The preset names nine
+of them, and every one of them paints a part of the prompt:
+
+| Key of the palette | What it paints                        |
+| ------------------ | ------------------------------------- |
+| `blue`             | the block of the system and the user  |
+| `base`             | the text of that block                |
+| `text`             | the directory                         |
+| `peach`            | the branch, the status, the duration  |
+| `flamingo`         | the languages that failed, the root user |
+| `green`            | the languages that worked             |
+| `mantle`           | the background of the directory       |
+| `surface1`         | the background of the branch          |
+| `crust`            | the background of the languages       |
+
+The other keys of the palette carry the colours of the terminal of BlueForest,
+under the names of the catalogue, so that the palette is a drop-in for the one
+of Noctalia.
+
 ## Install with Nix
 
 The repository packages them separately:
@@ -59,10 +83,12 @@ be defined by the consumer too, or the prompt comes out with no colour at all.
 The switch is `blueforest-theme.starship.palette.enable` and not
 `programs.starship.enable`, so that the theme and the templates of the
 community catalogue of Noctalia for Starship are alternatives: a consumer that
-wants a community template keeps the switches off, and a consumer that wants
-this theme turns them on. A configuration that enables a template and either
-switch fails to evaluate, because the two of them write the configuration of
-Starship.
+wants a community template keeps the switch of the palette off, and a consumer
+that wants this theme turns it on. A configuration that enables the palette and
+a template fails to evaluate, because the two of them write the configuration
+of Starship. The preset of the repository can be enabled with a template: it
+is a package that carries the prompt, and the prompt names the keys of the
+palette that the template writes.
 
 ### Only the palette
 
@@ -105,15 +131,15 @@ to be selected as well:
       palette = "blueforest";
 
       palettes.blueforest = {
-        primary = "#0099FF";
-        on_primary = "#0A101D";
-        secondary = "#91CCFF";
-        tertiary = "#FFCC33";
-        error = "#FF8080";
-        success = "#80FF80";
-        surface = "#1B2B40";
-        surface_variant = "#273E5C";
-        hover = "#375780";
+        blue = "#0099FF";
+        base = "#0A101D";
+        text = "#91CCFF";
+        peach = "#FFCC33";
+        flamingo = "#FF8080";
+        green = "#80FF80";
+        mantle = "#1B2B40";
+        surface1 = "#273E5C";
+        crust = "#375780";
       };
     };
   };
@@ -121,6 +147,47 @@ to be selected as well:
   blueforest-theme.starship.preset.enable = true;
 }
 ```
+
+A palette of your own has to define the nine keys that the preset names, and
+nothing else: a key the preset names and the palette does not define is painted
+with no colour at all, and Starship reports nothing.
+
+## The palette of Noctalia
+
+The names of the keys are the ones of the palette of the community catalogue of
+Noctalia for Starship, so the preset of the repository paints with the palette
+of Noctalia as well. The catalogue writes that palette into the configuration
+of Starship and selects it, and the prompt of this repository is painted with
+the colours of the palette of Noctalia, whatever palette the shell is running.
+
+A consumer that wants the template of the catalogue and the preset of this
+repository enables the preset and the template, and leaves the switch of the
+palette off:
+
+```nix
+{
+  imports = [
+    blueforest.homeModules.starship
+  ];
+
+  programs.starship = {
+    enable = true;
+    presets = [ "blueforest" ];
+  };
+
+  blueforest-theme.starship.preset.enable = true;
+
+  # The template of the catalogue, "starship" of the built-in ones or
+  # "starship-m3" of the community ones.
+  programs.noctalia.settings.theme.templates.builtin_ids = [ "starship" ];
+}
+```
+
+The template writes the configuration of Starship, so it needs a file it can
+write: a configuration that Home Manager manages is a link into the store, and
+the store is read-only. A consumer that lets Home Manager write the
+configuration of Starship uses the palette of the repository instead, and
+leaves the template off.
 
 If you only want the files, read them directly without replacing the Starship
 package. The preset needs a palette, so read one of them as well:
