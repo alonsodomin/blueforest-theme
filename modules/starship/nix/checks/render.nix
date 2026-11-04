@@ -16,10 +16,18 @@
 # shell, is placed with a `fill` segment at the right of the information line,
 # and not with a right prompt of its own: a right prompt is a prompt the
 # shell renders on its own, and every shell places it somewhere else.
+#
+# The preset is rendered with the palettes of the repository and with the
+# palettes of the community catalogue of Noctalia, whose keys are the ones the
+# preset names. The last two renders are the ones that prove that the preset
+# paints with the palette of the catalogue and not only with the palettes of
+# the repository.
 {
   pkgs,
   preset,
   palettes,
+  communityPalette,
+  communityPaletteLight,
 }:
 pkgs.runCommand "blueforest-starship-render-check"
   {
@@ -37,53 +45,57 @@ pkgs.runCommand "blueforest-starship-render-check"
     mkdir -p $TMPDIR/proj
     cd $TMPDIR/proj
 
+    # The name of the configuration, the name of the palette that is selected
+    # and the file that carries it. The name of the palette is what joins the
+    # preset and the palette.
     render() {
-      name=$1
+      config=$1
       palette=$2
+      file=$3
 
       # The preset and the palette are two files, and the name of the palette
       # is what joins them.
       {
-        echo "palette = \"$name\""
+        echo "palette = \"$palette\""
         cat ${preset}/share/starship/presets/blueforest.toml
-        cat "$palette"
-      } >$TMPDIR/$name.toml
+        cat "$file"
+      } >$TMPDIR/$config.toml
 
-      export STARSHIP_CONFIG=$TMPDIR/$name.toml
+      export STARSHIP_CONFIG=$TMPDIR/$config.toml
 
-      starship prompt -w 120 -d 1500 >$TMPDIR/$name-prompt
-      starship prompt --right -w 120 -d 1500 >$TMPDIR/$name-right
-      starship prompt -w 120 -d 1500 2>>$TMPDIR/$name-errors >/dev/null
-      starship prompt --right -w 120 -d 1500 2>>$TMPDIR/$name-errors >/dev/null
+      starship prompt -w 120 -d 1500 >$TMPDIR/$config-prompt
+      starship prompt --right -w 120 -d 1500 >$TMPDIR/$config-right
+      starship prompt -w 120 -d 1500 2>>$TMPDIR/$config-errors >/dev/null
+      starship prompt --right -w 120 -d 1500 2>>$TMPDIR/$config-errors >/dev/null
 
       # The prompt of a healthy preset is not empty, and Starship does not
       # complain about it.
-      test -s $TMPDIR/$name-prompt
-      test ! -s $TMPDIR/$name-errors
+      test -s $TMPDIR/$config-prompt
+      test ! -s $TMPDIR/$config-errors
 
       # The right prompt is empty: the right-handed part of the prompt is
       # part of the format, and not a prompt of its own.
-      test ! -s $TMPDIR/$name-right
+      test ! -s $TMPDIR/$config-right
 
       # The palette is applied: a reference that does not resolve is painted
       # with no colour at all, and no escape sequence carries the colour.
-      grep -qF $'\e[38;2;' $TMPDIR/$name-prompt
-      grep -qF $'\e[48;2;' $TMPDIR/$name-prompt
+      grep -qF $'\e[38;2;' $TMPDIR/$config-prompt
+      grep -qF $'\e[48;2;' $TMPDIR/$config-prompt
 
       # The prompt is two lines: the information line, and the line of the
       # character. The prompt starts with the newline of `add_newline`, so the
       # information line is the second one, and the line of the character is
       # the last one.
-      info=$(tail -n +2 $TMPDIR/$name-prompt | head -n 1)
-      character=$(tail -n 1 $TMPDIR/$name-prompt)
+      info=$(tail -n +2 $TMPDIR/$config-prompt | head -n 1)
+      character=$(tail -n 1 $TMPDIR/$config-prompt)
 
       # The duration and the shell are at the right of the information line.
       if ! printf '%s' "$info" | grep -qF '󰔛'; then
-        echo "the duration is not on the information line of $name" >&2
+        echo "the duration is not on the information line of $config" >&2
         exit 1
       fi
       if ! printf '%s' "$info" | grep -qF ''; then
-        echo "the shell is not on the information line of $name" >&2
+        echo "the shell is not on the information line of $config" >&2
         exit 1
       fi
 
@@ -92,26 +104,32 @@ pkgs.runCommand "blueforest-starship-render-check"
       # shell would not expand a `\u` escape.
       cap=$(printf '\xee\x82\xb2')
       if ! printf '%s' "$info" | grep -qF "$cap"; then
-        echo "the inverted cap is not on the information line of $name" >&2
+        echo "the inverted cap is not on the information line of $config" >&2
         exit 1
       fi
 
       # The fill pushes the right-handed part to the right of the line, so
       # the line carries a run of spaces that nothing else writes.
       if ! printf '%s' "$info" | grep -qE ' {8,}'; then
-        echo "the information line of $name is not filled" >&2
+        echo "the information line of $config is not filled" >&2
         exit 1
       fi
 
       # The line of the character carries none of them.
       if printf '%s' "$character" | grep -qF '󰔛' || printf '%s' "$character" | grep -qF ''; then
-        echo "the duration or the shell is on the line of the character of $name" >&2
+        echo "the duration or the shell is on the line of the character of $config" >&2
         exit 1
       fi
     }
 
-    render blueforest ${palettes.blueforest}
-    render blueforest-light ${palettes.blueforest-light}
+    # The palettes of the repository, one per variant.
+    render blueforest blueforest ${palettes.blueforest}
+    render blueforest-light blueforest-light ${palettes.blueforest-light}
+
+    # The palettes of the community catalogue of Noctalia, whose keys are the
+    # ones the preset names.
+    render community noctalia ${communityPalette}
+    render community-light noctalia ${communityPaletteLight}
 
     touch $out
   ''

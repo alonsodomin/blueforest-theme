@@ -21,8 +21,11 @@
 #
 # The switches are the ones of this repository, and not `programs.starship.enable`,
 # so that the theme and the templates of the community catalogue of Noctalia
-# for Starship are alternatives. A consumer that enables both gets an error,
-# because the two of them write the same configuration of Starship.
+# for Starship are alternatives. A consumer that enables the palette of the
+# repository and a template gets an error, because the two of them write the
+# same configuration of Starship. The preset can go with a template: it is a
+# package that carries the prompt, and the prompt names the keys of the
+# palette that the template writes.
 #
 # The overlay of the application is passed to the module, so that the package
 # the consumer gets is the one of the application, with its version.
@@ -104,24 +107,28 @@ in
 
     {
       # The templates of Noctalia for Starship write the same configuration
-      # of Starship, so they and the palette or the preset of the repository
-      # cannot be enabled at the same time.
+      # of Starship, so they and the palette of the repository cannot be
+      # enabled at the same time. The preset is a package that carries the
+      # prompt, and it does not write the configuration, so it can be
+      # enabled with a template: the template writes the palette, and the
+      # preset names the keys of that palette.
       assertions = [
         {
           assertion =
             !(
-              (config.blueforest-theme.starship.palette.enable || config.blueforest-theme.starship.preset.enable)
+              config.blueforest-theme.starship.palette.enable
               && (lib.elem "starship" enabledTemplates || lib.elem "starship-m3" enabledTemplates)
             );
           message = ''
-            The BlueForest theme for Starship and a Noctalia template for
+            The BlueForest palette for Starship and a Noctalia template for
             Starship are both enabled, and the two of them write the
             configuration of Starship. Disable the template in the
             configuration of Noctalia (remove "starship" from
             `[theme.templates] builtin_ids`, or "starship-m3" from
             `[theme.templates] community_ids`), or set
-            `blueforest-theme.starship.palette.enable = false` and
-            `blueforest-theme.starship.preset.enable = false`.'';
+            `blueforest-theme.starship.palette.enable = false`. The preset of
+            the repository can be enabled with a template: it names the keys
+            of the palette that the template writes.'';
         }
       ];
     }

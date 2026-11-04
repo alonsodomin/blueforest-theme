@@ -11,8 +11,9 @@
 # colour of its own.
 #
 # The check covers the conflict with the templates of the community catalogue
-# of Noctalia for Starship: a configuration that enables a template and either
-# switch fails to evaluate.
+# of Noctalia for Starship: a configuration that enables a template and the
+# palette of the repository fails to evaluate. The preset of the repository
+# can be enabled with a template, and the check proves it.
 {
   lib,
   pkgs,
@@ -132,7 +133,7 @@ let
     {
       programs.starship.enable = true;
       blueforest-theme.starship.palette.enable = true;
-      programs.starship.settings.palettes.blueforest.primary = "#FF0000";
+      programs.starship.settings.palettes.blueforest.blue = "#FF0000";
     }
   ];
 
@@ -236,8 +237,8 @@ let
       palettes = themeOnly.programs.starship.settings.palettes or { };
     };
     own = {
-      inherit ((paletteOf own "blueforest")) primary;
-      inherit ((paletteOf own "blueforest")) surface;
+      inherit ((paletteOf own "blueforest")) blue;
+      inherit ((paletteOf own "blueforest")) mantle;
     };
     selected = {
       selected = selectedOf selected;
@@ -327,8 +328,8 @@ pkgs.runCommand "blueforest-starship-module-check"
     # A consumer that brings a colour of its own keeps it, and the rest of
     # the palette survives.
     echo "$result" | jq -e '
-      .own.primary == "#FF0000"
-      and .own.surface == .expected.dark.surface
+      .own.blue == "#FF0000"
+      and .own.mantle == .expected.dark.mantle
     ' >/dev/null
 
     # A consumer that selects a palette of its own keeps the selection.
@@ -336,14 +337,16 @@ pkgs.runCommand "blueforest-starship-module-check"
       .selected.selected == "blueforest-light"
     ' >/dev/null
 
-    # The templates of Noctalia for Starship and either switch cannot be
-    # enabled at the same time.
+    # The templates of Noctalia for Starship and the palette of the
+    # repository cannot be enabled at the same time. The preset can: it is a
+    # package that carries the prompt, and it does not write the
+    # configuration.
     if [ "$(echo "$result" | jq -r .conflict.palette)" != "yes" ]; then
       echo "the conflict of the palette with the Noctalia template did not fail" >&2
       exit 1
     fi
-    if [ "$(echo "$result" | jq -r .conflict.preset)" != "yes" ]; then
-      echo "the conflict of the preset with the Noctalia template did not fail" >&2
+    if [ "$(echo "$result" | jq -r .conflict.preset)" != "no" ]; then
+      echo "the preset of the repository cannot be enabled with a Noctalia template" >&2
       exit 1
     fi
 
@@ -354,7 +357,7 @@ pkgs.runCommand "blueforest-starship-module-check"
     test -s "$config"
     grep -qF '$fill$cmd_duration$nix_shell$line_break$character' "$config"
     grep -qF '[palettes.blueforest]' "$config"
-    grep -qF 'primary = "#0099FF"' "$config"
+    grep -qF 'blue = "#0099FF"' "$config"
     grep -qF 'palette = "blueforest"' "$config"
 
     touch $out

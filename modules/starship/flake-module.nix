@@ -78,6 +78,13 @@ in
         blueforest = ./themes/palettes/blueforest.toml;
         blueforest-light = ./themes/palettes/blueforest-light.toml;
       };
+
+      # The palettes of the community catalogue of Noctalia for Starship,
+      # which the preset names as well.
+      communityPalettes = {
+        noctalia = ./tests/community-palette.toml;
+        noctalia-light = ./tests/community-palette-light.toml;
+      };
     in
     {
       packages = {
@@ -103,9 +110,12 @@ in
           inherit pkgs palette palettes;
         };
 
-        # Starship parses and renders the preset with each palette.
+        # Starship parses and renders the preset with each palette, and with
+        # the palettes of the community catalogue of Noctalia.
         starship-render = import ./nix/checks/render.nix {
           inherit pkgs preset palettes;
+          communityPalette = communityPalettes.noctalia;
+          communityPaletteLight = communityPalettes.noctalia-light;
         };
 
         # The wrapper is Starship with the preset bundled.

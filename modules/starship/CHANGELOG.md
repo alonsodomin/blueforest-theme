@@ -6,6 +6,20 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
+- The names of the keys of the palettes are the ones of the palette of the
+  community catalogue of Noctalia for Starship now, so that the preset paints
+  with the palette of Noctalia as well, and with any other palette that
+  follows the same vocabulary. The preset names nine of them: `blue`,
+  `base`, `text`, `peach`, `flamingo`, `green`, `mantle`, `surface1` and
+  `crust`. A palette of your own has to carry those names now
+- The preset of the repository can be enabled with a template of the community
+  catalogue of Noctalia for Starship now. The template writes the palette and
+  the preset names the keys of it. The palette of the repository still
+  conflicts with the template, because the two of them write the configuration
+  of Starship
+- The check of the preset asserts that the palettes carry the keys of the
+  community catalogue of Noctalia, and the check of the render renders the
+  preset with the palettes of the catalogue, so that the two cannot drift
 - The palette ships apart from the preset now. The palettes are
   `blueforest`, the dark variant, and `blueforest-light`, the light variant,
   and they are packaged as `blueforest-starship-palette`, which carries both
@@ -27,8 +41,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
   a consumer that selects a palette of its own keeps it
 - `blueforest-theme.starship.preset.enable` is new, and it installs the
   package that carries the preset. A configuration that enables a template of
-  the community catalogue of Noctalia for Starship and either switch fails to
-  evaluate
+  the community catalogue of Noctalia for Starship and the palette of the
+  repository fails to evaluate
 - The release carries the two palettes as assets of their own, next to the
   preset
 - Initial release: the BlueForest preset for Starship, packaged as
