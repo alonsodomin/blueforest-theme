@@ -1,6 +1,5 @@
 add_newline = true
-format = "[░▒▓](fg:primary)$os$username[](bg:surface fg:primary)$directory[](fg:surface bg:surface_variant)$git_branch$git_status[](fg:surface_variant bg:hover)$nodejs$python$rust$golang$java$scala$php$ruby$bun$deno$docker_context$terraform$aws[](fg:hover)$line_break$character"
-right_format = "$cmd_duration$nix_shell"
+format = "[░▒▓](fg:primary)$os$username[](bg:surface fg:primary)$directory[](fg:surface bg:surface_variant)$git_branch$git_status[](fg:surface_variant bg:hover)$nodejs$python$rust$golang$java$scala$php$ruby$bun$deno$docker_context$terraform$aws[](fg:hover)$fill$cmd_duration$nix_shell$line_break$character"
 
 [aws]
 format = "[[ $symbol ($profile) ](fg:tertiary bg:hover)]($style)"
@@ -39,6 +38,10 @@ truncation_symbol = ".../"
 format = "[[ $symbol ($context) ](fg:secondary bg:hover)]($style)"
 style = "bg:hover"
 symbol = ""
+
+[fill]
+symbol = " "
+style = ""
 
 [git_branch]
 format = "[[ $symbol $branch ](fg:tertiary bg:surface_variant)]($style)"

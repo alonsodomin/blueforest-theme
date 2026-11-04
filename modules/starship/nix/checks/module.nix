@@ -349,9 +349,10 @@ pkgs.runCommand "blueforest-starship-module-check"
 
     # The configuration file of the consumer carries the preset and the
     # palette together: the preset is merged into the configuration, and the
-    # palette is defined in it.
+    # palette is defined in it. The right-handed part of the prompt is a
+    # segment of the format, and not a right prompt of its own.
     test -s "$config"
-    grep -qF 'right_format = "$cmd_duration$nix_shell"' "$config"
+    grep -qF '$fill$cmd_duration$nix_shell$line_break$character' "$config"
     grep -qF '[palettes.blueforest]' "$config"
     grep -qF 'primary = "#0099FF"' "$config"
     grep -qF 'palette = "blueforest"' "$config"

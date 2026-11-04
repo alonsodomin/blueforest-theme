@@ -9,8 +9,9 @@ The theme of Starship comes in two parts:
   `blueforest` and the colours come from whichever palette is selected.
 
 The two are installed apart, so the same preset can be paired with either
-palette. The preset also puts the duration of the last command and the Nix
-shell on the right prompt.
+palette. The prompt is two lines: the information line, and the line of the
+character. The duration of the last command and the Nix shell are at the right
+of the information line.
 
 ## Install with Nix
 

@@ -11,8 +11,11 @@
 # looks at the escape sequences of the prompt, which carry the true colour of
 # the palette.
 #
-# The duration and the shell live on the right prompt, and the right prompt is
-# where the block of the shell tapers with the inverted cap.
+# The prompt is two lines: the information line, and the line of the
+# character. The right-handed part of the prompt, the duration and the Nix
+# shell, is placed with a `fill` segment at the right of the information line,
+# and not with a right prompt of its own: a right prompt is a prompt the
+# shell renders on its own, and every shell places it somewhere else.
 {
   pkgs,
   preset,
@@ -48,36 +51,63 @@ pkgs.runCommand "blueforest-starship-render-check"
 
       export STARSHIP_CONFIG=$TMPDIR/$name.toml
 
-      starship prompt -w 120 -d 1500 >$TMPDIR/$name-left
+      starship prompt -w 120 -d 1500 >$TMPDIR/$name-prompt
       starship prompt --right -w 120 -d 1500 >$TMPDIR/$name-right
       starship prompt -w 120 -d 1500 2>>$TMPDIR/$name-errors >/dev/null
       starship prompt --right -w 120 -d 1500 2>>$TMPDIR/$name-errors >/dev/null
 
       # The prompt of a healthy preset is not empty, and Starship does not
       # complain about it.
-      test -s $TMPDIR/$name-left
-      test -s $TMPDIR/$name-right
+      test -s $TMPDIR/$name-prompt
       test ! -s $TMPDIR/$name-errors
+
+      # The right prompt is empty: the right-handed part of the prompt is
+      # part of the format, and not a prompt of its own.
+      test ! -s $TMPDIR/$name-right
 
       # The palette is applied: a reference that does not resolve is painted
       # with no colour at all, and no escape sequence carries the colour.
-      grep -qF $'\e[38;2;' $TMPDIR/$name-left
-      grep -qF $'\e[48;2;' $TMPDIR/$name-left
-      grep -qF $'\e[38;2;' $TMPDIR/$name-right
+      grep -qF $'\e[38;2;' $TMPDIR/$name-prompt
+      grep -qF $'\e[48;2;' $TMPDIR/$name-prompt
 
-      # The duration and the shell are on the right prompt, and nowhere else.
-      if grep -qF '󰔛' $TMPDIR/$name-left || grep -qF '' $TMPDIR/$name-left; then
-        echo "the duration or the shell is on the left prompt of $name" >&2
+      # The prompt is two lines: the information line, and the line of the
+      # character. The prompt starts with the newline of `add_newline`, so the
+      # information line is the second one, and the line of the character is
+      # the last one.
+      info=$(tail -n +2 $TMPDIR/$name-prompt | head -n 1)
+      character=$(tail -n 1 $TMPDIR/$name-prompt)
+
+      # The duration and the shell are at the right of the information line.
+      if ! printf '%s' "$info" | grep -qF '󰔛'; then
+        echo "the duration is not on the information line of $name" >&2
         exit 1
       fi
-      grep -qF '󰔛' $TMPDIR/$name-right
-      grep -qF '' $TMPDIR/$name-right
+      if ! printf '%s' "$info" | grep -qF ''; then
+        echo "the shell is not on the information line of $name" >&2
+        exit 1
+      fi
 
       # The block of the shell tapers with the inverted cap. The bytes are
       # written down, because the locale of the build is not UTF-8 and the
       # shell would not expand a `\u` escape.
       cap=$(printf '\xee\x82\xb2')
-      grep -qF "$cap" $TMPDIR/$name-right
+      if ! printf '%s' "$info" | grep -qF "$cap"; then
+        echo "the inverted cap is not on the information line of $name" >&2
+        exit 1
+      fi
+
+      # The fill pushes the right-handed part to the right of the line, so
+      # the line carries a run of spaces that nothing else writes.
+      if ! printf '%s' "$info" | grep -qE ' {8,}'; then
+        echo "the information line of $name is not filled" >&2
+        exit 1
+      fi
+
+      # The line of the character carries none of them.
+      if printf '%s' "$character" | grep -qF '󰔛' || printf '%s' "$character" | grep -qF ''; then
+        echo "the duration or the shell is on the line of the character of $name" >&2
+        exit 1
+      fi
     }
 
     render blueforest ${palettes.blueforest}

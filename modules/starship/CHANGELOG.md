@@ -14,8 +14,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
   that the same preset is painted by either variant. A key the preset names
   and the palette does not define is painted with no colour, so the check of
   the preset compares the two
-- The duration of the last command and the Nix shell are on the right prompt
-  now, in that order, and the block of the shell tapers with the inverted cap
+- The duration of the last command and the Nix shell are at the right of the
+  information line now, in that order, and the block of the shell tapers with
+  the inverted cap. The prompt is two lines, and the right-handed part of it
+  is a segment of the format and not a right prompt of its own: every shell
+  places a right prompt somewhere else, and bash has none at all
 - The palette lives under `blueforest-theme.starship.palette` now:
   `blueforest-theme.starship.palette.enable` defines the palette of the
   variant in the settings of Starship, and
