@@ -70,25 +70,42 @@ in
 
       preset = pkgs.blueforest-starship-preset;
       wrapper = pkgs.blueforest-starship;
+      palette = pkgs.blueforest-starship-palette;
 
-      # The preset of the repository.
+      # The preset and the palettes of the repository.
       source = ./themes/blueforest.toml;
+      palettes = {
+        blueforest = ./themes/palettes/blueforest.toml;
+        blueforest-light = ./themes/palettes/blueforest-light.toml;
+      };
     in
     {
       packages = {
         blueforest-starship-preset = preset;
         blueforest-starship = wrapper;
+        blueforest-starship-palette = palette;
       };
 
       checks = {
-        # The preset of the package is the preset of the repository.
+        # The preset of the package is the preset of the repository, and it
+        # names the keys of the palettes.
         starship-preset = import ./nix/checks/preset.nix {
-          inherit pkgs preset source;
+          inherit
+            pkgs
+            preset
+            source
+            palettes
+            ;
         };
 
-        # Starship parses and renders the preset.
+        # The palettes of the package are the palettes of the repository.
+        starship-palette = import ./nix/checks/palette.nix {
+          inherit pkgs palette palettes;
+        };
+
+        # Starship parses and renders the preset with each palette.
         starship-render = import ./nix/checks/render.nix {
-          inherit pkgs preset;
+          inherit pkgs preset palettes;
         };
 
         # The wrapper is Starship with the preset bundled.
@@ -97,7 +114,8 @@ in
         };
 
         # The modules add the overlay of the application, and the Home
-        # Manager module selects the preset of the repository.
+        # Manager module installs the palette and the preset of the
+        # repository.
         starship-module = import ./nix/checks/module.nix {
           inherit lib;
           pkgs = basePkgs;
@@ -107,6 +125,7 @@ in
             home = config.flake.homeModules.starship;
           };
           overlay = config.flake.overlays.starship;
+          inherit palettes;
         };
       };
 
@@ -129,6 +148,12 @@ in
       in
       {
         blueforest-starship-preset = preset;
+
+        blueforest-starship-palette = import ./nix/palette.nix {
+          inherit (final) lib;
+          pkgs = final;
+          inherit version;
+        };
 
         blueforest-starship = import ./nix/wrapper.nix {
           pkgs = final;

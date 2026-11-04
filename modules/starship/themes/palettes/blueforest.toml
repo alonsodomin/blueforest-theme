@@ -1,0 +1,18 @@
+# The dark palette of BlueForest for Starship.
+#
+# The preset of the repository paints every segment with the name of a key of
+# this table, so the palette and the preset are installed apart: the preset
+# only reads the names, and the palette is what gives them a colour.
+#
+# Select the palette with `palette = "blueforest"` in the configuration of
+# Starship, and the light variant of it with `palette = "blueforest-light"`.
+[palettes.blueforest]
+primary = "#0099FF"
+on_primary = "#0A101D"
+secondary = "#91CCFF"
+tertiary = "#FFCC33"
+error = "#FF8080"
+success = "#80FF80"
+surface = "#1B2B40"
+surface_variant = "#273E5C"
+hover = "#375780"

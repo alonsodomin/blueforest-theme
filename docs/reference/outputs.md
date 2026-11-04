@@ -30,7 +30,7 @@ combined ones.
 | `nixosModules.default`, `homeModules.default` | The modules of the applications that provide one. The modules of VS Code and Zed are not among them: they are imported explicitly |
 | `nixosModules.neovim`, `homeModules.neovim` | The module of the Neovim theme |
 | `nixosModules.opencode`, `homeModules.opencode` | The module of the OpenCode theme |
-| `nixosModules.starship`, `homeModules.starship` | The module of the Starship preset |
+| `nixosModules.starship`, `homeModules.starship` | The module of the Starship palette and preset |
 | `nixosModules.vscode`, `homeModules.vscode` | The module of the VS Code theme |
 | `nixvimModules.neovim` | The module of the Neovim theme, for nixvim |
 | `overlays.bat` | Adds `pkgs.blueforest-bat-theme` to a nixpkgs instance. The aggregate does not compose it |
@@ -46,7 +46,7 @@ combined ones.
 | `overlays.neovim` | Adds `pkgs.blueforest-neovim-theme` to a nixpkgs instance |
 | `overlays.opencode` | Adds `pkgs.blueforest-opencode-theme` to a nixpkgs instance |
 | `overlays.sbt` | Adds `pkgs.blueforest-sbt-prompt` to a nixpkgs instance |
-| `overlays.starship` | Adds `pkgs.blueforest-starship-preset` and `pkgs.blueforest-starship` to a nixpkgs instance |
+| `overlays.starship` | Adds `pkgs.blueforest-starship-preset`, `pkgs.blueforest-starship-palette` and `pkgs.blueforest-starship` to a nixpkgs instance |
 | `overlays.vscode` | Adds `pkgs.blueforest-vscode-theme` to a nixpkgs instance |
 | `overlays.yazi` | Adds `pkgs.blueforest-yazi-theme` and `pkgs.blueforest-bat-theme` to a nixpkgs instance |
 | `overlays.zed` | Adds `pkgs.blueforest-zed-theme` to a nixpkgs instance |
@@ -63,6 +63,7 @@ combined ones.
 | `packages.<system>.blueforest-opencode-theme` | The theme for OpenCode |
 | `packages.<system>.blueforest-sbt-prompt` | The prompt for sbt |
 | `packages.<system>.blueforest-starship` | Starship with the preset bundled |
+| `packages.<system>.blueforest-starship-palette` | The palettes for Starship |
 | `packages.<system>.blueforest-starship-preset` | The preset for Starship |
 | `packages.<system>.blueforest-vscode-theme` | The theme as a VS Code extension package |
 | `packages.<system>.blueforest-yazi-theme` | The theme for Yazi, as a flavour |

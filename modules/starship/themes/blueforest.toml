@@ -1,110 +1,111 @@
 add_newline = true
-format = "[░▒▓](#0099FF)$os$username[](bg:#1b2b40 fg:#0099FF)$directory[](fg:#1b2b40 bg:#273e5c)$git_branch$git_status[](fg:#273e5c bg:#375780)$nix_shell$nodejs$python$rust$golang$java$scala$php$ruby$bun$deno$docker_context$terraform$aws[](fg:#375780)$cmd_duration$line_break$character"
+format = "[░▒▓](fg:primary)$os$username[](bg:surface fg:primary)$directory[](fg:surface bg:surface_variant)$git_branch$git_status[](fg:surface_variant bg:hover)$nodejs$python$rust$golang$java$scala$php$ruby$bun$deno$docker_context$terraform$aws[](fg:hover)$line_break$character"
+right_format = "$cmd_duration$nix_shell"
 
 [aws]
-format = "[[ $symbol ($profile) ](fg:#ffcc33 bg:#375780)]($style)"
-style = "bg:#375780"
+format = "[[ $symbol ($profile) ](fg:tertiary bg:hover)]($style)"
+style = "bg:hover"
 symbol = " (AWS)"
 
 [bun]
-format = "[[ $symbol ($version) ](fg:#1e5c1e bg:#375780)]($style)"
-style = "bg:#375780"
+format = "[[ $symbol ($version) ](fg:success bg:hover)]($style)"
+style = "bg:hover"
 symbol = ""
 
 [character]
-error_symbol = "[❯](bold #FF8080)"
-success_symbol = "[❯](bold #0099FF)"
+error_symbol = "[❯](bold fg:error)"
+success_symbol = "[❯](bold fg:primary)"
 
 [cmd_duration]
 format = "[ 󰔛 $duration ]($style)"
 min_time = 1000
 show_milliseconds = false
 show_notifications = false
-style = "fg:#ffcc33"
+style = "fg:tertiary"
 
 [deno]
-format = "[[ $symbol ($version) ](fg:#80ff80 bg:#375780)]($style)"
-style = "bg:#375780"
+format = "[[ $symbol ($version) ](fg:success bg:hover)]($style)"
+style = "bg:hover"
 symbol = ""
 
 [directory]
 format = "[ $path ]($style)"
-style = "fg:#91CCFF bg:#1b2b40"
+style = "fg:secondary bg:surface"
 truncate_to_repo = true
 truncation_length = 5
 truncation_symbol = ".../"
 
 [docker_context]
-format = "[[ $symbol ($context) ](fg:#91CCFF bg:#375780)]($style)"
-style = "bg:#375780"
+format = "[[ $symbol ($context) ](fg:secondary bg:hover)]($style)"
+style = "bg:hover"
 symbol = ""
 
 [git_branch]
-format = "[[ $symbol $branch ](fg:#ffcc33 bg:#273e5c)]($style)"
-style = "bg:#273e5c"
+format = "[[ $symbol $branch ](fg:tertiary bg:surface_variant)]($style)"
+style = "bg:surface_variant"
 symbol = ""
 
 [git_status]
-format = "[[($all_status$ahead_behind )](fg:#ffcc33 bg:#273e5c)]($style)"
-style = "bg:#273e5c"
+format = "[[($all_status$ahead_behind )](fg:tertiary bg:surface_variant)]($style)"
+style = "bg:surface_variant"
 
 [golang]
-format = "[[ $symbol ($version) ](fg:#80ff80 bg:#375780)]($style)"
-style = "bg:#375780"
+format = "[[ $symbol ($version) ](fg:success bg:hover)]($style)"
+style = "bg:hover"
 symbol = ""
 
 [java]
-format = "[[ $symbol ($version) ](fg:#FF8080 bg:#375780)]($style)"
-style = "bg:#375780"
+format = "[[ $symbol ($version) ](fg:error bg:hover)]($style)"
+style = "bg:hover"
 symbol = ""
 
 [nix_shell]
-format = "[[ $symbol$state( \\($name\\)) ](fg:#91CCFF bg:#375780)]($style)"
-style = "bg:#375780"
+format = "[](fg:hover)[[ $symbol$state( \\($name\\)) ](fg:secondary bg:hover)]($style)"
+style = "bg:hover"
 symbol = " "
 
 [nodejs]
-format = "[[ $symbol ($version) ](fg:#80ff80 bg:#375780)]($style)"
-style = "bg:#375780"
+format = "[[ $symbol ($version) ](fg:success bg:hover)]($style)"
+style = "bg:hover"
 symbol = ""
 
 [os]
 disabled = false
 format = "[ $symbol ]($style)"
-style = "bg:#0099FF fg:#0A101D"
+style = "bg:primary fg:on_primary"
 
 [php]
-format = "[[ $symbol ($version) ](fg:#91CCFF bg:#375780)]($style)"
-style = "bg:#375780"
+format = "[[ $symbol ($version) ](fg:secondary bg:hover)]($style)"
+style = "bg:hover"
 symbol = ""
 
 [python]
-format = "[[ $symbol ($version) ](fg:#80ff80 bg:#375780)]($style)"
-style = "bg:#375780"
+format = "[[ $symbol ($version) ](fg:success bg:hover)]($style)"
+style = "bg:hover"
 symbol = ""
 
 [ruby]
-format = "[[ $symbol ($version) ](fg:#FF8080 bg:#375780)]($style)"
-style = "bg:#375780"
+format = "[[ $symbol ($version) ](fg:error bg:hover)]($style)"
+style = "bg:hover"
 symbol = ""
 
 [rust]
-format = "[[ $symbol ($version) ](fg:#1e5c1e bg:#375780)]($style)"
-style = "bg:#375780"
+format = "[[ $symbol ($version) ](fg:success bg:hover)]($style)"
+style = "bg:hover"
 symbol = ""
 
 [scala]
-format = "[[ $symbol ($version) ](fg:#FF8080 bg:#375780)]($style)"
-style = "bg:#375780"
+format = "[[ $symbol ($version) ](fg:error bg:hover)]($style)"
+style = "bg:hover"
 symbol = ""
 
 [terraform]
-format = "[[ $symbol ($workspace) ](fg:#91CCFF bg:#375780)]($style)"
-style = "bg:#375780"
+format = "[[ $symbol ($workspace) ](fg:secondary bg:hover)]($style)"
+style = "bg:hover"
 symbol = "󱁢"
 
 [username]
 format = "[$user]($style)"
 show_always = true
-style_root = "bg:#0099FF fg:#FF8080"
-style_user = "bg:#0099FF fg:#0A101D"
+style_root = "bg:primary fg:error"
+style_user = "bg:primary fg:on_primary"
