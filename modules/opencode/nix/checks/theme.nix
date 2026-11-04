@@ -28,17 +28,15 @@ pkgs.runCommand "blueforest-opencode-theme-check"
     nativeBuildInputs = [ pkgs.jq ];
     missingTokens = builtins.toJSON shape.missingTokens;
     missingAliases = builtins.toJSON shape.missingAliases;
-    unresolved = builtins.toJSON references.unresolved;
-    unresolvedHues = builtins.toJSON references.unresolvedHues;
-    missingHues = builtins.toJSON references.missingHues;
+    modes = builtins.toJSON references.modes;
   }
   ''
     # The theme of the package is the theme of the repository.
     cmp ${theme}/blueforest.json ${source}
     cmp ${theme}/share/opencode/themes/blueforest.json ${source}
 
-    # The theme is one OpenCode 2 reads: the tokens of the base, and the
-    # palette of a mode.
+    # The theme is one OpenCode 2 reads: the tokens of the base, and a
+    # palette per mode.
     jq -e 'has("$schema") and has("base") and (has("dark") or has("light"))' ${source} >/dev/null
 
     # Every token OpenCode reads is there. A theme that misses one is a
@@ -58,29 +56,31 @@ pkgs.runCommand "blueforest-opencode-theme-check"
       exit 1
     fi
 
-    # Every colour of the theme that is a reference resolves to a colour.
-    count=$(echo "$unresolved" | jq 'length')
-    if [ "$count" -ne 0 ]; then
-      echo "the theme has references that do not resolve to a colour:" >&2
-      echo "$unresolved" | jq -r '.[]' >&2
-      exit 1
-    fi
+    # Every mode of the theme is checked on its own: the modes do not
+    # inherit from each other, so a reference that resolves in one of them
+    # may not resolve in the other.
+    echo "$modes" | jq -r '.[] | .name' | while read -r mode; do
+      unresolved=$(echo "$modes" | jq -r --arg mode "$mode" '.[] | select(.name == $mode) | .unresolved | length')
+      if [ "$unresolved" -ne 0 ]; then
+        echo "the $mode theme has references that do not resolve to a colour:" >&2
+        echo "$modes" | jq -r --arg mode "$mode" '.[] | select(.name == $mode) | .unresolved[]' >&2
+        exit 1
+      fi
 
-    # And every alias of the hues resolves to a hue.
-    count=$(echo "$unresolvedHues" | jq 'length')
-    if [ "$count" -ne 0 ]; then
-      echo "the theme has aliases that do not resolve to a hue:" >&2
-      echo "$unresolvedHues" | jq -r '.[]' >&2
-      exit 1
-    fi
+      unresolved=$(echo "$modes" | jq -r --arg mode "$mode" '.[] | select(.name == $mode) | .unresolvedHues | length')
+      if [ "$unresolved" -ne 0 ]; then
+        echo "the $mode theme has aliases that do not resolve to a hue:" >&2
+        echo "$modes" | jq -r --arg mode "$mode" '.[] | select(.name == $mode) | .unresolvedHues[]' >&2
+        exit 1
+      fi
 
-    # And every hue of the categorical palette is one the mode has.
-    count=$(echo "$missingHues" | jq 'length')
-    if [ "$count" -ne 0 ]; then
-      echo "the theme has hues the mode does not have:" >&2
-      echo "$missingHues" | jq -r '.[]' >&2
-      exit 1
-    fi
+      missing=$(echo "$modes" | jq -r --arg mode "$mode" '.[] | select(.name == $mode) | .missingHues | length')
+      if [ "$missing" -ne 0 ]; then
+        echo "the $mode theme has hues it does not have:" >&2
+        echo "$modes" | jq -r --arg mode "$mode" '.[] | select(.name == $mode) | .missingHues[]' >&2
+        exit 1
+      fi
+    done
 
     touch $out
   ''

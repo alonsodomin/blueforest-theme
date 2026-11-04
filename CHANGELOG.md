@@ -29,6 +29,53 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 
 ## Unreleased
 
+- The theme of kitty has a light variant now, `blueforest-light`, and the
+  switch of the variant selects the one that is installed
+- The theme of Zed has a light variant now, **BlueForest - Light**, and it
+  comes with the extension
+- The stylesheet of MkDocs has a light variant now, and the light scheme of
+  Material gets the colours of the light palette of the repository
+- The theme of Yazi has a light variant now, `blueforest-light`, and the theme
+  of the user selects the flavour that matches the mode of Yazi
+- The theme of Neovim has a light variant now, `blueforest-light`, and the
+  theme of lualine comes with it
+- The themes of bat, of Claude Code and of md-tui have a light variant now,
+  and the switch of the variant selects the one that is installed
+- The themes have a light variant now. The theme of VS Code is the reference
+  of the effort, and it is published with the extension as **BlueForest
+  Light**: the colours of the light palette of the repository, with the
+  swatches of the documentation
+- The theme of OpenCode carries a light variant as well, in the same file, and
+  it follows the appearance of the terminal
+- The palettes of the documentation site are shown with swatches, so that
+  every colour of them is seen and not only read. A check verifies that the
+  swatches are the colours of the palette of Noctalia
+- The options of the repository live under `blueforest-theme` now, and not
+  under `blueforest`. The options of the module of MkDocs are the ones that
+  changed name: `blueforest.mkdocs.enable`, `blueforest.mkdocs.docsDir` and
+  `blueforest.mkdocs.path` are `blueforest-theme.mkdocs.enable`,
+  `blueforest-theme.mkdocs.docsDir` and `blueforest-theme.mkdocs.path` now.
+  The old names are gone, and a configuration that uses them fails to
+  evaluate
+- Every theme of the repository has a switch of its own,
+  `blueforest-theme.<application>.enable`, and it is off by default. The switch is
+  separate from `programs.<application>.enable`, so that the theme of one
+  application can be turned on without the themes of the others, and so that
+  the theme and a template of the community catalogue of Noctalia are
+  alternatives. The switch does not apply to VS Code, to Zed, and to MkDocs
+- A configuration that enables the theme of the repository and a template of
+  the community catalogue of Noctalia for the same application fails to
+  evaluate. The applications with a template are bat, btop, Claude Code,
+  kitty, OpenCode, and Starship
+- The palette of Noctalia carries a light variant as well, which is a palette
+  of its own and not a copy of the dark one. The package carries the palette
+  in the format 2 of the community palette registry as well, and the file of
+  the format 2 is generated from the canonical one
+- The theme of bat has a Home Manager module now, which installs it in the
+  directory bat reads the themes from and selects it in the configuration of
+  bat
+- The Home Manager module of Starship selects the preset of the repository and
+  the package that carries it
 - The pull requests of Renovate and Dependabot are merged on their own, when
   the merge gate of the CI has passed. Renovate marks them for the auto-merge
   of GitHub itself, and the workflow of the repository marks the ones of

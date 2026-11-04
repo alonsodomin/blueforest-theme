@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
+- The extension carries a light variant of the theme now, **BlueForest
+  Light**, with the colours of the light palette of the repository. It is a
+  theme of its own in the picker, and it is selected with
+  `"workbench.colorTheme": "BlueForestLight"`
 - The theme moved into the `modules/vscode/` directory, and the repository now hosts
   the configurations of the theme for several tools
 - The application is a flake of its own, which publishes a flake-parts module

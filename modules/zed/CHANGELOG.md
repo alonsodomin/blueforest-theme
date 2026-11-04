@@ -6,6 +6,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
+- The extension carries a light variant of the theme now,
+  **BlueForest - Light**, with the colours of the light palette of the
+  repository
 - Initial release: the theme of Zed, packaged as `blueforest-zed-theme`
 - The theme comes from the `zed-blueforest-theme` extension, which is a
   submodule of the application, and the Home Manager module installs it where

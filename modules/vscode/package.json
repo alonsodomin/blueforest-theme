@@ -23,6 +23,12 @@
         "label": "BlueForest",
         "uiTheme": "vs-dark",
         "path": "./themes/Blueforest-color-theme.json"
+      },
+      {
+        "id": "BlueForestLight",
+        "label": "BlueForest Light",
+        "uiTheme": "vs-light",
+        "path": "./themes/Blueforest-light-color-theme.json"
       }
     ]
   }

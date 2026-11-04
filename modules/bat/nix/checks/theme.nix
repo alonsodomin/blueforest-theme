@@ -5,8 +5,10 @@
   pkgs,
   theme,
   source,
+  sourceLight,
 }:
 pkgs.runCommand "blueforest-bat-theme-check" { } ''
   cmp ${theme}/share/bat/themes/BlueForest.tmTheme ${source}
+  cmp ${theme}/share/bat/themes/BlueForestLight.tmTheme ${sourceLight}
   touch $out
 ''

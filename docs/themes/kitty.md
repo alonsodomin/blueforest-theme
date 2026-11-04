@@ -48,6 +48,7 @@ installs it where kitty reads it from, and selects it:
   ];
 
   programs.kitty.enable = true;
+  blueforest-theme.kitty.enable = true;
 }
 ```
 
@@ -55,7 +56,14 @@ The module does not enable kitty: whether the program is installed at all
 stays your decision. It writes the theme to
 `~/.config/kitty/themes/blueforest.conf`, adds the `include` line that selects
 it to the configuration of kitty, and it writes nothing when
-`programs.kitty.enable` is false.
+`programs.kitty.enable` is false or when `blueforest-theme.kitty.enable` is false.
+
+The switch of the theme is `blueforest-theme.kitty.enable`, and not
+`programs.kitty.enable`, so that the theme and the template of the community
+catalogue of Noctalia for kitty are alternatives: a consumer that wants the
+community template keeps `blueforest-theme.kitty.enable` off, and a consumer that
+wants this theme turns it on. A configuration that enables both fails to
+evaluate: the two of them write the configuration of kitty.
 
 The `include` line comes before the options that Home Manager writes for
 kitty, and before the ones you write, so a colour you set wins over the
@@ -67,7 +75,9 @@ under the name of the theme and under the name kitty reads:
 
 ```text
 blueforest.conf
+blueforest-light.conf
 share/kitty/themes/blueforest.conf
+share/kitty/themes/blueforest-light.conf
 ```
 
 A system-wide installation includes the theme from the system-wide
@@ -86,6 +96,28 @@ of the theme:
 There is no NixOS module: the theme of the user lives in the configuration
 directory of the user, and that is where the themes kitten finds it.
 
+## The light variant
+
+The theme has a light variant, `blueforest-light`, with the colours of the
+light palette of the repository. The switch of the variant selects the one
+that is installed:
+
+```nix
+{
+  programs.kitty.enable = true;
+  blueforest-theme.kitty.enable = true;
+  blueforest-theme.kitty.variant = "light";
+}
+```
+
+The variant is `dark` by default, and the dark theme is the one it installs.
+The module writes the file of the variant to
+`~/.config/kitty/themes/blueforest-light.conf`, and the `include` line that
+selects it is `include themes/blueforest-light.conf`.
+
+The [palette reference](../index.md#colour-palettes) has every colour of the
+light variant, with the swatches.
+
 ## Manual install
 
 Download `blueforest-kitty-theme-<version>.conf` from the
@@ -102,6 +134,10 @@ Then select the theme in the configuration of kitty, `~/.config/kitty/kitty.conf
 ```bash
 echo 'include themes/blueforest.conf' >>~/.config/kitty/kitty.conf
 ```
+
+The release carries the light variant as well, under the name
+`blueforest-kitty-theme-light-<version>.conf`. Put it where kitty reads the
+themes from, and select it with `include themes/blueforest-light.conf`.
 
 kitty reads its configuration every time it starts, so there is nothing to
 reload.

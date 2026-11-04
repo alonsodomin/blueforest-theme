@@ -6,6 +6,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
+- The stylesheet has a light variant now: the light scheme of Material gets the
+  colours of the light palette of the repository
 - Initial release: the stylesheet of the code blocks of Material for MkDocs in
   the dark scheme, packaged as `blueforest-mkdocs-theme`
 - The flake module installs the stylesheet in the documentation sources through

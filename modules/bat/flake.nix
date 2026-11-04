@@ -6,12 +6,17 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } (
       {
+        config,
         flake-parts-lib,
         ...
       }:
@@ -27,6 +32,7 @@
         imports = [
           # The options that the module below declares.
           inputs.flake-parts.flakeModules.flakeModules
+          inputs.home-manager.flakeModules.home-manager
 
           # The module of the application, imported here and published
           # below, for the root flake.
@@ -42,6 +48,13 @@
         flake = {
           # The module of the application, for the root flake.
           inherit flakeModules;
+
+          # The application exposes its own outputs under the usual names as
+          # well.
+          overlays.default = final: prev: config.flake.overlays.bat final prev;
+          homeModules.default = {
+            imports = [ config.flake.homeModules.bat ];
+          };
         };
 
       }

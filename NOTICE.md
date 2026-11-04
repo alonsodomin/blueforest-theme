@@ -66,10 +66,12 @@ CI workflows and the manifests — is licensed under the
 | --- | --- |
 | `LICENSE`, `LICENSES/**`, `modules/*/LICENSE`, `modules/*/themes/**/LICENSE*` | the licence text itself |
 | `modules/*/themes/**` | CC BY 4.0 |
+| `modules/noctalia/themes/format2.jq` | MPL-2.0 |
 | `modules/sbt/config/**` | MPL-2.0 |
 | `modules/zed/extension/**` | CC BY 4.0 |
 | `assets/**` | CC BY 4.0 |
 | `docs/**` | CC BY 4.0 |
+| `docs/assets/stylesheets/palettes.css` | MPL-2.0 |
 | `*.png`, `modules/*/*.png` | CC BY 4.0 |
 | `*.md`, `modules/*/*.md` | CC BY 4.0 |
 | `mkdocs.yml` | MPL-2.0 |

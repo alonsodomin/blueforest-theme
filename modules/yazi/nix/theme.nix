@@ -41,15 +41,23 @@ pkgs.runCommand "blueforest-yazi-theme-${version}"
     mkdir -p $out/share/yazi/flavors
     cp -r ${../themes/blueforest.yazi} $out/blueforest.yazi
     cp -r ${../themes/blueforest.yazi} $out/share/yazi/flavors/blueforest.yazi
+    cp -r ${../themes/blueforest-light.yazi} $out/blueforest-light.yazi
+    cp -r ${../themes/blueforest-light.yazi} $out/share/yazi/flavors/blueforest-light.yazi
 
     # The colours of the code preview are the ones of the theme of bat, so
     # the flavour links to the theme of bat. The store is read-only, so the
-    # directories have to be writable to carry the link.
+    # directories have to be writable to carry the link. Every flavour links
+    # to the variant of the theme of bat that matches it.
     chmod u+w $out/blueforest.yazi $out/share/yazi/flavors/blueforest.yazi
+    chmod u+w $out/blueforest-light.yazi $out/share/yazi/flavors/blueforest-light.yazi
     ln -s ${batTheme}/share/bat/themes/BlueForest.tmTheme \
       $out/blueforest.yazi/tmtheme.xml
     ln -s ${batTheme}/share/bat/themes/BlueForest.tmTheme \
       $out/share/yazi/flavors/blueforest.yazi/tmtheme.xml
+    ln -s ${batTheme}/share/bat/themes/BlueForestLight.tmTheme \
+      $out/blueforest-light.yazi/tmtheme.xml
+    ln -s ${batTheme}/share/bat/themes/BlueForestLight.tmTheme \
+      $out/share/yazi/flavors/blueforest-light.yazi/tmtheme.xml
 
     # The attribution of the theme travels with the package.
     mkdir -p $out/share/doc/blueforest

@@ -13,16 +13,26 @@
 #
 # Every colour of the palette of Noctalia has to be one of them, so that the
 # palette of the theme is the palette of the repository.
+#
+# The palette has a variant per mode, and the ports have a theme per mode, so
+# the variants are compared with each other: the dark palette with the dark
+# themes, and the light palette with the light ones.
 {
   pkgs,
   # The package of the theme of Noctalia.
   theme,
-  # The theme of VS Code.
+  # The dark theme of VS Code.
   vscode,
-  # The theme of Neovim.
+  # The dark theme of Neovim.
   neovim,
-  # The theme of kitty.
+  # The dark theme of kitty.
   kitty,
+  # The light theme of VS Code.
+  vscodeLight,
+  # The light theme of Neovim.
+  neovimLight,
+  # The light theme of kitty.
+  kittyLight,
 }:
 pkgs.runCommand "blueforest-noctalia-colours-check"
   {
@@ -34,24 +44,41 @@ pkgs.runCommand "blueforest-noctalia-colours-check"
   ''
     noctalia="${theme}/share/noctalia/palettes/blueforest.json"
 
-    # The palette of the repository. The alpha channel is dropped, because the
-    # palette is about the colours themselves.
-    {
-      jq -r '.. | strings | select(test("^#[0-9A-Fa-f]{6,8}$"))' ${vscode}
-      grep -oE '#[0-9A-Fa-f]{6}' ${neovim}
-      grep -oE '#[0-9A-Fa-f]{6}' ${kitty}
-    } | tr '[:lower:]' '[:upper:]' | cut -c1-7 | sort -u >"$TMPDIR/palette"
+    # The colours of the themes of the repository, per mode. Every mode is
+    # compared with the themes of the same mode.
+    colours_of_themes() {
+      case "$1" in
+        dark)
+          {
+            jq -r '.. | strings | select(test("^#[0-9A-Fa-f]{6,8}$"))' ${vscode}
+            grep -oE '#[0-9A-Fa-f]{6}' ${neovim}
+            grep -oE '#[0-9A-Fa-f]{6}' ${kitty}
+          }
+          ;;
+        light)
+          {
+            jq -r '.. | strings | select(test("^#[0-9A-Fa-f]{6,8}$"))' ${vscodeLight}
+            grep -oE '#[0-9A-Fa-f]{6}' ${neovimLight}
+            grep -oE '#[0-9A-Fa-f]{6}' ${kittyLight}
+          }
+          ;;
+      esac | tr '[:lower:]' '[:upper:]' | cut -c1-7 | sort -u
+    }
 
-    # Every colour of the palette of Noctalia is one of them.
-    jq -r '.. | strings | select(test("^#[0-9A-Fa-f]{6,8}$"))' "$noctalia" \
-      | tr '[:lower:]' '[:upper:]' | cut -c1-7 | sort -u >"$TMPDIR/noctalia"
+    for mode in dark light; do
+      colours_of_themes "$mode" >"$TMPDIR/$mode-themes"
 
-    missing="$(comm -23 "$TMPDIR/noctalia" "$TMPDIR/palette")"
-    if [ -n "$missing" ]; then
-      echo "the theme of Noctalia has colours that the other ports do not have:" >&2
-      echo "$missing" >&2
-      exit 1
-    fi
+      # Every colour of the palette of Noctalia is one of them.
+      jq -r ".$mode | .. | strings | select(test(\"^#[0-9A-Fa-f]{6,8}$\"))" "$noctalia" \
+        | tr '[:lower:]' '[:upper:]' | cut -c1-7 | sort -u >"$TMPDIR/$mode-palette"
+
+      missing="$(comm -23 "$TMPDIR/$mode-palette" "$TMPDIR/$mode-themes")"
+      if [ -n "$missing" ]; then
+        echo "the $mode theme of Noctalia has colours that the other $mode ports do not have:" >&2
+        echo "$missing" >&2
+        exit 1
+      fi
+    done
 
     touch $out
   ''

@@ -65,4 +65,47 @@ require("lualine").setup({ options = { theme = "blueforest" } })
 local statusline = vim.api.nvim_get_hl(0, { name = "lualine_a_normal" })
 assert(statusline.bg == 0xffcc33, "the statusline is not painted with the theme")
 
+-- The light variant is a colourscheme of its own, and Neovim reads it.
+vim.cmd.colorscheme("blueforest-light")
+assert(vim.g.colors_name == "blueforest-light", "the light colourscheme did not set its name")
+assert(vim.o.background == "light", "the light colourscheme did not set the mode of the editor")
+
+-- And its colours are the ones of the light palette of the repository.
+local expectedLight = {
+  Normal = { fg = 0x141f2e, bg = 0xe8ecf2 },
+  Comment = { fg = 0x56697d },
+  String = { fg = 0x1e5c1e },
+  DiagnosticError = { fg = 0xb02a28 },
+  RainbowDelimiterRed = { fg = 0xb02a28 },
+  RainbowDelimiterViolet = { fg = 0x1b7a70 },
+
+  ["@comment"] = { fg = 0x56697d },
+  ["@function.call"] = { fg = 0x1b7a70 },
+  ["@keyword.conditional"] = { fg = 0x3a5f8a },
+  ["@number"] = { fg = 0xb02a28 },
+  ["@operator"] = { fg = 0xc57633 },
+  ["@punctuation.bracket"] = { fg = 0x333333 },
+  ["@string"] = { fg = 0x1e5c1e },
+  ["@variable"] = { fg = 0x333333 },
+  ["@variable.parameter"] = { fg = 0x333333 },
+}
+
+for group, colours in pairs(expectedLight) do
+  local hl = vim.api.nvim_get_hl(0, { name = group })
+  for what, colour in pairs(colours) do
+    assert(hl[what] == colour, string.format("%s.%s is %s, not %s", group, what, tostring(hl[what]), tostring(colour)))
+  end
+end
+
+-- And lualine reads the light variant of its own theme as well.
+local lualineLight = loader.load_theme("blueforest-light")
+assert(lualineLight.normal.a.bg == "#FFCC33", "lualine did not read the light theme of the repository")
+
+-- And lualine finds it on its own, because the name of the theme is the name
+-- of the colourscheme. The theme is cached by lualine, and it was loaded
+-- with the dark colourscheme, so the cache is dropped first.
+package.loaded["lualine.themes.auto"] = nil
+local autoLight = require("lualine.themes.auto")
+assert(autoLight.normal.a.bg == "#FFCC33", "lualine did not find the light theme on its own")
+
 print("the theme of the repository is the theme Neovim and lualine read")

@@ -19,12 +19,24 @@ let
         default = [ ];
       };
 
+      # The assertions of the module, which the module system of NixOS and
+      # of Home Manager knows and this one does not.
+      options.assertions = lib.mkOption {
+        type = lib.types.listOf lib.types.unspecified;
+        default = [ ];
+      };
+
       # Stubs of the options that the module of Home Manager provides. They
       # mirror the contracts documented in the documentation: the themes of OpenCode
       # are a set of themes, and its settings are a set of settings.
       options.programs.opencode = lib.mkOption {
         type = lib.types.submodule {
           options = {
+            enable = lib.mkOption {
+              type = lib.types.bool;
+              default = false;
+            };
+
             themes = lib.mkOption {
               type = lib.types.attrsOf lib.types.unspecified;
               default = { };

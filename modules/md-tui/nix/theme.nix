@@ -40,6 +40,8 @@ pkgs.runCommand "blueforest-md-tui-theme-${version}"
     mkdir -p $out/share/mdt/themes
     cp ${../themes/blueforest.json} $out/blueforest.json
     cp ${../themes/blueforest.json} $out/share/mdt/themes/blueforest.json
+    cp ${../themes/blueforest-light.json} $out/blueforest-light.json
+    cp ${../themes/blueforest-light.json} $out/share/mdt/themes/blueforest-light.json
 
     # The attribution of the theme travels with the package.
     mkdir -p $out/share/doc/blueforest

@@ -6,6 +6,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
+- The theme has a light variant now, `blueforest-light`, and the switch of the
+  variant selects the one that is installed
+- The theme is installed only when `blueforest-theme.claude-code.enable` is
+  true. A configuration that enables the theme and the template of the
+  community catalogue of Noctalia for Claude Code fails to evaluate
 - Initial release: the theme of Claude Code, packaged as
   `blueforest-claude-code-theme`
 - The Home Manager module installs the theme in the directory Claude Code

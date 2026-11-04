@@ -8,3 +8,7 @@ result-*
 site/
 .data/
 .vscode-exts/
+
+# The language server of Metals writes them in the workspace it opens.
+.metals/
+.scala-build/

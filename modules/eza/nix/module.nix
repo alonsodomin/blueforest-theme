@@ -6,9 +6,9 @@
 # of the user. This module writes it there, so that eza picks the theme up
 # without any further work.
 #
-# The module is inert unless `programs.eza.enable` is true: it does not enable
-# eza, it only adds the theme to the configuration of an eza that the consumer
-# already enabled.
+# The module is inert unless `blueforest-theme.eza.enable` is true: it does not
+# enable eza, it only adds the theme to the configuration of an eza that the
+# consumer already enabled.
 #
 # Home Manager has an option of its own for the theme of eza,
 # `programs.eza.theme`, which writes the same file. The definition here is a
@@ -22,7 +22,11 @@ let
   cfg = config.programs.eza;
 in
 {
-  config = lib.mkIf cfg.enable {
+  options.blueforest-theme.eza = {
+    enable = lib.mkEnableOption "the BlueForest theme for eza";
+  };
+
+  config = lib.mkIf (config.blueforest-theme.eza.enable && cfg.enable) {
     xdg.configFile."eza/theme.yml" = lib.mkDefault {
       source = ../themes/blueforest.yml;
     };

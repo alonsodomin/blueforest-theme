@@ -88,6 +88,12 @@ in
             ;
         };
 
+        # The roles of the theme are the roles of the other ports of the
+        # repository, so that a token is painted the same everywhere.
+        opencode-roles = import ./nix/checks/roles.nix {
+          inherit pkgs source;
+        };
+
         # The configuration documented in the documentation installs the theme where
         # OpenCode reads it, and selects it.
         opencode-configuration = import ./nix/checks/configuration.nix {

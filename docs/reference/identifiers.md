@@ -3,12 +3,60 @@
 The names that a configuration needs to refer to the packages, themes, and
 modules of the repository.
 
+## Switches
+
+Every theme of the repository has a switch of its own, and the switch is off
+by default:
+
+| Switch | Theme |
+| --- | --- |
+| `blueforest-theme.bat.enable` | The theme of bat |
+| `blueforest-theme.btop.enable` | The theme of btop |
+| `blueforest-theme.claude-code.enable` | The theme of Claude Code |
+| `blueforest-theme.eza.enable` | The theme of eza |
+| `blueforest-theme.kitty.enable` | The theme of kitty |
+| `blueforest-theme.lazygit.enable` | The theme of lazygit |
+| `blueforest-theme.md-tui.enable` | The theme of md-tui |
+| `blueforest-theme.neovim.enable` | The theme of Neovim |
+| `blueforest-theme.noctalia.enable` | The palette of Noctalia |
+| `blueforest-theme.opencode.enable` | The theme of OpenCode |
+| `blueforest-theme.sbt.enable` | The prompt of sbt |
+| `blueforest-theme.starship.enable` | The preset of Starship |
+| `blueforest-theme.yazi.enable` | The flavour of Yazi |
+
+The themes of VS Code and of Zed have no switch: they are installed as a
+package and as an extension. The stylesheet of MkDocs has one of its own,
+`blueforest-theme.mkdocs.enable`, and it is enabled by default.
+
+The themes of bat, of Claude Code, of kitty and of md-tui have a switch of
+the variant as well, `blueforest-theme.<application>.variant`, and it is
+`dark` by default:
+
+| Switch | Values |
+| --- | --- |
+| `blueforest-theme.bat.variant` | `dark`, `light` |
+| `blueforest-theme.claude-code.variant` | `dark`, `light` |
+| `blueforest-theme.kitty.variant` | `dark`, `light` |
+| `blueforest-theme.md-tui.variant` | `dark`, `light` |
+
+A theme and a template of the community catalogue of Noctalia are
+alternatives, because the two of them write the configuration of the same
+application. A configuration that enables both fails to evaluate.
+
+## Names
+
 - The VS Code package is `blueforest-vscode-theme`.
 - The VS Code extension is `alonsodomin.blueforest-theme`.
 - The theme inside VS Code is `BlueForest`. Select it with
   `"workbench.colorTheme": "BlueForest"`.
+- The light variant of the theme of VS Code is `BlueForestLight`, and it is
+  labelled **BlueForest Light** in the picker. Select it with
+  `"workbench.colorTheme": "BlueForestLight"`.
 - The bat theme is `BlueForest`, the name of the file
-  `BlueForest.tmTheme`.
+  `BlueForest.tmTheme`. Select it with `programs.bat.config.theme =
+  "BlueForest";`, or let the module `blueforest.homeModules.bat` select it
+  with `blueforest-theme.bat.enable = true;`. The light variant of the theme
+  is `BlueForestLight`, the name of the file `BlueForestLight.tmTheme`.
 - The btop package is `blueforest-btop-theme`. The btop theme is
   `blueforest.theme`, the name of the file, which btop reads from
   `$XDG_CONFIG_HOME/btop/themes/`. Select it with
@@ -16,10 +64,14 @@ modules of the repository.
 - The Starship packages are `blueforest-starship-preset` and
   `blueforest-starship`.
 - The Starship preset is `blueforest`. Select it with
-  `programs.starship.presets = [ "blueforest" ];`.
+  `programs.starship.presets = [ "blueforest" ];`, or let the module
+  `blueforest.homeModules.starship` select it with
+  `blueforest-theme.starship.enable = true;`.
 - The OpenCode package is `blueforest-opencode-theme`.
 - The OpenCode theme is `blueforest`, the name of the file. Select it with
-  `programs.opencode.cli.theme = { name = "blueforest"; mode = "dark"; };`.
+  `programs.opencode.cli.theme = { name = "blueforest"; mode = "system"; };`.
+  The theme carries a dark variant and a light one, and `system` follows the
+  appearance of the terminal.
 - The sbt package is `blueforest-sbt-prompt`. The module
   `blueforest.homeModules.sbt` installs it when `programs.sbt.enable = true`.
 - The sbt prompt is the `BlueforestTheme` of the
@@ -27,7 +79,8 @@ modules of the repository.
   option to select another theme: the module selects that one.
 - The Neovim package is `blueforest-neovim-theme`.
 - The Neovim colourscheme is `blueforest`, the name of the file. Select it
-  with `vim.cmd.colorscheme("blueforest")`.
+  with `vim.cmd.colorscheme("blueforest")`. The light variant of the theme is
+  `blueforest-light`, and it sets the mode of the editor to `light`.
 - The lualine theme is `blueforest` as well, and lualine finds it on its own.
 - The eza package is `blueforest-eza-theme`. The eza theme is `blueforest`,
   the name of the file. eza reads it as `theme.yml`, from
@@ -38,16 +91,21 @@ modules of the repository.
   `BlueForest - Dark`, the name it has in the theme picker of Zed. The
   extension lives in its own repository,
   [alonsodomin/zed-blueforest-theme](https://github.com/alonsodomin/zed-blueforest-theme),
-  which is a submodule of the application.
+  which is a submodule of the application. The light variant of the theme is
+  `BlueForest - Light`.
 - The Yazi package is `blueforest-yazi-theme`. The Yazi flavour is
   `blueforest`, the name of the directory `blueforest.yazi`, which Yazi reads
   from `$XDG_CONFIG_HOME/yazi/flavors/`. Select it with
-  `[flavor] dark = "blueforest"` in the theme of the user.
+  `[flavor] dark = "blueforest"` in the theme of the user. The light variant
+  of the flavour is `blueforest-light`, the name of the directory
+  `blueforest-light.yazi`.
 - The kitty package is `blueforest-kitty-theme`. The kitty theme is
   `blueforest`, the name of the file `blueforest.conf`, which kitty reads
   from `$XDG_CONFIG_HOME/kitty/themes/`. Select it with
   `include themes/blueforest.conf` in the configuration of kitty. The
-  `themes` kitten lists it under the name `BlueForest`.
+  `themes` kitten lists it under the name `BlueForest`. The light variant of
+  the theme is `blueforest-light`, the name of the file `blueforest-light.conf`,
+  and the `themes` kitten lists it under the name `BlueForest Light`.
 - The lazygit package is `blueforest-lazygit-theme`. The lazygit theme is the
   `gui.theme` mapping of the configuration file of lazygit, and the file of
   the theme is `blueforest.json`, which lazygit reads as
@@ -56,19 +114,25 @@ modules of the repository.
   `programs.lazygit.enable = true`.
 - The md-tui package is `blueforest-md-tui-theme`. The md-tui theme is
   `blueforest`, the name of the file `blueforest.json`, which md-tui reads
-  from `$HOME/.config/mdt/themes/`. Select it with `blueforest.md-tui.enable =
-  true;`, which makes the module write the theme and the selection of it.
+  from `$HOME/.config/mdt/themes/`. Select it with `blueforest-theme.md-tui.enable =
+  true;`, which makes the module write the theme and the selection of it. The
+  light variant of the theme is `blueforest-light`.
 - The Noctalia package is `blueforest-noctalia-theme`. The Noctalia palette is
   `blueforest`, the name of the file `blueforest.json`, which Noctalia reads
   from `$XDG_CONFIG_HOME/noctalia/palettes/`. Select it with
   `[theme] source = "custom"` and `custom_palette = "blueforest"` in the
   configuration of Noctalia. The module `blueforest.homeModules.noctalia`
-  writes the palette and the selection when `programs.noctalia.enable = true`.
+  writes the palette and the selection when `programs.noctalia.enable = true`
+  and `blueforest-theme.noctalia.enable = true`. The package carries the
+  palette in the format 2 of the community palette registry as well, under
+  the name `blueforest-v2.json`.
 - The Claude Code package is `blueforest-claude-code-theme`. The Claude Code
   theme is `blueforest`, the name of the file `blueforest.json`, which Claude
   Code reads from `$HOME/.claude/themes/`. Select it with
-  `"theme": "custom:blueforest"` in `$HOME/.claude/settings.json`.
+  `"theme": "custom:blueforest"` in `$HOME/.claude/settings.json`. The light
+  variant of the theme is `blueforest-light`.
 - The MkDocs package is `blueforest-mkdocs-theme`. The MkDocs stylesheet is
   `blueforest`, the name of the file `blueforest.css`, which MkDocs reads
-  through the `extra_css` option of its configuration. The theme only
-  recolours the dark scheme of Material for MkDocs.
+  through the `extra_css` option of its configuration. The theme recolours
+  both schemes of Material for MkDocs: the dark one, `slate`, and the light
+  one, `default`.

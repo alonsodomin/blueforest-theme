@@ -21,12 +21,17 @@ jobs:
         mkdir -p dist
         cp modules/bat/themes/BlueForest.tmTheme \
           "dist/blueforest-bat-theme-$VERSION.tmTheme"
+        cp modules/bat/themes/BlueForestLight.tmTheme \
+          "dist/blueforest-bat-theme-light-$VERSION.tmTheme"
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TAG: v${{ needs.version.outputs.version }}
         VERSION: ${{ needs.version.outputs.version }}
-      name: Upload the asset to the release
-      run: gh release upload "$TAG" "dist/blueforest-bat-theme-$VERSION.tmTheme" --clobber
+      name: Upload the assets to the release
+      run: |-
+        for asset in dist/blueforest-bat-theme-$VERSION.tmTheme dist/blueforest-bat-theme-light-$VERSION.tmTheme; do
+          gh release upload "$TAG" "$asset" --clobber
+        done
   btop:
     name: 'btop: Package'
     needs:
@@ -48,8 +53,11 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TAG: v${{ needs.version.outputs.version }}
         VERSION: ${{ needs.version.outputs.version }}
-      name: Upload the asset to the release
-      run: gh release upload "$TAG" "dist/blueforest-btop-theme-$VERSION.theme" --clobber
+      name: Upload the assets to the release
+      run: |-
+        for asset in dist/blueforest-btop-theme-$VERSION.theme; do
+          gh release upload "$TAG" "$asset" --clobber
+        done
   checks:
     name: Checks (${{ matrix.flake }})
     runs-on: ubuntu-latest
@@ -100,13 +108,17 @@ jobs:
         mkdir -p dist
         cp modules/claude-code/themes/blueforest.json \
           "dist/blueforest-claude-code-theme-$VERSION.json"
+        cp modules/claude-code/themes/blueforest-light.json \
+          "dist/blueforest-claude-code-theme-light-$VERSION.json"
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TAG: v${{ needs.version.outputs.version }}
         VERSION: ${{ needs.version.outputs.version }}
-      name: Upload the asset to the release
-      run: gh release upload "$TAG" "dist/blueforest-claude-code-theme-$VERSION.json"
-        --clobber
+      name: Upload the assets to the release
+      run: |-
+        for asset in dist/blueforest-claude-code-theme-$VERSION.json dist/blueforest-claude-code-theme-light-$VERSION.json; do
+          gh release upload "$TAG" "$asset" --clobber
+        done
   create-release:
     name: Create the release
     needs:
@@ -203,8 +215,11 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TAG: v${{ needs.version.outputs.version }}
         VERSION: ${{ needs.version.outputs.version }}
-      name: Upload the asset to the release
-      run: gh release upload "$TAG" "dist/blueforest-eza-theme-$VERSION.yml" --clobber
+      name: Upload the assets to the release
+      run: |-
+        for asset in dist/blueforest-eza-theme-$VERSION.yml; do
+          gh release upload "$TAG" "$asset" --clobber
+        done
   kitty:
     name: 'kitty: Package'
     needs:
@@ -222,12 +237,17 @@ jobs:
         mkdir -p dist
         cp modules/kitty/themes/blueforest.conf \
           "dist/blueforest-kitty-theme-$VERSION.conf"
+        cp modules/kitty/themes/blueforest-light.conf \
+          "dist/blueforest-kitty-theme-light-$VERSION.conf"
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TAG: v${{ needs.version.outputs.version }}
         VERSION: ${{ needs.version.outputs.version }}
-      name: Upload the asset to the release
-      run: gh release upload "$TAG" "dist/blueforest-kitty-theme-$VERSION.conf" --clobber
+      name: Upload the assets to the release
+      run: |-
+        for asset in dist/blueforest-kitty-theme-$VERSION.conf dist/blueforest-kitty-theme-light-$VERSION.conf; do
+          gh release upload "$TAG" "$asset" --clobber
+        done
   lazygit:
     name: 'lazygit: Package'
     needs:
@@ -249,9 +269,11 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TAG: v${{ needs.version.outputs.version }}
         VERSION: ${{ needs.version.outputs.version }}
-      name: Upload the asset to the release
-      run: gh release upload "$TAG" "dist/blueforest-lazygit-theme-$VERSION.json"
-        --clobber
+      name: Upload the assets to the release
+      run: |-
+        for asset in dist/blueforest-lazygit-theme-$VERSION.json; do
+          gh release upload "$TAG" "$asset" --clobber
+        done
   md-tui:
     name: 'md-tui: Package'
     needs:
@@ -269,12 +291,17 @@ jobs:
         mkdir -p dist
         cp modules/md-tui/themes/blueforest.json \
           "dist/blueforest-md-tui-theme-$VERSION.json"
+        cp modules/md-tui/themes/blueforest-light.json \
+          "dist/blueforest-md-tui-theme-light-$VERSION.json"
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TAG: v${{ needs.version.outputs.version }}
         VERSION: ${{ needs.version.outputs.version }}
-      name: Upload the asset to the release
-      run: gh release upload "$TAG" "dist/blueforest-md-tui-theme-$VERSION.json" --clobber
+      name: Upload the assets to the release
+      run: |-
+        for asset in dist/blueforest-md-tui-theme-$VERSION.json dist/blueforest-md-tui-theme-light-$VERSION.json; do
+          gh release upload "$TAG" "$asset" --clobber
+        done
   mkdocs:
     name: 'MkDocs: Package'
     needs:
@@ -296,8 +323,11 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TAG: v${{ needs.version.outputs.version }}
         VERSION: ${{ needs.version.outputs.version }}
-      name: Upload the asset to the release
-      run: gh release upload "$TAG" "dist/blueforest-mkdocs-theme-$VERSION.css" --clobber
+      name: Upload the assets to the release
+      run: |-
+        for asset in dist/blueforest-mkdocs-theme-$VERSION.css; do
+          gh release upload "$TAG" "$asset" --clobber
+        done
   neovim:
     name: 'Neovim: Package'
     needs:
@@ -321,9 +351,11 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TAG: v${{ needs.version.outputs.version }}
         VERSION: ${{ needs.version.outputs.version }}
-      name: Upload the asset to the release
-      run: gh release upload "$TAG" "dist/blueforest-neovim-theme-$VERSION.tar.gz"
-        --clobber
+      name: Upload the assets to the release
+      run: |-
+        for asset in dist/blueforest-neovim-theme-$VERSION.tar.gz; do
+          gh release upload "$TAG" "$asset" --clobber
+        done
   noctalia:
     name: 'Noctalia: Package'
     needs:
@@ -345,9 +377,11 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TAG: v${{ needs.version.outputs.version }}
         VERSION: ${{ needs.version.outputs.version }}
-      name: Upload the asset to the release
-      run: gh release upload "$TAG" "dist/blueforest-noctalia-theme-$VERSION.json"
-        --clobber
+      name: Upload the assets to the release
+      run: |-
+        for asset in dist/blueforest-noctalia-theme-$VERSION.json; do
+          gh release upload "$TAG" "$asset" --clobber
+        done
   opencode:
     name: 'OpenCode: Package'
     needs:
@@ -369,9 +403,11 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TAG: v${{ needs.version.outputs.version }}
         VERSION: ${{ needs.version.outputs.version }}
-      name: Upload the asset to the release
-      run: gh release upload "$TAG" "dist/blueforest-opencode-theme-$VERSION.json"
-        --clobber
+      name: Upload the assets to the release
+      run: |-
+        for asset in dist/blueforest-opencode-theme-$VERSION.json; do
+          gh release upload "$TAG" "$asset" --clobber
+        done
   publish-release:
     name: Publish the release
     needs:
@@ -421,8 +457,11 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TAG: v${{ needs.version.outputs.version }}
         VERSION: ${{ needs.version.outputs.version }}
-      name: Upload the asset to the release
-      run: gh release upload "$TAG" "dist/blueforest-sbt-prompt-$VERSION.tar.gz" --clobber
+      name: Upload the assets to the release
+      run: |-
+        for asset in dist/blueforest-sbt-prompt-$VERSION.tar.gz; do
+          gh release upload "$TAG" "$asset" --clobber
+        done
   starship:
     name: 'Starship: Package'
     needs:
@@ -444,9 +483,11 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TAG: v${{ needs.version.outputs.version }}
         VERSION: ${{ needs.version.outputs.version }}
-      name: Upload the asset to the release
-      run: gh release upload "$TAG" "dist/blueforest-starship-preset-$VERSION.toml"
-        --clobber
+      name: Upload the assets to the release
+      run: |-
+        for asset in dist/blueforest-starship-preset-$VERSION.toml; do
+          gh release upload "$TAG" "$asset" --clobber
+        done
   version:
     name: Version
     outputs:
@@ -500,8 +541,11 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TAG: v${{ needs.version.outputs.version }}
         VERSION: ${{ needs.version.outputs.version }}
-      name: Upload the asset to the release
-      run: gh release upload "$TAG" "dist/blueforest-theme-$VERSION.vsix" --clobber
+      name: Upload the assets to the release
+      run: |-
+        for asset in dist/blueforest-theme-$VERSION.vsix; do
+          gh release upload "$TAG" "$asset" --clobber
+        done
     - env:
         OVSX_PAT: ${{ secrets.OVSX_PAT }}
       name: Publish to Open VSX
@@ -528,20 +572,28 @@ jobs:
         mkdir -p dist staging
         cp -r modules/yazi/themes/blueforest.yazi \
           "staging/blueforest.yazi"
+        cp -r modules/yazi/themes/blueforest-light.yazi \
+          "staging/blueforest-light.yazi"
 
         # The colours of the code preview are the ones of the theme of bat, so
         # the asset carries it. The asset is unpacked by hand, so it cannot
-        # carry a link to the store: it carries the theme itself.
+        # carry a link to the store: it carries the theme itself. Every flavour
+        # carries the variant of the theme of bat that matches it.
         cp modules/bat/themes/BlueForest.tmTheme \
           "staging/blueforest.yazi/tmtheme.xml"
+        cp modules/bat/themes/BlueForestLight.tmTheme \
+          "staging/blueforest-light.yazi/tmtheme.xml"
 
         tar -czf "dist/blueforest-yazi-theme-$VERSION.tar.gz" -C staging .
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TAG: v${{ needs.version.outputs.version }}
         VERSION: ${{ needs.version.outputs.version }}
-      name: Upload the asset to the release
-      run: gh release upload "$TAG" "dist/blueforest-yazi-theme-$VERSION.tar.gz" --clobber
+      name: Upload the assets to the release
+      run: |-
+        for asset in dist/blueforest-yazi-theme-$VERSION.tar.gz; do
+          gh release upload "$TAG" "$asset" --clobber
+        done
   zed:
     name: 'Zed: Package'
     needs:
@@ -565,8 +617,11 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TAG: v${{ needs.version.outputs.version }}
         VERSION: ${{ needs.version.outputs.version }}
-      name: Upload the asset to the release
-      run: gh release upload "$TAG" "dist/blueforest-zed-theme-$VERSION.tar.gz" --clobber
+      name: Upload the assets to the release
+      run: |-
+        for asset in dist/blueforest-zed-theme-$VERSION.tar.gz; do
+          gh release upload "$TAG" "$asset" --clobber
+        done
 name: Release
 'on':
   push:

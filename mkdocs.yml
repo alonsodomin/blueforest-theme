@@ -74,6 +74,7 @@ theme:
 
 extra_css:
   - assets/stylesheets/blueforest.css
+  - assets/stylesheets/palettes.css
 
 plugins:
   - search

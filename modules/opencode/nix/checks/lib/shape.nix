@@ -23,8 +23,8 @@
   theme,
 }:
 let
-  # The mode of the theme. It is a dark theme, so it has one mode.
-  mode = if (theme ? dark) then theme.dark else (theme.light or { });
+  # The modes of the theme. It has one per appearance it supports.
+  modes = lib.filterAttrs (name: _: name == "light" || name == "dark") theme;
 
   # The tokens of the base, the ones OpenCode reads.
   tokens = [
@@ -324,8 +324,13 @@ let
   # The tokens the theme does not have.
   missingTokens = lib.filter (path: !(lib.hasAttrByPath path (theme.base or { }))) tokens;
 
-  # And the aliases the mode does not have.
-  missingAliases = lib.filter (path: !(lib.hasAttrByPath path (mode.hue or { }))) aliases;
+  # And the aliases the modes do not have. Every mode has to have them: the
+  # modes do not inherit from each other.
+  missingAliases = lib.concatLists (
+    lib.mapAttrsToList (
+      _: mode: lib.filter (path: !(lib.hasAttrByPath path (mode.hue or { }))) aliases
+    ) modes
+  );
 in
 {
   inherit missingAliases missingTokens;

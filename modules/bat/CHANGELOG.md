@@ -6,6 +6,16 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
+- The package carries the light variant of the theme as well,
+  `BlueForestLight`
+- The theme has a light variant now, `BlueForestLight`, and the switch of the
+  variant selects the one that is installed
+- The theme has a Home Manager module now, which installs it in the
+  directory bat reads the themes from, selects it in the configuration
+  of bat, and it writes nothing when bat is not enabled
+- The theme is installed only when `blueforest-theme.bat.enable` is true. A
+  configuration that enables the theme and the template of the
+  community catalogue of Noctalia for bat fails to evaluate
 - Initial release: the theme of bat, packaged as `blueforest-bat-theme`
 - The theme is installed in the configuration directory of bat, which is where
   bat reads the themes from, and the cache of bat is rebuilt, so that the

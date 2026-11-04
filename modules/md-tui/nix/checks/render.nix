@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MPL-2.0
 #
-# Checks that md-tui reads the theme of the repository and paints with it.
+# Checks that md-tui reads the themes of the repository and paints with them.
 #
 # md-tui ignores a palette it cannot read, and it does so silently: the
 # interface falls back to the colours it ships with. The check therefore
@@ -22,9 +22,13 @@
 # md-tui reads the palette of the theme and the selection of it from the
 # configuration directory of the user, which the check points at a scratch
 # one.
+#
+# The themes have a variant per mode, and every one of them is rendered and
+# looked at.
 {
   pkgs,
   source,
+  sourceLight,
 }:
 pkgs.runCommand "blueforest-md-tui-render-check"
   {
@@ -36,17 +40,15 @@ pkgs.runCommand "blueforest-md-tui-render-check"
   }
   ''
     work="$TMPDIR/work"
-    themed="$TMPDIR/themed"
-    tree="$TMPDIR/tree"
-    plain="$TMPDIR/plain"
 
     export HOME="$TMPDIR"
 
     mkdir -p "$work/themed/.config/mdt/themes" "$work/plain/.config/mdt" \
       "$work/document"
 
-    # The palette of the theme, and the selection of it.
+    # The palettes of the themes, and the selection of the dark one.
     cp ${source} "$work/themed/.config/mdt/themes/blueforest.json"
+    cp ${sourceLight} "$work/themed/.config/mdt/themes/blueforest-light.json"
     printf 'blueforest\n' >"$work/themed/.config/mdt/selected-theme"
 
     # The document md-tui renders. It carries an element of every kind whose
@@ -104,6 +106,11 @@ pkgs.runCommand "blueforest-md-tui-render-check"
       grep -aqE "$(printf '\033\\[38;2;%s' "$colours")(;[0-9]+)*m''${word}" "$out"
     }
 
+    # The theme of the dark variant is rendered first.
+    themed="$TMPDIR/themed-dark"
+    tree="$TMPDIR/tree-dark"
+    plain="$TMPDIR/plain"
+
     render "$work/themed" "$themed" "blueforest.md"
 
     # The heading is painted with the colour of the text on the colour of the
@@ -141,6 +148,48 @@ pkgs.runCommand "blueforest-md-tui-render-check"
     painted "$tree" "208;208;208" "blueforest.md"
     painted "$tree" "86;105;125" "./blueforest.md"
     painted "$tree" "145;204;255" ".*1/1"
+
+    # And the light variant is rendered as well, with the selection of it.
+    printf 'blueforest-light\n' >"$work/themed/.config/mdt/selected-theme"
+
+    light="$TMPDIR/themed-light"
+    treeLight="$TMPDIR/tree-light"
+
+    render "$work/themed" "$light" "blueforest.md"
+
+    # The heading is painted with the colour of the text on the colour of the
+    # banner, with the colours of the light palette.
+    painted "$light" "232;236;242;48;2;58;95;138" "Heading one"
+
+    # The inline styles are painted with the colour of each one of them.
+    painted "$light" "86;105;125" "italic"
+    painted "$light" "20;31;46" "bold"
+    painted "$light" "127;143;163" "struck"
+
+    # The link is painted with the colour of the links.
+    painted "$light" "58;95;138" "link"
+
+    # The inline code is painted with the colour of the code on the colour
+    # of its background.
+    painted "$light" "30;92;30;48;2;224;228;234" "inline"
+
+    # The header of the table is painted with the colour of the headers,
+    # after the border of the table.
+    painted "$light" "179;135;31;48;2;224;228;234" ".*Column"
+
+    # And the code block is painted with the colours of the syntax: the
+    # keyword is blue, the function is the teal, and the string is the
+    # green, all of them on the colour of the background of the block.
+    painted "$light" "58;95;138;48;2;224;228;234" "fn"
+    painted "$light" "27;122;112;48;2;224;228;234" "main"
+    painted "$light" "30;92;30;48;2;224;228;234" '"hello"'
+
+    # And the file tree is painted with the colours of the light palette.
+    render "$work/themed" "$treeLight" ""
+
+    painted "$treeLight" "20;31;46" "blueforest.md"
+    painted "$treeLight" "127;143;163" "./blueforest.md"
+    painted "$treeLight" "58;95;138" ".*1/1"
 
     # Without the theme, md-tui paints with the colours it ships with, and
     # none of them is one of ours: they are the sixteen colours of the

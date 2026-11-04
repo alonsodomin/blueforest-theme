@@ -60,6 +60,7 @@
 
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-parts.follows = "flake-parts";
+      inputs.home-manager.follows = "home-manager";
     };
 
     starship = {
@@ -315,6 +316,7 @@
               config.flake.homeModules.lazygit
               config.flake.homeModules.md-tui
               config.flake.homeModules.noctalia
+              config.flake.homeModules.bat
             ];
           };
         };
@@ -443,6 +445,8 @@
                 theme = (top.config.flake.overlays.zed pkgs pkgs).blueforest-zed-theme;
                 vscode = ./modules/vscode/themes/Blueforest-color-theme.json;
                 neovim = ./modules/neovim/themes/blueforest.lua;
+                vscodeLight = ./modules/vscode/themes/Blueforest-light-color-theme.json;
+                neovimLight = ./modules/neovim/themes/blueforest-light.lua;
               };
 
               # Fails if the colours of the theme of lazygit are not the
@@ -472,6 +476,34 @@
                 vscode = ./modules/vscode/themes/Blueforest-color-theme.json;
                 neovim = ./modules/neovim/themes/blueforest.lua;
                 kitty = ./modules/kitty/themes/blueforest.conf;
+                vscodeLight = ./modules/vscode/themes/Blueforest-light-color-theme.json;
+                neovimLight = ./modules/neovim/themes/blueforest-light.lua;
+                kittyLight = ./modules/kitty/themes/blueforest-light.conf;
+              };
+
+              # Fails if the swatches of the palettes of the documentation are
+              # not the colours of the palette of Noctalia.
+              palette-swatches = import ./tests/palette-swatches.nix {
+                inherit pkgs;
+                docs = ./docs/index.md;
+                palette = ./modules/noctalia/themes/blueforest.json;
+              };
+
+              # Fails if the colours of the light themes are not the colours
+              # of the light palette of Noctalia.
+              light-colours = import ./tests/light-colours.nix {
+                inherit pkgs;
+                vscode = ./modules/vscode/themes/Blueforest-light-color-theme.json;
+                opencode = ./modules/opencode/themes/blueforest.json;
+                bat = ./modules/bat/themes/BlueForestLight.tmTheme;
+                claudeCode = ./modules/claude-code/themes/blueforest-light.json;
+                mdTui = ./modules/md-tui/themes/blueforest-light.json;
+                neovim = ./modules/neovim/themes/blueforest-light.lua;
+                yazi = ./modules/yazi/themes/blueforest-light.yazi/flavor.toml;
+                mkdocs = ./modules/mkdocs/themes/blueforest.css;
+                zed = ./modules/zed/extension/themes/blueforest.json;
+                kitty = ./modules/kitty/themes/blueforest-light.conf;
+                palette = ./modules/noctalia/themes/blueforest.json;
               };
 
               # Fails if the theme of the code preview of Yazi is not the
@@ -480,6 +512,7 @@
                 inherit pkgs;
                 yazi = (top.config.flake.overlays.yazi pkgs pkgs).blueforest-yazi-theme;
                 bat = ./modules/bat/themes/BlueForest.tmTheme;
+                batLight = ./modules/bat/themes/BlueForestLight.tmTheme;
               };
 
               # Fails if the asset of the release of Yazi does not carry the

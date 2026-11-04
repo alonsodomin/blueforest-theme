@@ -8,7 +8,8 @@ It recolours the code blocks of the site: the background, the foreground, and
 the colours of the tokens of the syntax highlighting. The theme follows the
 palette of BlueForest, the one of the other applications of this repository.
 
-The stylesheet applies to the dark scheme of Material alone. The light scheme
+The stylesheet has a variant per mode: the dark scheme of Material gets the
+dark palette, and the light scheme gets the light one. The rest of the site
 keeps the palette of Material, which is the one the site is readable with.
 
 ## How MkDocs reads the theme
@@ -69,20 +70,20 @@ The site is then the `documentation` package of the flake:
 nix build .#documentation
 ```
 
-The options of the module are `blueforest.mkdocs.*`, and they are set in the
+The options of the module are `blueforest-theme.mkdocs.*`, and they are set in the
 `perSystem` of the flake, next to the options of the documentation:
 
 ```nix
 perSystem = { ... }: {
-  blueforest.mkdocs.enable = true;
+  blueforest-theme.mkdocs.enable = true;
 };
 ```
 
 | Option | Default | Description |
 | --- | --- | --- |
-| `blueforest.mkdocs.enable` | `true` | Whether to install the stylesheet in the sources of the site |
-| `blueforest.mkdocs.docsDir` | `"docs"` | The directory of the sources of the site, relative to the root of the project |
-| `blueforest.mkdocs.path` | `"assets/stylesheets/blueforest.css"` | The path of the stylesheet inside the sources of the site |
+| `blueforest-theme.mkdocs.enable` | `true` | Whether to install the stylesheet in the sources of the site |
+| `blueforest-theme.mkdocs.docsDir` | `"docs"` | The directory of the sources of the site, relative to the root of the project |
+| `blueforest-theme.mkdocs.path` | `"assets/stylesheets/blueforest.css"` | The path of the stylesheet inside the sources of the site |
 
 The hook that installs the stylesheet is appended to the hook of the consumer,
 so a project that needs to prepare the sources of the site keeps working:

@@ -81,12 +81,14 @@ in
         # one Claude Code reads.
         claude-code-theme = import ./nix/checks/theme.nix {
           inherit pkgs source theme;
+          sourceLight = ./themes/blueforest-light.json;
         };
 
         # The Home Manager module installs the theme where Claude Code reads
         # the themes from, and it selects it.
         claude-code-module = import ./nix/checks/module.nix {
           inherit source;
+          sourceLight = ./themes/blueforest-light.json;
           pkgs = basePkgs;
           homeManager = appInputs.home-manager;
           module = config.flake.homeModules.claude-code;

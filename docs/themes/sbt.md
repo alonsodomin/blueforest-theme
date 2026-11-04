@@ -7,7 +7,7 @@ does not define the prompt: it declares the plugin and selects its theme.
 The plugin is declared as:
 
 ```scala
-addSbtPlugin("com.github.alonsodomin" % "sbt-prompt" % "3.1.0")
+addSbtPlugin("com.github.alonsodomin" % "sbt-prompt" % "3.2.1")
 ```
 
 and the prompt is selected with:
@@ -45,12 +45,17 @@ selection in the global configuration of both generations of sbt:
   ];
 
   programs.sbt.enable = true;
+  blueforest-theme.sbt.enable = true;
 }
 ```
 
 The module does not enable sbt: it only writes the files when
-`programs.sbt.enable` is true. It writes both generations, because a consumer
-may run either of them.
+`programs.sbt.enable` is true and when `blueforest-theme.sbt.enable` is true. It
+writes both generations, because a consumer may run either of them.
+
+The switch of the prompt is `blueforest-theme.sbt.enable`, and not
+`programs.sbt.enable`, so that every theme of the repository is turned on and
+off on its own.
 
 | File | sbt 1.x | sbt 2.x |
 | --- | --- | --- |
@@ -81,7 +86,7 @@ the theme in `build.sbt`:
 
 ```scala
 // project/plugins.sbt
-addSbtPlugin("com.github.alonsodomin" % "sbt-prompt" % "3.1.0")
+addSbtPlugin("com.github.alonsodomin" % "sbt-prompt" % "3.2.1")
 ```
 
 ```scala

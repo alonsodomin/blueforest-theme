@@ -12,6 +12,7 @@
   homeManager,
   module,
   source,
+  sourceLight,
 }:
 let
   # The identity of the user of the configuration, so that the paths of the
@@ -33,12 +34,18 @@ let
       ];
     }).config;
 
-  enabled = evaluate { blueforest.md-tui.enable = true; };
+  enabled = evaluate { blueforest-theme.md-tui.enable = true; };
   disabled = evaluate { };
+
+  # A consumer that asks for the light variant of the theme.
+  light = evaluate {
+    blueforest-theme.md-tui.enable = true;
+    blueforest-theme.md-tui.variant = "light";
+  };
 
   # A consumer that selects a theme of its own.
   own = evaluate {
-    blueforest.md-tui.enable = true;
+    blueforest-theme.md-tui.enable = true;
     home.file.".config/mdt/selected-theme".text = "another\n";
   };
 
@@ -46,6 +53,14 @@ let
     enabled = {
       palette = enabled.home.file.".config/mdt/themes/blueforest.json".source;
       selection = enabled.home.file.".config/mdt/selected-theme".text;
+    };
+
+    # The light variant is a palette of its own, and it is the one that is
+    # installed when the consumer asks for it.
+    light = {
+      palette = light.home.file.".config/mdt/themes/blueforest-light.json".source;
+      selection = light.home.file.".config/mdt/selected-theme".text;
+      darkInstalled = light.home.file ? ".config/mdt/themes/blueforest.json";
     };
 
     # The module does not enable md-tui, so a configuration that does not ask
@@ -81,6 +96,15 @@ pkgs.runCommand "blueforest-md-tui-module-check"
 
     # And the theme that ends up installed is the theme of the repository.
     cmp "$(echo "$result" | jq -r '.enabled.palette')" ${source}
+
+    # The light variant is installed instead of the dark one, and it is the
+    # one that is selected.
+    echo "$result" | jq -e '
+      (.light.darkInstalled | not)
+    ' >/dev/null
+    cmp "$(echo "$result" | jq -r '.light.palette')" ${sourceLight}
+    echo "$result" | jq -r '.light.selection' >"$TMPDIR/light-selected-theme"
+    grep -q '^blueforest-light$' "$TMPDIR/light-selected-theme"
 
     # The selection of the theme names the theme of the repository.
     echo "$result" | jq -r '.enabled.selection' >"$TMPDIR/selected-theme"

@@ -1,0 +1,23 @@
+/*
+ * SPDX-License-Identifier: MPL-2.0
+ *
+ * The swatches of the colour palettes of the documentation.
+ *
+ * A swatch is a small box filled with the colour it shows, and it sits next
+ * to the hexadecimal value of the colour. The border keeps the light colours
+ * of the light palette visible on a light page, and the dark ones visible on
+ * a dark one.
+ *
+ * The colour of the swatch is set where the swatch is, with the
+ * `background-color` property, so that the palettes of the documentation are
+ * written in one place only: the Markdown that carries them.
+ */
+.blueforest-swatch {
+  display: inline-block;
+  width: 0.9em;
+  height: 0.9em;
+  margin-left: 0.35em;
+  border: 1px solid rgba(128, 128, 128, 0.6);
+  border-radius: 3px;
+  vertical-align: -0.1em;
+}

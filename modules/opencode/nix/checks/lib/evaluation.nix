@@ -31,6 +31,9 @@ let
         # The consumer has to enable OpenCode: the theme is part of the
         # configuration of the program.
         programs.opencode.enable = true;
+
+        # And it has to ask for the theme of this repository.
+        blueforest-theme.opencode.enable = true;
       }
     ];
   };
@@ -40,6 +43,34 @@ let
   # The files Home Manager writes for OpenCode.
   themeFile = config.xdg.configFile."opencode/themes/blueforest.json";
   cliFile = config.xdg.configFile."opencode/cli.json";
+
+  # A configuration that enables the theme of the repository and the template
+  # of Noctalia for OpenCode: it fails to evaluate.
+  conflict =
+    if
+      (builtins.tryEval
+        (homeManager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          inherit (pkgs) lib;
+          modules = [
+            module
+            {
+              home.username = "blueforest";
+              home.homeDirectory = "/home/blueforest";
+              home.stateVersion = "26.11";
+
+              programs.opencode.enable = true;
+              blueforest-theme.opencode.enable = true;
+
+              programs.noctalia.settings.theme.templates.community_ids = [ "opencode" ];
+            }
+          ];
+        }).config.home.username
+      ).success
+    then
+      "no"
+    else
+      "yes";
 in
 {
   # The theme ends up in the directory OpenCode reads the themes from.
@@ -56,4 +87,8 @@ in
   # The settings of the terminal, as the module system resolved them.
   selectedTheme = config.programs.opencode.cli.theme.name or null;
   selectedMode = config.programs.opencode.cli.theme.mode or null;
+
+  # Whether the conflict with the template of Noctalia for OpenCode fails
+  # the evaluation of the configuration.
+  inherit conflict;
 }

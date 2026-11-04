@@ -79,11 +79,12 @@ in
       source = ./themes/blueforest.css;
     in
     {
-      options.blueforest.mkdocs = {
-        enable = lib.mkOption {
-          type = lib.types.bool;
+      options.blueforest-theme.mkdocs = {
+        # The option is enabled by default: the stylesheet of the theme is
+        # part of the documentation of the repository, and a consumer that
+        # does not want it turns it off.
+        enable = lib.mkEnableOption "the stylesheet of the theme in the sources of the documentation" // {
           default = true;
-          description = "Whether to install the stylesheet of the theme in the sources of the documentation.";
         };
 
         docsDir = lib.mkOption {
@@ -107,10 +108,10 @@ in
             # with the permissions they have in the store, and the store is
             # read-only. The stylesheet is written into one of those
             # directories, so the sources are made writable first.
-            chmod -R u+w ${config.blueforest.mkdocs.docsDir} 2>/dev/null || true
-            rm -f ${config.blueforest.mkdocs.docsDir}/${config.blueforest.mkdocs.path}
+            chmod -R u+w ${config.blueforest-theme.mkdocs.docsDir} 2>/dev/null || true
+            rm -f ${config.blueforest-theme.mkdocs.docsDir}/${config.blueforest-theme.mkdocs.path}
             install -Dm644 ${config.packages.blueforest-mkdocs-theme}/blueforest.css \
-              ${config.blueforest.mkdocs.docsDir}/${config.blueforest.mkdocs.path}
+              ${config.blueforest-theme.mkdocs.docsDir}/${config.blueforest-theme.mkdocs.path}
           '';
         };
       };
@@ -130,7 +131,7 @@ in
           mkdocs-render = import ./nix/checks/render.nix {
             inherit pkgs theme;
             mkdocs = config.documentation.mkdocs-package;
-            preBuildHook = config.blueforest.mkdocs.preBuildHook;
+            preBuildHook = config.blueforest-theme.mkdocs.preBuildHook;
           };
         };
 
@@ -138,7 +139,7 @@ in
         # has copied the sources of the site into the build directory. It is
         # appended to the hook of the consumer, so that both of them run.
         documentation.mkdocs-preBuildHook = lib.mkAfter (
-          if config.blueforest.mkdocs.enable then config.blueforest.mkdocs.preBuildHook else ""
+          if config.blueforest-theme.mkdocs.enable then config.blueforest-theme.mkdocs.preBuildHook else ""
         );
       };
     };

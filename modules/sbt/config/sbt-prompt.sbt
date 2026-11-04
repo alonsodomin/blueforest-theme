@@ -2,4 +2,4 @@
 //
 // The sbt-prompt plugin, which is where the BlueForest prompt is defined:
 // https://github.com/alonsodomin/sbt-prompt
-addSbtPlugin("com.github.alonsodomin" % "sbt-prompt" % "3.1.0")
+addSbtPlugin("com.github.alonsodomin" % "sbt-prompt" % "3.2.1")

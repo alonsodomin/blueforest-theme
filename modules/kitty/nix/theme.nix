@@ -32,6 +32,8 @@ pkgs.runCommand "blueforest-kitty-theme-${version}"
     mkdir -p $out/share/kitty/themes
     cp ${../themes/blueforest.conf} $out/blueforest.conf
     cp ${../themes/blueforest.conf} $out/share/kitty/themes/blueforest.conf
+    cp ${../themes/blueforest-light.conf} $out/blueforest-light.conf
+    cp ${../themes/blueforest-light.conf} $out/share/kitty/themes/blueforest-light.conf
 
     # The attribution of the theme travels with the package.
     mkdir -p $out/share/doc/blueforest

@@ -39,7 +39,7 @@ local palette = {
 
   diff_add = "#219186",
   diff_del = "#dc322f",
-  diff_chg = "#cb4b16",
+  diff_chg = "#c57633",
   diff_header = "#E0EDDD",
 
   status = "#1e5c1e",

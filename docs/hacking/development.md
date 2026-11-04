@@ -57,31 +57,15 @@ nix flake check "path:."
 ```
 
 The root flake checks every application at once, and every application can be
-checked on its own the way a consumer that installs only one of them gets it:
+checked on its own:
 
 ```bash
-nix flake check "path:./modules/vscode"
-nix flake check "path:./modules/bat"
-nix flake check "path:./modules/neovim"
-nix flake check "path:./modules/starship"
-nix flake check "path:./modules/opencode"
-nix flake check "path:./modules/sbt"
-nix flake check "path:./modules/eza"
-nix flake check "path:./modules/zed"
-nix flake check "path:./modules/yazi"
-nix flake check "path:./modules/kitty"
-nix flake check "path:./modules/mkdocs"
-nix flake check "path:./modules/claude-code"
-nix flake check "path:./modules/btop"
-nix flake check "path:./modules/lazygit"
-nix flake check "path:./modules/md-tui"
-nix flake check "path:./modules/noctalia"
+nix flake check "path:./modules/<app_name>"
 ```
 
 The `path:` prefix matters: the flakes are checked from the working tree, and
-not from the git tree. The extension of Zed is a submodule of the repository,
-and Nix cannot read the contents of a submodule of a git tree, so the
-submodule has to be checked out for the checks to see it.
+not from the git tree. The Zed extension lives in a submodule of the repository
+and needs to be up-to-date in the working copy.
 
 A single check can be built on its own:
 
@@ -91,9 +75,9 @@ nix build "path:.#checks.x86_64-linux.<name>"
 
 The names include `version`, `overlay`, `treefmt`, `workflows`,
 `workflows-lint`, `vscode-extension`, `vscode-configuration`, `bat-theme`,
-`bat-theme-home`, `bat-theme-nixos`, `neovim-theme`, `neovim-configuration`,
-`neovim-module`, `starship-preset`, `starship-render`, `starship-wrapper`,
-`starship-module`, `opencode-theme`, `opencode-configuration`,
+`bat-theme-home`, `bat-theme-nixos`, `bat-module`, `neovim-theme`,
+`neovim-configuration`, `neovim-module`, `starship-preset`, `starship-render`,
+`starship-wrapper`, `starship-module`, `opencode-theme`, `opencode-configuration`,
 `opencode-module`, `sbt-package`, `sbt-module`, `eza-theme`, `eza-render`,
 `eza-module`, `zed-extension`, `zed-theme`, `zed-module`, `zed-colours`,
 `yazi-theme`, `yazi-render`, `yazi-module`, `yazi-tmtheme`, `yazi-asset`,
@@ -101,12 +85,12 @@ The names include `version`, `overlay`, `treefmt`, `workflows`,
 `btop-theme`, `btop-render`, `btop-module`, `lazygit-theme`,
 `lazygit-render`, `lazygit-module`, `lazygit-colours`, `md-tui-theme`,
 `md-tui-render`, `md-tui-module`, `md-tui-colours`, `noctalia-theme`,
-`noctalia-render`, `noctalia-module`, `noctalia-colours`, and `documentation`.
+`noctalia-palette-v2`, `noctalia-render`, `noctalia-module`, `noctalia-colours`,
+`palette-swatches`, `light-colours`, and `documentation`.
 
-Root flake evaluation sees the working tree, so the changes of the working
-tree are part of it. `git add` new files before running `nix flake check` or
-`nix build "path:.#..."`, so that the tree and the submodule agree with the
-repository.
+Root flake evaluation sees the working tree. `git add` new files before
+running `nix flake check` or `nix build "path:.#..."`, so that the tree
+and the submodules agree with the repository.
 
 ### The expensive editor checks
 

@@ -80,11 +80,13 @@ in
         # The theme of the package is the theme of the repository.
         md-tui-theme = import ./nix/checks/theme.nix {
           inherit pkgs theme source;
+          sourceLight = ./themes/blueforest-light.json;
         };
 
         # md-tui reads the theme of the repository and paints with it.
         md-tui-render = import ./nix/checks/render.nix {
           inherit pkgs source;
+          sourceLight = ./themes/blueforest-light.json;
         };
 
         # The Home Manager module installs the theme where md-tui reads the
@@ -92,6 +94,7 @@ in
         # not enabled.
         md-tui-module = import ./nix/checks/module.nix {
           inherit source;
+          sourceLight = ./themes/blueforest-light.json;
           pkgs = basePkgs;
           homeManager = appInputs.home-manager;
           module = config.flake.homeModules.md-tui;

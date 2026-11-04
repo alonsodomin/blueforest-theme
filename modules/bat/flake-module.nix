@@ -11,16 +11,21 @@
 # inputs of the flake that imports it.
 #
 # The theme of bat needs none of them: it is built with the nixpkgs of the
-# consumer, and its checks need nothing else. The argument is accepted and
-# ignored, so that the module has the same shape as the modules of the other
-# applications.
+# The theme of bat needs none of the inputs of the application: it is built
+# with the nixpkgs of the consumer, and its checks need nothing else. The
+# Home Manager of the application is the one to use when the consumer has no
+# Home Manager of its own.
 #
 # The arguments of the module are the ones of the flake that imports it, so
 # that the packages of the application are built with the nixpkgs of the
 # consumer.
-_:
 {
+  appInputs,
+}:
+{
+  config,
   lib,
+  inputs,
   self,
   ...
 }:
@@ -41,15 +46,31 @@ let
       "0.0.0";
 in
 {
+  # The flake module of Home Manager, which declares `flake.homeModules`. It
+  # is imported here, so that the module of the application can be composed
+  # with the others without the consumer having to import it.
+  #
+  # The Home Manager of the consumer is the one to use when it has one: the
+  # declaration of the option is then the one of the consumer, and the module
+  # system imports it only once.
+  imports = [
+    (inputs.home-manager or appInputs.home-manager).flakeModules.home-manager
+  ];
+
   perSystem =
     {
       pkgs,
+      system,
       ...
     }:
     let
       theme = import ./nix/theme.nix {
         inherit lib pkgs version;
       };
+
+      # The unoverlaid nixpkgs, used to evaluate the modules without applying
+      # the overlay twice.
+      basePkgs = import inputs.nixpkgs { inherit system; };
 
       # The theme of the repository.
       source = ./themes/BlueForest.tmTheme;
@@ -61,12 +82,14 @@ in
         # The theme of the package is the theme of the repository.
         bat-theme = import ./nix/checks/theme.nix {
           inherit pkgs theme source;
+          sourceLight = ./themes/BlueForestLight.tmTheme;
         };
 
         # The theme paints the shell blocks of a Markdown file the way the
         # other applications of the repository paint them.
         bat-render = import ./nix/checks/render.nix {
           inherit pkgs source;
+          sourceLight = ./themes/BlueForestLight.tmTheme;
         };
 
         # The theme is installed in the configuration directory of the user.
@@ -77,6 +100,16 @@ in
         # The theme is installed in the system-wide configuration directory.
         bat-theme-nixos = import ./nix/checks/nixos.nix {
           inherit pkgs theme;
+        };
+
+        # The Home Manager module installs the theme where bat reads it,
+        # and selects it.
+        bat-module = import ./nix/checks/module.nix {
+          inherit source;
+          sourceLight = ./themes/BlueForestLight.tmTheme;
+          pkgs = basePkgs;
+          homeManager = appInputs.home-manager;
+          module = config.flake.homeModules.bat;
         };
       };
     };
@@ -91,5 +124,11 @@ in
         inherit version;
       };
     };
+
+    # bat reads the themes of the user from the `themes` directory of its
+    # configuration directory, and there is no system-wide configuration file
+    # it reads, so the application publishes a Home Manager module and no
+    # NixOS module.
+    homeModules.bat = import ./nix/module.nix;
   };
 }

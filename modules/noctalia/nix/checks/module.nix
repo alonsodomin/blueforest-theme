@@ -2,7 +2,7 @@
 #
 # Checks that the Home Manager module installs the theme where Noctalia reads
 # the palettes from, that it selects the theme, and that it writes nothing when
-# Noctalia is not enabled.
+# the theme or Noctalia itself is not enabled.
 #
 # The check covers a consumer that brings a palette or a selection of its own:
 # they win over the ones of the repository, because the module writes both with
@@ -33,12 +33,21 @@ let
       ];
     }).config;
 
-  enabled = evaluate { programs.noctalia.enable = true; };
+  enabled = evaluate {
+    programs.noctalia.enable = true;
+    blueforest-theme.noctalia.enable = true;
+  };
+
   disabled = evaluate { };
+
+  # A consumer that asks for the theme but does not enable Noctalia: the
+  # palette has no consumer, so the module writes nothing.
+  themeOnly = evaluate { blueforest-theme.noctalia.enable = true; };
 
   # A consumer that brings a palette and a selection of its own.
   own = evaluate {
     programs.noctalia.enable = true;
+    blueforest-theme.noctalia.enable = true;
     programs.noctalia.customPalettes.blueforest = "the palette of the consumer";
     xdg.configFile."noctalia/blueforest.toml".text = ''
       [theme]
@@ -58,6 +67,12 @@ let
     disabled = {
       palette = disabled.xdg.configFile ? "noctalia/palettes/blueforest.json";
       selection = disabled.xdg.configFile ? "noctalia/blueforest.toml";
+    };
+
+    # The theme alone does not install anything either.
+    themeOnly = {
+      palette = themeOnly.xdg.configFile ? "noctalia/palettes/blueforest.json";
+      selection = themeOnly.xdg.configFile ? "noctalia/blueforest.toml";
     };
 
     own = {
@@ -83,6 +98,8 @@ pkgs.runCommand "blueforest-noctalia-module-check"
       .enabled.target == "/home/blueforest/.config/noctalia/palettes/blueforest.json"
       and (.disabled.palette | not)
       and (.disabled.selection | not)
+      and (.themeOnly.palette | not)
+      and (.themeOnly.selection | not)
     ' >/dev/null
 
     # And the palette that ends up installed is the palette of the repository.

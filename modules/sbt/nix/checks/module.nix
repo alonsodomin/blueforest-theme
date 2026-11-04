@@ -25,12 +25,26 @@ let
       modules = [
         module
         identity
-        extra
-      ];
+      ]
+      ++ extra;
     }).config;
 
-  enabled = evaluate { programs.sbt.enable = true; };
-  disabled = evaluate { };
+  enabled = evaluate [
+    {
+      programs.sbt.enable = true;
+      blueforest-theme.sbt.enable = true;
+    }
+  ];
+
+  disabled = evaluate [ ];
+
+  # A consumer that asks for the prompt but does not enable sbt: the files
+  # have no consumer, so the module writes nothing.
+  themeOnly = evaluate [
+    {
+      blueforest-theme.sbt.enable = true;
+    }
+  ];
 
   # The global base directories of both generations of sbt.
   sbt1 = ".sbt/1.0";
@@ -59,13 +73,20 @@ let
       };
     };
 
-    # The module does not enable sbt, so a configuration that does not enable
-    # it gets none of the files.
+    # The module does not enable sbt, so a configuration that does not ask
+    # for the prompt gets none of the files.
     disabled = {
       sbt1Plugin = disabled.home.file ? "${sbt1}/plugins/sbt-prompt.sbt";
       sbt1Settings = disabled.home.file ? "${sbt1}/blueforest-prompt.sbt";
       sbt2Plugin = disabled.xdg.configFile ? "${sbt2}/plugins/sbt-prompt.sbt";
       sbt2Settings = disabled.xdg.configFile ? "${sbt2}/blueforest-prompt.sbt";
+    };
+
+    themeOnly = {
+      sbt1Plugin = themeOnly.home.file ? "${sbt1}/plugins/sbt-prompt.sbt";
+      sbt1Settings = themeOnly.home.file ? "${sbt1}/blueforest-prompt.sbt";
+      sbt2Plugin = themeOnly.xdg.configFile ? "${sbt2}/plugins/sbt-prompt.sbt";
+      sbt2Settings = themeOnly.xdg.configFile ? "${sbt2}/blueforest-prompt.sbt";
     };
   };
 in
@@ -86,6 +107,7 @@ pkgs.runCommand "blueforest-sbt-module-check"
       and .enabled.sbt2Plugin.target == "/home/blueforest/.config/sbt/2/plugins/sbt-prompt.sbt"
       and .enabled.sbt2Settings.target == "/home/blueforest/.config/sbt/2/blueforest-prompt.sbt"
       and (.disabled | to_entries | all(.value == false))
+      and (.themeOnly | to_entries | all(.value == false))
     ' >/dev/null
 
     # The installed files are the files of the repository.

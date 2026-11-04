@@ -9,9 +9,9 @@
 # This module installs the flavour there, and it selects the flavour in the
 # theme of the user, so that Yazi picks it up without any further work.
 #
-# The module is inert unless `programs.yazi.enable` is true: it does not enable
-# Yazi, it only adds the flavour to the configuration of a Yazi that the
-# consumer already enabled.
+# The module is inert unless `blueforest-theme.yazi.enable` is true: it does not
+# enable Yazi, it only adds the flavour to the configuration of a Yazi that
+# the consumer already enabled.
 #
 # Home Manager has an option of its own for the theme of Yazi,
 # `programs.yazi.theme`, which writes the file the selection goes into. The
@@ -35,25 +35,37 @@ let
   cfg = config.programs.yazi;
 in
 {
-  config = lib.mkIf cfg.enable {
-    # The overlay of the application, so that the flavour the module installs
-    # is the one of the application.
-    nixpkgs.overlays = [ overlay ];
-
-    # The flavour goes into the directory Yazi reads the flavours from. It is
-    # the flavour of the package, which links to the theme of bat for the
-    # colours of the code preview.
-    xdg.configFile."yazi/flavors/blueforest.yazi" = lib.mkDefault {
-      source = "${pkgs.blueforest-yazi-theme}/share/yazi/flavors/blueforest.yazi";
-    };
-
-    # And the theme of the user selects it. The flavour is a dark one, so it
-    # is selected in both modes.
-    programs.yazi.theme = lib.mkDefault {
-      flavor = {
-        dark = "blueforest";
-        light = "blueforest";
-      };
-    };
+  options.blueforest-theme.yazi = {
+    enable = lib.mkEnableOption "the BlueForest theme for Yazi";
   };
+
+  config = lib.mkMerge [
+    {
+      # The overlay of the application, so that the flavour the module
+      # installs is the one of the application.
+      nixpkgs.overlays = [ overlay ];
+    }
+
+    (lib.mkIf (config.blueforest-theme.yazi.enable && cfg.enable) {
+      # The flavours go into the directory Yazi reads the flavours from. They
+      # are the flavours of the package, which link to the theme of bat for
+      # the colours of the code preview.
+      xdg.configFile."yazi/flavors/blueforest.yazi" = lib.mkDefault {
+        source = "${pkgs.blueforest-yazi-theme}/share/yazi/flavors/blueforest.yazi";
+      };
+
+      xdg.configFile."yazi/flavors/blueforest-light.yazi" = lib.mkDefault {
+        source = "${pkgs.blueforest-yazi-theme}/share/yazi/flavors/blueforest-light.yazi";
+      };
+
+      # And the theme of the user selects them. There is a flavour per mode,
+      # so the theme follows the mode of Yazi.
+      programs.yazi.theme = lib.mkDefault {
+        flavor = {
+          dark = "blueforest";
+          light = "blueforest-light";
+        };
+      };
+    })
+  ];
 }

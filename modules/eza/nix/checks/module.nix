@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MPL-2.0
 #
 # Checks that the Home Manager module installs the theme where eza reads it,
-# and that it writes nothing when eza is not enabled.
+# and that it writes nothing when the theme or eza itself is not enabled.
 #
 # Home Manager has an option of its own for the theme of eza, and the check
 # covers a consumer that uses it: their theme wins over the one of this
@@ -28,20 +28,37 @@ let
       modules = [
         module
         identity
-        extra
-      ];
+      ]
+      ++ extra;
     }).config;
 
-  enabled = evaluate { programs.eza.enable = true; };
-  disabled = evaluate { };
+  enabled = evaluate [
+    {
+      programs.eza.enable = true;
+      blueforest-theme.eza.enable = true;
+    }
+  ];
+
+  disabled = evaluate [ ];
+
+  # A consumer that asks for the theme but does not enable eza: the theme has
+  # no consumer, so the module writes nothing.
+  themeOnly = evaluate [
+    {
+      blueforest-theme.eza.enable = true;
+    }
+  ];
 
   # A consumer that brings a theme of its own.
-  own = evaluate {
-    programs.eza.enable = true;
-    programs.eza.theme = {
-      filekinds.normal.foreground = "Red";
-    };
-  };
+  own = evaluate [
+    {
+      programs.eza.enable = true;
+      blueforest-theme.eza.enable = true;
+      programs.eza.theme = {
+        filekinds.normal.foreground = "Red";
+      };
+    }
+  ];
 
   result = builtins.toJSON {
     enabled = {
@@ -49,10 +66,14 @@ let
       source = enabled.xdg.configFile."eza/theme.yml".source;
     };
 
-    # The module does not enable eza, so a configuration that does not enable
-    # it gets no theme.
+    # The module does not enable eza, so a configuration that does not ask
+    # for the theme gets no theme.
     disabled = {
       defined = disabled.xdg.configFile ? "eza/theme.yml";
+    };
+
+    themeOnly = {
+      defined = themeOnly.xdg.configFile ? "eza/theme.yml";
     };
 
     own = {
@@ -77,6 +98,7 @@ pkgs.runCommand "blueforest-eza-module-check"
     echo "$result" | jq -e '
       .enabled.target == "/home/blueforest/.config/eza/theme.yml"
       and (.disabled.defined | not)
+      and (.themeOnly.defined | not)
       and .own.target == "/home/blueforest/.config/eza/theme.yml"
     ' >/dev/null
 

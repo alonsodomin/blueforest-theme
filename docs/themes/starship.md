@@ -30,6 +30,31 @@ Starship and select the bundled package and preset:
 }
 ```
 
+The module selects the package that carries the preset and the preset itself,
+so the two of them are not needed in the configuration:
+
+```nix
+{
+  imports = [
+    blueforest.homeModules.starship
+  ];
+
+  programs.starship.enable = true;
+  blueforest-theme.starship.enable = true;
+}
+```
+
+The module does not enable Starship: whether the program is installed at all
+stays your decision. It writes nothing when `programs.starship.enable` is false
+or when `blueforest-theme.starship.enable` is false.
+
+The switch of the preset is `blueforest-theme.starship.enable`, and not
+`programs.starship.enable`, so that the preset and the templates of the
+community catalogue of Noctalia for Starship are alternatives: a consumer that
+wants a community template keeps `blueforest-theme.starship.enable` off, and a
+consumer that wants this preset turns it on. A configuration that enables both
+fails to evaluate: the two of them write the configuration of Starship.
+
 If you only want the preset file, read it directly without replacing the
 Starship package:
 

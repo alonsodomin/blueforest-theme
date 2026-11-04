@@ -68,18 +68,42 @@ installs the flavour where Yazi reads it, and selects it:
   ];
 
   programs.yazi.enable = true;
+  blueforest-theme.yazi.enable = true;
 }
 ```
 
 The module does not enable Yazi: whether the program is installed at all stays
 your decision. It writes the flavour to
 `~/.config/yazi/flavors/blueforest.yazi/`, and it writes nothing when
-`programs.yazi.enable` is false.
+`programs.yazi.enable` is false or when `blueforest-theme.yazi.enable` is false.
+
+The switch of the theme is `blueforest-theme.yazi.enable`, and not
+`programs.yazi.enable`, so that every theme of the repository is turned on and
+off on its own.
 
 The flavour it writes is the one of the package, so it carries the theme of
 bat as a link, and the module adds the overlay of the application to the
 nixpkgs instance of Home Manager, so that the packages of both themes are
 there.
+
+## The light variant
+
+The package carries a light flavour as well, `blueforest-light`, with the
+colours of the light palette of the repository. The module installs both of
+them, and the theme of the user selects the one that matches the mode of
+Yazi:
+
+```toml
+[flavor]
+dark = "blueforest"
+light = "blueforest-light"
+```
+
+The code preview of the light flavour is painted with the light theme of bat,
+the one that is named `BlueForestLight`.
+
+The [palette reference](../index.md#colour-palettes) has every colour of the
+light variant, with the swatches.
 
 Home Manager has an option of its own for the theme of Yazi,
 `programs.yazi.theme`, which writes the file the selection goes into. The

@@ -9,7 +9,7 @@
 # The workflow runs on the push of such a tag. It reads the version of the
 # tag, checks the repository, creates the release of GitHub with the
 # changelog of the version, and then lets every application package itself
-# and upload its asset to that release. The release is published when every
+# and upload its assets to that release. The release is published when every
 # application is done, so that it never carries half of its assets.
 {
   lib,
@@ -26,8 +26,9 @@ let
   tagExpr = "v${versionExpr}";
 
   # The applications of the repository, and the way each one of them is
-  # packaged. The asset of an application is the file it uploads to the
-  # release of GitHub.
+  # packaged. The assets of an application are the files it uploads to the
+  # release of GitHub: an application whose theme has a variant per mode
+  # uploads one file per variant.
   applications = import ./assets.nix;
 
   applicationsByApp = listToAttrs (
@@ -42,7 +43,7 @@ let
   mkJob =
     {
       title,
-      asset,
+      assets,
       steps ? [ ],
       package,
       publish ? [ ],
@@ -68,13 +69,17 @@ let
           run = package;
         }
         {
-          name = "Upload the asset to the release";
+          name = "Upload the assets to the release";
           env = {
             GH_TOKEN = "\${{ secrets.GITHUB_TOKEN }}";
             TAG = tagExpr;
             VERSION = versionExpr;
           };
-          run = "gh release upload \"$TAG\" \"${asset}\" --clobber";
+          run = ''
+            for asset in ${toString assets}; do
+              gh release upload "$TAG" "$asset" --clobber
+            done
+          '';
         }
       ]
       ++ publish;

@@ -6,6 +6,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Unreleased
 
+- The theme is installed only when `blueforest-theme.eza.enable` is true
 - Initial release: the theme of eza, packaged as `blueforest-eza-theme`
 - The Home Manager module installs the theme in the configuration directory of
   eza, which is where eza reads it from, and it writes nothing when eza is not
