@@ -43,6 +43,8 @@
   zed,
   # The light theme of kitty, which paints the terminal.
   kitty,
+  # The light palette of Starship, which is a TOML file.
+  starship,
   # The canonical palette of the repository.
   palette,
 }:
@@ -73,6 +75,7 @@ pkgs.runCommand "blueforest-light-colours-check"
       grep -oE '#[0-9A-Fa-f]{6}' ${neovim}
       grep -oE '#[0-9A-Fa-f]{6}' ${yazi}
       grep -oE '#[0-9A-Fa-f]{6}' ${kitty}
+      grep -oE '#[0-9A-Fa-f]{6}' ${starship}
 
       # The stylesheet of MkDocs carries a set of variables per mode, and
       # only the light one is the colours of the light palette.

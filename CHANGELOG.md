@@ -74,8 +74,17 @@ tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 - The theme of bat has a Home Manager module now, which installs it in the
   directory bat reads the themes from and selects it in the configuration of
   bat
-- The Home Manager module of Starship selects the preset of the repository and
-  the package that carries it
+- The palette of Starship ships apart from its preset now. The preset names the
+  keys of a palette and carries no colour, and the palettes are `blueforest`
+  and `blueforest-light`, packaged as `blueforest-starship-palette`.
+  `blueforest-theme.starship.palette.enable` defines the palette of the
+  variant and selects it, and the new
+  `blueforest-theme.starship.preset.enable` installs the package that carries
+  the preset. Neither of them selects the preset
+- The prompt of Starship is two lines, and the duration of the last command
+  and the Nix shell are at the right of the information line now. They are a
+  segment of the format and not a right prompt of its own, because every shell
+  places a right prompt somewhere else, and bash has none at all
 - The pull requests of Renovate and Dependabot are merged on their own, when
   the merge gate of the CI has passed. Renovate marks them for the auto-merge
   of GitHub itself, and the workflow of the repository marks the ones of

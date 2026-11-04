@@ -410,6 +410,7 @@
                 expected = [
                   "blueforest-vscode-theme"
                   "blueforest-starship-preset"
+                  "blueforest-starship-palette"
                   "blueforest-starship"
                   "blueforest-opencode-theme"
                   "blueforest-sbt-prompt"
@@ -503,6 +504,7 @@
                 mkdocs = ./modules/mkdocs/themes/blueforest.css;
                 zed = ./modules/zed/extension/themes/blueforest.json;
                 kitty = ./modules/kitty/themes/blueforest-light.conf;
+                starship = ./modules/starship/themes/palettes/blueforest-light.toml;
                 palette = ./modules/noctalia/themes/blueforest.json;
               };
 

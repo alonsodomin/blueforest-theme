@@ -79,11 +79,19 @@ in
   {
     app = "starship";
     title = "Starship";
-    assets = [ "dist/blueforest-starship-preset-$VERSION.toml" ];
+    assets = [
+      "dist/blueforest-starship-preset-$VERSION.toml"
+      "dist/blueforest-starship-palette-$VERSION.toml"
+      "dist/blueforest-starship-palette-light-$VERSION.toml"
+    ];
     package = ''
       mkdir -p dist
       cp modules/starship/themes/blueforest.toml \
         "dist/blueforest-starship-preset-$VERSION.toml"
+      cp modules/starship/themes/palettes/blueforest.toml \
+        "dist/blueforest-starship-palette-$VERSION.toml"
+      cp modules/starship/themes/palettes/blueforest-light.toml \
+        "dist/blueforest-starship-palette-light-$VERSION.toml"
     '';
   }
   {

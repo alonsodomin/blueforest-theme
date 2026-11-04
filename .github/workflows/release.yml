@@ -479,13 +479,17 @@ jobs:
         mkdir -p dist
         cp modules/starship/themes/blueforest.toml \
           "dist/blueforest-starship-preset-$VERSION.toml"
+        cp modules/starship/themes/palettes/blueforest.toml \
+          "dist/blueforest-starship-palette-$VERSION.toml"
+        cp modules/starship/themes/palettes/blueforest-light.toml \
+          "dist/blueforest-starship-palette-light-$VERSION.toml"
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         TAG: v${{ needs.version.outputs.version }}
         VERSION: ${{ needs.version.outputs.version }}
       name: Upload the assets to the release
       run: |-
-        for asset in dist/blueforest-starship-preset-$VERSION.toml; do
+        for asset in dist/blueforest-starship-preset-$VERSION.toml dist/blueforest-starship-palette-$VERSION.toml dist/blueforest-starship-palette-light-$VERSION.toml; do
           gh release upload "$TAG" "$asset" --clobber
         done
   version:

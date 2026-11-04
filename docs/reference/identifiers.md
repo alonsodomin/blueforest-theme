@@ -21,7 +21,8 @@ by default:
 | `blueforest-theme.noctalia.enable` | The palette of Noctalia |
 | `blueforest-theme.opencode.enable` | The theme of OpenCode |
 | `blueforest-theme.sbt.enable` | The prompt of sbt |
-| `blueforest-theme.starship.enable` | The preset of Starship |
+| `blueforest-theme.starship.palette.enable` | The palette of Starship |
+| `blueforest-theme.starship.preset.enable` | The preset of Starship |
 | `blueforest-theme.yazi.enable` | The flavour of Yazi |
 
 The themes of VS Code and of Zed have no switch: they are installed as a
@@ -38,6 +39,13 @@ the variant as well, `blueforest-theme.<application>.variant`, and it is
 | `blueforest-theme.claude-code.variant` | `dark`, `light` |
 | `blueforest-theme.kitty.variant` | `dark`, `light` |
 | `blueforest-theme.md-tui.variant` | `dark`, `light` |
+
+The palette of Starship has one as well, and it lives under the switch of the
+palette:
+
+| Switch | Values |
+| --- | --- |
+| `blueforest-theme.starship.palette.variant` | `dark`, `light` |
 
 A theme and a template of the community catalogue of Noctalia are
 alternatives, because the two of them write the configuration of the same
@@ -61,12 +69,17 @@ application. A configuration that enables both fails to evaluate.
   `blueforest.theme`, the name of the file, which btop reads from
   `$XDG_CONFIG_HOME/btop/themes/`. Select it with
   `color_theme = "blueforest.theme"` in the configuration of btop.
-- The Starship packages are `blueforest-starship-preset` and
-  `blueforest-starship`.
+- The Starship packages are `blueforest-starship-preset`,
+  `blueforest-starship-palette` and `blueforest-starship`.
 - The Starship preset is `blueforest`. Select it with
-  `programs.starship.presets = [ "blueforest" ];`, or let the module
-  `blueforest.homeModules.starship` select it with
-  `blueforest-theme.starship.enable = true;`.
+  `programs.starship.presets = [ "blueforest" ];`, and let
+  `blueforest-theme.starship.preset.enable = true;` install the package that
+  carries it.
+- The Starship palettes are `blueforest`, the dark variant, and
+  `blueforest-light`, the light variant. The module selects the palette of the
+  variant with `blueforest-theme.starship.palette.enable = true;`, and a
+  consumer that selects a palette of its own with
+  `programs.starship.settings.palette = "blueforest";` keeps its selection.
 - The OpenCode package is `blueforest-opencode-theme`.
 - The OpenCode theme is `blueforest`, the name of the file. Select it with
   `programs.opencode.cli.theme = { name = "blueforest"; mode = "system"; };`.

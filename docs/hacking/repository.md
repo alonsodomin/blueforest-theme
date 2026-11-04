@@ -56,7 +56,9 @@ compare the packaged copies against them:
 - `modules/btop/themes/blueforest.theme`
 - `modules/neovim/themes/blueforest.lua` and
   `modules/neovim/themes/lualine-blueforest.lua`
-- `modules/starship/themes/blueforest.toml`
+- `modules/starship/themes/blueforest.toml`, the preset, and
+  `modules/starship/themes/palettes/blueforest.toml` and
+  `modules/starship/themes/palettes/blueforest-light.toml`, the palettes
 - `modules/opencode/themes/blueforest.json`
 - `modules/eza/themes/blueforest.yml`
 - `modules/yazi/themes/blueforest.yazi/flavor.toml`

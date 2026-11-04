@@ -2,7 +2,9 @@
 
 ## The theme
 
-`themes/blueforest.toml` is licensed under the
+`themes/blueforest.toml` is the preset, and `themes/palettes/blueforest.toml`
+and `themes/palettes/blueforest-light.toml` are the palettes. All of them are
+licensed under the
 [Creative Commons Attribution 4.0 International][cc-by-4.0] licence.
 
 It is a port of BlueForest by [mathias[at]decodified[dot]com][author],

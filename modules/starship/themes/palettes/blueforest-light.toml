@@ -1,0 +1,15 @@
+# The light palette of BlueForest for Starship.
+#
+# It carries the same keys as the dark palette, so that the preset of the
+# repository paints the same segments in both variants. Select it with
+# `palette = "blueforest-light"` in the configuration of Starship.
+[palettes.blueforest-light]
+primary = "#0099FF"
+on_primary = "#141F2E"
+secondary = "#3A5F8A"
+tertiary = "#B3871F"
+error = "#B02A28"
+success = "#1E5C1E"
+surface = "#E8ECF2"
+surface_variant = "#E0E4EA"
+hover = "#C9CDD3"

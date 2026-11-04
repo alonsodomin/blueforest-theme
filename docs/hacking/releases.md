@@ -48,7 +48,7 @@ that the release never carries half of its assets.
 | --- | --- |
 | VS Code | `blueforest-theme-<version>.vsix` |
 | bat | `blueforest-bat-theme-<version>.tmTheme` |
-| Starship | `blueforest-starship-preset-<version>.toml` |
+| Starship | `blueforest-starship-preset-<version>.toml`, `blueforest-starship-palette-<version>.toml`, `blueforest-starship-palette-light-<version>.toml` |
 | OpenCode | `blueforest-opencode-theme-<version>.json` |
 | Neovim | `blueforest-neovim-theme-<version>.tar.gz` |
 | sbt | `blueforest-sbt-prompt-<version>.tar.gz` |
