@@ -4,7 +4,7 @@ All notable changes to the BlueForest theme for md-tui will be documented in thi
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 
-## Unreleased
+## 0.4.0 - [05-11-2026]
 
 - The palette has a light variant now, `blueforest-light`, and the switch of the
   variant selects the one that is installed

@@ -4,7 +4,7 @@ All notable changes to the BlueForest preset for Starship will be documented in 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 
-## Unreleased
+## 0.4.0 - [05-11-2026]
 
 - The names of the keys of the palettes are the ones of the palette of the
   community catalogue of Noctalia for Starship now, so that the preset paints

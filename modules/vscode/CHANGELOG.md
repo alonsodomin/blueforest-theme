@@ -4,7 +4,7 @@ All notable changes to the "blueforest-theme" extension will be documented in th
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 
-## Unreleased
+## 0.4.0 - [05-11-2026]
 
 - The extension carries a light variant of the theme now, **BlueForest
   Light**, with the colours of the light palette of the repository. It is a

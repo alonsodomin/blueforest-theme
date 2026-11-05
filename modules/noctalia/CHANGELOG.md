@@ -4,7 +4,7 @@ All notable changes to the BlueForest theme for Noctalia will be documented in t
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 
-## Unreleased
+## 0.4.0 - [05-11-2026]
 
 - The palette carries a light variant as well, which is a palette of
   its own and not a copy of the dark one

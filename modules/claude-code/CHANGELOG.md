@@ -4,7 +4,7 @@ All notable changes to the BlueForest theme for Claude Code will be documented i
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 
-## Unreleased
+## 0.4.0 - [05-11-2026]
 
 - The theme has a light variant now, `blueforest-light`, and the switch of the
   variant selects the one that is installed

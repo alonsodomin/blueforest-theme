@@ -4,7 +4,7 @@ All notable changes to the BlueForest theme for OpenCode will be documented in t
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 
-## Unreleased
+## 0.4.0 - [05-11-2026]
 
 - The theme carries a light variant now, next to the dark one, and it follows
   the appearance of the terminal. The mode of the selection is `system`

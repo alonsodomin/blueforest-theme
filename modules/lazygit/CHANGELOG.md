@@ -4,7 +4,7 @@ All notable changes to the BlueForest theme for lazygit will be documented in th
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 
-## Unreleased
+## 0.4.0 - [05-11-2026]
 
 - The theme is added only when `blueforest-theme.lazygit.enable` is true
 - Initial release: the theme of lazygit, packaged as `blueforest-lazygit-theme`

@@ -4,7 +4,7 @@ All notable changes to the BlueForest theme for bat will be documented in this f
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 
-## Unreleased
+## 0.4.0 - [05-11-2026]
 
 - The package carries the light variant of the theme as well,
   `BlueForestLight`

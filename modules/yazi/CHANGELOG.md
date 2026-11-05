@@ -4,7 +4,7 @@ All notable changes to the BlueForest theme for Yazi will be documented in this 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 
-## Unreleased
+## 0.4.0 - [05-11-2026]
 
 - The theme has a light variant now, `blueforest-light`, and the theme of the user
   selects the flavour that matches the mode of Yazi

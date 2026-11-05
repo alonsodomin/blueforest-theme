@@ -27,7 +27,7 @@ its own changelog:
 Every configuration of the repository shares one version, which comes from the
 tags of the repository: a release is a tag of the form `vMAJOR.MINOR.PATCH`.
 
-## Unreleased
+## 0.4.0 - [05-11-2026]
 
 - The theme of kitty has a light variant now, `blueforest-light`, and the
   switch of the variant selects the one that is installed

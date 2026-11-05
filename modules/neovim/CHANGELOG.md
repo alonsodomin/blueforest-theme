@@ -6,7 +6,7 @@ this file.
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 
-## Unreleased
+## 0.4.0 - [05-11-2026]
 
 - The theme has a light variant now, `blueforest-light`, with the colours of
   the light palette of the repository, and the theme of lualine comes with it

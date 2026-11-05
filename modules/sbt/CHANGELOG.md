@@ -5,7 +5,7 @@ All notable changes to the BlueForest prompt for sbt will be documented in this 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 
-## Unreleased
+## 0.4.0 - [05-11-2026]
 
 - The module installs version `3.2.1` of the `sbt-prompt` plugin, whose sbt 2
   artifact is built with a Scala version that the whole sbt 2.0.x line can read

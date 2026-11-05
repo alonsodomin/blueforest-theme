@@ -4,7 +4,7 @@ All notable changes to the BlueForest theme for MkDocs will be documented in thi
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 
-## Unreleased
+## 0.4.0 - [05-11-2026]
 
 - The stylesheet has a light variant now: the light scheme of Material gets the
   colours of the light palette of the repository

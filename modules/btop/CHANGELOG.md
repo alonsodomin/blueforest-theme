@@ -4,7 +4,7 @@ All notable changes to the BlueForest theme for btop will be documented in this 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
 
-## Unreleased
+## 0.4.0 - [05-11-2026]
 
 - The theme is installed only when `blueforest-theme.btop.enable` is true. A
   configuration that enables the theme and the template of the
