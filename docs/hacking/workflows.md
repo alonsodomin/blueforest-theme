@@ -30,10 +30,10 @@ updates them in one place.
 
 ## Checks
 
-The `workflows` check renders the workflows into a scratch directory and
-compares them with the committed files. It fails when they differ. On a pull
-request the CI sets `BLUEFOREST_SKIP_WORKFLOWS_CHECK=1`, because the CI render
-job commits the rendered files to the branch instead.
+The `workflows-validate` check renders the workflows into a scratch directory
+and compares them with the committed files. It fails when they differ, and it
+runs on every event. On a pull request the CI renders the files and commits
+them to the branch, so the check reports the ones that are still out of sync.
 
 The `workflows-lint` check renders the workflows and runs `actionlint` over the
 result. It runs on every pull request, and it catches invalid expressions,

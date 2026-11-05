@@ -18,7 +18,11 @@ pkgs.runCommandLocal "workflows-validate" { } ''
   cd project
   ${render}/bin/render-workflows --no-prepend-git-root
   for workflow in ${lib.concatStringsSep " " (lib.attrNames workflows)}; do
-    diff ${inputs.self}/"$workflow" "$workflow" || echo "$workflow out of sync. run .#render-workflows"
+    diff ${inputs.self}/"$workflow" "$workflow" \
+      || {
+        echo "$workflow is out of sync: run .#render-workflows" >&2
+        exit 1
+      }
   done
   touch $out
 ''

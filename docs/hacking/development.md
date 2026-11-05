@@ -73,7 +73,7 @@ A single check can be built on its own:
 nix build "path:.#checks.x86_64-linux.<name>"
 ```
 
-The names include `version`, `overlay`, `treefmt`, `workflows`,
+The names include `version`, `overlay`, `treefmt`, `workflows-validate`,
 `workflows-lint`, `vscode-extension`, `vscode-configuration`, `bat-theme`,
 `bat-theme-home`, `bat-theme-nixos`, `bat-module`, `neovim-theme`,
 `neovim-configuration`, `neovim-module`, `starship-preset`, `starship-palette`,
@@ -120,11 +120,11 @@ for.
 
 ### The workflows checks
 
-The `workflows` check renders the workflows into a scratch directory and
-compares them with the committed files. It fails when the rendered files are
-not the committed ones. It is skipped when
-`BLUEFOREST_SKIP_WORKFLOWS_CHECK=1`, which the CI does on a pull request,
-where the workflow of the CI renders the files and commits them to the branch.
+The `workflows-validate` check renders the workflows into a scratch directory
+and compares them with the committed files. It fails when the rendered files
+are not the committed ones, and it runs on every event. On a pull request the
+CI renders the files and commits them to the branch, so the check reports the
+ones that are still out of sync.
 
 The `workflows-lint` check renders the workflows and runs `actionlint` over the
 result. It does not depend on what is committed, so it runs on every pull

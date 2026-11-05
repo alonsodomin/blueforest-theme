@@ -43,16 +43,18 @@ pkgs.runCommand "blueforest-yazi-asset-check" { } ''
   ${yazi.package}
 
   # The asset carries the flavour.
-  tar -tzf "${asset}" | grep -q 'blueforest.yazi/flavor.toml'
+  #
+  # The listings are read with `grep -c` to prevent SIGPIPE events.
+  tar -tzf "${asset}" | grep -c 'blueforest.yazi/flavor.toml' > /dev/null
 
   # And the light one.
-  tar -tzf "${asset}" | grep -q 'blueforest-light.yazi/flavor.toml'
+  tar -tzf "${asset}" | grep -c 'blueforest-light.yazi/flavor.toml' > /dev/null
 
   # And the colours of the code preview, as a regular file: the asset is
   # unpacked by hand, and a link to the store would be of no use there.
   tar -tvzf "${asset}" \
     | grep 'blueforest.yazi/tmtheme.xml' \
-    | grep -q '^-'
+    | grep -c '^-' > /dev/null
 
   # And the theme it carries is the theme of bat.
   tar -xzOf "${asset}" './blueforest.yazi/tmtheme.xml' \
@@ -61,7 +63,7 @@ pkgs.runCommand "blueforest-yazi-asset-check" { } ''
   # And so is the light one, with the light theme of bat.
   tar -tvzf "${asset}" \
     | grep 'blueforest-light.yazi/tmtheme.xml' \
-    | grep -q '^-'
+    | grep -c '^-' > /dev/null
   tar -xzOf "${asset}" './blueforest-light.yazi/tmtheme.xml' \
     | cmp - ${modules}/bat/themes/BlueForestLight.tmTheme
 
