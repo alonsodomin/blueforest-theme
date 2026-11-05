@@ -197,6 +197,7 @@
           inputs.home-manager.flakeModules.home-manager
           inputs.treefmt-nix.flakeModule
           inputs.actions-nix.flakeModules.default
+          inputs.mkdocs-flake.flakeModules.default
 
           # The modules the applications publish.
           inputs.vscode.flakeModule
@@ -281,12 +282,6 @@
                 inputs.lazygit.flakeModule
                 inputs.md-tui.flakeModule
                 inputs.noctalia.flakeModule
-
-                # The module of MkDocs is not here. It imports the module of
-                # mkdocs-flake, which declares its arguments, and a module
-                # that declares arguments can only be imported once per
-                # flake. A consumer that wants the theme of MkDocs imports
-                # `flakeModules.mkdocs`, which is the only way to get it.
               ];
             };
           };
@@ -332,23 +327,7 @@
           in
           {
             # The development shell of the repository, declared in TOML.
-            #
-            # The mkdocs of the documentation flake is the one that carries the
-            # theme of Material for MkDocs, which the site of the repository
-            # uses; the plain one cannot build it.
-            devshells.default =
-              let
-                devshell = inputs.devshell.lib.importTOML ./devshell.toml { inherit lib; };
-                mkdocs = inputs.mkdocs-flake.packages.${pkgs.stdenv.hostPlatform.system}.mkdocs;
-              in
-              devshell
-              // {
-                config = devshell.config // {
-                  devshell = devshell.config.devshell // {
-                    packages = devshell.config.devshell.packages ++ [ mkdocs ];
-                  };
-                };
-              };
+            devshells.default = inputs.devshell.lib.importTOML ./devshell.toml { inherit lib; };
 
             # The helper that releases the repository. It is the same helper
             # that the command of the development shell runs, so that it can be
