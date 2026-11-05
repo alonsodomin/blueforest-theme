@@ -333,19 +333,18 @@
           {
             # The development shell of the repository, declared in TOML.
             #
-            # The mkdocs of the documentation flake is the one that carries the
-            # theme of Material for MkDocs, which the site of the repository
-            # uses; the plain one cannot build it.
+            # The mkdocs of the documentation module is the one that carries
+            # the theme of Material for MkDocs, which the site of the
+            # repository uses; the plain one of nixpkgs cannot build it.
             devshells.default =
               let
                 devshell = inputs.devshell.lib.importTOML ./devshell.toml { inherit lib; };
-                mkdocs = inputs.mkdocs-flake.packages.${pkgs.stdenv.hostPlatform.system}.mkdocs;
               in
               devshell
               // {
                 config = devshell.config // {
                   devshell = devshell.config.devshell // {
-                    packages = devshell.config.devshell.packages ++ [ mkdocs ];
+                    packages = devshell.config.devshell.packages ++ [ config.documentation.mkdocs-package ];
                   };
                 };
               };
@@ -379,25 +378,15 @@
               # carries a broken link or a page missing from the navigation.
               documentation = config.packages.documentation;
 
-              workflows-lint =
-                let
-                  render =
-                    (inputs.actions-nix.lib.evalModule pkgs top.config.flake.actions-nix).config.build.renderWorkflows;
-                in
-                pkgs.runCommandLocal "workflows-lint-check"
-                  {
-                    nativeBuildInputs = [
-                      pkgs.actionlint
-                      pkgs.shellcheck
-                    ];
-                  }
-                  ''
-                    mkdir project
-                    cd project
-                    ${render}/bin/render-workflows --no-prepend-git-root
-                    actionlint .github/workflows/*.yml
-                    touch $out
-                  '';
+              workflows-lint = import ./workflows/checks/lint.nix { inherit inputs pkgs top; };
+              workflows-validate = import ./workflows/checks/validate.nix {
+                inherit
+                  inputs
+                  pkgs
+                  lib
+                  top
+                  ;
+              };
 
               # Fails if an application carries a version of its own.
               version = import ./tests/version.nix { inherit pkgs; };
@@ -502,7 +491,7 @@
                 neovim = ./modules/neovim/themes/blueforest-light.lua;
                 yazi = ./modules/yazi/themes/blueforest-light.yazi/flavor.toml;
                 mkdocs = ./modules/mkdocs/themes/blueforest.css;
-                zed = ./modules/zed/extension/themes/blueforest.json;
+                zed = "${(top.config.flake.overlays.zed pkgs pkgs).blueforest-zed-theme}/themes/blueforest.json";
                 kitty = ./modules/kitty/themes/blueforest-light.conf;
                 starship = ./modules/starship/themes/palettes/blueforest-light.toml;
                 palette = ./modules/noctalia/themes/blueforest.json;
@@ -524,36 +513,7 @@
                 applications = import ./workflows/assets.nix;
                 modules = ./modules;
               };
-            }
-            # Fails if the workflows of the repository are not the ones that
-            # the definitions in `workflows/` render.
-            #
-            # The check is skipped on a pull request, where the workflow of
-            # the CI renders the files and commits them to the branch: there
-            # is nothing to report there.
-            // (
-              if builtins.getEnv "BLUEFOREST_SKIP_WORKFLOWS_CHECK" == "1" then
-                {
-                }
-              else
-                {
-                  workflows =
-                    let
-                      workflows = top.config.flake.actions-nix.workflows;
-                      render =
-                        (inputs.actions-nix.lib.evalModule pkgs top.config.flake.actions-nix).config.build.renderWorkflows;
-                    in
-                    pkgs.runCommandLocal "workflows-check" { } ''
-                      mkdir project
-                      cd project
-                      ${render}/bin/render-workflows --no-prepend-git-root
-                      for workflow in ${lib.concatStringsSep " " (lib.attrNames workflows)}; do
-                        diff ${./.}/"$workflow" "$workflow"
-                      done
-                      touch $out
-                    '';
-                }
-            );
+            };
           };
       }
     );

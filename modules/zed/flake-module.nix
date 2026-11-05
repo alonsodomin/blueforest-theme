@@ -74,7 +74,11 @@ in
       # Nix cannot read the contents of a submodule of a git tree, so the
       # checks of the repository run against the working tree, where the
       # submodule is checked out.
-      source = ./extension;
+      source =
+        if builtins.pathExists ./extension/themes/blueforest.json then
+          ./extension
+        else
+          throw "the submodule modules/zed/extension is not checked out; either run `git submodule update` or run the checks against \"path:.\"";
 
       theme = pkgs.blueforest-zed-theme;
     in
