@@ -98,7 +98,6 @@ in
           # is skipped on a pull request: the job above renders them and
           # commits them to the branch, so there is nothing to report there.
           env = {
-            BLUEFOREST_SKIP_WORKFLOWS_CHECK = "\${{ github.event_name == 'pull_request' && '1' || '' }}";
             BLUEFOREST_VSCODE_INTEGRATION_CHECK = "1";
             BLUEFOREST_NEOVIM_NIXVIM_CHECK = "1";
           };

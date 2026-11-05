@@ -19,8 +19,6 @@ jobs:
         extra_nix_config: experimental-features = nix-command flakes
     - env:
         BLUEFOREST_NEOVIM_NIXVIM_CHECK: '1'
-        BLUEFOREST_SKIP_WORKFLOWS_CHECK: ${{ github.event_name == 'pull_request' &&
-          '1' || '' }}
         BLUEFOREST_VSCODE_INTEGRATION_CHECK: '1'
       name: Run flake checks
       run: nix flake check --impure ${{ matrix.flake }}

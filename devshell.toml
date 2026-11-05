@@ -17,7 +17,6 @@ packages = [
   "jq",
   "gh",
   "tokei",
-  "mkdocs",
   "neovim",
   "stylua",
   "starship",
