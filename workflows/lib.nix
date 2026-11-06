@@ -28,6 +28,7 @@ rec {
   # are updated in one place, and Renovate keeps them up to date.
   actions = {
     checkout = "actions/checkout@v7";
+    cocogitto = "cocogitto/cocogitto-action@v4";
     configurePages = "actions/configure-pages@v6";
     deployPages = "actions/deploy-pages@v5";
     downloadArtifact = "actions/download-artifact@v8";

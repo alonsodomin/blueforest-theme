@@ -6,11 +6,12 @@
 # releases every application of the repository at once, into one GitHub
 # release.
 #
-# The workflow runs on the push of such a tag. It reads the version of the
-# tag, checks the repository, generates the changelog of the release, creates
-# the release of GitHub with it, and then lets every application package
-# itself and upload its asset to that release. The release is published when
-# every application is done, so that it never carries half of its assets.
+# The workflow runs on the push of such a tag. It checks the commits of the
+# release, checks the repository, generates the changelog of the release,
+# creates the release of GitHub with it, and then lets every application
+# package itself and upload its asset to that release. The release is
+# published when every application is done, so that it never carries half of
+# its assets.
 {
   lib,
 }:
@@ -19,15 +20,8 @@ let
 
   inherit (lib) listToAttrs mapAttrs' nameValuePair;
 
-  # The version of the release, as the expression that reads it.
-  versionExpr = "\${{ needs.version.outputs.version }}";
-
-  # The version of the release, as the expression that reads it from inside
-  # the job that reads the tag.
-  versionStepExpr = "\${{ steps.version.outputs.version }}";
-
-  # The tag of the release.
-  tagExpr = "v${versionExpr}";
+  # The tag of the release. Every job of the workflow knows it.
+  tagExpr = "\${{ github.ref_name }}";
 
   # The applications of the repository, and the way each one of them is
   # packaged. The asset of an application is the file it uploads to the
@@ -44,9 +38,16 @@ let
 
   # The job of one application: it packages the theme and uploads it to the
   # release of GitHub, which the job below has created already.
+  #
+  # The version of the asset of an application is the version of the
+  # application, which is the version of the tag of the application,
+  # `bat-v0.5.0`. CoCoGitto reads the tags of the monorepo, so it knows the
+  # version of every application, and the version of the repository is the
+  # fallback of the applications that have no tag of their own yet.
   mkJob =
     {
       title,
+      app,
       asset,
       steps ? [ ],
       package,
@@ -55,20 +56,42 @@ let
     }:
     {
       name = "${title}: Package";
-      needs = [
-        "version"
-        "create-release"
-      ];
+      needs = [ "create-release" ];
       runs-on = "ubuntu-latest";
       steps = [
-        common.checkout
+        # The whole history of the repository, with every tag: CoCoGitto
+        # walks the history from HEAD to find the tags of the applications.
+        common.checkoutFull
+
+        # CoCoGitto, which reads the version of the application.
+        {
+          name = "Install CoCoGitto";
+          uses = common.actions.cocogitto;
+          "with" = {
+            "install-only" = true;
+          };
+        }
+        {
+          name = "Read the version of the application";
+          id = "version";
+          run = ''
+            version=$(cog get-version --package ${app} -f "$(cog get-version |& tail -1)" |& tail -1)
+
+            if [ -z "$version" ]; then
+              echo "The version of ${app} is empty" >&2
+              exit 1
+            fi
+
+            echo "version=$version" >>"$GITHUB_OUTPUT"
+          '';
+        }
       ]
       ++ steps
       ++ [
         {
           name = "Package the theme";
           env = {
-            VERSION = versionExpr;
+            VERSION = "\${{ steps.version.outputs.version }}";
           };
           run = package;
         }
@@ -77,7 +100,7 @@ let
           env = {
             GH_TOKEN = "\${{ secrets.GITHUB_TOKEN }}";
             TAG = tagExpr;
-            VERSION = versionExpr;
+            VERSION = "\${{ steps.version.outputs.version }}";
           };
           run = ''
             gh release upload "$TAG" "${asset}" --clobber
@@ -97,7 +120,7 @@ let
   createRelease = {
     name = "Create the release";
     needs = [
-      "version"
+      "conventional"
       "checks"
     ];
     runs-on = "ubuntu-latest";
@@ -106,10 +129,10 @@ let
       {
         name = "Collect the notes of the release";
         env = {
-          VERSION = versionExpr;
+          TAG = tagExpr;
         };
         run = ''
-          version="$VERSION"
+          version="''${TAG#v}"
 
           # The section of the changelog that belongs to the version of the
           # release. It ends at the separator of the next one.
@@ -131,15 +154,16 @@ let
         env = {
           GH_TOKEN = "\${{ secrets.GITHUB_TOKEN }}";
           TAG = tagExpr;
-          VERSION = versionExpr;
         };
         run = ''
+          version="''${TAG#v}"
+
           if gh release view "$TAG" >/dev/null 2>&1; then
             echo "The release $TAG exists already."
             gh release edit "$TAG" --notes-file notes.md
           else
             gh release create "$TAG" --draft \
-              --title "Blueforest $VERSION" --notes-file notes.md
+              --title "Blueforest $version" --notes-file notes.md
           fi
         '';
       }
@@ -150,56 +174,44 @@ in
   name = "Release";
   on.push.tags = [ "v*" ];
   jobs = {
-    # The version of the release, which is the version of the tag.
-    version = {
-      name = "Version";
+    # The commits of the release have to follow the conventional commits
+    # specification, the same way the commits of a pull request do.
+    #
+    # The release is made by CoCoGitto, which writes the commits of the
+    # release itself, so the check is about the commits that went into it.
+    conventional = {
+      name = "Conventional commits";
       runs-on = "ubuntu-latest";
-      outputs.version = "\${{ steps.version.outputs.version }}";
       steps = [
+        # The whole history of the repository, with every tag: the range of
+        # the commits of the release starts at the tag of the release before
+        # this one.
         common.checkoutFull
         {
-          id = "version";
-          name = "Read the tag";
+          name = "Read the release before this one";
+          id = "previous";
           run = ''
-            tag="$GITHUB_REF_NAME"
-            if [[ ! "$tag" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
-              echo "The tag of a release is vMAJOR.MINOR.PATCH, not: $tag" >&2
-              exit 1
-            fi
-            echo "version=''${tag#v}" >>"$GITHUB_OUTPUT"
-          '';
-        }
-        {
-          name = "Check the version";
-          env = {
-            VERSION = versionStepExpr;
-          };
-          run = ''
-            # The latest release of the repository, without the tag that is
-            # being released.
-            latest=$(git tag --list 'v*' --sort=-version:refname \
+            # The release of the repository before this one. The tag of this
+            # release is on HEAD, so it is not one of them.
+            previous=$(git tag --list 'v*' --sort=-version:refname \
               | grep -E '^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$' \
               | grep -v -x "$GITHUB_REF_NAME" \
               | head -n1 || true)
 
-            if [ -n "$latest" ]; then
-              newest=$(printf '%s\n%s\n' "''${latest#v}" "$VERSION" | sort -V | tail -n1)
-              if [ "$newest" != "$VERSION" ]; then
-                echo "The version $VERSION is not newer than the release ''${latest#v}" >&2
-                exit 1
-              fi
+            if [ -n "$previous" ]; then
+              echo "range=$previous..HEAD" >>"$GITHUB_OUTPUT"
+            else
+              echo "range=.." >>"$GITHUB_OUTPUT"
             fi
           '';
         }
         {
-          name = "Check the branch";
-          run = ''
-            default_branch="''${{ github.event.repository.default_branch }}"
-            if ! git merge-base --is-ancestor "$GITHUB_REF_NAME" "origin/$default_branch"; then
-              echo "The tag $GITHUB_REF_NAME is not in the branch $default_branch" >&2
-              exit 1
-            fi
-          '';
+          name = "Check the commits of the release";
+          uses = common.actions.cocogitto;
+          "with" = {
+            command = "check";
+            args = "--ignore-merge-commits \${{ steps.previous.outputs.range }}";
+          };
         }
       ];
     };
@@ -238,7 +250,7 @@ in
     # never carries half of its assets.
     publish-release = {
       name = "Publish the release";
-      needs = [ "version" ] ++ (map (definition: definition.app) applications);
+      needs = map (definition: definition.app) applications;
       runs-on = "ubuntu-latest";
       steps = [
         {
@@ -261,7 +273,7 @@ in
       permissions = {
         contents = "read";
         pages = "write";
-        id-token = "write";
+        "id-token" = "write";
       };
     };
   }

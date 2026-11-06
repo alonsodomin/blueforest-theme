@@ -82,13 +82,13 @@ source. The site is published at
 
 ## The release workflow
 
-The release workflow runs on the push of a `vMAJOR.MINOR.PATCH` tag. It reads
-the version of the tag, checks that it is newer than the latest release and
-that the tag is in the branch `master`, checks the repository, creates the
-GitHub release with the section of the changelog of the repository that
-belongs to the version, and lets every application package itself and upload
-its asset to the release. The release is published when every application is
-done, and the documentation workflow is called as the last step.
+The release workflow runs on the push of a `vMAJOR.MINOR.PATCH` tag. It checks
+that the commits of the release follow the conventional commits specification,
+checks the repository, creates the GitHub release with the section of the
+changelog of the repository that belongs to the version, and lets every
+application read its own version, package itself and upload its asset to the
+release. The release is published when every application is done, and the
+documentation workflow is called as the last step.
 
 See [Releases](releases.md) for the release process.
 
