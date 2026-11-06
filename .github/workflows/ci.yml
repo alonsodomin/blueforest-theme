@@ -43,17 +43,52 @@ jobs:
         - path:./modules/lazygit
         - path:./modules/md-tui
         - path:./modules/noctalia
+  conventional:
+    name: Conventional commits
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        fetch-depth: 0
+        submodules: true
+    - uses: cachix/install-nix-action@v31
+      with:
+        extra_nix_config: experimental-features = nix-command flakes
+    - name: Check the commit messages
+      run: |-
+        # The commits of the pull request, or the commits of the push.
+        if [ "${{ github.event_name }}" = "pull_request" ]; then
+          range="${{ github.event.pull_request.base.sha }}..HEAD"
+        else
+          before="${{ github.event.before }}"
+          if [ "$before" = "0000000000000000000000000000000000000000" ]; then
+            range="HEAD~1..HEAD"
+          else
+            range="$before..${{ github.event.after }}"
+          fi
+        fi
+
+        # The merge commits are ignored: a repository with a linear
+        # history has none of them, and a merge commit says nothing
+        # about the change it brings.
+        nix run .#cog -- check --ignore-merge-commits "$range"
   merge-gate:
     if: always()
     name: Merge gate
     needs:
     - checks
+    - conventional
     runs-on: ubuntu-latest
     steps:
     - name: Check the result of the checks
       run: |-
         if [ "${{ needs.checks.result }}" != "success" ]; then
           echo "the checks did not pass: ${{ needs.checks.result }}" >&2
+          exit 1
+        fi
+
+        if [ "${{ needs.conventional.result }}" != "success" ]; then
+          echo "the commit messages did not pass: ${{ needs.conventional.result }}" >&2
           exit 1
         fi
   render:

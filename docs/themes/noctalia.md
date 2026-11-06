@@ -130,14 +130,21 @@ so the palette of the user is the file of the format 1.
 
 ## Manual install
 
-Download `blueforest-noctalia-theme-<version>.json` from the
-[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
-put it where Noctalia reads the palettes from:
+Download `blueforest-noctalia-theme-<version>.tar.gz` from the
+[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases).
+The archive carries the palette and the changelog of the application:
+
+```text
+CHANGELOG.txt
+blueforest.json
+```
+
+Put the palette where Noctalia reads the palettes from:
 
 ```bash
 mkdir -p ~/.config/noctalia/palettes
-cp blueforest-noctalia-theme-<version>.json \
-  ~/.config/noctalia/palettes/blueforest.json
+tar -xzf blueforest-noctalia-theme-<version>.tar.gz -O blueforest.json \
+  > ~/.config/noctalia/palettes/blueforest.json
 ```
 
 Then select the palette in the configuration of Noctalia,

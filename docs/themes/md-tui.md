@@ -114,13 +114,24 @@ md-tui reads it from.
 
 ## Manual install
 
-Download `blueforest-md-tui-theme-<version>.json` from the
-[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
-put it where md-tui reads the palettes from:
+Download `blueforest-md-tui-theme-<version>.tar.gz` from the
+[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases).
+The archive carries the variants of the theme and the changelog of the
+release:
+
+```text
+CHANGELOG.txt
+dark/blueforest.json
+light/blueforest-light.json
+```
+
+Put the palettes where md-tui reads them from:
 
 ```bash
 mkdir -p ~/.config/mdt/themes
-cp blueforest-md-tui-theme-<version>.json ~/.config/mdt/themes/blueforest.json
+tar -xzf blueforest-md-tui-theme-<version>.tar.gz -C ~/.config/mdt/themes \
+  --strip-components=1 \
+  dark/blueforest.json light/blueforest-light.json
 ```
 
 Then select the theme, with the `selected-theme` file of the configuration

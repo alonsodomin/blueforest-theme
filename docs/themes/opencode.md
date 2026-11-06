@@ -56,13 +56,21 @@ the user, and there is no system-wide directory it reads.
 
 ## Manual install
 
-Download `blueforest-opencode-theme-<version>.json` from the
-[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
-put it in the themes directory of OpenCode, with the name of the theme:
+Download `blueforest-opencode-theme-<version>.tar.gz` from the
+[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases).
+The archive carries the theme and the changelog of the application:
+
+```text
+CHANGELOG.txt
+blueforest.json
+```
+
+Put the theme in the themes directory of OpenCode, with the name of the theme:
 
 ```bash
 mkdir -p ~/.config/opencode/themes
-cp blueforest-opencode-theme-<version>.json ~/.config/opencode/themes/blueforest.json
+tar -xzf blueforest-opencode-theme-<version>.tar.gz -O blueforest.json \
+  > ~/.config/opencode/themes/blueforest.json
 ```
 
 Select it in `~/.config/opencode/cli.json`:

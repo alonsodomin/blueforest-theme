@@ -2,259 +2,340 @@
 #
 # The packaging of the applications of the repository.
 #
-# The release workflow packages every application and uploads its asset to the
-# release of GitHub. The definitions of the packaging are here, and not in the
-# workflow itself, so that the check of the repository can package the
-# applications as well, and look at what they produce.
+# The release workflow packages every application and uploads its asset to
+# the release of GitHub. The definitions of the packaging are here, and not
+# in the workflow itself, so that the check of the repository can package
+# the applications as well, and look at what they produce.
 #
 # The asset of an application is the file it uploads to the release of
-# GitHub. The packaging of an application reads the themes of the repository,
-# so it runs at the root of it.
+# GitHub: the archive of the theme, with the variants of the theme and the
+# changelog of the release.
+#
+# The archive holds the variants of the theme in a directory per variant,
+# `dark` and `light`, and the changelog of the release in `CHANGELOG.txt`.
+# The applications that read their theme from a directory of their own keep
+# that layout, because the files of the archive are installed where the
+# application reads them from.
+#
+# The packaging of an application reads the themes of the repository, so it
+# runs at the root of it.
+{
+  lib,
+}:
 let
   common = import ./lib.nix;
+
+  # The script that copies a file of a theme into the staging directory of
+  # the archive.
+  #
+  # A directory is copied as a whole, and a file is copied into the
+  # directory of its path.
+  mkCopy = file: ''
+    mkdir -p "staging/${builtins.dirOf file.dst}"
+    ${if file.directory or false then "cp -r" else "cp"} "${file.src}" "staging/${file.dst}"
+  '';
+
+  # The packaging of an application whose theme is packed into an archive.
+  #
+  # The archive carries the variants of the theme and the changelog of the
+  # application, which the release writes into the repository.
+  #
+  # The archive holds the files under their own names, and not under the
+  # "./" of the staging directory, so that a file of the archive can be
+  # unpacked on its own.
+  mkPackage = application: ''
+    rm -rf staging
+    mkdir -p dist staging
+    ${lib.concatMapStringsSep "\n" mkCopy application.files}
+
+    # The changelog of the application, when it has one.
+    if [ -f "modules/${application.app}/CHANGELOG.md" ]; then
+      cp "modules/${application.app}/CHANGELOG.md" "staging/CHANGELOG.txt"
+    fi
+
+    tar -czf "dist/blueforest-${application.app}-theme-$VERSION.tar.gz" \
+      -C staging --files-from <(ls -A staging)
+  '';
+
+  applications = [
+    {
+      app = "vscode";
+      title = "VS Code";
+
+      # The extension is the asset of the application: the marketplaces take
+      # it, and it carries the variants of the theme.
+      asset = "dist/blueforest-theme-$VERSION.vsix";
+      files = [ ];
+
+      steps = [
+        {
+          uses = common.actions.setupNode;
+          "with".node-version = 24;
+        }
+      ];
+
+      package = ''
+        mkdir -p dist
+        cd modules/vscode
+        jq --indent 2 --arg version "$VERSION" '.version = $version' \
+          package.json >package.json.tmp
+        mv package.json.tmp package.json
+
+        # The manifest has to carry the version of the release before the
+        # archive is built: vsce packages a manifest that still carries the
+        # placeholder without complaining about it.
+        if ! jq -e --arg version "$VERSION" \
+          '.version == $version and $version != ""' package.json >/dev/null; then
+          echo "the manifest does not carry the version $VERSION" >&2
+          exit 1
+        fi
+
+        npx --yes @vscode/vsce package --no-dependencies \
+          --out "../../dist/blueforest-theme-$VERSION.vsix"
+      '';
+
+      # The extension is published to the marketplaces as well.
+      publish = [
+        {
+          name = "Publish to Open VSX";
+          env = {
+            OVSX_PAT = "\${{ secrets.OVSX_PAT }}";
+          };
+          run = "npx --yes ovsx publish \"dist/blueforest-theme-$VERSION.vsix\" -p \"$OVSX_PAT\"";
+        }
+        {
+          name = "Publish to the VS Marketplace";
+          env = {
+            VSCE_PAT = "\${{ secrets.VSCE_PAT }}";
+          };
+          run = "npx --yes @vscode/vsce publish --packagePath \"dist/blueforest-theme-$VERSION.vsix\" -p \"$VSCE_PAT\"";
+        }
+      ];
+    }
+    {
+      app = "bat";
+      title = "bat";
+      files = [
+        {
+          src = "modules/bat/themes/BlueForest.tmTheme";
+          dst = "dark/BlueForest.tmTheme";
+        }
+        {
+          src = "modules/bat/themes/BlueForestLight.tmTheme";
+          dst = "light/BlueForestLight.tmTheme";
+        }
+      ];
+    }
+    {
+      app = "starship";
+      title = "Starship";
+      files = [
+        {
+          src = "modules/starship/themes/blueforest.toml";
+          dst = "blueforest.toml";
+        }
+        {
+          src = "modules/starship/themes/palettes/blueforest.toml";
+          dst = "dark/blueforest.toml";
+        }
+        {
+          src = "modules/starship/themes/palettes/blueforest-light.toml";
+          dst = "light/blueforest-light.toml";
+        }
+      ];
+    }
+    {
+      app = "opencode";
+      title = "OpenCode";
+      files = [
+        {
+          src = "modules/opencode/themes/blueforest.json";
+          dst = "blueforest.json";
+        }
+      ];
+    }
+    {
+      app = "neovim";
+      title = "Neovim";
+      files = [
+        {
+          src = "modules/neovim/themes/blueforest.lua";
+          dst = "colors/blueforest.lua";
+        }
+        {
+          src = "modules/neovim/themes/lualine-blueforest.lua";
+          dst = "lua/lualine/themes/blueforest.lua";
+        }
+        {
+          src = "modules/neovim/themes/blueforest-light.lua";
+          dst = "colors/blueforest-light.lua";
+        }
+        {
+          src = "modules/neovim/themes/lualine-blueforest-light.lua";
+          dst = "lua/lualine/themes/blueforest-light.lua";
+        }
+      ];
+    }
+    {
+      app = "sbt";
+      title = "sbt";
+      files = [
+        {
+          src = "modules/sbt/config/sbt-prompt.sbt";
+          dst = "plugins/sbt-prompt.sbt";
+        }
+        {
+          src = "modules/sbt/config/blueforest-prompt.sbt";
+          dst = "blueforest-prompt.sbt";
+        }
+      ];
+    }
+    {
+      app = "eza";
+      title = "eza";
+      files = [
+        {
+          src = "modules/eza/themes/blueforest.yml";
+          dst = "dark/blueforest.yml";
+        }
+      ];
+    }
+    {
+      app = "zed";
+      title = "Zed";
+      files = [
+        {
+          src = "modules/zed/extension/extension.toml";
+          dst = "extension.toml";
+        }
+        {
+          src = "modules/zed/extension/themes/blueforest.json";
+          dst = "themes/blueforest.json";
+        }
+      ];
+    }
+    {
+      app = "yazi";
+      title = "Yazi";
+      files = [
+        {
+          src = "modules/yazi/themes/blueforest.yazi";
+          dst = "blueforest.yazi";
+          directory = true;
+        }
+        {
+          src = "modules/yazi/themes/blueforest-light.yazi";
+          dst = "blueforest-light.yazi";
+          directory = true;
+        }
+
+        # The colours of the code preview are the ones of the theme of bat,
+        # so the archive carries it. The archive is unpacked by hand, so it
+        # cannot carry a link to the store: it carries the theme itself.
+        # Every flavour carries the variant of the theme of bat that matches
+        # it.
+        {
+          src = "modules/bat/themes/BlueForest.tmTheme";
+          dst = "blueforest.yazi/tmtheme.xml";
+        }
+        {
+          src = "modules/bat/themes/BlueForestLight.tmTheme";
+          dst = "blueforest-light.yazi/tmtheme.xml";
+        }
+      ];
+    }
+    {
+      app = "kitty";
+      title = "kitty";
+      files = [
+        {
+          src = "modules/kitty/themes/blueforest.conf";
+          dst = "dark/blueforest.conf";
+        }
+        {
+          src = "modules/kitty/themes/blueforest-light.conf";
+          dst = "light/blueforest-light.conf";
+        }
+      ];
+    }
+    {
+      app = "mkdocs";
+      title = "MkDocs";
+      files = [
+        {
+          src = "modules/mkdocs/themes/blueforest.css";
+          dst = "blueforest.css";
+        }
+      ];
+    }
+    {
+      app = "claude-code";
+      title = "Claude Code";
+      files = [
+        {
+          src = "modules/claude-code/themes/blueforest.json";
+          dst = "dark/blueforest.json";
+        }
+        {
+          src = "modules/claude-code/themes/blueforest-light.json";
+          dst = "light/blueforest-light.json";
+        }
+      ];
+    }
+    {
+      app = "btop";
+      title = "btop";
+      files = [
+        {
+          src = "modules/btop/themes/blueforest.theme";
+          dst = "dark/blueforest.theme";
+        }
+      ];
+    }
+    {
+      app = "lazygit";
+      title = "lazygit";
+      files = [
+        {
+          src = "modules/lazygit/themes/blueforest.json";
+          dst = "dark/blueforest.json";
+        }
+      ];
+    }
+    {
+      app = "md-tui";
+      title = "md-tui";
+      files = [
+        {
+          src = "modules/md-tui/themes/blueforest.json";
+          dst = "dark/blueforest.json";
+        }
+        {
+          src = "modules/md-tui/themes/blueforest-light.json";
+          dst = "light/blueforest-light.json";
+        }
+      ];
+    }
+    {
+      app = "noctalia";
+      title = "Noctalia";
+      files = [
+        {
+          src = "modules/noctalia/themes/blueforest.json";
+          dst = "blueforest.json";
+        }
+      ];
+    }
+  ];
 in
-[
-  {
-    app = "vscode";
-    title = "VS Code";
-    assets = [ "dist/blueforest-theme-$VERSION.vsix" ];
-    steps = [
-      {
-        uses = common.actions.setupNode;
-        "with".node-version = 24;
-      }
-    ];
-    package = ''
-      mkdir -p dist
-      cd modules/vscode
-      jq --indent 2 --arg version "$VERSION" '.version = $version' \
-        package.json >package.json.tmp
-      mv package.json.tmp package.json
-
-      # The manifest has to carry the version of the release before the
-      # archive is built: vsce packages a manifest that still carries the
-      # placeholder without complaining about it.
-      if ! jq -e --arg version "$VERSION" \
-        '.version == $version and $version != ""' package.json >/dev/null; then
-        echo "the manifest does not carry the version $VERSION" >&2
-        exit 1
-      fi
-
-      npx --yes @vscode/vsce package --no-dependencies \
-        --out "../../dist/blueforest-theme-$VERSION.vsix"
-    '';
-    # The extension is published to the marketplaces as well.
-    publish = [
-      {
-        name = "Publish to Open VSX";
-        env = {
-          OVSX_PAT = "\${{ secrets.OVSX_PAT }}";
-        };
-        run = "npx --yes ovsx publish \"dist/blueforest-theme-$VERSION.vsix\" -p \"$OVSX_PAT\"";
-      }
-      {
-        name = "Publish to the VS Marketplace";
-        env = {
-          VSCE_PAT = "\${{ secrets.VSCE_PAT }}";
-        };
-        run = "npx --yes @vscode/vsce publish --packagePath \"dist/blueforest-theme-$VERSION.vsix\" -p \"$VSCE_PAT\"";
-      }
-    ];
-  }
-  {
-    app = "bat";
-    title = "bat";
-    assets = [
-      "dist/blueforest-bat-theme-$VERSION.tmTheme"
-      "dist/blueforest-bat-theme-light-$VERSION.tmTheme"
-    ];
-    package = ''
-      mkdir -p dist
-      cp modules/bat/themes/BlueForest.tmTheme \
-        "dist/blueforest-bat-theme-$VERSION.tmTheme"
-      cp modules/bat/themes/BlueForestLight.tmTheme \
-        "dist/blueforest-bat-theme-light-$VERSION.tmTheme"
-    '';
-  }
-  {
-    app = "starship";
-    title = "Starship";
-    assets = [
-      "dist/blueforest-starship-preset-$VERSION.toml"
-      "dist/blueforest-starship-palette-$VERSION.toml"
-      "dist/blueforest-starship-palette-light-$VERSION.toml"
-    ];
-    package = ''
-      mkdir -p dist
-      cp modules/starship/themes/blueforest.toml \
-        "dist/blueforest-starship-preset-$VERSION.toml"
-      cp modules/starship/themes/palettes/blueforest.toml \
-        "dist/blueforest-starship-palette-$VERSION.toml"
-      cp modules/starship/themes/palettes/blueforest-light.toml \
-        "dist/blueforest-starship-palette-light-$VERSION.toml"
-    '';
-  }
-  {
-    app = "opencode";
-    title = "OpenCode";
-    assets = [ "dist/blueforest-opencode-theme-$VERSION.json" ];
-    package = ''
-      mkdir -p dist
-      cp modules/opencode/themes/blueforest.json \
-        "dist/blueforest-opencode-theme-$VERSION.json"
-    '';
-  }
-  {
-    app = "neovim";
-    title = "Neovim";
-    assets = [ "dist/blueforest-neovim-theme-$VERSION.tar.gz" ];
-    package = ''
-      mkdir -p dist staging/colors staging/lua/lualine/themes
-      cp modules/neovim/themes/blueforest.lua staging/colors/blueforest.lua
-      cp modules/neovim/themes/lualine-blueforest.lua \
-        staging/lua/lualine/themes/blueforest.lua
-      tar -czf "dist/blueforest-neovim-theme-$VERSION.tar.gz" -C staging .
-    '';
-  }
-  {
-    app = "sbt";
-    title = "sbt";
-    assets = [ "dist/blueforest-sbt-prompt-$VERSION.tar.gz" ];
-    package = ''
-      mkdir -p dist staging/plugins
-      cp modules/sbt/config/sbt-prompt.sbt staging/plugins/sbt-prompt.sbt
-      cp modules/sbt/config/blueforest-prompt.sbt staging/blueforest-prompt.sbt
-      tar -czf "dist/blueforest-sbt-prompt-$VERSION.tar.gz" -C staging .
-    '';
-  }
-  {
-    app = "eza";
-    title = "eza";
-    assets = [ "dist/blueforest-eza-theme-$VERSION.yml" ];
-    package = ''
-      mkdir -p dist
-      cp modules/eza/themes/blueforest.yml \
-        "dist/blueforest-eza-theme-$VERSION.yml"
-    '';
-  }
-  {
-    app = "zed";
-    title = "Zed";
-    assets = [ "dist/blueforest-zed-theme-$VERSION.tar.gz" ];
-    package = ''
-      mkdir -p dist staging/themes
-      cp modules/zed/extension/extension.toml staging/extension.toml
-      cp modules/zed/extension/themes/blueforest.json \
-        staging/themes/blueforest.json
-      tar -czf "dist/blueforest-zed-theme-$VERSION.tar.gz" -C staging .
-    '';
-  }
-  {
-    app = "yazi";
-    title = "Yazi";
-    assets = [ "dist/blueforest-yazi-theme-$VERSION.tar.gz" ];
-    package = ''
-      mkdir -p dist staging
-      cp -r modules/yazi/themes/blueforest.yazi \
-        "staging/blueforest.yazi"
-      cp -r modules/yazi/themes/blueforest-light.yazi \
-        "staging/blueforest-light.yazi"
-
-      # The colours of the code preview are the ones of the theme of bat, so
-      # the asset carries it. The asset is unpacked by hand, so it cannot
-      # carry a link to the store: it carries the theme itself. Every flavour
-      # carries the variant of the theme of bat that matches it.
-      cp modules/bat/themes/BlueForest.tmTheme \
-        "staging/blueforest.yazi/tmtheme.xml"
-      cp modules/bat/themes/BlueForestLight.tmTheme \
-        "staging/blueforest-light.yazi/tmtheme.xml"
-
-      tar -czf "dist/blueforest-yazi-theme-$VERSION.tar.gz" -C staging .
-    '';
-  }
-  {
-    app = "kitty";
-    title = "kitty";
-    assets = [
-      "dist/blueforest-kitty-theme-$VERSION.conf"
-      "dist/blueforest-kitty-theme-light-$VERSION.conf"
-    ];
-    package = ''
-      mkdir -p dist
-      cp modules/kitty/themes/blueforest.conf \
-        "dist/blueforest-kitty-theme-$VERSION.conf"
-      cp modules/kitty/themes/blueforest-light.conf \
-        "dist/blueforest-kitty-theme-light-$VERSION.conf"
-    '';
-  }
-  {
-    app = "mkdocs";
-    title = "MkDocs";
-    assets = [ "dist/blueforest-mkdocs-theme-$VERSION.css" ];
-    package = ''
-      mkdir -p dist
-      cp modules/mkdocs/themes/blueforest.css \
-        "dist/blueforest-mkdocs-theme-$VERSION.css"
-    '';
-  }
-  {
-    app = "claude-code";
-    title = "Claude Code";
-    assets = [
-      "dist/blueforest-claude-code-theme-$VERSION.json"
-      "dist/blueforest-claude-code-theme-light-$VERSION.json"
-    ];
-    package = ''
-      mkdir -p dist
-      cp modules/claude-code/themes/blueforest.json \
-        "dist/blueforest-claude-code-theme-$VERSION.json"
-      cp modules/claude-code/themes/blueforest-light.json \
-        "dist/blueforest-claude-code-theme-light-$VERSION.json"
-    '';
-  }
-  {
-    app = "btop";
-    title = "btop";
-    assets = [ "dist/blueforest-btop-theme-$VERSION.theme" ];
-    package = ''
-      mkdir -p dist
-      cp modules/btop/themes/blueforest.theme \
-        "dist/blueforest-btop-theme-$VERSION.theme"
-    '';
-  }
-  {
-    app = "lazygit";
-    title = "lazygit";
-    assets = [ "dist/blueforest-lazygit-theme-$VERSION.json" ];
-    package = ''
-      mkdir -p dist
-      cp modules/lazygit/themes/blueforest.json \
-        "dist/blueforest-lazygit-theme-$VERSION.json"
-    '';
-  }
-  {
-    app = "md-tui";
-    title = "md-tui";
-    assets = [
-      "dist/blueforest-md-tui-theme-$VERSION.json"
-      "dist/blueforest-md-tui-theme-light-$VERSION.json"
-    ];
-    package = ''
-      mkdir -p dist
-      cp modules/md-tui/themes/blueforest.json \
-        "dist/blueforest-md-tui-theme-$VERSION.json"
-      cp modules/md-tui/themes/blueforest-light.json \
-        "dist/blueforest-md-tui-theme-light-$VERSION.json"
-    '';
-  }
-  {
-    app = "noctalia";
-    title = "Noctalia";
-    assets = [ "dist/blueforest-noctalia-theme-$VERSION.json" ];
-    package = ''
-      mkdir -p dist
-      cp modules/noctalia/themes/blueforest.json \
-        "dist/blueforest-noctalia-theme-$VERSION.json"
-    '';
-  }
-]
+lib.map (
+  application:
+  if application ? asset then
+    application
+  else
+    application
+    // {
+      asset = "dist/blueforest-${application.app}-theme-$VERSION.tar.gz";
+      package = mkPackage application;
+    }
+) applications

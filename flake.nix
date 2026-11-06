@@ -328,7 +328,18 @@
             ...
           }:
           let
-            release = import ./tools/release.nix { inherit pkgs; };
+            # The applications of the repository, and the way each one of them
+            # is packaged for the release.
+            applications = import ./workflows/assets.nix { inherit lib; };
+
+            # The helper that releases the repository. It is the same helper
+            # that the command of the development shell runs, so that it can
+            # be run without the shell too.
+            release = import ./tools/release/default.nix { inherit pkgs; };
+
+            # The helper that shows the changelog of the changes that are
+            # not released yet.
+            changelog = import ./tools/changelog/default.nix { inherit pkgs; };
           in
           {
             # The development shell of the repository, declared in TOML.
@@ -344,15 +355,29 @@
               // {
                 config = devshell.config // {
                   devshell = devshell.config.devshell // {
-                    packages = devshell.config.devshell.packages ++ [ config.documentation.mkdocs-package ];
+                    packages = devshell.config.devshell.packages ++ [
+                      config.documentation.mkdocs-package
+                      release
+                      changelog
+                    ];
                   };
                 };
               };
 
-            # The helper that releases the repository. It is the same helper
-            # that the command of the development shell runs, so that it can be
-            # run without the shell too.
-            packages.release = release;
+            # The helper that releases the repository, and the one that shows
+            # the changelog of the unreleased changes. They are the same
+            # helpers that the commands of the development shell run.
+            #
+            # The names carry the prefix of the repository, because nixpkgs
+            # has a `changelog` of its own.
+            packages.blueforest-release = release;
+            packages.blueforest-changelog = changelog;
+
+            # CoCoGitto, the conventional commit toolbox of the repository.
+            # The changelog of a release is generated out of the commits of
+            # the repository, and the commits have to follow the
+            # conventional commits specification.
+            packages.cog = pkgs.cocogitto;
 
             # The hooks of git-hooks.nix are not checked here: the check of the
             # workflows below covers the one that renders them.
@@ -510,7 +535,29 @@
               # colours of the code preview.
               yazi-asset = import ./tests/yazi-asset.nix {
                 inherit pkgs;
-                applications = import ./workflows/assets.nix;
+                inherit applications;
+                modules = ./modules;
+              };
+
+              # Fails if the configuration of CoCoGitto does not know every
+              # application of the repository.
+              cog-packages = import ./tests/cog-packages.nix {
+                inherit
+                  pkgs
+                  lib
+                  applications
+                  ;
+                config = ./cog.toml;
+              };
+
+              # Fails if the asset of an application does not carry the
+              # files of the theme and the changelog of the release.
+              release-assets = import ./tests/release-assets.nix {
+                inherit
+                  pkgs
+                  lib
+                  applications
+                  ;
                 modules = ./modules;
               };
             };

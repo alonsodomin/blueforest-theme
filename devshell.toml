@@ -8,35 +8,44 @@ name = "blueforest"
 # The tools of the repository: the ones the release needs, the ones that try
 # out the theme of an application, and the ones that format its sources.
 packages = [
-  "coreutils",
-  "gawk",
-  "gnused",
-  "gnugrep",
-  "git",
-  "curl",
-  "jq",
-  "gh",
-  "tokei",
-  "neovim",
-  "stylua",
-  "starship",
-  "taplo",
-  "opencode",
-  "sbt",
-  "eza",
-  "yazi",
-  "kitty",
   "btop",
+  "cocogitto",
+  "coreutils",
+  "curl",
+  "eza",
+  "gawk",
+  "gh",
+  "git",
+  "gnugrep",
+  "gnused",
+  "jq",
+  "kitty",
   "lazygit",
   "md-tui",
+  "neovim",
+  "opencode",
+  "sbt",
+  "starship",
+  "stylua",
+  "taplo",
+  "tokei",
+  "yazi",
 ]
 
 [[commands]]
 name = "release"
 category = "utilities"
-help = "Interactive release helper"
+help = "Release the repository"
 command = '''
-  exec "${PRJ_ROOT:-.}/tools/release.sh" "$@"
+  exec blueforest-release "$@"
+'''
+
+[[commands]]
+name = "changelog"
+category = "utilities"
+help = "Show the changelog of the changes that are not released yet"
+command = '''
+  exec blueforest-changelog "$@"
 '''
 
 [[commands]]
@@ -88,4 +97,14 @@ text = '''
   cd "$(git rev-parse --show-toplevel)"
   nix run .#render-workflows
   git add .github/workflows
+'''
+
+# The guard of the tags: a tag of a release is made by the release helper,
+# which writes the changelog of the release with it.
+[git.hooks.pre-push]
+text = '''
+  #!/usr/bin/env bash
+  set -euo pipefail
+  cd "$(git rev-parse --show-toplevel)"
+  exec ./tools/git-guard/main.sh
 '''

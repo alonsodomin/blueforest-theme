@@ -140,12 +140,24 @@ directory of the user, and there is no system-wide directory it reads.
 ## Manual install
 
 Download `blueforest-yazi-theme-<version>.tar.gz` from the
-[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
-unpack it into the directory Yazi reads the flavours from:
+[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases).
+The archive carries the flavours, the variants of the theme, and the changelog
+of the release:
+
+```text
+CHANGELOG.txt
+blueforest.yazi/flavor.toml
+blueforest.yazi/tmtheme.xml
+blueforest-light.yazi/flavor.toml
+blueforest-light.yazi/tmtheme.xml
+```
+
+Unpack the flavours into the directory Yazi reads them from:
 
 ```bash
 mkdir -p ~/.config/yazi/flavors
-tar -xzf blueforest-yazi-theme-<version>.tar.gz -C ~/.config/yazi/flavors
+tar -xzf blueforest-yazi-theme-<version>.tar.gz -C ~/.config/yazi/flavors \
+  blueforest.yazi blueforest-light.yazi
 ```
 
 Then select the flavour in the theme of the user:

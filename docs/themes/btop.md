@@ -103,13 +103,21 @@ btop reads it from.
 
 ## Manual install
 
-Download `blueforest-btop-theme-<version>.theme` from the
-[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
-put it where btop reads the themes from:
+Download `blueforest-btop-theme-<version>.tar.gz` from the
+[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases).
+The archive carries the theme and the changelog of the application:
+
+```text
+CHANGELOG.txt
+dark/blueforest.theme
+```
+
+Put the theme where btop reads the themes from:
 
 ```bash
 mkdir -p ~/.config/btop/themes
-cp blueforest-btop-theme-<version>.theme ~/.config/btop/themes/blueforest.theme
+tar -xzf blueforest-btop-theme-<version>.tar.gz -C ~/.config/btop/themes \
+  --strip-components=1 dark/blueforest.theme
 ```
 
 Then select the theme in the configuration of btop, `~/.config/btop/btop.conf`:

@@ -107,14 +107,25 @@ of the user, and there is no system-wide directory it reads.
 
 ## Manual install
 
-Download `blueforest-bat-theme-<version>.tmTheme` from the
-[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases),
-put it in the themes directory of bat, and rebuild the cache:
+Download `blueforest-bat-theme-<version>.tar.gz` from the
+[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases).
+The archive carries the variants of the theme and the changelog of the
+release:
+
+```text
+CHANGELOG.txt
+dark/BlueForest.tmTheme
+light/BlueForestLight.tmTheme
+```
+
+Put the themes in the themes directory of bat, and rebuild the cache:
 
 ```bash
 theme_dir="$(bat --config-dir)/themes"
 mkdir -p "$theme_dir"
-cp blueforest-bat-theme-<version>.tmTheme "$theme_dir/BlueForest.tmTheme"
+tar -xzf blueforest-bat-theme-<version>.tar.gz -C "$theme_dir" \
+  --strip-components=1 \
+  dark/BlueForest.tmTheme light/BlueForestLight.tmTheme
 bat cache --build
 ```
 

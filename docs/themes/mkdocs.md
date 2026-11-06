@@ -137,13 +137,21 @@ share/doc/blueforest/LICENSE
 
 ## Manual install
 
-Download `blueforest-mkdocs-theme-<version>.css` from the
-[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
-put it in the sources of the site, where `extra_css` points at it:
+Download `blueforest-mkdocs-theme-<version>.tar.gz` from the
+[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases).
+The archive carries the stylesheet and the changelog of the application:
+
+```text
+CHANGELOG.txt
+blueforest.css
+```
+
+Put the stylesheet in the sources of the site, where `extra_css` points at it:
 
 ```bash
 mkdir -p docs/assets/stylesheets
-cp blueforest-mkdocs-theme-<version>.css docs/assets/stylesheets/blueforest.css
+tar -xzf blueforest-mkdocs-theme-<version>.tar.gz -O blueforest.css \
+  > docs/assets/stylesheets/blueforest.css
 ```
 
 The path has to be the one of the `extra_css` option of `mkdocs.yml`, and the

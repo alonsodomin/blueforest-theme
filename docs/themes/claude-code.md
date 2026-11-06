@@ -111,13 +111,24 @@ directory of the user, and that is where Claude Code reads the themes from.
 
 ## Manual install
 
-Download `blueforest-claude-code-theme-<version>.json` from the
-[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
-put it where Claude Code reads the themes from:
+Download `blueforest-claude-code-theme-<version>.tar.gz` from the
+[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases).
+The archive carries the variants of the theme and the changelog of the
+release:
+
+```text
+CHANGELOG.txt
+dark/blueforest.json
+light/blueforest-light.json
+```
+
+Put the themes where Claude Code reads them from:
 
 ```bash
 mkdir -p ~/.claude/themes
-cp blueforest-claude-code-theme-<version>.json ~/.claude/themes/blueforest.json
+tar -xzf blueforest-claude-code-theme-<version>.tar.gz -C ~/.claude/themes \
+  --strip-components=1 \
+  dark/blueforest.json light/blueforest-light.json
 ```
 
 Then select the theme in the settings of Claude Code, `~/.claude/settings.json`:
