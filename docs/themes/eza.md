@@ -76,13 +76,21 @@ of the user, and there is no system-wide directory it reads.
 
 ## Manual install
 
-Download `blueforest-eza-theme-<version>.yml` from the
-[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
-put it where eza reads the theme from, under the name eza expects:
+Download `blueforest-eza-theme-<version>.tar.gz` from the
+[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases).
+The archive carries the theme and the changelog of the application:
+
+```text
+CHANGELOG.txt
+dark/blueforest.yml
+```
+
+Put the theme where eza reads the theme from, under the name eza expects:
 
 ```bash
 mkdir -p ~/.config/eza
-cp blueforest-eza-theme-<version>.yml ~/.config/eza/theme.yml
+tar -xzf blueforest-eza-theme-<version>.tar.gz -O dark/blueforest.yml \
+  > ~/.config/eza/theme.yml
 ```
 
 That is all: eza reads the file every time it runs, so there is nothing to

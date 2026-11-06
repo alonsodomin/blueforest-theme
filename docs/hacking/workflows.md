@@ -41,7 +41,7 @@ unknown inputs, and invalid job dependencies.
 
 ## The CI workflow
 
-The CI runs on pushes to `master` and on pull requests. It has three jobs:
+The CI runs on pushes to `master` and on pull requests. It has four jobs:
 
 - **Render the workflows** runs on pull requests from the repository itself. It
   renders the workflows and commits the result to the branch. It skips pull
@@ -51,6 +51,10 @@ The CI runs on pushes to `master` and on pull requests. It has three jobs:
   extension of Zed is part of it. It sets the environment variables that
   enable the expensive editor checks, and skips the workflow comparison on
   pull requests.
+- **Conventional commits** checks the commit messages of the pull request, or
+  of the push, with `cog check`. The changelog of a release is written out of
+  them, so a commit that does not follow the conventional commits
+  specification never reaches the branch.
 - **Merge gate** waits for the checks, and fails when they did not pass.
 
 ## The merge gate
@@ -60,10 +64,10 @@ The **Merge gate** job is the one the repository is configured with as a
 rules**. The check is named *Merge gate*, and a pull request cannot be merged
 until it succeeds.
 
-The job depends on the **Checks** job, and it runs even when the checks fail,
-because a required check that is never reported leaves the pull request waiting
-for a status that never comes. The job reads the result of the checks it needs
-and fails when that result is not `success`.
+The job depends on the **Checks** and the **Conventional commits** jobs, and it
+runs even when they fail, because a required check that is never reported
+leaves the pull request waiting for a status that never comes. The job reads
+the result of the checks it needs and fails when that result is not `success`.
 
 ## The documentation workflow
 
@@ -78,11 +82,13 @@ source. The site is published at
 
 ## The release workflow
 
-The release workflow runs on the push of a `vMAJOR.MINOR.PATCH` tag. It checks
-the repository, creates the GitHub release with the changelog of the version,
-and lets every application package itself and upload its asset to the release.
-The release is published when every application is done, and the documentation
-workflow is called as the last step.
+The release workflow runs on the push of a `vMAJOR.MINOR.PATCH` tag. It reads
+the version of the tag, checks that it is newer than the latest release and
+that the tag is in the branch `master`, checks the repository, creates the
+GitHub release with the section of the changelog of the repository that
+belongs to the version, and lets every application package itself and upload
+its asset to the release. The release is published when every application is
+done, and the documentation workflow is called as the last step.
 
 See [Releases](releases.md) for the release process.
 

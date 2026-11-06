@@ -94,13 +94,21 @@ of the user lives in the configuration directory of the user.
 
 ## Manual install
 
-Download `blueforest-lazygit-theme-<version>.json` from the
-[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
-put it where lazygit reads its configuration:
+Download `blueforest-lazygit-theme-<version>.tar.gz` from the
+[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases).
+The archive carries the theme and the changelog of the application:
+
+```text
+CHANGELOG.txt
+dark/blueforest.json
+```
+
+Put the theme where lazygit reads its configuration:
 
 ```bash
 mkdir -p ~/.config/lazygit
-cp blueforest-lazygit-theme-<version>.json ~/.config/lazygit/config.yml
+tar -xzf blueforest-lazygit-theme-<version>.tar.gz -O dark/blueforest.json \
+  > ~/.config/lazygit/config.yml
 ```
 
 If you already have a configuration file, the theme is the `gui.theme` key of

@@ -46,6 +46,20 @@ rec {
     "with".submodules = true;
   };
 
+  # Checks the repository out with the whole history of it, and every tag.
+  #
+  # The changelog of a release is generated out of the commits of the
+  # repository, and the version of a release is checked against the tags of
+  # it.
+  checkoutFull = {
+    uses = actions.checkout;
+
+    "with" = {
+      submodules = true;
+      fetch-depth = 0;
+    };
+  };
+
   # Installs Nix, with the features the flakes need.
   installNix = {
     uses = actions.installNix;

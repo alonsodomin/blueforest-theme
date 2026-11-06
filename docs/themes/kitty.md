@@ -120,13 +120,24 @@ light variant, with the swatches.
 
 ## Manual install
 
-Download `blueforest-kitty-theme-<version>.conf` from the
-[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
-put it where kitty reads the themes from:
+Download `blueforest-kitty-theme-<version>.tar.gz` from the
+[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases).
+The archive carries the variants of the theme and the changelog of the
+release:
+
+```text
+CHANGELOG.txt
+dark/blueforest.conf
+light/blueforest-light.conf
+```
+
+Put the themes where kitty reads them from:
 
 ```bash
 mkdir -p ~/.config/kitty/themes
-cp blueforest-kitty-theme-<version>.conf ~/.config/kitty/themes/blueforest.conf
+tar -xzf blueforest-kitty-theme-<version>.tar.gz -C ~/.config/kitty/themes \
+  --strip-components=1 \
+  dark/blueforest.conf light/blueforest-light.conf
 ```
 
 Then select the theme in the configuration of kitty, `~/.config/kitty/kitty.conf`:
@@ -135,9 +146,8 @@ Then select the theme in the configuration of kitty, `~/.config/kitty/kitty.conf
 echo 'include themes/blueforest.conf' >>~/.config/kitty/kitty.conf
 ```
 
-The release carries the light variant as well, under the name
-`blueforest-kitty-theme-light-<version>.conf`. Put it where kitty reads the
-themes from, and select it with `include themes/blueforest-light.conf`.
+The archive carries the light variant as well, under the name
+`blueforest-light.conf`. Select it with `include themes/blueforest-light.conf`.
 
 kitty reads its configuration every time it starts, so there is nothing to
 reload.

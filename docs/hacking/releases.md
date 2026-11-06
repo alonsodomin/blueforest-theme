@@ -7,14 +7,37 @@ The version is not a file of the repository: it comes from the tags. The
 packages of the repository carry the revision of the commit they are built
 from, never the version of a release.
 
-The changelogs live in `modules/<app>/CHANGELOG.md` and in the root
-`CHANGELOG.md`. A changelog that has changes that are not released yet carries
-an `Unreleased` section. The release turns that heading into the heading of the
-release.
+## The changelog
 
-## The release helper
+The changelog of a release is written by
+[CoCoGitto](https://github.com/cocogitto/cocogitto), out of the commits of
+the repository. The changelogs live in the repository: the one of the
+repository at the root, and the one of every application in its own
+directory.
 
-From the development shell:
+The commits of the repository follow the
+[conventional commits](https://www.conventionalcommits.org) specification, and
+the scope of a commit is the application it touches:
+
+```text
+feat(bat): add the light variant of the theme
+fix(neovim): correct the colour of the operators
+docs(repo): document the release process
+```
+
+The commits that are not of an application carry the scope `repo`.
+
+The changelog of an application holds the commits that touch it, and the
+changelog of the repository holds the commits that touch none of them, and
+the versions of the applications that changed.
+
+The configuration of the tool is `cog.toml`: the prefix of the tags, the
+scopes the commits may carry, the template of the changelog, and the
+applications of the monorepo.
+
+## Making a release
+
+The release is made by the helper of the development shell:
 
 ```bash
 release
@@ -26,15 +49,18 @@ or, outside the shell:
 nix run .#release
 ```
 
-The helper asks for the version, checks it against the releases of GitHub,
-stamps the changelogs, commits, tags, and pushes. It needs authenticated `gh`
-and network access. It pushes, so do not run it unattended.
+The helper runs `cog bump --auto`, which computes the version of every
+application that changed, writes the changelogs, commits them, and tags the
+release. It asks before it pushes the branch and the tags, and the push of
+the tag of the release triggers the release workflow.
 
-The push of the tag triggers the release workflow. The workflow:
+The release workflow:
 
-1. Reads the version from the tag.
+1. Reads the version from the tag, checks that it is newer than the latest
+   release, and checks that the tag is in the branch `master`.
 2. Runs the checks for the root flake and for every application.
-3. Creates the GitHub release as a draft, with the changelog of the version.
+3. Creates the GitHub release as a draft, with the section of the changelog
+   of the repository that belongs to the version.
 4. Lets every application package its theme and upload its asset.
 5. Publishes the release when every asset is uploaded.
 6. Calls the documentation workflow to deploy the documentation site.
@@ -42,26 +68,81 @@ The push of the tag triggers the release workflow. The workflow:
 The release is created once, before the applications upload their assets, so
 that the release never carries half of its assets.
 
+### The versions
+
+The repository has a version of its own, the one of its tag, and every
+application has a version of its own, which is bumped when the application
+changes. The tag of an application carries the name of the application before
+the prefix, `bat-v0.2.0`, and the tag of the repository carries the prefix
+alone, `v0.5.0`.
+
+### The guard of the tags
+
+A tag of a release is made by the helper, which writes the changelog of the
+release with it. The development shell installs a `pre-push` hook that stops
+the push of a tag of a release when the user did not confirm it, and tells
+them that the release is made with `nix run .#release`.
+
+## The changelog of the unreleased changes
+
+The changelog of the changes that are not released yet is shown by a command
+of the development shell:
+
+```bash
+changelog
+```
+
+or, outside the shell:
+
+```bash
+nix run .#blueforest-changelog
+```
+
+The command writes the changelog to `$PRJ_DATA_DIR/changelog/CHANGELOG.md`,
+which is `.data/changelog/CHANGELOG.md` by default, and prints it.
+
 ## Release assets
+
+Every application is one asset: the archive of the theme, with the variants of
+the theme and the changelog of the application.
 
 | Application | Asset |
 | --- | --- |
 | VS Code | `blueforest-theme-<version>.vsix` |
-| bat | `blueforest-bat-theme-<version>.tmTheme` |
-| Starship | `blueforest-starship-preset-<version>.toml`, `blueforest-starship-palette-<version>.toml`, `blueforest-starship-palette-light-<version>.toml` |
-| OpenCode | `blueforest-opencode-theme-<version>.json` |
+| bat | `blueforest-bat-theme-<version>.tar.gz` |
+| Starship | `blueforest-starship-theme-<version>.tar.gz` |
+| OpenCode | `blueforest-opencode-theme-<version>.tar.gz` |
 | Neovim | `blueforest-neovim-theme-<version>.tar.gz` |
 | sbt | `blueforest-sbt-prompt-<version>.tar.gz` |
-| eza | `blueforest-eza-theme-<version>.yml` |
+| eza | `blueforest-eza-theme-<version>.tar.gz` |
 | Zed | `blueforest-zed-theme-<version>.tar.gz` |
 | Yazi | `blueforest-yazi-theme-<version>.tar.gz` |
-| kitty | `blueforest-kitty-theme-<version>.conf` |
-| MkDocs | `blueforest-mkdocs-theme-<version>.css` |
-| Claude Code | `blueforest-claude-code-theme-<version>.json` |
-| btop | `blueforest-btop-theme-<version>.theme` |
-| lazygit | `blueforest-lazygit-theme-<version>.json` |
-| md-tui | `blueforest-md-tui-theme-<version>.json` |
-| Noctalia | `blueforest-noctalia-theme-<version>.json` |
+| kitty | `blueforest-kitty-theme-<version>.tar.gz` |
+| MkDocs | `blueforest-mkdocs-theme-<version>.tar.gz` |
+| Claude Code | `blueforest-claude-code-theme-<version>.tar.gz` |
+| btop | `blueforest-btop-theme-<version>.tar.gz` |
+| lazygit | `blueforest-lazygit-theme-<version>.tar.gz` |
+| md-tui | `blueforest-md-tui-theme-<version>.tar.gz` |
+| Noctalia | `blueforest-noctalia-theme-<version>.tar.gz` |
+
+The archive holds the variants of the theme in a directory per variant, `dark`
+and `light`, and the changelog of the application in `CHANGELOG.txt`:
+
+```text
+blueforest-bat-theme-1.2.3.tar.gz
+├── CHANGELOG.txt
+├── dark/BlueForest.tmTheme
+└── light/BlueForestLight.tmTheme
+```
+
+The applications that read their theme from a directory of their own keep that
+layout, because the files of the archive are installed where the application
+reads them from: the theme of Neovim is at `colors/` and `lua/`, the extension
+of Zed at `extension.toml` and `themes/`, the prompt of sbt at `plugins/`, and
+the flavours of Yazi at `blueforest.yazi/` and `blueforest-light.yazi/`.
+
+The extension of VS Code is the exception: the asset is the extension itself,
+because that is what the marketplaces take.
 
 The VS Code extension is also published to Open VSX and to the VS Marketplace.
 `modules/vscode/package.json` carries the placeholder `0.0.0`: the manifest is
@@ -94,7 +175,8 @@ moved upstream. Renovate updates the versions of the actions in
 
 ## Adding an application to the release
 
-A new application brings an entry in the table of `workflows/release.nix`,
-where the way it is packaged is described, and an entry in the list of
-applications in `workflows/lib.nix`. See
-[Adding an application](adding-an-application.md).
+A new application brings an entry in the table of `workflows/assets.nix`,
+where the files of its theme and the way it is packaged are described, an entry
+in the list of applications in `workflows/lib.nix`, and a package in
+`cog.toml`, with the path of the application and the path of its changelog.
+See [Adding an application](adding-an-application.md).

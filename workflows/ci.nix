@@ -105,6 +105,40 @@ in
       ];
     };
 
+    # The commits of the pull request have to follow the conventional
+    # commits specification: the changelog of a release is generated out of
+    # them, and a commit that does not follow the specification is one the
+    # changelog cannot use.
+    conventional = {
+      name = "Conventional commits";
+      runs-on = "ubuntu-latest";
+      steps = [
+        common.checkoutFull
+        common.installNix
+        {
+          name = "Check the commit messages";
+          run = ''
+            # The commits of the pull request, or the commits of the push.
+            if [ "''${{ github.event_name }}" = "pull_request" ]; then
+              range="''${{ github.event.pull_request.base.sha }}..HEAD"
+            else
+              before="''${{ github.event.before }}"
+              if [ "$before" = "0000000000000000000000000000000000000000" ]; then
+                range="HEAD~1..HEAD"
+              else
+                range="$before..''${{ github.event.after }}"
+              fi
+            fi
+
+            # The merge commits are ignored: a repository with a linear
+            # history has none of them, and a merge commit says nothing
+            # about the change it brings.
+            nix run .#cog -- check --ignore-merge-commits "$range"
+          '';
+        }
+      ];
+    };
+
     # The gate of the merge. The repository is configured with it as a
     # required check, so that a pull request cannot be merged until the checks
     # pass.
@@ -115,7 +149,10 @@ in
     # result of the checks it needs, and fails when they did not succeed.
     merge-gate = {
       name = "Merge gate";
-      needs = [ "checks" ];
+      needs = [
+        "checks"
+        "conventional"
+      ];
       "if" = "always()";
       runs-on = "ubuntu-latest";
       steps = [
@@ -124,6 +161,11 @@ in
           run = ''
             if [ "''${{ needs.checks.result }}" != "success" ]; then
               echo "the checks did not pass: ''${{ needs.checks.result }}" >&2
+              exit 1
+            fi
+
+            if [ "''${{ needs.conventional.result }}" != "success" ]; then
+              echo "the commit messages did not pass: ''${{ needs.conventional.result }}" >&2
               exit 1
             fi
           '';

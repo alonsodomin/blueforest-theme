@@ -1,0 +1,134 @@
+# SPDX-License-Identifier: MPL-2.0
+#
+# The configuration of CoCoGitto, the conventional commit toolbox of the
+# repository.
+#
+# The tool writes the changelog of a release out of the commits of the
+# repository, bumps the version of every application that changed, and tags
+# the release. The release is made with `nix run .#release`, which is
+# `cog bump --auto` and a push.
+#
+# The commits of the repository follow the conventional commits
+# specification, and the scope of a commit is the application it touches:
+#
+#   feat(bat): add the light variant of the theme
+#   fix(neovim): correct the colour of the operators
+#   docs(repo): document the release process
+
+# The tags of the repository are prefixed with a "v".
+tag_prefix = "v"
+
+# The scopes of the commits of the repository: the id of an application, and
+# "repo" for the commits that are not of one.
+#
+# The scope "version" is the one of the commit that CoCoGitto writes for the
+# release itself.
+scopes = [
+  "bat",
+  "btop",
+  "claude-code",
+  "eza",
+  "kitty",
+  "lazygit",
+  "md-tui",
+  "mkdocs",
+  "neovim",
+  "noctalia",
+  "opencode",
+  "repo",
+  "sbt",
+  "starship",
+  "version",
+  "vscode",
+  "yazi",
+  "zed",
+]
+
+# The merge commits say nothing about the change they bring.
+ignore_merge_commits = true
+
+# CoCoGitto writes the epoch in the changelog of the repository when the
+# release has no commit of its own, which is the case of a release that
+# touches applications alone. The hook repairs the date before the commit
+# of the release is made.
+pre_bump_hooks = ["sed -i \"s/1970-01-01/$(date +%F)/\" CHANGELOG.md"]
+
+# The changelog of the release.
+#
+# The template "remote" writes the entries with the links to the commits and
+# to the authors. The template of the applications is the one of their own
+# changelog files.
+[changelog]
+path = "CHANGELOG.md"
+template = "remote"
+package_template = "remote"
+remote = "github.com"
+owner = "alonsodomin"
+repository = "blueforest-theme"
+
+# The applications of the repository. Every one of them is a package of the
+# monorepo: its changelog is a file of its own, and its version is bumped
+# when it changes.
+[monorepo.packages.bat]
+path = "modules/bat"
+changelog_path = "modules/bat/CHANGELOG.md"
+
+[monorepo.packages.btop]
+path = "modules/btop"
+changelog_path = "modules/btop/CHANGELOG.md"
+
+[monorepo.packages.claude-code]
+path = "modules/claude-code"
+changelog_path = "modules/claude-code/CHANGELOG.md"
+
+[monorepo.packages.eza]
+path = "modules/eza"
+changelog_path = "modules/eza/CHANGELOG.md"
+
+[monorepo.packages.kitty]
+path = "modules/kitty"
+changelog_path = "modules/kitty/CHANGELOG.md"
+
+[monorepo.packages.lazygit]
+path = "modules/lazygit"
+changelog_path = "modules/lazygit/CHANGELOG.md"
+
+[monorepo.packages.md-tui]
+path = "modules/md-tui"
+changelog_path = "modules/md-tui/CHANGELOG.md"
+
+[monorepo.packages.mkdocs]
+path = "modules/mkdocs"
+changelog_path = "modules/mkdocs/CHANGELOG.md"
+
+[monorepo.packages.neovim]
+path = "modules/neovim"
+changelog_path = "modules/neovim/CHANGELOG.md"
+
+[monorepo.packages.noctalia]
+path = "modules/noctalia"
+changelog_path = "modules/noctalia/CHANGELOG.md"
+
+[monorepo.packages.opencode]
+path = "modules/opencode"
+changelog_path = "modules/opencode/CHANGELOG.md"
+
+[monorepo.packages.sbt]
+path = "modules/sbt"
+changelog_path = "modules/sbt/CHANGELOG.md"
+
+[monorepo.packages.starship]
+path = "modules/starship"
+changelog_path = "modules/starship/CHANGELOG.md"
+
+[monorepo.packages.vscode]
+path = "modules/vscode"
+changelog_path = "modules/vscode/CHANGELOG.md"
+
+[monorepo.packages.yazi]
+path = "modules/yazi"
+changelog_path = "modules/yazi/CHANGELOG.md"
+
+[monorepo.packages.zed]
+path = "modules/zed"
+changelog_path = "modules/zed/CHANGELOG.md"

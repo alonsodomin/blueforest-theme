@@ -68,6 +68,9 @@ combined ones.
 | `packages.<system>.blueforest-vscode-theme` | The theme as a VS Code extension package |
 | `packages.<system>.blueforest-yazi-theme` | The theme for Yazi, as a flavour |
 | `packages.<system>.blueforest-zed-theme` | The theme for Zed, as an extension |
+| `packages.<system>.blueforest-changelog` | The program that shows the changelog of the unreleased changes |
+| `packages.<system>.blueforest-release` | The program that releases the repository |
+| `packages.<system>.cog` | CoCoGitto, the conventional commit toolbox of the repository |
 | `packages.<system>.documentation` | The documentation site as a static site |
 | `packages.<system>.neovim-nixvim-check` | The check that builds an editor with nixvim |
 | `packages.<system>.render-workflows` | The program that renders the workflows of the repository |

@@ -33,8 +33,16 @@ change of the extension is reviewed here.
 
 Every release of the repository attaches the extension as
 `blueforest-zed-theme-<version>.tar.gz`. It carries the manifest of the
-extension and the theme, in the layout Zed installs an extension in. Unpack it
-in the extensions directory of Zed:
+extension, the theme and the changelog of the application, in the layout Zed
+installs an extension in:
+
+```text
+CHANGELOG.txt
+extension.toml
+themes/blueforest.json
+```
+
+Unpack it in the extensions directory of Zed:
 
 ```bash
 mkdir -p ~/.local/share/zed/extensions/installed/blueforest-theme

@@ -8,6 +8,7 @@ self-contained flake.
 .
 ├── flake.nix                 # the root flake, which composes the applications
 ├── flake.lock
+├── cog.toml                  # the configuration of CoCoGitto
 ├── mkdocs.yml                # the documentation site
 ├── docs/                     # the documentation sources
 ├── modules/
@@ -28,7 +29,7 @@ self-contained flake.
 │   ├── yazi/
 │   └── zed/
 ├── tests/                    # checks of the root flake
-├── tools/                    # the release and update helpers
+├── tools/                    # the release, changelog and documentation helpers
 └── workflows/                # the definitions of the GitHub Actions workflows
 ```
 
@@ -42,7 +43,6 @@ modules/<app>/
 ├── flake.nix            # the application as a flake of its own
 ├── flake.lock
 ├── flake-module.nix     # the application as a flake-parts module
-├── CHANGELOG.md         # the changes of the application
 ├── NOTICE.md            # the attribution of the theme
 ├── nix/                 # the packaging of the theme
 └── themes/              # the theme itself
@@ -145,6 +145,34 @@ The arguments of the module are the ones of the flake that imports it:
 `inputs` is the input set of the consumer, so the packages of the application
 are built with the nixpkgs of the consumer. The checks use `appInputs`, the
 inputs of the application.
+
+## The tools
+
+The helpers of the repository live in `tools/`, one directory per tool:
+
+```text
+tools/
+├── changelog/                # the changelog of the unreleased changes
+│   ├── default.nix           # the Nix wrapper
+│   └── main.sh               # the script
+├── docs.sh                   # the documentation of the repository
+├── git-guard/                # the guard of the tags
+│   └── main.sh               # the script
+├── release/                  # the release of the repository
+│   ├── default.nix           # the Nix wrapper
+│   └── main.sh               # the script
+├── update.sh                 # the lock files of the repository
+└── version.sh                # the version of the sources
+```
+
+A tool that is a package of the root flake has a `default.nix`, which wraps
+its script with the programs it needs, and a `main.sh`, which is the script
+itself. A tool that is not a package has only the script.
+
+The `release` and the `changelog` tools are the commands of the development
+shell, and the root flake publishes them as `packages.blueforest-release` and
+`packages.blueforest-changelog`, so that they can be run without the shell
+too.
 
 ## The root flake
 

@@ -79,8 +79,19 @@ user, and there is no system-wide directory it reads.
 ## Manual install
 
 Download `blueforest-neovim-theme-<version>.tar.gz` from the
-[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases) and
-extract it into a package directory of the Neovim runtimepath:
+[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases).
+The archive carries the variants of the theme and the changelog of the
+release, in the layout Neovim reads a plugin from:
+
+```text
+CHANGELOG.txt
+colors/blueforest.lua
+colors/blueforest-light.lua
+lua/lualine/themes/blueforest.lua
+lua/lualine/themes/blueforest-light.lua
+```
+
+Extract it into a package directory of the Neovim runtimepath:
 
 ```bash
 plugin_dir="$HOME/.local/share/nvim/site/pack/blueforest/start/blueforest-neovim-theme"

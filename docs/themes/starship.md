@@ -214,22 +214,27 @@ The packages are also available as
 
 ## Manual install
 
-Download the preset and one palette from the
-[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases):
+Download `blueforest-starship-theme-<version>.tar.gz` from the
+[GitHub releases](https://github.com/alonsodomin/blueforest-theme/releases).
+The archive carries the preset, the palettes and the changelog of the
+release:
 
-- `blueforest-starship-preset-<version>.toml`, the preset.
-- `blueforest-starship-palette-<version>.toml`, the dark palette.
-- `blueforest-starship-palette-light-<version>.toml`, the light palette.
+```text
+CHANGELOG.txt
+blueforest.toml
+dark/blueforest.toml
+light/blueforest-light.toml
+```
 
-The preset carries no colour and selects no palette, so both files are needed.
-The name of the palette is what joins them, and the line that selects it has to
-come before the tables of the preset:
+The preset carries no colour and selects no palette, so the preset and a
+palette are both needed. The name of the palette is what joins them, and the
+line that selects it has to come before the tables of the preset:
 
 ```bash
 {
   echo 'palette = "blueforest"'
-  cat blueforest-starship-preset-<version>.toml
-  cat blueforest-starship-palette-<version>.toml
+  tar -xzf blueforest-starship-theme-<version>.tar.gz -O blueforest.toml
+  tar -xzf blueforest-starship-theme-<version>.tar.gz -O dark/blueforest.toml
 } >~/.config/starship.toml
 ```
 

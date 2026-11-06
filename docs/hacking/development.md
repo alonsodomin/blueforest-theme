@@ -21,8 +21,9 @@ The shell prints a menu with the commands it provides:
 
 [utilities]
 
-  release - Interactive release helper
-  update  - Update the lock files of the repository and of every application
+  changelog - Show the changelog of the changes that are not released yet
+  release   - Release the repository
+  update    - Update the lock files of the repository and of every application
 ```
 
 ## Formatting
@@ -87,7 +88,8 @@ The names include `version`, `overlay`, `treefmt`, `workflows-validate`,
 `lazygit-render`, `lazygit-module`, `lazygit-colours`, `md-tui-theme`,
 `md-tui-render`, `md-tui-module`, `md-tui-colours`, `noctalia-theme`,
 `noctalia-palette-v2`, `noctalia-render`, `noctalia-module`, `noctalia-colours`,
-`palette-swatches`, `light-colours`, and `documentation`.
+`palette-swatches`, `light-colours`, `cog-packages`, `release-assets`, and
+`documentation`.
 
 Root flake evaluation sees the working tree. `git add` new files before
 running `nix flake check` or `nix build "path:.#..."`, so that the tree

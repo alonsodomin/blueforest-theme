@@ -108,9 +108,11 @@ sbt 2 follows the XDG base directory specification. When `XDG_CONFIG_HOME` is
 not set, it falls back to `~/.config`.
 
 Every release of the repository attaches `blueforest-sbt-prompt-<version>.tar.gz`.
-It carries the two files in the layout of the global configuration of sbt:
+It carries the two files in the layout of the global configuration of sbt, and
+the changelog of the application:
 
 ```text
+CHANGELOG.txt
 plugins/sbt-prompt.sbt
 blueforest-prompt.sbt
 ```
