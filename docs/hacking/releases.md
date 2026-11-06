@@ -56,12 +56,13 @@ the tag of the release triggers the release workflow.
 
 The release workflow:
 
-1. Reads the version from the tag, checks that it is newer than the latest
-   release, and checks that the tag is in the branch `master`.
+1. Checks that the commits of the release follow the conventional commits
+   specification, the same way the commits of a pull request do.
 2. Runs the checks for the root flake and for every application.
 3. Creates the GitHub release as a draft, with the section of the changelog
    of the repository that belongs to the version.
-4. Lets every application package its theme and upload its asset.
+4. Lets every application read its own version, package its theme and upload
+   its asset.
 5. Publishes the release when every asset is uploaded.
 6. Calls the documentation workflow to deploy the documentation site.
 
@@ -75,6 +76,19 @@ application has a version of its own, which is bumped when the application
 changes. The tag of an application carries the name of the application before
 the prefix, `bat-v0.2.0`, and the tag of the repository carries the prefix
 alone, `v0.5.0`.
+
+The workflow reads the version of an application with
+[CoCoGitto](https://github.com/cocogitto/cocogitto), which knows the tags of
+the monorepo:
+
+```bash
+cog get-version --package bat -f $(cog get-version |& tail -1) |& tail -1
+```
+
+The version of the repository is the fallback of the applications that have no
+tag of their own yet. The version of the asset of an application is the
+version of the application, and not the version of the repository: an
+application that did not change keeps the version it had.
 
 ### The guard of the tags
 

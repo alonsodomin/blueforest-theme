@@ -7,15 +7,30 @@ jobs:
   bat:
     name: 'bat: Package'
     needs:
-    - version
     - create-release
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
       with:
+        fetch-depth: 0
         submodules: true
+    - name: Install CoCoGitto
+      uses: cocogitto/cocogitto-action@v4
+      with:
+        install-only: true
+    - id: version
+      name: Read the version of the application
+      run: |-
+        version=$(cog get-version --package bat -f "$(cog get-version |& tail -1)" |& tail -1)
+
+        if [ -z "$version" ]; then
+          echo "The version of bat is empty" >&2
+          exit 1
+        fi
+
+        echo "version=$version" >>"$GITHUB_OUTPUT"
     - env:
-        VERSION: ${{ needs.version.outputs.version }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Package the theme
       run: |-
         rm -rf staging
@@ -36,22 +51,37 @@ jobs:
           -C staging --files-from <(ls -A staging)
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: v${{ needs.version.outputs.version }}
-        VERSION: ${{ needs.version.outputs.version }}
+        TAG: ${{ github.ref_name }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Upload the asset to the release
       run: gh release upload "$TAG" "dist/blueforest-bat-theme-$VERSION.tar.gz" --clobber
   btop:
     name: 'btop: Package'
     needs:
-    - version
     - create-release
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
       with:
+        fetch-depth: 0
         submodules: true
+    - name: Install CoCoGitto
+      uses: cocogitto/cocogitto-action@v4
+      with:
+        install-only: true
+    - id: version
+      name: Read the version of the application
+      run: |-
+        version=$(cog get-version --package btop -f "$(cog get-version |& tail -1)" |& tail -1)
+
+        if [ -z "$version" ]; then
+          echo "The version of btop is empty" >&2
+          exit 1
+        fi
+
+        echo "version=$version" >>"$GITHUB_OUTPUT"
     - env:
-        VERSION: ${{ needs.version.outputs.version }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Package the theme
       run: |-
         rm -rf staging
@@ -69,8 +99,8 @@ jobs:
           -C staging --files-from <(ls -A staging)
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: v${{ needs.version.outputs.version }}
-        VERSION: ${{ needs.version.outputs.version }}
+        TAG: ${{ github.ref_name }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Upload the asset to the release
       run: gh release upload "$TAG" "dist/blueforest-btop-theme-$VERSION.tar.gz" --clobber
   checks:
@@ -109,15 +139,30 @@ jobs:
   claude-code:
     name: 'Claude Code: Package'
     needs:
-    - version
     - create-release
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
       with:
+        fetch-depth: 0
         submodules: true
+    - name: Install CoCoGitto
+      uses: cocogitto/cocogitto-action@v4
+      with:
+        install-only: true
+    - id: version
+      name: Read the version of the application
+      run: |-
+        version=$(cog get-version --package claude-code -f "$(cog get-version |& tail -1)" |& tail -1)
+
+        if [ -z "$version" ]; then
+          echo "The version of claude-code is empty" >&2
+          exit 1
+        fi
+
+        echo "version=$version" >>"$GITHUB_OUTPUT"
     - env:
-        VERSION: ${{ needs.version.outputs.version }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Package the theme
       run: |-
         rm -rf staging
@@ -138,15 +183,43 @@ jobs:
           -C staging --files-from <(ls -A staging)
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: v${{ needs.version.outputs.version }}
-        VERSION: ${{ needs.version.outputs.version }}
+        TAG: ${{ github.ref_name }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Upload the asset to the release
       run: gh release upload "$TAG" "dist/blueforest-claude-code-theme-$VERSION.tar.gz"
         --clobber
+  conventional:
+    name: Conventional commits
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        fetch-depth: 0
+        submodules: true
+    - id: previous
+      name: Read the release before this one
+      run: |-
+        # The release of the repository before this one. The tag of this
+        # release is on HEAD, so it is not one of them.
+        previous=$(git tag --list 'v*' --sort=-version:refname \
+          | grep -E '^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$' \
+          | grep -v -x "$GITHUB_REF_NAME" \
+          | head -n1 || true)
+
+        if [ -n "$previous" ]; then
+          echo "range=$previous..HEAD" >>"$GITHUB_OUTPUT"
+        else
+          echo "range=.." >>"$GITHUB_OUTPUT"
+        fi
+    - name: Check the commits of the release
+      uses: cocogitto/cocogitto-action@v4
+      with:
+        args: --ignore-merge-commits ${{ steps.previous.outputs.range }}
+        command: check
   create-release:
     name: Create the release
     needs:
-    - version
+    - conventional
     - checks
     runs-on: ubuntu-latest
     steps:
@@ -154,10 +227,10 @@ jobs:
       with:
         submodules: true
     - env:
-        VERSION: ${{ needs.version.outputs.version }}
+        TAG: ${{ github.ref_name }}
       name: Collect the notes of the release
       run: |-
-        version="$VERSION"
+        version="${TAG#v}"
 
         # The section of the changelog that belongs to the version of the
         # release. It ends at the separator of the next one.
@@ -174,16 +247,17 @@ jobs:
         fi
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: v${{ needs.version.outputs.version }}
-        VERSION: ${{ needs.version.outputs.version }}
+        TAG: ${{ github.ref_name }}
       name: Create the release
       run: |-
+        version="${TAG#v}"
+
         if gh release view "$TAG" >/dev/null 2>&1; then
           echo "The release $TAG exists already."
           gh release edit "$TAG" --notes-file notes.md
         else
           gh release create "$TAG" --draft \
-            --title "Blueforest $VERSION" --notes-file notes.md
+            --title "Blueforest $version" --notes-file notes.md
         fi
   docs:
     name: Documentation
@@ -197,15 +271,30 @@ jobs:
   eza:
     name: 'eza: Package'
     needs:
-    - version
     - create-release
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
       with:
+        fetch-depth: 0
         submodules: true
+    - name: Install CoCoGitto
+      uses: cocogitto/cocogitto-action@v4
+      with:
+        install-only: true
+    - id: version
+      name: Read the version of the application
+      run: |-
+        version=$(cog get-version --package eza -f "$(cog get-version |& tail -1)" |& tail -1)
+
+        if [ -z "$version" ]; then
+          echo "The version of eza is empty" >&2
+          exit 1
+        fi
+
+        echo "version=$version" >>"$GITHUB_OUTPUT"
     - env:
-        VERSION: ${{ needs.version.outputs.version }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Package the theme
       run: |-
         rm -rf staging
@@ -223,22 +312,37 @@ jobs:
           -C staging --files-from <(ls -A staging)
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: v${{ needs.version.outputs.version }}
-        VERSION: ${{ needs.version.outputs.version }}
+        TAG: ${{ github.ref_name }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Upload the asset to the release
       run: gh release upload "$TAG" "dist/blueforest-eza-theme-$VERSION.tar.gz" --clobber
   kitty:
     name: 'kitty: Package'
     needs:
-    - version
     - create-release
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
       with:
+        fetch-depth: 0
         submodules: true
+    - name: Install CoCoGitto
+      uses: cocogitto/cocogitto-action@v4
+      with:
+        install-only: true
+    - id: version
+      name: Read the version of the application
+      run: |-
+        version=$(cog get-version --package kitty -f "$(cog get-version |& tail -1)" |& tail -1)
+
+        if [ -z "$version" ]; then
+          echo "The version of kitty is empty" >&2
+          exit 1
+        fi
+
+        echo "version=$version" >>"$GITHUB_OUTPUT"
     - env:
-        VERSION: ${{ needs.version.outputs.version }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Package the theme
       run: |-
         rm -rf staging
@@ -259,23 +363,38 @@ jobs:
           -C staging --files-from <(ls -A staging)
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: v${{ needs.version.outputs.version }}
-        VERSION: ${{ needs.version.outputs.version }}
+        TAG: ${{ github.ref_name }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Upload the asset to the release
       run: gh release upload "$TAG" "dist/blueforest-kitty-theme-$VERSION.tar.gz"
         --clobber
   lazygit:
     name: 'lazygit: Package'
     needs:
-    - version
     - create-release
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
       with:
+        fetch-depth: 0
         submodules: true
+    - name: Install CoCoGitto
+      uses: cocogitto/cocogitto-action@v4
+      with:
+        install-only: true
+    - id: version
+      name: Read the version of the application
+      run: |-
+        version=$(cog get-version --package lazygit -f "$(cog get-version |& tail -1)" |& tail -1)
+
+        if [ -z "$version" ]; then
+          echo "The version of lazygit is empty" >&2
+          exit 1
+        fi
+
+        echo "version=$version" >>"$GITHUB_OUTPUT"
     - env:
-        VERSION: ${{ needs.version.outputs.version }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Package the theme
       run: |-
         rm -rf staging
@@ -293,23 +412,38 @@ jobs:
           -C staging --files-from <(ls -A staging)
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: v${{ needs.version.outputs.version }}
-        VERSION: ${{ needs.version.outputs.version }}
+        TAG: ${{ github.ref_name }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Upload the asset to the release
       run: gh release upload "$TAG" "dist/blueforest-lazygit-theme-$VERSION.tar.gz"
         --clobber
   md-tui:
     name: 'md-tui: Package'
     needs:
-    - version
     - create-release
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
       with:
+        fetch-depth: 0
         submodules: true
+    - name: Install CoCoGitto
+      uses: cocogitto/cocogitto-action@v4
+      with:
+        install-only: true
+    - id: version
+      name: Read the version of the application
+      run: |-
+        version=$(cog get-version --package md-tui -f "$(cog get-version |& tail -1)" |& tail -1)
+
+        if [ -z "$version" ]; then
+          echo "The version of md-tui is empty" >&2
+          exit 1
+        fi
+
+        echo "version=$version" >>"$GITHUB_OUTPUT"
     - env:
-        VERSION: ${{ needs.version.outputs.version }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Package the theme
       run: |-
         rm -rf staging
@@ -330,23 +464,38 @@ jobs:
           -C staging --files-from <(ls -A staging)
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: v${{ needs.version.outputs.version }}
-        VERSION: ${{ needs.version.outputs.version }}
+        TAG: ${{ github.ref_name }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Upload the asset to the release
       run: gh release upload "$TAG" "dist/blueforest-md-tui-theme-$VERSION.tar.gz"
         --clobber
   mkdocs:
     name: 'MkDocs: Package'
     needs:
-    - version
     - create-release
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
       with:
+        fetch-depth: 0
         submodules: true
+    - name: Install CoCoGitto
+      uses: cocogitto/cocogitto-action@v4
+      with:
+        install-only: true
+    - id: version
+      name: Read the version of the application
+      run: |-
+        version=$(cog get-version --package mkdocs -f "$(cog get-version |& tail -1)" |& tail -1)
+
+        if [ -z "$version" ]; then
+          echo "The version of mkdocs is empty" >&2
+          exit 1
+        fi
+
+        echo "version=$version" >>"$GITHUB_OUTPUT"
     - env:
-        VERSION: ${{ needs.version.outputs.version }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Package the theme
       run: |-
         rm -rf staging
@@ -364,23 +513,38 @@ jobs:
           -C staging --files-from <(ls -A staging)
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: v${{ needs.version.outputs.version }}
-        VERSION: ${{ needs.version.outputs.version }}
+        TAG: ${{ github.ref_name }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Upload the asset to the release
       run: gh release upload "$TAG" "dist/blueforest-mkdocs-theme-$VERSION.tar.gz"
         --clobber
   neovim:
     name: 'Neovim: Package'
     needs:
-    - version
     - create-release
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
       with:
+        fetch-depth: 0
         submodules: true
+    - name: Install CoCoGitto
+      uses: cocogitto/cocogitto-action@v4
+      with:
+        install-only: true
+    - id: version
+      name: Read the version of the application
+      run: |-
+        version=$(cog get-version --package neovim -f "$(cog get-version |& tail -1)" |& tail -1)
+
+        if [ -z "$version" ]; then
+          echo "The version of neovim is empty" >&2
+          exit 1
+        fi
+
+        echo "version=$version" >>"$GITHUB_OUTPUT"
     - env:
-        VERSION: ${{ needs.version.outputs.version }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Package the theme
       run: |-
         rm -rf staging
@@ -407,23 +571,38 @@ jobs:
           -C staging --files-from <(ls -A staging)
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: v${{ needs.version.outputs.version }}
-        VERSION: ${{ needs.version.outputs.version }}
+        TAG: ${{ github.ref_name }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Upload the asset to the release
       run: gh release upload "$TAG" "dist/blueforest-neovim-theme-$VERSION.tar.gz"
         --clobber
   noctalia:
     name: 'Noctalia: Package'
     needs:
-    - version
     - create-release
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
       with:
+        fetch-depth: 0
         submodules: true
+    - name: Install CoCoGitto
+      uses: cocogitto/cocogitto-action@v4
+      with:
+        install-only: true
+    - id: version
+      name: Read the version of the application
+      run: |-
+        version=$(cog get-version --package noctalia -f "$(cog get-version |& tail -1)" |& tail -1)
+
+        if [ -z "$version" ]; then
+          echo "The version of noctalia is empty" >&2
+          exit 1
+        fi
+
+        echo "version=$version" >>"$GITHUB_OUTPUT"
     - env:
-        VERSION: ${{ needs.version.outputs.version }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Package the theme
       run: |-
         rm -rf staging
@@ -441,23 +620,38 @@ jobs:
           -C staging --files-from <(ls -A staging)
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: v${{ needs.version.outputs.version }}
-        VERSION: ${{ needs.version.outputs.version }}
+        TAG: ${{ github.ref_name }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Upload the asset to the release
       run: gh release upload "$TAG" "dist/blueforest-noctalia-theme-$VERSION.tar.gz"
         --clobber
   opencode:
     name: 'OpenCode: Package'
     needs:
-    - version
     - create-release
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
       with:
+        fetch-depth: 0
         submodules: true
+    - name: Install CoCoGitto
+      uses: cocogitto/cocogitto-action@v4
+      with:
+        install-only: true
+    - id: version
+      name: Read the version of the application
+      run: |-
+        version=$(cog get-version --package opencode -f "$(cog get-version |& tail -1)" |& tail -1)
+
+        if [ -z "$version" ]; then
+          echo "The version of opencode is empty" >&2
+          exit 1
+        fi
+
+        echo "version=$version" >>"$GITHUB_OUTPUT"
     - env:
-        VERSION: ${{ needs.version.outputs.version }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Package the theme
       run: |-
         rm -rf staging
@@ -475,15 +669,14 @@ jobs:
           -C staging --files-from <(ls -A staging)
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: v${{ needs.version.outputs.version }}
-        VERSION: ${{ needs.version.outputs.version }}
+        TAG: ${{ github.ref_name }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Upload the asset to the release
       run: gh release upload "$TAG" "dist/blueforest-opencode-theme-$VERSION.tar.gz"
         --clobber
   publish-release:
     name: Publish the release
     needs:
-    - version
     - vscode
     - bat
     - starship
@@ -504,21 +697,36 @@ jobs:
     steps:
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: v${{ needs.version.outputs.version }}
+        TAG: ${{ github.ref_name }}
       name: Publish the release
       run: gh release edit "$TAG" --draft=false
   sbt:
     name: 'sbt: Package'
     needs:
-    - version
     - create-release
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
       with:
+        fetch-depth: 0
         submodules: true
+    - name: Install CoCoGitto
+      uses: cocogitto/cocogitto-action@v4
+      with:
+        install-only: true
+    - id: version
+      name: Read the version of the application
+      run: |-
+        version=$(cog get-version --package sbt -f "$(cog get-version |& tail -1)" |& tail -1)
+
+        if [ -z "$version" ]; then
+          echo "The version of sbt is empty" >&2
+          exit 1
+        fi
+
+        echo "version=$version" >>"$GITHUB_OUTPUT"
     - env:
-        VERSION: ${{ needs.version.outputs.version }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Package the theme
       run: |-
         rm -rf staging
@@ -539,22 +747,37 @@ jobs:
           -C staging --files-from <(ls -A staging)
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: v${{ needs.version.outputs.version }}
-        VERSION: ${{ needs.version.outputs.version }}
+        TAG: ${{ github.ref_name }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Upload the asset to the release
       run: gh release upload "$TAG" "dist/blueforest-sbt-theme-$VERSION.tar.gz" --clobber
   starship:
     name: 'Starship: Package'
     needs:
-    - version
     - create-release
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
       with:
+        fetch-depth: 0
         submodules: true
+    - name: Install CoCoGitto
+      uses: cocogitto/cocogitto-action@v4
+      with:
+        install-only: true
+    - id: version
+      name: Read the version of the application
+      run: |-
+        version=$(cog get-version --package starship -f "$(cog get-version |& tail -1)" |& tail -1)
+
+        if [ -z "$version" ]; then
+          echo "The version of starship is empty" >&2
+          exit 1
+        fi
+
+        echo "version=$version" >>"$GITHUB_OUTPUT"
     - env:
-        VERSION: ${{ needs.version.outputs.version }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Package the theme
       run: |-
         rm -rf staging
@@ -578,70 +801,41 @@ jobs:
           -C staging --files-from <(ls -A staging)
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: v${{ needs.version.outputs.version }}
-        VERSION: ${{ needs.version.outputs.version }}
+        TAG: ${{ github.ref_name }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Upload the asset to the release
       run: gh release upload "$TAG" "dist/blueforest-starship-theme-$VERSION.tar.gz"
         --clobber
-  version:
-    name: Version
-    outputs:
-      version: ${{ steps.version.outputs.version }}
+  vscode:
+    name: 'VS Code: Package'
+    needs:
+    - create-release
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
       with:
         fetch-depth: 0
         submodules: true
-    - id: version
-      name: Read the tag
-      run: |-
-        tag="$GITHUB_REF_NAME"
-        if [[ ! "$tag" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
-          echo "The tag of a release is vMAJOR.MINOR.PATCH, not: $tag" >&2
-          exit 1
-        fi
-        echo "version=${tag#v}" >>"$GITHUB_OUTPUT"
-    - env:
-        VERSION: ${{ steps.version.outputs.version }}
-      name: Check the version
-      run: |-
-        # The latest release of the repository, without the tag that is
-        # being released.
-        latest=$(git tag --list 'v*' --sort=-version:refname \
-          | grep -E '^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$' \
-          | grep -v -x "$GITHUB_REF_NAME" \
-          | head -n1 || true)
-
-        if [ -n "$latest" ]; then
-          newest=$(printf '%s\n%s\n' "${latest#v}" "$VERSION" | sort -V | tail -n1)
-          if [ "$newest" != "$VERSION" ]; then
-            echo "The version $VERSION is not newer than the release ${latest#v}" >&2
-            exit 1
-          fi
-        fi
-    - name: Check the branch
-      run: |-
-        default_branch="${{ github.event.repository.default_branch }}"
-        if ! git merge-base --is-ancestor "$GITHUB_REF_NAME" "origin/$default_branch"; then
-          echo "The tag $GITHUB_REF_NAME is not in the branch $default_branch" >&2
-          exit 1
-        fi
-  vscode:
-    name: 'VS Code: Package'
-    needs:
-    - version
-    - create-release
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v7
+    - name: Install CoCoGitto
+      uses: cocogitto/cocogitto-action@v4
       with:
-        submodules: true
+        install-only: true
+    - id: version
+      name: Read the version of the application
+      run: |-
+        version=$(cog get-version --package vscode -f "$(cog get-version |& tail -1)" |& tail -1)
+
+        if [ -z "$version" ]; then
+          echo "The version of vscode is empty" >&2
+          exit 1
+        fi
+
+        echo "version=$version" >>"$GITHUB_OUTPUT"
     - uses: actions/setup-node@v7
       with:
         node-version: 24
     - env:
-        VERSION: ${{ needs.version.outputs.version }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Package the theme
       run: |-
         mkdir -p dist
@@ -663,8 +857,8 @@ jobs:
           --out "../../dist/blueforest-theme-$VERSION.vsix"
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: v${{ needs.version.outputs.version }}
-        VERSION: ${{ needs.version.outputs.version }}
+        TAG: ${{ github.ref_name }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Upload the asset to the release
       run: gh release upload "$TAG" "dist/blueforest-theme-$VERSION.vsix" --clobber
     - env:
@@ -679,15 +873,30 @@ jobs:
   yazi:
     name: 'Yazi: Package'
     needs:
-    - version
     - create-release
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
       with:
+        fetch-depth: 0
         submodules: true
+    - name: Install CoCoGitto
+      uses: cocogitto/cocogitto-action@v4
+      with:
+        install-only: true
+    - id: version
+      name: Read the version of the application
+      run: |-
+        version=$(cog get-version --package yazi -f "$(cog get-version |& tail -1)" |& tail -1)
+
+        if [ -z "$version" ]; then
+          echo "The version of yazi is empty" >&2
+          exit 1
+        fi
+
+        echo "version=$version" >>"$GITHUB_OUTPUT"
     - env:
-        VERSION: ${{ needs.version.outputs.version }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Package the theme
       run: |-
         rm -rf staging
@@ -714,22 +923,37 @@ jobs:
           -C staging --files-from <(ls -A staging)
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: v${{ needs.version.outputs.version }}
-        VERSION: ${{ needs.version.outputs.version }}
+        TAG: ${{ github.ref_name }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Upload the asset to the release
       run: gh release upload "$TAG" "dist/blueforest-yazi-theme-$VERSION.tar.gz" --clobber
   zed:
     name: 'Zed: Package'
     needs:
-    - version
     - create-release
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
       with:
+        fetch-depth: 0
         submodules: true
+    - name: Install CoCoGitto
+      uses: cocogitto/cocogitto-action@v4
+      with:
+        install-only: true
+    - id: version
+      name: Read the version of the application
+      run: |-
+        version=$(cog get-version --package zed -f "$(cog get-version |& tail -1)" |& tail -1)
+
+        if [ -z "$version" ]; then
+          echo "The version of zed is empty" >&2
+          exit 1
+        fi
+
+        echo "version=$version" >>"$GITHUB_OUTPUT"
     - env:
-        VERSION: ${{ needs.version.outputs.version }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Package the theme
       run: |-
         rm -rf staging
@@ -750,8 +974,8 @@ jobs:
           -C staging --files-from <(ls -A staging)
     - env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        TAG: v${{ needs.version.outputs.version }}
-        VERSION: ${{ needs.version.outputs.version }}
+        TAG: ${{ github.ref_name }}
+        VERSION: ${{ steps.version.outputs.version }}
       name: Upload the asset to the release
       run: gh release upload "$TAG" "dist/blueforest-zed-theme-$VERSION.tar.gz" --clobber
 name: Release
