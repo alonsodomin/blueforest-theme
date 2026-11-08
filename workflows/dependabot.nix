@@ -36,10 +36,14 @@ _: {
         {
           name = "Enable auto-merge";
 
-          # The merge is a squash one, like the ones of the repository: the
-          # rules of the repository do not allow the merge commits that the
-          # linear history of the branch forbids.
-          run = "gh pr merge --auto --squash \"$PR_URL\"";
+          # The merge is a rebase one, because the rules of the repository do
+          # not allow the merge commits that the linear history of the branch
+          # forbids.
+          #
+          # The rebase keeps the message of the commit of the pull request,
+          # and that message is conventional: Dependabot writes it with the
+          # prefix of `.github/dependabot.yml`.
+          run = "gh pr merge --auto --rebase \"$PR_URL\"";
           env = {
             PR_URL = "\${{ github.event.pull_request.html_url }}";
             GH_TOKEN = "\${{ secrets.GITHUB_TOKEN }}";
