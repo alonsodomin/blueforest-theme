@@ -28,3 +28,13 @@ updates:
     groups:
       flake-inputs:
         group-by: dependency-name
+
+    # The commits of the repository follow the conventional commits
+    # specification, and the check of the CI reads them. The prefix turns the
+    # commits of Dependabot into conventional ones: the type is "chore" and
+    # the scope is "repo", because a lock file is not an application.
+    #
+    # The prefix of the scope of the dependency cannot be used: the scope it
+    # writes is "deps", and CoCoGitto rejects it.
+    commit-message:
+      prefix: "chore(repo)"

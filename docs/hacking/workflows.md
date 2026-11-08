@@ -110,6 +110,14 @@ repository requires.
 Renovate marks the pull requests for the auto-merge of GitHub itself.
 Dependabot cannot do it, so the workflow of `workflows/dependabot.nix` marks
 them instead: it runs `gh pr merge --auto` on the pull requests of Dependabot,
-and on no other. The merge is a squash one, because the rules of the
+and on no other. The merge is a rebase one, because the rules of the
 repository do not allow the merge commits that the linear history of the
-branch forbids.
+branch forbids, and because the rebase keeps the message of the commit of the
+pull request.
+
+That message has to be conventional, because the check of the CI reads it and
+because the changelog of a release is generated out of it. Dependabot writes
+it with the prefix `chore(repo)`, which the configuration of Dependabot
+declares: the type is `chore` and the scope is `repo`, because a lock file is
+not an application. The prefix cannot carry the scope of the dependency: the
+scope it writes is `deps`, and CoCoGitto rejects it.

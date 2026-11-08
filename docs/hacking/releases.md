@@ -180,6 +180,10 @@ Dependabot watches the lock file and opens a pull request for the inputs that
 moved upstream. Renovate updates the versions of the actions in
 `workflows/lib.nix` and the version of the sbt prompt plugin.
 
+The commits of Dependabot follow the conventional commits specification, so
+that the changelog of a release can be generated out of them: they carry the
+prefix `chore(repo)`, which the configuration of Dependabot declares.
+
 ## Adding an application to the release
 
 A new application brings an entry in the table of `workflows/assets.nix`,
