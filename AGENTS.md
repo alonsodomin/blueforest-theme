@@ -29,7 +29,7 @@
 - The commands of the documentation live in `tools/docs.sh`, and the development shell exposes them as `generate-docs`, `serve-docs` and `watch-docs`. The site is written under `$PRJ_DATA_DIR`, which is `.data` by default, and the directory is ignored by git.
 
 ## Updates
-- The repository is a flake, and the applications are modules of it, so there is one lock file: the one of the root flake. `update` from `nix develop` (or `tools/update.sh`) updates it.
+- The repository is a flake, and the applications are modules of it, so there is one lock file: the one of the root flake. `nix flake update` updates it, and there is no helper of its own.
 - The root owns the pins, and the modules of the applications read the inputs they need from them (`appInputs`), so there is nothing to synchronise.
 - Dependabot watches the lock file (`.github/dependabot.yml`): the `nix` ecosystem for the root, weekly. The `nix` entries are grouped by `dependency-name`, so one pull request carries every input that shares the dependency.
 - The versions of the actions of the workflows are updated by Renovate, not by Dependabot: `renovate.json5` has a custom manager that reads them from `workflows/lib.nix`. Dependabot's `github-actions` ecosystem cannot do it, because it only reads workflow files, which are generated.

@@ -23,7 +23,6 @@ The shell prints a menu with the commands it provides:
 
   changelog - Show the changelog of the changes that are not released yet
   release   - Release the repository
-  update    - Update the lock file of the repository
 ```
 
 ## Formatting

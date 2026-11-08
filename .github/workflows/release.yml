@@ -102,7 +102,7 @@ jobs:
       name: Upload the asset to the release
       run: gh release upload "$TAG" "dist/blueforest-btop-theme-$VERSION.tar.gz" --clobber
   checks:
-    name: Checks (${{ matrix.flake }})
+    name: Checks
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
@@ -110,12 +110,7 @@ jobs:
       with:
         extra_nix_config: experimental-features = nix-command flakes
     - name: Run flake checks
-      run: nix flake check ${{ matrix.flake }}
-    strategy:
-      fail-fast: false
-      matrix:
-        flake:
-        - path:.
+      run: nix flake check "path:."
   claude-code:
     name: 'Claude Code: Package'
     needs:

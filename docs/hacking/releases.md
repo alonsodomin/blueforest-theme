@@ -166,10 +166,11 @@ the release workflow patches it with the version of the release.
 ## Updating the repository
 
 The repository is a flake, and the applications are modules of it, so there is
-one lock file: the one of the root flake. The `update` helper updates it:
+one lock file: the one of the root flake. It is updated with the standard
+command of Nix:
 
 ```bash
-update
+nix flake update
 ```
 
 The root flake owns the pins of the repository, and the modules of the

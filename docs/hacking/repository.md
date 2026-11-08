@@ -155,7 +155,6 @@ tools/
 ├── release/                  # the release of the repository
 │   ├── default.nix           # the Nix wrapper
 │   └── main.sh               # the script
-├── update.sh                 # the lock file of the repository
 └── version.sh                # the version of the sources
 ```
 
@@ -207,7 +206,7 @@ no module in the aggregates. Its overlay is part of the one of Yazi, which
 carries the theme of bat for the colours of the code preview.
 
 The root flake also owns the pins of the repository. There is one lock file,
-the one of the root flake, and the `update` helper updates it.
+the one of the root flake, and `nix flake update` updates it.
 
 ## Generated files
 

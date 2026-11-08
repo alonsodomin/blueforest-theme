@@ -6,7 +6,7 @@
 jobs:
   checks:
     if: always()
-    name: Checks (${{ matrix.flake }})
+    name: Checks
     needs:
     - render
     runs-on: ubuntu-latest
@@ -19,12 +19,7 @@ jobs:
         BLUEFOREST_NEOVIM_NIXVIM_CHECK: '1'
         BLUEFOREST_VSCODE_INTEGRATION_CHECK: '1'
       name: Run flake checks
-      run: nix flake check --impure ${{ matrix.flake }}
-    strategy:
-      fail-fast: false
-      matrix:
-        flake:
-        - path:.
+      run: nix flake check --impure "path:."
   conventional:
     name: Conventional commits
     runs-on: ubuntu-latest

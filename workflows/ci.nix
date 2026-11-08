@@ -4,13 +4,6 @@
 _:
 let
   common = import ./lib.nix;
-
-  # The root flake checks every application at once, because it composes the
-  # module of every one of them.
-  #
-  # The flake is checked from the working tree, and not from the git tree, so
-  # that the changes of the pull request are the ones that are checked.
-  flakes = [ "path:." ];
 in
 {
   name = "CI";
@@ -63,7 +56,7 @@ in
     };
 
     checks = {
-      name = "Checks (\${{ matrix.flake }})";
+      name = "Checks";
 
       # The workflows are rendered before the checks run, so that the check
       # that compares them with the committed ones runs against a branch that
@@ -77,16 +70,19 @@ in
       "if" = "always()";
 
       runs-on = "ubuntu-latest";
-      strategy = {
-        fail-fast = false;
-        matrix.flake = flakes;
-      };
       steps = [
         common.checkout
         common.installNix
         {
           name = "Run flake checks";
-          run = "nix flake check --impure \${{ matrix.flake }}";
+
+          # The root flake checks every application at once, because it
+          # composes the module of every one of them.
+          #
+          # The flake is checked from the working tree, and not from the git
+          # tree, so that the changes of the pull request are the ones that
+          # are checked.
+          run = "nix flake check --impure \"path:.\"";
 
           # The checks that build an editor are expensive, so they are only run
           # on purpose. The CI runs them anyway, because they are the ones that
