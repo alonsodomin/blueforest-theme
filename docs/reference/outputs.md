@@ -76,22 +76,23 @@ combined ones.
 | `packages.<system>.render-workflows` | The program that renders the workflows of the repository |
 | `packages.<system>.vscode-integration-check` | The check that builds VSCodium |
 
-The application flake exposes the same outputs, without the ones of the other
-applications: `overlays.default`, `nixosModules.default` and
-`homeModules.default` are the ones of the application itself, where it
-provides them. It also publishes the module of the application, so that the
-root flake can compose it:
+The root flake publishes the module of every application under its own name,
+so that a consumer that wants one of them alone does not have to take the
+others:
 
 | Output | Description |
 | --- | --- |
-| `flakeModule` | The module of the application, for the root flake |
-| `flakeModules.default` | The same module, under the name of the convention |
+| `flakeModules.<app>` | The module of the application, for flake-parts |
+| `flakeModules.default` | The modules of every application, except the one of MkDocs |
 
 The module of an application takes the inputs of that application as a static
 argument, so a consumer that imports it needs no `devshell`, `home-manager` or
 `nixvim` input of its own. The `inputs` of the module are the inputs of the
 consumer, so the packages of the application are built with the nixpkgs of the
 consumer.
+
+Every module carries a key of its own, so that the module system evaluates it
+once when it is imported by more than one place.
 
 The module of the MkDocs theme is the exception: it is a helper that installs
 the stylesheet in the sources of a documentation site. It takes the

@@ -1,8 +1,8 @@
 # Repository layout
 
 The repository is a Nix flake monorepo. Every application lives in a directory
-of its own under `modules/`, and every one of those directories is a
-self-contained flake.
+of its own under `modules/`, and every one of those directories is a module of
+the root flake.
 
 ```text
 .
@@ -40,8 +40,6 @@ of them:
 
 ```text
 modules/<app>/
-├── flake.nix            # the application as a flake of its own
-├── flake.lock
 ├── flake-module.nix     # the application as a flake-parts module
 ├── NOTICE.md            # the attribution of the theme
 ├── nix/                 # the packaging of the theme
@@ -87,18 +85,15 @@ upstream `sbt-prompt` plugin and selects its `BlueforestTheme` from
 either. The theme is part of the
 [zed-blueforest-theme](https://github.com/alonsodomin/zed-blueforest-theme)
 extension, which lives in a repository of its own because that is how Zed
-ships extensions. The repository is a submodule of the application, at
-`modules/zed/extension/`, so every change of the extension is reviewed here.
-
-Nix cannot fetch the contents of a submodule of a git tree, so the checks of
-the repository run against the working tree, where the submodule is checked
-out. The checkout of the CI brings the submodules with it.
+ships extensions. The root flake takes it as an input without a flake of its
+own, so the pin of it lives in the lock file of the repository, and the
+release fetches it at the revision the lock file pins.
 
 The flavour of Yazi paints the code of its preview with a TextMate theme,
-and it is the theme the repository ships for bat. The application of Yazi
-therefore takes the application of bat as an input, and the flavour links to
-the theme of bat instead of carrying a copy of it. The check `yazi-tmtheme` of
-the repository checks that the link points to the theme of bat.
+and it is the theme the repository ships for bat. The module of Yazi
+therefore imports the module of bat, and the flavour links to the theme of
+bat instead of carrying a copy of it. The check `yazi-tmtheme` of the
+repository checks that the link points to the theme of bat.
 
 The asset of the release of Yazi is unpacked by hand, so it cannot carry a
 link to the store: it carries the theme of bat itself. The check `yazi-asset`
@@ -112,34 +107,33 @@ packages, its checks, its overlay, and its modules. The module takes the inputs
 of the application as a static argument, so that it does not depend on the
 inputs of the flake that imports it.
 
-The flake of the application binds those inputs and publishes the module, so
-that the root flake can compose it:
+The root flake binds those inputs and imports the module, so that the
+repository composes the applications:
 
 ```nix
-# modules/neovim/flake.nix
-outputs =
-  inputs@{ flake-parts, ... }:
-  flake-parts.lib.mkFlake { inherit inputs; } (
-    { config, lib, flake-parts-lib, ... }:
-    let
-      inherit (flake-parts-lib) importApply;
+# flake.nix
+let
+  inherit (flake-parts-lib) importApply;
 
-      # The inputs of the application are bound to the module.
-      flakeModules.default = importApply ./flake-module.nix { appInputs = inputs; };
-    in
-    {
-      imports = [
-        inputs.flake-parts.flakeModules.flakeModules
-        inputs.home-manager.flakeModules.home-manager
-        flakeModules.default
-      ];
+  # The inputs of the application are bound to the module.
+  neovimModule = (importApply ./modules/neovim/flake-module.nix { appInputs = inputs; }) // { key = "blueforest:neovim"; };
+in
+{
+  imports = [
+    inputs.devshell.flakeModule
+    inputs.home-manager.flakeModules.home-manager
+    neovimModule
+  ];
 
-      flake = {
-        inherit flakeModules;
-      };
-    }
-  );
+  flake.flakeModules.neovim = neovimModule;
+}
 ```
+
+Every module carries a key of its own. The module system evaluates a module
+once, and the key is what tells it that two imports of the same module are
+the same one: the module of an application is imported by the root flake and,
+in the case of Yazi, by the module of another application, and the option
+`flake.overlays.bat` is declared to be unique.
 
 The arguments of the module are the ones of the flake that imports it:
 `inputs` is the input set of the consumer, so the packages of the application
@@ -161,7 +155,7 @@ tools/
 ├── release/                  # the release of the repository
 │   ├── default.nix           # the Nix wrapper
 │   └── main.sh               # the script
-├── update.sh                 # the lock files of the repository
+├── update.sh                 # the lock file of the repository
 └── version.sh                # the version of the sources
 ```
 
@@ -176,27 +170,35 @@ too.
 
 ## The root flake
 
-The root flake registers every application as a path input, imports its flake
-module, and composes the aggregate outputs:
+The root flake imports the module of every application out of the tree of the
+repository, and composes the aggregate outputs:
 
 ```nix
 inputs = {
-  neovim = {
-    url = "path:./modules/neovim";
-    inputs.nixpkgs.follows = "nixpkgs";
-    inputs.flake-parts.follows = "flake-parts";
-    inputs.home-manager.follows = "home-manager";
-    inputs.nixvim.follows = "nixvim";
+  nixvim.url = "github:nix-community/nixvim";
+
+  # The extension of Zed, which is the theme of the application. It is not
+  # a flake, so it is an input without one.
+  zed-extension = {
+    url = "github:alonsodomin/zed-blueforest-theme";
+    flake = false;
   };
 };
 
 imports = [
   inputs.devshell.flakeModule
   inputs.home-manager.flakeModules.home-manager
-  inputs.vscode.flakeModule
-  inputs.neovim.flakeModule
+  vscodeModule
+  neovimModule
 ];
 ```
+
+The applications are not inputs of the root flake. A relative import stays
+inside the tree of the repository, so the sources of the applications are
+covered by the hash of the lock file, and a consumer that takes the
+repository gets them verified. A `path:` input would not: it is a store path
+of its own, with no hash, and the consumer of the repository would have to
+trust it.
 
 The aggregate modules are explicit. The root flake composes the overlays of
 the applications that have one, and the Home Manager and NixOS modules of the
@@ -204,10 +206,8 @@ applications that provide them. The theme of bat is a package alone, so it has
 no module in the aggregates. Its overlay is part of the one of Yazi, which
 carries the theme of bat for the colours of the code preview.
 
-The root flake also owns the pins of the repository. An application keeps a
-lock file of its own, for consumers that take it on its own, and the `update`
-helper pins the inputs it shares with the root to the revisions the root
-resolved.
+The root flake also owns the pins of the repository. There is one lock file,
+the one of the root flake, and the `update` helper updates it.
 
 ## Generated files
 

@@ -2,19 +2,22 @@
 #
 # The BlueForest theme for Zed, as a flake-parts module.
 #
-# The root flake imports this module through the flake of the application,
-# and the flake of the application imports it itself. Both of them therefore
-# agree on what the application provides.
+# The root flake imports this module out of the tree of the repository, and
+# publishes it for the consumers that want the theme of Zed alone.
 #
-# The inputs of the application. Its own flake binds them to the module and
+# The inputs of the application. The root flake binds them to the module and
 # passes them as a static argument, so that the module does not depend on the
 # inputs of the flake that imports it.
+#
+# The extension of Zed, which is the theme of the application. It is a
+# repository of its own, and it is pinned by the lock file of the repository.
 #
 # The arguments of the module are the ones of the flake that imports it: the
 # `inputs` below are the inputs of that flake, so that the packages of the
 # application are built with the nixpkgs of the consumer.
 {
   appInputs,
+  extension,
 }:
 {
   config,
@@ -38,6 +41,15 @@ let
       "0.0.0+${lib.removeSuffix "-dirty" self.dirtyShortRev}.dirty"
     else
       "0.0.0";
+
+  # The sources of the extension: the repository Zed installs the extension
+  # from, at the revision the lock file of the repository pins.
+  #
+  # The extension is an input of the root flake, so it is fetched by the
+  # store and its contents are verified against the hash of the lock file. A
+  # consumer that takes the repository gets the extension with it, and the
+  # theme of Zed builds without a submodule.
+  source = extension;
 in
 {
   # The flake module of Home Manager, which declares `flake.homeModules`. It
@@ -67,18 +79,6 @@ in
       # The unoverlaid nixpkgs, used to evaluate the modules without applying
       # the overlay twice.
       basePkgs = import inputs.nixpkgs { inherit system; };
-
-      # The sources of the extension: the submodule, which is the repository
-      # Zed installs the extension from.
-      #
-      # Nix cannot read the contents of a submodule of a git tree, so the
-      # checks of the repository run against the working tree, where the
-      # submodule is checked out.
-      source =
-        if builtins.pathExists ./extension/themes/blueforest.json then
-          ./extension
-        else
-          throw "the submodule modules/zed/extension is not checked out; either run `git submodule update` or run the checks against \"path:.\"";
 
       theme = pkgs.blueforest-zed-theme;
     in
@@ -116,8 +116,7 @@ in
       blueforest-zed-theme = import ./nix/extension.nix {
         inherit (final) lib;
         pkgs = final;
-        inherit version;
-        source = ./extension;
+        inherit version source;
       };
     };
 

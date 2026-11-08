@@ -6,10 +6,10 @@
 # directory with a manifest and the themes it provides. This package is that
 # directory: the manifest of the extension and the theme of the repository.
 #
-# The sources are the submodule at `extension/`, which is the repository Zed
-# installs the extension from. Nix cannot read the contents of a submodule of
-# a git tree, so the checks of the repository run against the working tree,
-# where the submodule is checked out.
+# The sources are the extension repository, at the revision the lock file of
+# the repository pins. The extension is an input of the root flake, so the
+# store holds it and its contents are verified against the hash of the lock
+# file.
 #
 # The manifest keeps the version it has in the extension repository: that
 # version is Zed's own, and Zed compares it with the one of the repository to

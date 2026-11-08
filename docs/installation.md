@@ -74,30 +74,35 @@ If you prefer to wire the overlay yourself:
 
 ## Installing a single application
 
-Every application is a flake of its own, so a consumer that only wants one of
-them does not have to take the others:
+Every application is a module of the root flake, so a consumer that only
+wants one of them does not have to take the others. The root flake publishes
+the module of every application under its own name:
 
 ```nix
 {
-  inputs.blueforest-vscode.url = "github:alonsodomin/blueforest-theme?dir=modules/vscode";
+  inputs.blueforest.url = "github:alonsodomin/blueforest-theme";
 
   outputs =
-    { nixpkgs, blueforest-vscode, ... }:
+    { nixpkgs, blueforest, ... }:
     {
       nixosConfigurations.myhost = nixpkgs.lib.nixosSystem {
         modules = [
-          blueforest-vscode.nixosModules.default
+          blueforest.nixosModules.vscode
         ];
       };
     };
 }
 ```
 
-The same works for `?dir=modules/bat`, `?dir=modules/starship`,
-`?dir=modules/opencode`, `?dir=modules/sbt`, `?dir=modules/neovim`,
-`?dir=modules/eza`, `?dir=modules/zed`, `?dir=modules/yazi`,
-`?dir=modules/kitty`, `?dir=modules/mkdocs`, `?dir=modules/btop`,
-`?dir=modules/lazygit`, `?dir=modules/md-tui`, and `?dir=modules/noctalia`.
+The same works for `blueforest.nixosModules.bat`,
+`blueforest.nixosModules.starship`, `blueforest.nixosModules.opencode`,
+`blueforest.nixosModules.sbt`, `blueforest.nixosModules.neovim`,
+`blueforest.nixosModules.eza`, `blueforest.nixosModules.zed`,
+`blueforest.nixosModules.yazi`, `blueforest.nixosModules.kitty`,
+`blueforest.nixosModules.btop`, `blueforest.nixosModules.lazygit`,
+`blueforest.nixosModules.md-tui`, and `blueforest.nixosModules.noctalia`.
+The Home Manager modules are under `blueforest.homeModules`, and the overlays
+under `blueforest.overlays`.
 
 The theme of bat is a package and a Home Manager module, so it has a module
 to import: `blueforest.homeModules.bat`. The packages of the other

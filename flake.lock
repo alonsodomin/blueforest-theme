@@ -22,72 +22,6 @@
         "type": "github"
       }
     },
-    "bat": {
-      "inputs": {
-        "flake-parts": [
-          "flake-parts"
-        ],
-        "home-manager": [
-          "home-manager"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "path": "./modules/bat",
-        "type": "path"
-      },
-      "original": {
-        "path": "./modules/bat",
-        "type": "path"
-      },
-      "parent": []
-    },
-    "btop": {
-      "inputs": {
-        "flake-parts": [
-          "flake-parts"
-        ],
-        "home-manager": [
-          "home-manager"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "path": "./modules/btop",
-        "type": "path"
-      },
-      "original": {
-        "path": "./modules/btop",
-        "type": "path"
-      },
-      "parent": []
-    },
-    "claude-code": {
-      "inputs": {
-        "flake-parts": [
-          "flake-parts"
-        ],
-        "home-manager": [
-          "home-manager"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "path": "./modules/claude-code",
-        "type": "path"
-      },
-      "original": {
-        "path": "./modules/claude-code",
-        "type": "path"
-      },
-      "parent": []
-    },
     "devshell": {
       "inputs": {
         "nixpkgs": [
@@ -107,28 +41,6 @@
         "repo": "devshell",
         "type": "github"
       }
-    },
-    "eza": {
-      "inputs": {
-        "flake-parts": [
-          "flake-parts"
-        ],
-        "home-manager": [
-          "home-manager"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "path": "./modules/eza",
-        "type": "path"
-      },
-      "original": {
-        "path": "./modules/eza",
-        "type": "path"
-      },
-      "parent": []
     },
     "flake-compat": {
       "flake": false,
@@ -310,94 +222,6 @@
         "type": "github"
       }
     },
-    "kitty": {
-      "inputs": {
-        "flake-parts": [
-          "flake-parts"
-        ],
-        "home-manager": [
-          "home-manager"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "path": "./modules/kitty",
-        "type": "path"
-      },
-      "original": {
-        "path": "./modules/kitty",
-        "type": "path"
-      },
-      "parent": []
-    },
-    "lazygit": {
-      "inputs": {
-        "flake-parts": [
-          "flake-parts"
-        ],
-        "home-manager": [
-          "home-manager"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "path": "./modules/lazygit",
-        "type": "path"
-      },
-      "original": {
-        "path": "./modules/lazygit",
-        "type": "path"
-      },
-      "parent": []
-    },
-    "md-tui": {
-      "inputs": {
-        "flake-parts": [
-          "flake-parts"
-        ],
-        "home-manager": [
-          "home-manager"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "path": "./modules/md-tui",
-        "type": "path"
-      },
-      "original": {
-        "path": "./modules/md-tui",
-        "type": "path"
-      },
-      "parent": []
-    },
-    "mkdocs": {
-      "inputs": {
-        "flake-parts": [
-          "flake-parts"
-        ],
-        "mkdocs-flake": [
-          "mkdocs-flake"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "path": "./modules/mkdocs",
-        "type": "path"
-      },
-      "original": {
-        "path": "./modules/mkdocs",
-        "type": "path"
-      },
-      "parent": []
-    },
     "mkdocs-flake": {
       "inputs": {
         "flake-parts": "flake-parts_3",
@@ -422,31 +246,6 @@
         "repo": "mkdocs-flake",
         "type": "github"
       }
-    },
-    "neovim": {
-      "inputs": {
-        "flake-parts": [
-          "flake-parts"
-        ],
-        "home-manager": [
-          "home-manager"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "nixvim": [
-          "nixvim"
-        ]
-      },
-      "locked": {
-        "path": "./modules/neovim",
-        "type": "path"
-      },
-      "original": {
-        "path": "./modules/neovim",
-        "type": "path"
-      },
-      "parent": []
     },
     "nix-github-actions": {
       "inputs": {
@@ -537,50 +336,6 @@
         "type": "github"
       }
     },
-    "noctalia": {
-      "inputs": {
-        "flake-parts": [
-          "flake-parts"
-        ],
-        "home-manager": [
-          "home-manager"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "path": "./modules/noctalia",
-        "type": "path"
-      },
-      "original": {
-        "path": "./modules/noctalia",
-        "type": "path"
-      },
-      "parent": []
-    },
-    "opencode": {
-      "inputs": {
-        "flake-parts": [
-          "flake-parts"
-        ],
-        "home-manager": [
-          "home-manager"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "path": "./modules/opencode",
-        "type": "path"
-      },
-      "original": {
-        "path": "./modules/opencode",
-        "type": "path"
-      },
-      "parent": []
-    },
     "poetry2nix": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -659,74 +414,15 @@
     "root": {
       "inputs": {
         "actions-nix": "actions-nix",
-        "bat": "bat",
-        "btop": "btop",
-        "claude-code": "claude-code",
         "devshell": "devshell",
-        "eza": "eza",
         "flake-parts": "flake-parts_2",
         "home-manager": "home-manager",
-        "kitty": "kitty",
-        "lazygit": "lazygit",
-        "md-tui": "md-tui",
-        "mkdocs": "mkdocs",
         "mkdocs-flake": "mkdocs-flake",
-        "neovim": "neovim",
         "nixpkgs": "nixpkgs",
         "nixvim": "nixvim",
-        "noctalia": "noctalia",
-        "opencode": "opencode",
-        "sbt": "sbt",
-        "starship": "starship",
         "treefmt-nix": "treefmt-nix_2",
-        "vscode": "vscode",
-        "yazi": "yazi",
-        "zed": "zed"
+        "zed-extension": "zed-extension"
       }
-    },
-    "sbt": {
-      "inputs": {
-        "flake-parts": [
-          "flake-parts"
-        ],
-        "home-manager": [
-          "home-manager"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "path": "./modules/sbt",
-        "type": "path"
-      },
-      "original": {
-        "path": "./modules/sbt",
-        "type": "path"
-      },
-      "parent": []
-    },
-    "starship": {
-      "inputs": {
-        "flake-parts": [
-          "flake-parts"
-        ],
-        "home-manager": [
-          "home-manager"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "path": "./modules/starship",
-        "type": "path"
-      },
-      "original": {
-        "path": "./modules/starship",
-        "type": "path"
-      },
-      "parent": []
     },
     "systems": {
       "locked": {
@@ -842,74 +538,21 @@
         "type": "github"
       }
     },
-    "vscode": {
-      "inputs": {
-        "flake-parts": [
-          "flake-parts"
-        ],
-        "home-manager": [
-          "home-manager"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
+    "zed-extension": {
+      "flake": false,
       "locked": {
-        "path": "./modules/vscode",
-        "type": "path"
+        "lastModified": 1793746385,
+        "narHash": "sha256-q5vhw7Sk95XA9aR/m9KRbEwKNpPDLP1EMvSt0ef+j2U=",
+        "owner": "alonsodomin",
+        "repo": "zed-blueforest-theme",
+        "rev": "b0708d80e2e8f9595a12c63566ff28a3cf7a4403",
+        "type": "github"
       },
       "original": {
-        "path": "./modules/vscode",
-        "type": "path"
-      },
-      "parent": []
-    },
-    "yazi": {
-      "inputs": {
-        "bat": [
-          "bat"
-        ],
-        "flake-parts": [
-          "flake-parts"
-        ],
-        "home-manager": [
-          "home-manager"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "path": "./modules/yazi",
-        "type": "path"
-      },
-      "original": {
-        "path": "./modules/yazi",
-        "type": "path"
-      },
-      "parent": []
-    },
-    "zed": {
-      "inputs": {
-        "flake-parts": [
-          "flake-parts"
-        ],
-        "home-manager": [
-          "home-manager"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "path": "./modules/zed",
-        "type": "path"
-      },
-      "original": {
-        "path": "./modules/zed",
-        "type": "path"
-      },
-      "parent": []
+        "owner": "alonsodomin",
+        "repo": "zed-blueforest-theme",
+        "type": "github"
+      }
     }
   },
   "root": "root",

@@ -2,19 +2,23 @@
 #
 # The BlueForest theme for Yazi, as a flake-parts module.
 #
-# The root flake imports this module through the flake of the application,
-# and the flake of the application imports it itself. Both of them therefore
-# agree on what the application provides.
+# The root flake imports this module out of the tree of the repository, and
+# publishes it for the consumers that want the theme of Yazi alone.
 #
-# The inputs of the application. Its own flake binds them to the module and
+# The inputs of the application. The root flake binds them to the module and
 # passes them as a static argument, so that the module does not depend on the
 # inputs of the flake that imports it.
+#
+# The module of bat, which the theme of the code preview of Yazi needs. It is
+# a static argument too, so that the two applications always agree on what
+# the theme is, and so that the module of bat is evaluated once.
 #
 # The arguments of the module are the ones of the flake that imports it: the
 # `inputs` below are the inputs of that flake, so that the packages of the
 # application are built with the nixpkgs of the consumer.
 {
   appInputs,
+  batModule,
 }:
 {
   config,
@@ -38,12 +42,6 @@ let
       "0.0.0+${lib.removeSuffix "-dirty" self.dirtyShortRev}.dirty"
     else
       "0.0.0";
-
-  # The theme of the code preview of Yazi is the theme of bat, so the
-  # application takes the one of bat as an input. The consumer that has one
-  # brings its own, so that both agree on what the theme is, and a consumer
-  # that has none gets the one of the application.
-  bat = inputs.bat or appInputs.bat;
 in
 {
   # The flake module of Home Manager, which declares `flake.homeModules`. It
@@ -59,7 +57,7 @@ in
     # The module of the application of bat, which brings its overlay: the
     # theme of the code preview of Yazi is the theme of bat, and the overlay
     # of Yazi carries it.
-    bat.flakeModules.default
+    batModule
   ];
 
   perSystem =

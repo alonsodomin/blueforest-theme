@@ -2,10 +2,10 @@
 #
 # The dependency updates of the repository.
 #
-# The repository is a flake with a flake of its own per application, so every
-# application has a lock file of its own. Dependabot watches them all, and it
+# The repository is a flake, and the applications are modules of it, so there
+# is one lock file, the one of the root flake. Dependabot watches it, and it
 # groups the updates by the name of the dependency, so that a pull request
-# carries the lock files of every application that share the dependency.
+# carries every input that shares the dependency.
 #
 # Dependabot cannot enable the auto-merge of its own pull requests, so the
 # workflow of `.github/workflows/dependabot.yml` does it for them: GitHub
@@ -13,7 +13,7 @@
 version: 2
 
 updates:
-  # The inputs of the flakes of the repository and of its applications.
+  # The inputs of the flake of the repository.
   #
   # The actions of the workflows are updated by Renovate, not by Dependabot:
   # the workflows are rendered from their definitions in `workflows/`, and
@@ -22,7 +22,6 @@ updates:
   - package-ecosystem: "nix"
     directories:
       - "/"
-      - "/modules/*"
     schedule:
       interval: "weekly"
       day: "monday"

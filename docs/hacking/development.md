@@ -23,7 +23,7 @@ The shell prints a menu with the commands it provides:
 
   changelog - Show the changelog of the changes that are not released yet
   release   - Release the repository
-  update    - Update the lock files of the repository and of every application
+  update    - Update the lock file of the repository
 ```
 
 ## Formatting
@@ -45,9 +45,7 @@ The formatter is `treefmt`, configured in `treefmt.nix`. It runs:
 
 The shell is bash and uses tabs. `shellcheck` must pass.
 
-Two parts of the repository are not formatted: the extension of Zed, which
-lives in a repository of its own, and the workflows, which are rendered from
-their definitions.
+The workflows are not formatted: they are rendered from their definitions.
 
 ## Checks
 
@@ -57,16 +55,12 @@ The fast checks are:
 nix flake check "path:."
 ```
 
-The root flake checks every application at once, and every application can be
-checked on its own:
+The root flake checks every application at once, because it composes the
+module of every one of them.
 
-```bash
-nix flake check "path:./modules/<app_name>"
-```
-
-The `path:` prefix matters: the flakes are checked from the working tree, and
-not from the git tree. The Zed extension lives in a submodule of the repository
-and needs to be up-to-date in the working copy.
+The `path:` prefix matters: the flake is checked from the working tree, and
+not from the git tree, so that the changes that are not committed yet are the
+ones that are checked.
 
 A single check can be built on its own:
 
@@ -92,8 +86,8 @@ The names include `version`, `overlay`, `treefmt`, `workflows-validate`,
 `documentation`.
 
 Root flake evaluation sees the working tree. `git add` new files before
-running `nix flake check` or `nix build "path:.#..."`, so that the tree
-and the submodules agree with the repository.
+running `nix flake check` or `nix build "path:.#..."`, so that the tree and
+the repository agree.
 
 ### The expensive editor checks
 

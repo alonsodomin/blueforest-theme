@@ -26,8 +26,9 @@ Open the Extension Gallery with `cmd-shift-x` (`ctrl-shift-x`), or with the
 The extension lives in a repository of its own,
 [alonsodomin/zed-blueforest-theme](https://github.com/alonsodomin/zed-blueforest-theme),
 because that is how Zed ships extensions: the editor clones the repository and
-reads the theme from it. That repository is a submodule of this one, so every
-change of the extension is reviewed here.
+reads the theme from it. The root flake takes that repository as an input
+without a flake of its own, so the pin of it lives in the lock file of the
+repository, and every change of the extension is reviewed here.
 
 ## Install from a release
 

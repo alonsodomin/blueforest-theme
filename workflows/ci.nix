@@ -5,14 +5,12 @@ _:
 let
   common = import ./lib.nix;
 
-  # The root flake checks every application at once, and each application is
-  # checked on its own as well.
+  # The root flake checks every application at once, because it composes the
+  # module of every one of them.
   #
-  # The flakes are checked from the working tree, and not from the git tree:
-  # the extension of Zed is a submodule of the repository, and Nix cannot
-  # read the contents of a submodule of a git tree. The checkout of the
-  # workflow brings the submodules with it.
-  flakes = [ "path:." ] ++ map (application: "path:./modules/${application}") common.applications;
+  # The flake is checked from the working tree, and not from the git tree, so
+  # that the changes of the pull request are the ones that are checked.
+  flakes = [ "path:." ];
 in
 {
   name = "CI";
