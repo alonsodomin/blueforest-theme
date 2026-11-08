@@ -40,8 +40,8 @@ is the recommended source for VS Code-compatible editors.
 
 ## Hacking
 
-The repository is a Nix flake monorepo with one self-contained flake per
-application. See the [Hacking section](https://alonsodomin.github.io/blueforest-theme/hacking/)
+The repository is a Nix flake monorepo, with one module per application. See
+the [Hacking section](https://alonsodomin.github.io/blueforest-theme/hacking/)
 for the repository layout, the development shell, the checks, the workflows,
 and the release process.
 

@@ -2,11 +2,11 @@
 #
 # The BlueForest theme for Claude Code, as a flake-parts module.
 #
-# The root flake imports this module through the flake of the application,
-# and the flake of the application imports it itself. Both of them therefore
-# agree on what the application provides.
+# The root flake imports this module out of the tree of the repository, and
+# publishes it for the consumers that want the theme of the application
+# alone.
 #
-# The inputs of the application. Its own flake binds them to the module and
+# The inputs of the application. The root flake binds them to the module and
 # passes them as a static argument, so that the module does not depend on the
 # inputs of the flake that imports it.
 #

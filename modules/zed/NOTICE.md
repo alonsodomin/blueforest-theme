@@ -4,10 +4,13 @@
 
 The theme is not written in this repository: it is the theme of the
 [zed-blueforest-theme](https://github.com/alonsodomin/zed-blueforest-theme)
-extension, which is a submodule of this application, at `extension/`. The
-extension is distributed under the
+extension, which lives in a repository of its own. The root flake takes that
+repository as an input without a flake of its own, so the pin of it lives in
+the lock file of the repository. The extension is distributed under the
 [Creative Commons Attribution 4.0 International][cc-by-4.0] licence, and its
-text is in [extension/LICENSE.md](extension/LICENSE.md).
+text is in the
+[LICENSE.md](https://github.com/alonsodomin/zed-blueforest-theme/blob/main/LICENSE.md)
+of its repository.
 
 The theme is a port of BlueForest by [mathias[at]decodified[dot]com][author],
 published at <https://github.com/sirthias/BlueForest> under the

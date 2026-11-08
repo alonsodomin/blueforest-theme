@@ -13,7 +13,6 @@ jobs:
     - uses: actions/checkout@v7
       with:
         fetch-depth: 0
-        submodules: true
     - name: Install CoCoGitto
       uses: cocogitto/cocogitto-action@v4
       with:
@@ -64,7 +63,6 @@ jobs:
     - uses: actions/checkout@v7
       with:
         fetch-depth: 0
-        submodules: true
     - name: Install CoCoGitto
       uses: cocogitto/cocogitto-action@v4
       with:
@@ -104,38 +102,15 @@ jobs:
       name: Upload the asset to the release
       run: gh release upload "$TAG" "dist/blueforest-btop-theme-$VERSION.tar.gz" --clobber
   checks:
-    name: Checks (${{ matrix.flake }})
+    name: Checks
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
-      with:
-        submodules: true
     - uses: cachix/install-nix-action@v31
       with:
         extra_nix_config: experimental-features = nix-command flakes
     - name: Run flake checks
-      run: nix flake check ${{ matrix.flake }}
-    strategy:
-      fail-fast: false
-      matrix:
-        flake:
-        - path:.
-        - path:./modules/vscode
-        - path:./modules/bat
-        - path:./modules/starship
-        - path:./modules/opencode
-        - path:./modules/sbt
-        - path:./modules/neovim
-        - path:./modules/eza
-        - path:./modules/zed
-        - path:./modules/yazi
-        - path:./modules/kitty
-        - path:./modules/mkdocs
-        - path:./modules/claude-code
-        - path:./modules/btop
-        - path:./modules/lazygit
-        - path:./modules/md-tui
-        - path:./modules/noctalia
+      run: nix flake check "path:."
   claude-code:
     name: 'Claude Code: Package'
     needs:
@@ -145,7 +120,6 @@ jobs:
     - uses: actions/checkout@v7
       with:
         fetch-depth: 0
-        submodules: true
     - name: Install CoCoGitto
       uses: cocogitto/cocogitto-action@v4
       with:
@@ -195,7 +169,6 @@ jobs:
     - uses: actions/checkout@v7
       with:
         fetch-depth: 0
-        submodules: true
     - id: previous
       name: Read the release before this one
       run: |-
@@ -224,8 +197,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
-      with:
-        submodules: true
     - env:
         TAG: ${{ github.ref_name }}
       name: Collect the notes of the release
@@ -277,7 +248,6 @@ jobs:
     - uses: actions/checkout@v7
       with:
         fetch-depth: 0
-        submodules: true
     - name: Install CoCoGitto
       uses: cocogitto/cocogitto-action@v4
       with:
@@ -325,7 +295,6 @@ jobs:
     - uses: actions/checkout@v7
       with:
         fetch-depth: 0
-        submodules: true
     - name: Install CoCoGitto
       uses: cocogitto/cocogitto-action@v4
       with:
@@ -377,7 +346,6 @@ jobs:
     - uses: actions/checkout@v7
       with:
         fetch-depth: 0
-        submodules: true
     - name: Install CoCoGitto
       uses: cocogitto/cocogitto-action@v4
       with:
@@ -426,7 +394,6 @@ jobs:
     - uses: actions/checkout@v7
       with:
         fetch-depth: 0
-        submodules: true
     - name: Install CoCoGitto
       uses: cocogitto/cocogitto-action@v4
       with:
@@ -478,7 +445,6 @@ jobs:
     - uses: actions/checkout@v7
       with:
         fetch-depth: 0
-        submodules: true
     - name: Install CoCoGitto
       uses: cocogitto/cocogitto-action@v4
       with:
@@ -527,7 +493,6 @@ jobs:
     - uses: actions/checkout@v7
       with:
         fetch-depth: 0
-        submodules: true
     - name: Install CoCoGitto
       uses: cocogitto/cocogitto-action@v4
       with:
@@ -585,7 +550,6 @@ jobs:
     - uses: actions/checkout@v7
       with:
         fetch-depth: 0
-        submodules: true
     - name: Install CoCoGitto
       uses: cocogitto/cocogitto-action@v4
       with:
@@ -634,7 +598,6 @@ jobs:
     - uses: actions/checkout@v7
       with:
         fetch-depth: 0
-        submodules: true
     - name: Install CoCoGitto
       uses: cocogitto/cocogitto-action@v4
       with:
@@ -709,7 +672,6 @@ jobs:
     - uses: actions/checkout@v7
       with:
         fetch-depth: 0
-        submodules: true
     - name: Install CoCoGitto
       uses: cocogitto/cocogitto-action@v4
       with:
@@ -760,7 +722,6 @@ jobs:
     - uses: actions/checkout@v7
       with:
         fetch-depth: 0
-        submodules: true
     - name: Install CoCoGitto
       uses: cocogitto/cocogitto-action@v4
       with:
@@ -815,7 +776,6 @@ jobs:
     - uses: actions/checkout@v7
       with:
         fetch-depth: 0
-        submodules: true
     - name: Install CoCoGitto
       uses: cocogitto/cocogitto-action@v4
       with:
@@ -879,7 +839,6 @@ jobs:
     - uses: actions/checkout@v7
       with:
         fetch-depth: 0
-        submodules: true
     - name: Install CoCoGitto
       uses: cocogitto/cocogitto-action@v4
       with:
@@ -936,7 +895,6 @@ jobs:
     - uses: actions/checkout@v7
       with:
         fetch-depth: 0
-        submodules: true
     - name: Install CoCoGitto
       uses: cocogitto/cocogitto-action@v4
       with:
@@ -952,6 +910,17 @@ jobs:
         fi
 
         echo "version=$version" >>"$GITHUB_OUTPUT"
+    - name: Fetch the extension of Zed
+      run: |-
+        rev=$(jq -r '.nodes."zed-extension".locked.rev' flake.lock)
+        if [ -z "$rev" ] || [ "$rev" = "null" ]; then
+          echo "the lock file does not pin the extension of Zed" >&2
+          exit 1
+        fi
+
+        mkdir -p extension
+        curl -fsSL "https://github.com/alonsodomin/zed-blueforest-theme/archive/$rev.tar.gz" \
+          | tar -xz --strip-components=1 -C extension
     - env:
         VERSION: ${{ steps.version.outputs.version }}
       name: Package the theme
@@ -959,10 +928,10 @@ jobs:
         rm -rf staging
         mkdir -p dist staging
         mkdir -p "staging/."
-        cp "modules/zed/extension/extension.toml" "staging/extension.toml"
+        cp "extension/extension.toml" "staging/extension.toml"
 
         mkdir -p "staging/themes"
-        cp "modules/zed/extension/themes/blueforest.json" "staging/themes/blueforest.json"
+        cp "extension/themes/blueforest.json" "staging/themes/blueforest.json"
 
 
         # The changelog of the application, when it has one.

@@ -1,7 +1,7 @@
 # Adding an application
 
 An application is a directory with the theme, the packaging of it, and a flake
-of its own. The simplest application to mirror is `modules/bat`; a package with
+module. The simplest application to mirror is `modules/bat`; a package with
 an overlay and modules can mirror `modules/starship`.
 
 ## 1. Create the application
@@ -10,38 +10,10 @@ Create `modules/<app>/` with:
 
 ```text
 modules/<app>/
-├── flake.nix            # the application as a flake of its own
 ├── flake-module.nix     # the application as a flake-parts module
 ├── NOTICE.md            # the attribution of the theme
 ├── nix/                 # the packaging
 └── themes/              # the theme itself
-```
-
-The flake of the application imports the module of the application, so that the
-application is usable on its own and so that the root flake can compose it:
-
-```nix
-outputs =
-  inputs@{ flake-parts, ... }:
-  flake-parts.lib.mkFlake { inherit inputs; } (
-    { config, lib, flake-parts-lib, ... }:
-    let
-      inherit (flake-parts-lib) importApply;
-
-      flakeModules.default = importApply ./flake-module.nix { appInputs = inputs; };
-    in
-    {
-      imports = [
-        inputs.flake-parts.flakeModules.flakeModules
-        inputs.home-manager.flakeModules.home-manager
-        flakeModules.default
-      ];
-
-      flake = {
-        inherit flakeModules;
-      };
-    }
-  );
 ```
 
 The module takes the inputs of the application as a static argument, and the
@@ -52,35 +24,30 @@ nixvim of the application.
 
 ## 2. Register it in the root flake
 
-Add the application as a path input, with the `follows` of the inputs it shares
-with the root:
+Bind the inputs of the application to its module, and import it:
 
 ```nix
-inputs = {
-  <app> = {
-    url = "path:./modules/<app>";
-    inputs.nixpkgs.follows = "nixpkgs";
-    inputs.flake-parts.follows = "flake-parts";
-    inputs.home-manager.follows = "home-manager";
-  };
-};
+let
+  inherit (flake-parts-lib) importApply;
+
+  <app>Module = (importApply ./modules/<app>/flake-module.nix { appInputs = inputs; }) // { key = "blueforest:<app>"; };
+in
+{
+  imports = [
+    <app>Module
+  ];
+
+  flake.flakeModules.<app> = <app>Module;
+}
 ```
 
-Import its flake module:
-
-```nix
-imports = [
-  inputs.<app>.flakeModule
-];
-```
+The module carries a key of its own, so that the module system evaluates it
+once when it is imported by more than one place.
 
 Then expose it in the aggregate modules if it provides an overlay, a NixOS
 module, or a Home Manager module.
 
 ## 3. Register it in the workflows
-
-Add the application to the list in `workflows/lib.nix`. That list feeds the CI
-matrix and the release checks.
 
 Add an entry to the table in `workflows/assets.nix` with the files of the
 theme and the way the application is packaged:

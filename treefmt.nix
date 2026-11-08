@@ -33,14 +33,6 @@ in
   settings.on-unmatched = "info";
 
   settings.excludes = [
-    # The extension of Zed lives in a repository of its own. Its files are not
-    # ours, and they are not formatted here.
-    #
-    # The pattern ends with a star, because the patterns of treefmt are
-    # compiled without a separator: a star crosses the directories, and a
-    # pattern that ends with a slash matches nothing.
-    "modules/zed/extension/*"
-
     # The workflows are rendered from their definitions, and the check of the
     # workflows compares the rendering with what is committed. Formatting them
     # would make the two differ.

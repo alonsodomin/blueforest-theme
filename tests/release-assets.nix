@@ -10,6 +10,10 @@
   lib,
   applications,
   modules,
+  # The extension of Zed, which the asset of the application carries. The
+  # release workflow fetches it out of the repository of the extension, at
+  # the revision the lock file of the repository pins.
+  extension,
 }:
 let
   # The applications that are packed into an archive. The extension of VS
@@ -26,6 +30,10 @@ pkgs.runCommand "blueforest-release-assets-check" { } ''
   # where they are writable.
   cp -r ${modules} modules
   chmod -R u+w modules
+
+  # And the extension of Zed, which the asset of the application carries.
+  cp -r ${extension} extension
+  chmod -R u+w extension
 
   export VERSION=0.0.0
 

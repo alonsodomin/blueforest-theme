@@ -46,11 +46,11 @@ The CI runs on pushes to `master` and on pull requests. It has four jobs:
 - **Render the workflows** runs on pull requests from the repository itself. It
   renders the workflows and commits the result to the branch. It skips pull
   requests from forks, because their token is read-only.
-- **Checks** runs `nix flake check --impure` for the root flake and for every
-  application, against the working tree, so that the submodule of the
-  extension of Zed is part of it. It sets the environment variables that
-  enable the expensive editor checks, and skips the workflow comparison on
-  pull requests.
+- **Checks** runs `nix flake check --impure` for the root flake, against the
+  working tree. The root flake checks every application at once, because it
+  composes the module of every one of them. It sets the environment variables
+  that enable the expensive editor checks, and skips the workflow comparison
+  on pull requests.
 - **Conventional commits** checks the commit messages of the pull request, or
   of the push, with `cog check`. The changelog of a release is written out of
   them, so a commit that does not follow the conventional commits

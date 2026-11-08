@@ -50,8 +50,8 @@ The theme of `modules/zed/` is not written in this repository either. It is
 the theme of the
 [zed-blueforest-theme](https://github.com/alonsodomin/zed-blueforest-theme)
 extension, which lives in a repository of its own because that is how Zed
-ships extensions. The repository is a submodule of the application, and the
-extension is distributed under the
+ships extensions. The root flake takes that repository as an input without a
+flake of its own, and the extension is distributed under the
 [Creative Commons Attribution 4.0 International][cc-by-4.0] licence.
 
 ## The code
@@ -69,7 +69,6 @@ CI workflows and the manifests — is licensed under the
 | `modules/*/tests/**` | CC BY 4.0 |
 | `modules/noctalia/themes/format2.jq` | MPL-2.0 |
 | `modules/sbt/config/**` | MPL-2.0 |
-| `modules/zed/extension/**` | CC BY 4.0 |
 | `assets/**` | CC BY 4.0 |
 | `docs/**` | CC BY 4.0 |
 | `docs/assets/stylesheets/palettes.css` | MPL-2.0 |

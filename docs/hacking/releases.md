@@ -165,25 +165,18 @@ the release workflow patches it with the version of the release.
 
 ## Updating the repository
 
-Every flake of the repository has a lock file of its own: the root one, and one
-per application. The `update` helper updates all of them:
+The repository is a flake, and the applications are modules of it, so there is
+one lock file: the one of the root flake. It is updated with the standard
+command of Nix:
 
 ```bash
-update
+nix flake update
 ```
 
-A single application can be updated on its own:
+The root flake owns the pins of the repository, and the modules of the
+applications read the inputs they need from them.
 
-```bash
-update vscode
-```
-
-The root flake owns the pins of the repository, so the helper pins the inputs
-that an application shares with the root to the revisions the root resolved.
-Without that step the two drift apart, because the root and the application
-resolve the branch on their own.
-
-Dependabot watches the lock files and opens a pull request for the inputs that
+Dependabot watches the lock file and opens a pull request for the inputs that
 moved upstream. Renovate updates the versions of the actions in
 `workflows/lib.nix` and the version of the sbt prompt plugin.
 

@@ -219,26 +219,27 @@ in
     # The repository is checked before the release is created, so that a
     # broken tag does not leave a release behind.
     #
-    # The flakes are checked from the working tree, and not from the git
-    # tree: the extension of Zed is a submodule of the repository, and Nix
-    # cannot read the contents of a submodule of a git tree. The checkout of
-    # the workflow brings the submodules with it.
+    # The root flake checks every application at once, because it composes
+    # the module of every one of them.
+    #
+    # The flake is checked from the working tree, and not from the git tree,
+    # so that the sources of the release are the ones that are checked.
     checks = {
-      name = "Checks (\${{ matrix.flake }})";
+      name = "Checks";
       runs-on = "ubuntu-latest";
-      strategy = {
-        fail-fast = false;
-        matrix.flake = [
-          "path:."
-        ]
-        ++ map (application: "path:./modules/${application}") common.applications;
-      };
       steps = [
         common.checkout
         common.installNix
         {
           name = "Run flake checks";
-          run = "nix flake check \${{ matrix.flake }}";
+
+          # The root flake checks every application at once, because it
+          # composes the module of every one of them.
+          #
+          # The flake is checked from the working tree, and not from the git
+          # tree, so that the sources of the release are the ones that are
+          # checked.
+          run = "nix flake check \"path:.\"";
         }
       ];
     };

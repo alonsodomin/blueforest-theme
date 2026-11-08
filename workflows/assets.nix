@@ -203,14 +203,36 @@ let
     {
       app = "zed";
       title = "Zed";
+
+      # The extension of Zed is a repository of its own, and it is pinned by
+      # the lock file of the repository. The release fetches it at the
+      # revision the lock file pins, and the archive carries the manifest of
+      # the extension and the theme it declares.
       files = [
         {
-          src = "modules/zed/extension/extension.toml";
+          src = "extension/extension.toml";
           dst = "extension.toml";
         }
         {
-          src = "modules/zed/extension/themes/blueforest.json";
+          src = "extension/themes/blueforest.json";
           dst = "themes/blueforest.json";
+        }
+      ];
+
+      steps = [
+        {
+          name = "Fetch the extension of Zed";
+          run = ''
+            rev=$(jq -r '.nodes."zed-extension".locked.rev' flake.lock)
+            if [ -z "$rev" ] || [ "$rev" = "null" ]; then
+              echo "the lock file does not pin the extension of Zed" >&2
+              exit 1
+            fi
+
+            mkdir -p extension
+            curl -fsSL "https://github.com/alonsodomin/zed-blueforest-theme/archive/$rev.tar.gz" \
+              | tar -xz --strip-components=1 -C extension
+          '';
         }
       ];
     }

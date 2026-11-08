@@ -40,144 +40,14 @@
     # mercy of the release cycle of nixvim.
     nixvim.url = "github:nix-community/nixvim";
 
-    # The applications of the repository. Every one of them is a flake of
-    # its own, and the root flake composes the module it publishes.
+    # The extension of Zed, which is the theme of the application.
     #
-    # Adding an application is a matter of adding a directory and a line
-    # here.
-    vscode = {
-      url = "path:./modules/vscode";
-
-      # The repository pins the inputs of its applications, so that every
-      # application is built with the same nixpkgs.
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.home-manager.follows = "home-manager";
-    };
-
-    bat = {
-      url = "path:./modules/bat";
-
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.home-manager.follows = "home-manager";
-    };
-
-    starship = {
-      url = "path:./modules/starship";
-
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.home-manager.follows = "home-manager";
-    };
-
-    opencode = {
-      url = "path:./modules/opencode";
-
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.home-manager.follows = "home-manager";
-    };
-
-    sbt = {
-      url = "path:./modules/sbt";
-
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.home-manager.follows = "home-manager";
-    };
-
-    neovim = {
-      url = "path:./modules/neovim";
-
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.home-manager.follows = "home-manager";
-      inputs.nixvim.follows = "nixvim";
-    };
-
-    eza = {
-      url = "path:./modules/eza";
-
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.home-manager.follows = "home-manager";
-    };
-
-    zed = {
-      url = "path:./modules/zed";
-
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.home-manager.follows = "home-manager";
-    };
-
-    yazi = {
-      url = "path:./modules/yazi";
-
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.home-manager.follows = "home-manager";
-
-      # The theme of the code preview of Yazi is the theme of bat, so the
-      # two applications share it.
-      inputs.bat.follows = "bat";
-    };
-
-    kitty = {
-      url = "path:./modules/kitty";
-
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.home-manager.follows = "home-manager";
-    };
-
-    mkdocs = {
-      url = "path:./modules/mkdocs";
-
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.mkdocs-flake.follows = "mkdocs-flake";
-    };
-
-    claude-code = {
-      url = "path:./modules/claude-code";
-
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.home-manager.follows = "home-manager";
-    };
-
-    btop = {
-      url = "path:./modules/btop";
-
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.home-manager.follows = "home-manager";
-    };
-
-    lazygit = {
-      url = "path:./modules/lazygit";
-
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.home-manager.follows = "home-manager";
-    };
-
-    md-tui = {
-      url = "path:./modules/md-tui";
-
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.home-manager.follows = "home-manager";
-    };
-
-    noctalia = {
-      url = "path:./modules/noctalia";
-
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.home-manager.follows = "home-manager";
+    # The extension is a repository of its own, and it is not a flake, so it
+    # is an input without one. The pin of it lives in the lock file of the
+    # repository, and `nix flake update` moves it.
+    zed-extension = {
+      url = "github:alonsodomin/zed-blueforest-theme";
+      flake = false;
     };
   };
 
@@ -188,8 +58,93 @@
         config,
         lib,
         inputs,
+        flake-parts-lib,
         ...
       }:
+      let
+        inherit (flake-parts-lib) importApply;
+
+        # The module of every application of the repository.
+        #
+        # The applications are not flakes of their own: the root flake
+        # imports their modules directly, out of the tree of the repository.
+        # A relative import stays inside the tree, so the sources of the
+        # applications are covered by the hash of the lock file of the
+        # repository, and a consumer that takes the repository gets them
+        # verified. A `path:` input would not: it is a store path of its
+        # own, with no hash, and the consumer would have to trust it.
+        #
+        # Every module carries a key of its own. The module system evaluates
+        # a module once, and the key is what tells it that two imports of
+        # the same module are the same one: the module of an application is
+        # imported by the root flake and, in the case of Yazi, by the module
+        # of another application, and the option `flake.overlays.bat` is
+        # declared to be unique.
+        vscodeModule = (importApply ./modules/vscode/flake-module.nix { appInputs = inputs; }) // {
+          key = "blueforest:vscode";
+        };
+        batModule = (importApply ./modules/bat/flake-module.nix { appInputs = inputs; }) // {
+          key = "blueforest:bat";
+        };
+        starshipModule = (importApply ./modules/starship/flake-module.nix { appInputs = inputs; }) // {
+          key = "blueforest:starship";
+        };
+        opencodeModule = (importApply ./modules/opencode/flake-module.nix { appInputs = inputs; }) // {
+          key = "blueforest:opencode";
+        };
+        sbtModule = (importApply ./modules/sbt/flake-module.nix { appInputs = inputs; }) // {
+          key = "blueforest:sbt";
+        };
+        neovimModule = (importApply ./modules/neovim/flake-module.nix { appInputs = inputs; }) // {
+          key = "blueforest:neovim";
+        };
+        ezaModule = (importApply ./modules/eza/flake-module.nix { appInputs = inputs; }) // {
+          key = "blueforest:eza";
+        };
+        zedModule =
+          (importApply ./modules/zed/flake-module.nix {
+            appInputs = inputs;
+            extension = inputs."zed-extension";
+          })
+          // {
+            key = "blueforest:zed";
+          };
+        kittyModule = (importApply ./modules/kitty/flake-module.nix { appInputs = inputs; }) // {
+          key = "blueforest:kitty";
+        };
+        mkdocsModule = (importApply ./modules/mkdocs/flake-module.nix { appInputs = inputs; }) // {
+          key = "blueforest:mkdocs";
+        };
+        claude-codeModule =
+          (importApply ./modules/claude-code/flake-module.nix { appInputs = inputs; })
+          // {
+            key = "blueforest:claude-code";
+          };
+        btopModule = (importApply ./modules/btop/flake-module.nix { appInputs = inputs; }) // {
+          key = "blueforest:btop";
+        };
+        lazygitModule = (importApply ./modules/lazygit/flake-module.nix { appInputs = inputs; }) // {
+          key = "blueforest:lazygit";
+        };
+        md-tuiModule = (importApply ./modules/md-tui/flake-module.nix { appInputs = inputs; }) // {
+          key = "blueforest:md-tui";
+        };
+        noctaliaModule = (importApply ./modules/noctalia/flake-module.nix { appInputs = inputs; }) // {
+          key = "blueforest:noctalia";
+        };
+
+        # The theme of the code preview of Yazi is the theme of bat, so the
+        # two applications share it, and the module of Yazi imports the
+        # module of bat.
+        yaziModule =
+          (importApply ./modules/yazi/flake-module.nix {
+            appInputs = inputs;
+            inherit batModule;
+          })
+          // {
+            key = "blueforest:yazi";
+          };
+      in
       {
         imports = [
           # The options that the modules below declare.
@@ -199,22 +154,22 @@
           inputs.actions-nix.flakeModules.default
 
           # The modules the applications publish.
-          inputs.vscode.flakeModule
-          inputs.bat.flakeModule
-          inputs.starship.flakeModule
-          inputs.opencode.flakeModule
-          inputs.sbt.flakeModule
-          inputs.neovim.flakeModule
-          inputs.eza.flakeModule
-          inputs.zed.flakeModule
-          inputs.yazi.flakeModule
-          inputs.kitty.flakeModule
-          inputs.mkdocs.flakeModule
-          inputs.claude-code.flakeModule
-          inputs.btop.flakeModule
-          inputs.lazygit.flakeModule
-          inputs.md-tui.flakeModule
-          inputs.noctalia.flakeModule
+          vscodeModule
+          batModule
+          starshipModule
+          opencodeModule
+          sbtModule
+          neovimModule
+          ezaModule
+          zedModule
+          yaziModule
+          kittyModule
+          mkdocsModule
+          claude-codeModule
+          btopModule
+          lazygitModule
+          md-tuiModule
+          noctaliaModule
         ];
 
         systems = [
@@ -248,39 +203,39 @@
           ];
 
           flakeModules = {
-            bat = inputs.bat.flakeModule;
-            starship = inputs.starship.flakeModule;
-            vscode = inputs.vscode.flakeModule;
-            opencode = inputs.opencode.flakeModule;
-            sbt = inputs.sbt.flakeModule;
-            neovim = inputs.neovim.flakeModule;
-            eza = inputs.eza.flakeModule;
-            zed = inputs.zed.flakeModule;
-            yazi = inputs.yazi.flakeModule;
-            kitty = inputs.kitty.flakeModule;
-            mkdocs = inputs.mkdocs.flakeModule;
-            claude-code = inputs.claude-code.flakeModule;
-            btop = inputs.btop.flakeModule;
-            lazygit = inputs.lazygit.flakeModule;
-            md-tui = inputs.md-tui.flakeModule;
-            noctalia = inputs.noctalia.flakeModule;
+            bat = batModule;
+            starship = starshipModule;
+            vscode = vscodeModule;
+            opencode = opencodeModule;
+            sbt = sbtModule;
+            neovim = neovimModule;
+            eza = ezaModule;
+            zed = zedModule;
+            yazi = yaziModule;
+            kitty = kittyModule;
+            mkdocs = mkdocsModule;
+            claude-code = claude-codeModule;
+            btop = btopModule;
+            lazygit = lazygitModule;
+            md-tui = md-tuiModule;
+            noctalia = noctaliaModule;
             default = {
               imports = [
-                inputs.bat.flakeModule
-                inputs.starship.flakeModule
-                inputs.vscode.flakeModule
-                inputs.opencode.flakeModule
-                inputs.sbt.flakeModule
-                inputs.neovim.flakeModule
-                inputs.eza.flakeModule
-                inputs.zed.flakeModule
-                inputs.yazi.flakeModule
-                inputs.kitty.flakeModule
-                inputs.claude-code.flakeModule
-                inputs.btop.flakeModule
-                inputs.lazygit.flakeModule
-                inputs.md-tui.flakeModule
-                inputs.noctalia.flakeModule
+                batModule
+                starshipModule
+                vscodeModule
+                opencodeModule
+                sbtModule
+                neovimModule
+                ezaModule
+                zedModule
+                yaziModule
+                kittyModule
+                claude-codeModule
+                btopModule
+                lazygitModule
+                md-tuiModule
+                noctaliaModule
 
                 # The module of MkDocs is not here. It imports the module of
                 # mkdocs-flake, which declares its arguments, and a module
@@ -559,6 +514,12 @@
                   applications
                   ;
                 modules = ./modules;
+
+                # The extension of Zed, which the asset of the application
+                # carries. The release workflow fetches it out of the
+                # repository of the extension, at the revision the lock file
+                # of the repository pins.
+                extension = inputs."zed-extension";
               };
             };
           };
