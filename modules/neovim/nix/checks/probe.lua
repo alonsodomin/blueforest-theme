@@ -65,6 +65,20 @@ require("lualine").setup({ options = { theme = "blueforest" } })
 local statusline = vim.api.nvim_get_hl(0, { name = "lualine_a_normal" })
 assert(statusline.bg == 0xffcc33, "the statusline is not painted with the theme")
 
+-- And every mode carries its own colour for the section of the mode, which
+-- lualine paints with the highlight group of that mode.
+local darkModes = {
+  insert = 0x80ff80,
+  visual = 0x3a5f8a,
+  replace = 0xff8080,
+  command = 0xf7ff66,
+  terminal = 0x219186,
+}
+for mode, colour in pairs(darkModes) do
+  local hl = vim.api.nvim_get_hl(0, { name = "lualine_a_" .. mode })
+  assert(hl.bg == colour, string.format("lualine_a_%s is %s, not %s", mode, tostring(hl.bg), tostring(colour)))
+end
+
 -- The light variant is a colourscheme of its own, and Neovim reads it.
 vim.cmd.colorscheme("blueforest-light")
 assert(vim.g.colors_name == "blueforest-light", "the light colourscheme did not set its name")
@@ -107,5 +121,19 @@ assert(lualineLight.normal.a.bg == "#FFCC33", "lualine did not read the light th
 package.loaded["lualine.themes.auto"] = nil
 local autoLight = require("lualine.themes.auto")
 assert(autoLight.normal.a.bg == "#FFCC33", "lualine did not find the light theme on its own")
+
+-- And the light variant carries the colours of its modes as well.
+require("lualine").setup({ options = { theme = "blueforest-light" } })
+local lightModes = {
+  insert = 0x1e5c1e,
+  visual = 0x3a5f8a,
+  replace = 0xb02a28,
+  command = 0x1b2b40,
+  terminal = 0x1b7a70,
+}
+for mode, colour in pairs(lightModes) do
+  local hl = vim.api.nvim_get_hl(0, { name = "lualine_a_" .. mode })
+  assert(hl.bg == colour, string.format("lualine_a_%s is %s, not %s", mode, tostring(hl.bg), tostring(colour)))
+end
 
 print("the theme of the repository is the theme Neovim and lualine read")
