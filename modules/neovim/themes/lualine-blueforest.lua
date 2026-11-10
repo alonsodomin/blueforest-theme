@@ -13,13 +13,29 @@
 -- from. lualine finds it on its own: the `auto` theme looks the theme up by
 -- the name of the colourscheme, which is `blueforest` as well.
 --
--- The modes that are not here fall back to `normal`, which is what lualine
--- does with a mode a theme does not describe.
+-- Every mode carries its own colour for the section of the mode, and the
+-- sections a mode does not describe fall back to `normal`, which is what
+-- lualine does with a section a mode does not describe.
 return {
   normal = {
     a = { fg = "#0A101D", bg = "#ffcc33" },
     b = { fg = "#0A101D", bg = "#a2cff5" },
     c = { fg = "#D0D0D0", bg = "#1e5c1e" },
+  },
+  insert = {
+    a = { fg = "#0A101D", bg = "#80ff80" },
+  },
+  visual = {
+    a = { fg = "#0A101D", bg = "#3a5f8a" },
+  },
+  replace = {
+    a = { fg = "#0A101D", bg = "#FF8080" },
+  },
+  command = {
+    a = { fg = "#0A101D", bg = "#F7FF66" },
+  },
+  terminal = {
+    a = { fg = "#0A101D", bg = "#219186" },
   },
   inactive = {
     a = { fg = "#e7e7e7", bg = "#0A101D" },

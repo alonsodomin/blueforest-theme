@@ -33,6 +33,13 @@ local result = {
   normal = group("Normal"),
   rainbow = group("RainbowDelimiterRed"),
   lualine = group("lualine_a_normal"),
+  modes = {
+    insert = group("lualine_a_insert"),
+    visual = group("lualine_a_visual"),
+    replace = group("lualine_a_replace"),
+    command = group("lualine_a_command"),
+    terminal = group("lualine_a_terminal"),
+  },
 }
 
 -- The light variant is a colourscheme of its own, and Neovim reads it.
@@ -46,8 +53,16 @@ result.light = {
 -- lualine reads the theme of the statusline from the `lua/lualine/themes`
 -- directory of the runtimepath, and the light variant of it is there.
 local loader = require("lualine.utils.loader")
+local lightTheme = loader.load_theme("blueforest-light")
 result.light.lualine = {
-  bg = loader.load_theme("blueforest-light").normal.a.bg,
+  bg = lightTheme.normal.a.bg,
+}
+result.light.modes = {
+  insert = { bg = lightTheme.insert.a.bg },
+  visual = { bg = lightTheme.visual.a.bg },
+  replace = { bg = lightTheme.replace.a.bg },
+  command = { bg = lightTheme.command.a.bg },
+  terminal = { bg = lightTheme.terminal.a.bg },
 }
 
 -- And lualine finds it on its own, because the name of the theme is the name

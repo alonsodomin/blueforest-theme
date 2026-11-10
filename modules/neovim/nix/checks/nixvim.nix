@@ -57,6 +57,11 @@ pkgs.runCommand "blueforest-neovim-nixvim-check"
       and .normal.bg == "141f2e"
       and .rainbow.fg == "dc322f"
       and .lualine.bg == "ffcc33"
+      and .modes.insert.bg == "80ff80"
+      and .modes.visual.bg == "3a5f8a"
+      and .modes.replace.bg == "ff8080"
+      and .modes.command.bg == "f7ff66"
+      and .modes.terminal.bg == "219186"
     ' "$BLUEFOREST_RESULT" >/dev/null
 
     # And the light variant is a colourscheme of its own, which the editor
@@ -68,6 +73,11 @@ pkgs.runCommand "blueforest-neovim-nixvim-check"
       and .light.rainbow.fg == "b02a28"
       and .light.lualine.bg == "#FFCC33"
       and .light.auto.bg == "#FFCC33"
+      and .light.modes.insert.bg == "#1E5C1E"
+      and .light.modes.visual.bg == "#3A5F8A"
+      and .light.modes.replace.bg == "#B02A28"
+      and .light.modes.command.bg == "#1B2B40"
+      and .light.modes.terminal.bg == "#1B7A70"
     ' "$BLUEFOREST_RESULT" >/dev/null
 
     touch $out
