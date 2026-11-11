@@ -16,6 +16,7 @@ The theme is available for the following applications:
 | eza         | [eza](themes/eza.md)           |
 | kitty       | [kitty](themes/kitty.md)       |
 | lazygit     | [lazygit](themes/lazygit.md)   |
+| lazydocker  | [lazydocker](themes/lazydocker.md) |
 | md-tui      | [md-tui](themes/md-tui.md)     |
 | MkDocs      | [MkDocs](themes/mkdocs.md)     |
 | Neovim      | [Neovim](themes/neovim.md)     |

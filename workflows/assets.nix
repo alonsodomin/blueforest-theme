@@ -325,6 +325,20 @@ let
       ];
     }
     {
+      app = "lazydocker";
+      title = "lazydocker";
+      files = [
+        {
+          src = "modules/lazydocker/themes/blueforest.json";
+          dst = "dark/blueforest.json";
+        }
+        {
+          src = "modules/lazydocker/themes/blueforest-light.json";
+          dst = "light/blueforest-light.json";
+        }
+      ];
+    }
+    {
       app = "md-tui";
       title = "md-tui";
       files = [

@@ -47,6 +47,7 @@ pkgs.runCommand "blueforest-overlay-check"
       kittyUntouched = overlaid.kitty == base.kitty;
       mkdocsUntouched = overlaid.mkdocs == base.mkdocs;
       btopUntouched = overlaid.btop == base.btop;
+      lazydockerUntouched = overlaid.lazydocker == base.lazydocker;
     };
     expected = builtins.toJSON expected;
   }
@@ -63,6 +64,7 @@ pkgs.runCommand "blueforest-overlay-check"
       and .kittyUntouched
       and .mkdocsUntouched
       and .btopUntouched
+      and .lazydockerUntouched
       and (.packages | length) > 0
     ' >/dev/null
 

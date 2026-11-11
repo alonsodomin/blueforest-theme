@@ -13,6 +13,7 @@ combined ones.
 | `flakeModules.claude-code` | The module of the Claude Code theme, for flake-parts |
 | `flakeModules.default` | The modules of every application, except the one of MkDocs |
 | `flakeModules.lazygit` | The module of the lazygit theme, for flake-parts |
+| `flakeModules.lazydocker` | The module of the lazydocker theme, for flake-parts |
 | `flakeModules.md-tui` | The module of the md-tui theme, for flake-parts |
 | `flakeModules.mkdocs` | The module of the MkDocs theme, for flake-parts |
 | `flakeModules.noctalia` | The module of the Noctalia theme, for flake-parts |
@@ -21,6 +22,7 @@ combined ones.
 | `homeModules.eza` | The module of the eza theme |
 | `homeModules.kitty` | The module of the kitty theme |
 | `homeModules.lazygit` | The module of the lazygit theme |
+| `homeModules.lazydocker` | The module of the lazydocker theme |
 | `homeModules.md-tui` | The module of the md-tui theme |
 | `homeModules.noctalia` | The module of the Noctalia theme |
 | `homeModules.claude-code` | The module of the Claude Code theme |
@@ -36,10 +38,11 @@ combined ones.
 | `overlays.bat` | Adds `pkgs.blueforest-bat-theme` to a nixpkgs instance. The aggregate does not compose it |
 | `overlays.btop` | Adds `pkgs.blueforest-btop-theme` to a nixpkgs instance |
 | `overlays.claude-code` | Adds `pkgs.blueforest-claude-code-theme` to a nixpkgs instance |
-| `overlays.default` | Adds the packages of the VS Code, Starship, OpenCode, sbt, Neovim, eza, Zed, Yazi, kitty, MkDocs, Claude Code, btop, lazygit, md-tui, Noctalia, and bat applications to a nixpkgs instance |
+| `overlays.default` | Adds the packages of the VS Code, Starship, OpenCode, sbt, Neovim, eza, Zed, Yazi, kitty, MkDocs, Claude Code, btop, lazygit, lazydocker, md-tui, Noctalia, and bat applications to a nixpkgs instance |
 | `overlays.eza` | Adds `pkgs.blueforest-eza-theme` to a nixpkgs instance |
 | `overlays.kitty` | Adds `pkgs.blueforest-kitty-theme` to a nixpkgs instance |
 | `overlays.lazygit` | Adds `pkgs.blueforest-lazygit-theme` to a nixpkgs instance |
+| `overlays.lazydocker` | Adds `pkgs.blueforest-lazydocker-theme` to a nixpkgs instance |
 | `overlays.md-tui` | Adds `pkgs.blueforest-md-tui-theme` to a nixpkgs instance |
 | `overlays.mkdocs` | Adds `pkgs.blueforest-mkdocs-theme` to a nixpkgs instance |
 | `overlays.noctalia` | Adds `pkgs.blueforest-noctalia-theme` to a nixpkgs instance |
@@ -56,6 +59,7 @@ combined ones.
 | `packages.<system>.blueforest-eza-theme` | The theme for eza |
 | `packages.<system>.blueforest-kitty-theme` | The theme for kitty |
 | `packages.<system>.blueforest-lazygit-theme` | The theme for lazygit |
+| `packages.<system>.blueforest-lazydocker-theme` | The theme for lazydocker |
 | `packages.<system>.blueforest-md-tui-theme` | The theme for md-tui |
 | `packages.<system>.blueforest-mkdocs-theme` | The theme for MkDocs |
 | `packages.<system>.blueforest-noctalia-theme` | The theme for Noctalia |

@@ -30,6 +30,7 @@ scopes = [
   "eza",
   "kitty",
   "lazygit",
+  "lazydocker",
   "md-tui",
   "mkdocs",
   "neovim",
@@ -92,6 +93,10 @@ changelog_path = "modules/kitty/CHANGELOG.md"
 [monorepo.packages.lazygit]
 path = "modules/lazygit"
 changelog_path = "modules/lazygit/CHANGELOG.md"
+
+[monorepo.packages.lazydocker]
+path = "modules/lazydocker"
+changelog_path = "modules/lazydocker/CHANGELOG.md"
 
 [monorepo.packages.md-tui]
 path = "modules/md-tui"

@@ -1,0 +1,10 @@
+{
+  "gui": {
+    "theme": {
+      "activeBorderColor": ["#0099FF", "bold"],
+      "inactiveBorderColor": ["#333333"],
+      "selectedLineBgColor": ["#273e5c"],
+      "optionsTextColor": ["#91CCFF"]
+    }
+  }
+}

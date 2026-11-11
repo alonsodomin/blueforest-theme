@@ -16,6 +16,7 @@ by default:
 | `blueforest-theme.eza.enable` | The theme of eza |
 | `blueforest-theme.kitty.enable` | The theme of kitty |
 | `blueforest-theme.lazygit.enable` | The theme of lazygit |
+| `blueforest-theme.lazydocker.enable` | The theme of lazydocker |
 | `blueforest-theme.md-tui.enable` | The theme of md-tui |
 | `blueforest-theme.neovim.enable` | The theme of Neovim |
 | `blueforest-theme.noctalia.enable` | The palette of Noctalia |
@@ -38,6 +39,7 @@ the variant as well, `blueforest-theme.<application>.variant`, and it is
 | `blueforest-theme.bat.variant` | `dark`, `light` |
 | `blueforest-theme.claude-code.variant` | `dark`, `light` |
 | `blueforest-theme.kitty.variant` | `dark`, `light` |
+| `blueforest-theme.lazydocker.variant` | `dark`, `light` |
 | `blueforest-theme.md-tui.variant` | `dark`, `light` |
 
 The palette of Starship has one as well, and it lives under the switch of the
@@ -128,6 +130,13 @@ application. A configuration that enables both fails to evaluate.
   `$XDG_CONFIG_HOME/lazygit/config.yml`. The module
   `blueforest.homeModules.lazygit` adds it to the settings of lazygit when
   `programs.lazygit.enable = true`.
+- The lazydocker package is `blueforest-lazydocker-theme`. The lazydocker theme
+  is the `gui.theme` mapping of the configuration file of lazydocker, and the
+  file of the theme is `blueforest.json`, which lazydocker reads as
+  `$XDG_CONFIG_HOME/lazydocker/config.yml`. The module
+  `blueforest.homeModules.lazydocker` adds it to the settings of lazydocker
+  when `programs.lazydocker.enable = true`. The light variant of the theme is
+  `blueforest-light`, the name of the file `blueforest-light.json`.
 - The md-tui package is `blueforest-md-tui-theme`. The md-tui theme is
   `blueforest`, the name of the file `blueforest.json`, which md-tui reads
   from `$HOME/.config/mdt/themes/`. Select it with `blueforest-theme.md-tui.enable =
