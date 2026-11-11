@@ -33,6 +33,8 @@
   claudeCode,
   # The light palette of md-tui.
   mdTui,
+  # The light theme of lazydocker.
+  lazydocker,
   # The light colourscheme of Neovim, which is a Lua file.
   neovim,
   # The light flavour of Yazi, which is a TOML file.
@@ -72,6 +74,7 @@ pkgs.runCommand "blueforest-light-colours-check"
       grep -oE '#[0-9A-Fa-f]{6}' ${bat}
       jq -r '.. | strings | select(test("^#[0-9A-Fa-f]{6}$"))' ${claudeCode}
       jq -r '.. | strings | select(test("^#[0-9A-Fa-f]{6}$"))' ${mdTui}
+      jq -r '.. | strings | select(test("^#[0-9A-Fa-f]{6}$"))' ${lazydocker}
       grep -oE '#[0-9A-Fa-f]{6}' ${neovim}
       grep -oE '#[0-9A-Fa-f]{6}' ${yazi}
       grep -oE '#[0-9A-Fa-f]{6}' ${kitty}

@@ -337,6 +337,57 @@ jobs:
       name: Upload the asset to the release
       run: gh release upload "$TAG" "dist/blueforest-kitty-theme-$VERSION.tar.gz"
         --clobber
+  lazydocker:
+    name: 'lazydocker: Package'
+    needs:
+    - create-release
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        fetch-depth: 0
+    - name: Install CoCoGitto
+      uses: cocogitto/cocogitto-action@v4
+      with:
+        install-only: true
+    - id: version
+      name: Read the version of the application
+      run: |-
+        version=$(cog get-version --package lazydocker -f "$(cog get-version |& tail -1)" |& tail -1)
+
+        if [ -z "$version" ]; then
+          echo "The version of lazydocker is empty" >&2
+          exit 1
+        fi
+
+        echo "version=$version" >>"$GITHUB_OUTPUT"
+    - env:
+        VERSION: ${{ steps.version.outputs.version }}
+      name: Package the theme
+      run: |-
+        rm -rf staging
+        mkdir -p dist staging
+        mkdir -p "staging/dark"
+        cp "modules/lazydocker/themes/blueforest.json" "staging/dark/blueforest.json"
+
+        mkdir -p "staging/light"
+        cp "modules/lazydocker/themes/blueforest-light.json" "staging/light/blueforest-light.json"
+
+
+        # The changelog of the application, when it has one.
+        if [ -f "modules/lazydocker/CHANGELOG.md" ]; then
+          cp "modules/lazydocker/CHANGELOG.md" "staging/CHANGELOG.txt"
+        fi
+
+        tar -czf "dist/blueforest-lazydocker-theme-$VERSION.tar.gz" \
+          -C staging --files-from <(ls -A staging)
+    - env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TAG: ${{ github.ref_name }}
+        VERSION: ${{ steps.version.outputs.version }}
+      name: Upload the asset to the release
+      run: gh release upload "$TAG" "dist/blueforest-lazydocker-theme-$VERSION.tar.gz"
+        --clobber
   lazygit:
     name: 'lazygit: Package'
     needs:
@@ -654,6 +705,7 @@ jobs:
     - claude-code
     - btop
     - lazygit
+    - lazydocker
     - md-tui
     - noctalia
     runs-on: ubuntu-latest

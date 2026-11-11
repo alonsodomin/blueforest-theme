@@ -126,6 +126,9 @@
         lazygitModule = (importApply ./modules/lazygit/flake-module.nix { appInputs = inputs; }) // {
           key = "blueforest:lazygit";
         };
+        lazydockerModule = (importApply ./modules/lazydocker/flake-module.nix { appInputs = inputs; }) // {
+          key = "blueforest:lazydocker";
+        };
         md-tuiModule = (importApply ./modules/md-tui/flake-module.nix { appInputs = inputs; }) // {
           key = "blueforest:md-tui";
         };
@@ -168,6 +171,7 @@
           claude-codeModule
           btopModule
           lazygitModule
+          lazydockerModule
           md-tuiModule
           noctaliaModule
         ];
@@ -198,6 +202,7 @@
             config.flake.overlays.claude-code
             config.flake.overlays.btop
             config.flake.overlays.lazygit
+            config.flake.overlays.lazydocker
             config.flake.overlays.md-tui
             config.flake.overlays.noctalia
           ];
@@ -217,6 +222,7 @@
             claude-code = claude-codeModule;
             btop = btopModule;
             lazygit = lazygitModule;
+            lazydocker = lazydockerModule;
             md-tui = md-tuiModule;
             noctalia = noctaliaModule;
             default = {
@@ -234,6 +240,7 @@
                 claude-codeModule
                 btopModule
                 lazygitModule
+                lazydockerModule
                 md-tuiModule
                 noctaliaModule
 
@@ -269,6 +276,7 @@
               config.flake.homeModules.claude-code
               config.flake.homeModules.btop
               config.flake.homeModules.lazygit
+              config.flake.homeModules.lazydocker
               config.flake.homeModules.md-tui
               config.flake.homeModules.noctalia
               config.flake.homeModules.bat
@@ -392,6 +400,7 @@
                   "blueforest-claude-code-theme"
                   "blueforest-btop-theme"
                   "blueforest-lazygit-theme"
+                  "blueforest-lazydocker-theme"
                   "blueforest-md-tui-theme"
                   "blueforest-noctalia-theme"
 
@@ -424,6 +433,15 @@
               lazygit-colours = import ./tests/lazygit-colours.nix {
                 inherit pkgs;
                 theme = (top.config.flake.overlays.lazygit pkgs pkgs).blueforest-lazygit-theme;
+                vscode = ./modules/vscode/themes/Blueforest-color-theme.json;
+                neovim = ./modules/neovim/themes/blueforest.lua;
+              };
+
+              # Fails if the colours of the theme of lazydocker are not the
+              # colours of the other applications of the repository.
+              lazydocker-colours = import ./tests/lazydocker-colours.nix {
+                inherit pkgs;
+                theme = (top.config.flake.overlays.lazydocker pkgs pkgs).blueforest-lazydocker-theme;
                 vscode = ./modules/vscode/themes/Blueforest-color-theme.json;
                 neovim = ./modules/neovim/themes/blueforest.lua;
               };
@@ -468,6 +486,7 @@
                 bat = ./modules/bat/themes/BlueForestLight.tmTheme;
                 claudeCode = ./modules/claude-code/themes/blueforest-light.json;
                 mdTui = ./modules/md-tui/themes/blueforest-light.json;
+                lazydocker = ./modules/lazydocker/themes/blueforest-light.json;
                 neovim = ./modules/neovim/themes/blueforest-light.lua;
                 yazi = ./modules/yazi/themes/blueforest-light.yazi/flavor.toml;
                 mkdocs = ./modules/mkdocs/themes/blueforest.css;

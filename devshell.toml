@@ -21,6 +21,7 @@ packages = [
   "jq",
   "kitty",
   "lazygit",
+  "lazydocker",
   "md-tui",
   "neovim",
   "opencode",

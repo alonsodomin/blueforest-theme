@@ -18,6 +18,7 @@ the root flake.
 │   ├── eza/
 │   ├── kitty/
 │   ├── lazygit/
+│   ├── lazydocker/
 │   ├── md-tui/
 │   ├── mkdocs/
 │   ├── neovim/
@@ -64,6 +65,8 @@ compare the packaged copies against them:
 - `modules/mkdocs/themes/blueforest.css`
 - `modules/claude-code/themes/blueforest.json`
 - `modules/lazygit/themes/blueforest.json`
+- `modules/lazydocker/themes/blueforest.json` and
+  `modules/lazydocker/themes/blueforest-light.json`
 - `modules/md-tui/themes/blueforest.json`
 - `modules/noctalia/themes/blueforest.json`
 
@@ -72,6 +75,13 @@ under the `gui.theme` key, because lazygit has no theme file of its own. It is
 JSON, and JSON is a subset of YAML: lazygit reads the file as its own format,
 and Nix reads it at evaluation time, so that the colours of the Home Manager
 module and the colours of the file are the same ones.
+
+The theme of lazydocker is a configuration file of lazydocker that carries the
+theme under the `gui.theme` key, because lazydocker has no theme file of its own
+either. It is JSON for the same reason, and it carries the four colours
+lazydocker knows: the border of the focused panel, the border of the unfocused
+panels, the background of the selected line, and the text of the line at the
+bottom.
 
 The theme of md-tui is a palette of md-tui, the format the chooser of its
 themes saves. The name of the palette is the name of the file, and md-tui

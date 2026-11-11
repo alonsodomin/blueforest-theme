@@ -12,6 +12,7 @@ installed.
 | eza         | [Nix](eza.md) or [release asset](eza.md)             |
 | kitty       | [Nix](kitty.md) or [release asset](kitty.md)         |
 | lazygit     | [Nix](lazygit.md) or [release asset](lazygit.md)     |
+| lazydocker  | [Nix](lazydocker.md) or [release asset](lazydocker.md) |
 | md-tui      | [Nix](md-tui.md) or [release asset](md-tui.md)       |
 | MkDocs      | [Nix](mkdocs.md) or [release asset](mkdocs.md)       |
 | Neovim      | [Nix](neovim.md) or [release asset](neovim.md)       |
