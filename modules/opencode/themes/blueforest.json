@@ -20,6 +20,7 @@
         },
         "destructive": {
           "base": "$hue.red.300",
+          "$focused": "$hue.neutral.900",
           "$disabled": "$hue.neutral.400"
         }
       },
