@@ -22,12 +22,22 @@ updates:
   - package-ecosystem: "nix"
     directories:
       - "/"
+
     schedule:
       interval: "weekly"
       day: "monday"
+
     groups:
+      nixpkgs:
+        patterns:
+          - nixpkgs
+          - home-manager
+
       flake-inputs:
         group-by: dependency-name
+        exclude-patterns:
+          - nixpkgs
+          - home-manager
 
     # The commits of the repository follow the conventional commits
     # specification, and the check of the CI reads them. The prefix turns the
