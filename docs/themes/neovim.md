@@ -23,33 +23,35 @@ rainbow-delimiters plugin reads their colours from the colourscheme.
 
 ## Install with Nix
 
-The Home Manager module adds the theme to the plugins of Neovim. It does not
-enable Neovim, and it does not select the colourscheme: those belong to your
-own configuration.
+The theme comes as a module of nixvim, which is imported into the
+configuration of nixvim. nixvim builds an instance of nixpkgs of its own, so
+the module adds the overlay of the theme to the nixpkgs of nixvim and
+installs the theme among the plugins of the editor:
 
 ```nix
 {
   imports = [
-    blueforest.homeModules.neovim
+    nixvim.nixosModules.default   # or nixvim.homeModules.default
   ];
 
-  programs.neovim.enable = true;
-  blueforest-theme.neovim.enable = true;
+  programs.nixvim = {
+    imports = [ blueforest.nixvimModules.neovim ];
+    enable = true;
+    colorscheme = "blueforest";
+  };
 }
 ```
 
-The module adds the theme with `lib.mkDefault`, so it does not replace the
-plugins you add yourself.
+The module does not select the colourscheme: `colorscheme` above is what
+selects it, and you can select another one in your own configuration.
 
 ## The light variant
 
 The package carries a light variant of the theme as well, `blueforest-light`,
 with the colours of the light palette of the repository. It is a colourscheme
-of its own, so it is selected the same way:
-
-```lua
-vim.cmd.colorscheme("blueforest-light")
-```
+of its own, so it is selected the same way, with `colorscheme =
+"blueforest-light";` in nixvim or `vim.cmd.colorscheme("blueforest-light")` in
+a configuration you write by hand.
 
 It sets the mode of the editor to `light` as well, so the editor follows the
 colours of the theme. The theme of lualine comes with it, and lualine finds it
@@ -58,9 +60,9 @@ on its own, the way it finds the dark one.
 The [palette reference](../index.md#colour-palettes) has every colour of the
 light variant, with the swatches.
 
-The switch of the theme is `blueforest-theme.neovim.enable`, and not
-`programs.neovim.enable`, so that every theme of the repository is turned on
-and off on its own.
+The theme has no switch of its own: importing the nixvim module installs it,
+and `colorscheme` selects it. A configuration that does not want the theme
+does not import the module.
 
 If you wire the plugin by hand, the package is
 `blueforest.packages.${system}.blueforest-neovim-theme`:
@@ -72,9 +74,6 @@ If you wire the plugin by hand, the package is
   ];
 }
 ```
-
-The NixOS module only adds the overlay. Neovim reads the configuration of the
-user, and there is no system-wide directory it reads.
 
 ## Manual install
 
@@ -141,28 +140,3 @@ require("lualine").setup({
   },
 })
 ```
-
-## nixvim
-
-[nixvim](https://github.com/nix-community/nixvim) builds an instance of
-nixpkgs of its own, so the overlay of the consumer does not reach it. The
-theme therefore comes with a module of nixvim, which is imported into the
-configuration of nixvim:
-
-```nix
-{
-  imports = [
-    nixvim.nixosModules.default   # or nixvim.homeModules.default
-  ];
-
-  programs.nixvim = {
-    imports = [ blueforest.nixvimModules.neovim ];
-    enable = true;
-  };
-}
-```
-
-The module adds the overlay of the theme to the nixpkgs of nixvim, installs
-the theme among the plugins of the editor, and selects the colourscheme. It
-only offers `blueforest` as the default: you can select another colourscheme
-in your own configuration.

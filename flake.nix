@@ -260,7 +260,6 @@
             imports = [
               config.flake.nixosModules.starship
               config.flake.nixosModules.opencode
-              config.flake.nixosModules.neovim
             ];
           };
 
@@ -269,7 +268,6 @@
               config.flake.homeModules.starship
               config.flake.homeModules.opencode
               config.flake.homeModules.sbt
-              config.flake.homeModules.neovim
               config.flake.homeModules.eza
               config.flake.homeModules.yazi
               config.flake.homeModules.kitty

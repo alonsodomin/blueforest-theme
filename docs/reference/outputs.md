@@ -29,8 +29,7 @@ combined ones.
 | `homeModules.sbt` | The module of the sbt prompt |
 | `homeModules.yazi` | The module of the Yazi flavour |
 | `homeModules.zed` | The module of the Zed theme |
-| `nixosModules.default`, `homeModules.default` | The modules of the applications that provide one. The modules of VS Code and Zed are not among them: they are imported explicitly |
-| `nixosModules.neovim`, `homeModules.neovim` | The module of the Neovim theme |
+| `nixosModules.default`, `homeModules.default` | The modules of the applications that provide one. The modules of VS Code, Zed and Neovim are not among them: VS Code and Zed are imported explicitly, and Neovim is a nixvim module |
 | `nixosModules.opencode`, `homeModules.opencode` | The module of the OpenCode theme |
 | `nixosModules.starship`, `homeModules.starship` | The module of the Starship palette and preset |
 | `nixosModules.vscode`, `homeModules.vscode` | The module of the VS Code theme |
