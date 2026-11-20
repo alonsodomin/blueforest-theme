@@ -96,12 +96,13 @@ the module of every application under its own name:
 
 The same works for `blueforest.nixosModules.bat`,
 `blueforest.nixosModules.starship`, `blueforest.nixosModules.opencode`,
-`blueforest.nixosModules.sbt`, `blueforest.nixosModules.neovim`,
-`blueforest.nixosModules.eza`, `blueforest.nixosModules.zed`,
-`blueforest.nixosModules.yazi`, `blueforest.nixosModules.kitty`,
+`blueforest.nixosModules.sbt`, `blueforest.nixosModules.eza`,
+`blueforest.nixosModules.zed`, `blueforest.nixosModules.yazi`,
+`blueforest.nixosModules.kitty`,
 `blueforest.nixosModules.btop`, `blueforest.nixosModules.lazygit`,
 `blueforest.nixosModules.md-tui`, and `blueforest.nixosModules.noctalia`.
-The Home Manager modules are under `blueforest.homeModules`, and the overlays
+The Home Manager modules are under `blueforest.homeModules`, the nixvim
+module of Neovim is under `blueforest.nixvimModules.neovim`, and the overlays
 under `blueforest.overlays`.
 
 The theme of bat is a package and a Home Manager module, so it has a module

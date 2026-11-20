@@ -10,6 +10,7 @@
 #   programs.nixvim = {
 #     imports = [ blueforest.nixvimModules.neovim ];
 #     enable = true;
+#     colorscheme = "blueforest";
 #   };
 #
 # The overlay of the application is passed to the module, so that the theme
@@ -18,7 +19,6 @@
   overlay,
 }:
 {
-  lib,
   pkgs,
   ...
 }:
@@ -26,10 +26,7 @@
   # The overlay of the theme, in the nixpkgs of nixvim.
   nixpkgs.overlays = [ overlay ];
 
-  # The theme is a plugin of Neovim.
+  # The theme is a plugin of Neovim. The colourscheme is selected by the
+  # consumer with nixvim's `colorscheme`.
   extraPlugins = [ pkgs.blueforest-neovim-theme ];
-
-  # The colourscheme is selected by its name. The consumer can select
-  # another one: this is only the default.
-  colorscheme = lib.mkDefault "blueforest";
 }

@@ -20,6 +20,10 @@ let
     modules = [
       module
       {
+        # The colourscheme is selected by the consumer, as the documentation
+        # describes.
+        colorscheme = "blueforest";
+
         # lualine, to see that it finds the theme of the statusline.
         plugins.lualine.enable = true;
       }

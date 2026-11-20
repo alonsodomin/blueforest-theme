@@ -18,7 +18,6 @@ by default:
 | `blueforest-theme.lazygit.enable` | The theme of lazygit |
 | `blueforest-theme.lazydocker.enable` | The theme of lazydocker |
 | `blueforest-theme.md-tui.enable` | The theme of md-tui |
-| `blueforest-theme.neovim.enable` | The theme of Neovim |
 | `blueforest-theme.noctalia.enable` | The palette of Noctalia |
 | `blueforest-theme.opencode.enable` | The theme of OpenCode |
 | `blueforest-theme.sbt.enable` | The prompt of sbt |
@@ -27,8 +26,9 @@ by default:
 | `blueforest-theme.yazi.enable` | The flavour of Yazi |
 
 The themes of VS Code and of Zed have no switch: they are installed as a
-package and as an extension. The stylesheet of MkDocs has one of its own,
-`blueforest-theme.mkdocs.enable`, and it is enabled by default.
+package and as an extension. The theme of Neovim has no switch either: the
+nixvim module is imported explicitly. The stylesheet of MkDocs has one of its
+own, `blueforest-theme.mkdocs.enable`, and it is enabled by default.
 
 The themes of bat, of Claude Code, of kitty and of md-tui have a switch of
 the variant as well, `blueforest-theme.<application>.variant`, and it is
@@ -96,8 +96,9 @@ application. A configuration that enables both fails to evaluate.
   [sbt-prompt](https://github.com/alonsodomin/sbt-prompt) plugin. There is no
   option to select another theme: the module selects that one.
 - The Neovim package is `blueforest-neovim-theme`.
-- The Neovim colourscheme is `blueforest`, the name of the file. Select it
-  with `vim.cmd.colorscheme("blueforest")`. The light variant of the theme is
+- The Neovim colourscheme is `blueforest`, the name of the file. The nixvim
+  module `blueforest.nixvimModules.neovim` installs it, and it is selected
+  with `colorscheme = "blueforest";`. The light variant of the theme is
   `blueforest-light`, and it sets the mode of the editor to `light`.
 - The lualine theme is `blueforest` as well, and lualine finds it on its own.
 - The eza package is `blueforest-eza-theme`. The eza theme is `blueforest`,

@@ -40,17 +40,6 @@ let
       "0.0.0";
 in
 {
-  # The flake module of Home Manager, which declares `flake.homeModules`. It
-  # is imported here, so that the module of the application can be composed
-  # with the others without the consumer having to import it.
-  #
-  # The Home Manager of the consumer is the one to use when it has one: the
-  # declaration of the option is then the one of the consumer, and the module
-  # system imports it only once.
-  imports = [
-    (inputs.home-manager or appInputs.home-manager).flakeModules.home-manager
-  ];
-
   perSystem =
     {
       system,
@@ -63,10 +52,6 @@ in
         inherit system;
         overlays = [ config.flake.overlays.neovim ];
       };
-
-      # The unoverlaid nixpkgs, used to evaluate the modules without applying
-      # the overlay twice.
-      basePkgs = import inputs.nixpkgs { inherit system; };
 
       theme = pkgs.blueforest-neovim-theme;
 
@@ -108,24 +93,6 @@ in
             ;
           lualine = pkgs.vimPlugins.lualine-nvim;
         };
-
-        # The configuration documented in the documentation installs the theme where
-        # Neovim reads it from.
-        neovim-configuration = import ./nix/checks/configuration.nix {
-          inherit pkgs;
-          homeManager = appInputs.home-manager;
-          module = config.flake.homeModules.neovim;
-        };
-
-        # The modules add the overlay of the application.
-        neovim-module = import ./nix/checks/module.nix {
-          inherit lib;
-          pkgs = basePkgs;
-          modules = {
-            nixos = config.flake.nixosModules.neovim;
-          };
-          overlay = config.flake.overlays.neovim;
-        };
       }
       // (
         if builtins.getEnv "BLUEFOREST_NEOVIM_NIXVIM_CHECK" == "1" then
@@ -156,19 +123,9 @@ in
     #
     #   programs.nixvim = {
     #     imports = [ blueforest.nixvimModules.neovim ];
+    #     colorscheme = "blueforest";
     #   };
     nixvimModules.neovim = import ./nix/nixvim.nix {
-      overlay = config.flake.overlays.neovim;
-    };
-
-    # Neovim reads the configuration of the user, and there is no system-wide
-    # directory it reads, so the NixOS module can do no more than adding the
-    # overlay.
-    nixosModules.neovim = {
-      nixpkgs.overlays = [ config.flake.overlays.neovim ];
-    };
-
-    homeModules.neovim = import ./nix/modules/default.nix {
       overlay = config.flake.overlays.neovim;
     };
   };

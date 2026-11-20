@@ -70,7 +70,7 @@ nix build "path:.#checks.x86_64-linux.<name>"
 The names include `version`, `overlay`, `treefmt`, `workflows-validate`,
 `workflows-lint`, `vscode-extension`, `vscode-configuration`, `bat-theme`,
 `bat-theme-home`, `bat-theme-nixos`, `bat-module`, `neovim-theme`,
-`neovim-configuration`, `neovim-module`, `starship-preset`, `starship-palette`,
+`starship-preset`, `starship-palette`,
 `starship-render`, `starship-wrapper`, `starship-module`, `opencode-theme`,
 `opencode-configuration`,
 `opencode-module`, `sbt-package`, `sbt-module`, `eza-theme`, `eza-render`,

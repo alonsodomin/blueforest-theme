@@ -35,7 +35,9 @@ Every theme of the repository has a switch of its own,
 separate from `programs.<application>.enable`, so that a theme and a template
 of the community catalogue of Noctalia are alternatives, and so that a
 configuration that wants the theme of one application only does not get the
-themes of all of them.
+themes of all of them. The theme of Neovim is the exception: it is a nixvim
+module that is imported explicitly, and the colourscheme is selected with
+`colorscheme`.
 
 The [installation page](../installation.md) explains how to use the flake as a
 whole, and the [outputs reference](../reference/outputs.md) lists the packages
