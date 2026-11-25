@@ -14,6 +14,10 @@
 #   the preset, so that `programs.starship.presets` can name it. It does not
 #   select the preset: the consumer writes
 #   `programs.starship.presets = [ "blueforest" ]`.
+# - `blueforest-theme.starship.vi-mode.enable` labels the vi modes (`N`, `I`,
+#   `V` and `R`) on the character of the prompt. It is off by default, and it
+#   assumes that the shell is in vi mode: the labels are painted on the symbol
+#   of the insert mode as well, which a shell that reports no keymap shows too.
 #
 # The module is inert unless `programs.starship.enable` is true: it does not
 # enable Starship, it only adds the palette and the preset to the
@@ -96,6 +100,12 @@ in
     };
 
     preset.enable = lib.mkEnableOption "the BlueForest preset for Starship";
+
+    # The labels of the vi modes are an extra, because they assume that the
+    # shell is in vi mode even when it is not: the character of the preset is
+    # what carries them, and the module cannot tell whether the shell reports
+    # a keymap.
+    vi-mode.enable = lib.mkEnableOption "the labels of the vi modes of the BlueForest preset for Starship";
   };
 
   config = lib.mkMerge [
@@ -152,6 +162,19 @@ in
       # The package of the consumer is the one that carries the preset of the
       # repository, so that `programs.starship.presets` can name it.
       programs.starship.package = lib.mkDefault pkgs.blueforest-starship;
+    })
+
+    (lib.mkIf (config.blueforest-theme.starship.vi-mode.enable && cfg.enable) {
+      # The labels ride the symbols of the character module, which are the only
+      # part of the prompt Starship paints by keymap. Every value is a default
+      # one, so a consumer that brings a symbol of its own keeps it.
+      programs.starship.settings.character.success_symbol = lib.mkDefault "[I ❯](bold fg:blue)";
+      programs.starship.settings.character.error_symbol = lib.mkDefault "[I ❯](bold fg:flamingo)";
+      programs.starship.settings.character.vimcmd_symbol = lib.mkDefault "[N ❮](bold fg:green)";
+      programs.starship.settings.character.vimcmd_visual_symbol = lib.mkDefault "[V ❮](bold fg:yellow)";
+      programs.starship.settings.character.vimcmd_replace_symbol = lib.mkDefault "[R ❮](bold fg:magenta)";
+      programs.starship.settings.character.vimcmd_replace_one_symbol =
+        lib.mkDefault "[R ❮](bold fg:magenta)";
     })
   ];
 }
