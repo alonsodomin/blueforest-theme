@@ -365,7 +365,8 @@ local diagnostics = {
   LspReferenceWrite = { bg = palette.bg_sel },
   LspSignatureActiveParameter = { fg = palette.operator, bold = true },
   LspInlayHint = { fg = palette.bg_sel, bg = palette.bg },
-  LspCodeLens = { fg = palette.bg_sel },
+  LspCodeLens = { fg = palette.bg_sel, bg = palette.bg },
+  LspCodeLensSeparator = { link = "LspCodeLens" },
 }
 
 local git = {
