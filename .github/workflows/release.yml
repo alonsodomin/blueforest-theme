@@ -565,6 +565,9 @@ jobs:
       run: |-
         rm -rf staging
         mkdir -p dist staging
+        mkdir -p "staging/lua"
+        cp "modules/neovim/themes/theme.lua" "staging/lua/blueforest.lua"
+
         mkdir -p "staging/colors"
         cp "modules/neovim/themes/blueforest.lua" "staging/colors/blueforest.lua"
 

@@ -53,7 +53,8 @@ compare the packaged copies against them:
 - `modules/vscode/themes/Blueforest-color-theme.json`
 - `modules/bat/themes/BlueForest.tmTheme`
 - `modules/btop/themes/blueforest.theme`
-- `modules/neovim/themes/blueforest.lua` and
+- `modules/neovim/themes/theme.lua`, the groups the variants share, and
+  `modules/neovim/themes/blueforest.lua` and
   `modules/neovim/themes/lualine-blueforest.lua`
 - `modules/starship/themes/blueforest.toml`, the preset, and
   `modules/starship/themes/palettes/blueforest.toml` and

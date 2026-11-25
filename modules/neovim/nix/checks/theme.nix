@@ -24,6 +24,7 @@ pkgs.runCommand "blueforest-neovim-theme-check"
   }
   ''
     # The files of the package are the files of the repository.
+    cmp ${theme}/lua/blueforest.lua ${sources.shared}
     cmp ${theme}/colors/blueforest.lua ${sources.colorscheme}
     cmp ${theme}/lua/lualine/themes/blueforest.lua ${sources.lualine}
     cmp ${theme}/colors/blueforest-light.lua ${sources.colorschemeLight}
@@ -34,6 +35,7 @@ pkgs.runCommand "blueforest-neovim-theme-check"
     test -f ${theme}/share/doc/blueforest/LICENSE
 
     # The sources of the theme are clean Lua.
+    luacheck --std luajit --globals vim --no-color --no-cache ${sources.shared}
     luacheck --std luajit --globals vim --no-color --no-cache ${sources.colorscheme}
     luacheck --std luajit --globals vim --no-color --no-cache ${sources.lualine}
     luacheck --std luajit --globals vim --no-color --no-cache ${sources.colorschemeLight}

@@ -1,11 +1,14 @@
 # BlueForest theme for Neovim
 
-The theme is a plugin that carries two files: the colourscheme of Neovim and
-the theme of lualine.
+The theme is a plugin that carries the colourschemes of Neovim, the themes of
+lualine, and the Lua module the colourschemes share.
 
 ```text
 colors/blueforest.lua
+colors/blueforest-light.lua
+lua/blueforest.lua
 lua/lualine/themes/blueforest.lua
+lua/lualine/themes/blueforest-light.lua
 ```
 
 The name of the colourscheme is `blueforest`, and lualine finds its theme on
@@ -86,6 +89,7 @@ release, in the layout Neovim reads a plugin from:
 CHANGELOG.txt
 colors/blueforest.lua
 colors/blueforest-light.lua
+lua/blueforest.lua
 lua/lualine/themes/blueforest.lua
 lua/lualine/themes/blueforest-light.lua
 ```
