@@ -57,6 +57,7 @@ in
 
       # The files of the repository that the package carries.
       sources = {
+        shared = ./themes/theme.lua;
         colorscheme = ./themes/blueforest.lua;
         lualine = ./themes/lualine-blueforest.lua;
         colorschemeLight = ./themes/blueforest-light.lua;

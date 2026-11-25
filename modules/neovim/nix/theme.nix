@@ -18,6 +18,7 @@ let
   # it, and the theme of lualine where lualine looks for it.
   sources = pkgs.runCommand "blueforest-neovim-theme-sources-${version}" { } ''
     mkdir -p $out/colors $out/lua/lualine/themes $out/share/doc/blueforest
+    cp ${../themes/theme.lua} $out/lua/blueforest.lua
     cp ${../themes/blueforest.lua} $out/colors/blueforest.lua
     cp ${../themes/lualine-blueforest.lua} $out/lua/lualine/themes/blueforest.lua
     cp ${../themes/blueforest-light.lua} $out/colors/blueforest-light.lua

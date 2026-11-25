@@ -159,6 +159,10 @@ let
       title = "Neovim";
       files = [
         {
+          src = "modules/neovim/themes/theme.lua";
+          dst = "lua/blueforest.lua";
+        }
+        {
           src = "modules/neovim/themes/blueforest.lua";
           dst = "colors/blueforest.lua";
         }
