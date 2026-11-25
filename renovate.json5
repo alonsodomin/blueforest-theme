@@ -29,6 +29,10 @@
   automerge: true,
   platformAutomerge: true,
 
+  // The CI checks commit messages with CoCoGitto, whose scopes are the ids of
+  // the applications and "repo"; the default "deps" scope is rejected.
+  semanticCommitScope: "repo",
+
   // Only the actions of the workflows and the version of the sbt prompt
   // plugin. The inputs of the flakes are updated by Dependabot.
   enabledManagers: ["custom.regex"],
