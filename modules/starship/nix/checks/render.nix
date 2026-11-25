@@ -33,6 +33,7 @@ pkgs.runCommand "blueforest-starship-render-check"
   {
     nativeBuildInputs = [
       pkgs.coreutils
+      pkgs.gnused
       pkgs.gnugrep
       pkgs.starship
     ];
@@ -120,6 +121,49 @@ pkgs.runCommand "blueforest-starship-render-check"
         echo "the duration or the shell is on the line of the character of $config" >&2
         exit 1
       fi
+
+      # The RGB of a key of the palette, the way Starship writes it.
+      colour() {
+        value=$(sed -n "s/^$1[[:space:]]*=[[:space:]]*\"#\\([0-9A-Fa-f]\\{6\\}\)\"/\\1/p" "$file" | head -n 1)
+        red=$(printf '%s' "$value" | cut -c 1-2)
+        green=$(printf '%s' "$value" | cut -c 3-4)
+        blue=$(printf '%s' "$value" | cut -c 5-6)
+        printf '%d;%d;%d' "0x$red" "0x$green" "0x$blue"
+      }
+
+      # The marker of the vi mode. Starship receives the keymap from the init of
+      # the shell, so the check drives Starship the way the init does, with
+      # `--keymap`.
+      STARSHIP_SHELL=zsh starship prompt -w 120 --keymap=vicmd \
+        >$TMPDIR/$config-vicmd 2>>$TMPDIR/$config-errors
+      STARSHIP_SHELL=zsh starship prompt -w 120 --keymap=viins \
+        >$TMPDIR/$config-viins 2>>$TMPDIR/$config-errors
+
+      # zsh reports the normal mode and the insert mode, and the marker flips.
+      if ! tail -n 1 $TMPDIR/$config-vicmd | grep -qF "$(printf '\xe2\x9d\xae')"; then
+        echo "the normal mode of zsh has no marker on the line of the character of $config" >&2
+        exit 1
+      fi
+      if ! tail -n 1 $TMPDIR/$config-viins | grep -qF "$(printf '\xe2\x9d\xaf')"; then
+        echo "the insert mode of zsh has no marker on the line of the character of $config" >&2
+        exit 1
+      fi
+
+      # fish reports every mode, and every mode carries its own key of the
+      # palette: green in normal, yellow in visual and magenta in replace.
+      for mode in default visual replace; do
+        STARSHIP_SHELL=fish starship prompt -w 120 --keymap=$mode \
+          >$TMPDIR/$config-fish-$mode 2>>$TMPDIR/$config-errors
+        case $mode in
+          default) key=green ;;
+          visual) key=yellow ;;
+          replace) key=magenta ;;
+        esac
+        if ! tail -n 1 $TMPDIR/$config-fish-$mode | grep -qF "38;2;$(colour "$key")"; then
+          echo "the $mode mode of fish is not painted with $key in $config" >&2
+          exit 1
+        fi
+      done
     }
 
     # The palettes of the repository, one per variant.

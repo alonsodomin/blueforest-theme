@@ -163,6 +163,19 @@ let
     }
   ];
 
+  # The same consumer with the labels of the vi modes on.
+  viMode = evaluateHome [
+    {
+      programs.starship.enable = true;
+      blueforest-theme.starship = {
+        palette.enable = true;
+        preset.enable = true;
+        vi-mode.enable = true;
+      };
+      programs.starship.presets = [ "blueforest" ];
+    }
+  ];
+
   # A configuration that enables the theme of the repository and a template
   # of Noctalia for Starship: it fails to evaluate.
   conflictOf =
@@ -256,6 +269,10 @@ let
         }
       ];
     };
+    viMode = {
+      selected = selectedOf viMode;
+      package = viMode.programs.starship.package.name;
+    };
   };
 in
 pkgs.runCommand "blueforest-starship-module-check"
@@ -268,8 +285,10 @@ pkgs.runCommand "blueforest-starship-module-check"
     inherit result;
 
     # The configuration file that Home Manager writes for the consumer that
-    # selects the preset and the palette.
+    # selects the preset and the palette, and the one of the consumer that also
+    # asks for the labels of the vi modes.
     config = "${consumer.home.file."${consumer.programs.starship.configPath}".source}";
+    configViMode = "${viMode.home.file."${viMode.programs.starship.configPath}".source}";
   }
   ''
     echo "$result" | jq -e '
@@ -359,6 +378,31 @@ pkgs.runCommand "blueforest-starship-module-check"
     grep -qF '[palettes.blueforest]' "$config"
     grep -qF 'blue = "#0099FF"' "$config"
     grep -qF 'palette = "blueforest"' "$config"
+
+    # The labels of the vi modes: a configuration that does not ask for them
+    # keeps the symbols of the preset, and one that asks carries the labels
+    # over the same keys.
+    if grep -qF 'success_symbol = "[I ' "$config"; then
+      echo "the labels of the vi modes are in the configuration of the consumer that did not ask for them" >&2
+      exit 1
+    fi
+    for symbol in \
+      'success_symbol = "[I ' \
+      'error_symbol = "[I ' \
+      'vimcmd_symbol = "[N ' \
+      'vimcmd_visual_symbol = "[V ' \
+      'vimcmd_replace_symbol = "[R ' \
+      'vimcmd_replace_one_symbol = "[R '; do
+      if ! grep -qF "$symbol" "$configViMode"; then
+        echo "the configuration with the labels of the vi modes does not carry $symbol" >&2
+        exit 1
+      fi
+    done
+
+    echo "$result" | jq -e '
+      .viMode.selected == "blueforest"
+      and (.viMode.package | startswith("blueforest-starship"))
+    ' >/dev/null
 
     touch $out
   ''

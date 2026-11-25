@@ -13,12 +13,51 @@ palette. The prompt is two lines: the information line, and the line of the
 character. The duration of the last command and the Nix shell are at the right
 of the information line.
 
+## Vi mode
+
+The character of the prompt carries the marker of the mode the shell reports:
+it is `❮` in the normal, visual and replace modes of vi, painted with `green`,
+`yellow` and `magenta`, and `❯` in the insert mode. The marker needs no
+configuration where Starship reads the keymap of the shell: zsh (normal and
+insert), fish (every mode), and Cmd and PowerShell when Clink or PSReadLine
+report `vi`. Bash does not report a keymap, so its marker never changes, and
+zsh keeps `vicmd` selected in visual mode, so its visual and operator-pending
+modes are painted as normal.
+
+The labels `N`, `I`, `V` and `R` on the character are an extra, behind
+`blueforest-theme.starship.vi-mode.enable`, which is off by default:
+
+```nix
+{
+  imports = [
+    blueforest.homeModules.starship
+  ];
+
+  programs.starship.enable = true;
+  programs.starship.presets = [ "blueforest" ];
+
+  blueforest-theme.starship = {
+    palette.enable = true;
+    preset.enable = true;
+    vi-mode.enable = true; # label the vi modes: N, I, V and R
+  };
+}
+```
+
+The switch writes the labelled symbols over the ones of the preset, so it paints
+with whatever palette is selected. It assumes that the shell is in vi mode: the
+`I` of the insert mode shows even when the shell reports no keymap, because
+Starship cannot tell the two apart. A consumer that brings a symbol of its own
+keeps it, because the labels are defaults. The switch belongs to the Home
+Manager module; a manual install can write the same labelled symbols into its
+configuration.
+
 ## The names of the colours
 
 The names of the keys of the palette are the ones of the palette of the
 [community catalogue of Noctalia](https://github.com/noctalia-dev/community-templates)
 for Starship, so the preset paints with the palette of Noctalia as well, and
-with any other palette that follows the same vocabulary. The preset names nine
+with any other palette that follows the same vocabulary. The preset names eleven
 of them, and every one of them paints a part of the prompt:
 
 | Key of the palette | What it paints                        |
@@ -28,7 +67,9 @@ of them, and every one of them paints a part of the prompt:
 | `text`             | the directory                         |
 | `peach`            | the branch, the status, the duration  |
 | `flamingo`         | the languages that failed, the root user |
-| `green`            | the languages that worked             |
+| `green`            | the languages that worked, the normal mode |
+| `yellow`           | the visual mode                       |
+| `magenta`          | the replace modes                     |
 | `mantle`           | the background of the directory       |
 | `surface1`         | the background of the branch          |
 | `crust`            | the background of the languages       |
@@ -148,7 +189,7 @@ to be selected as well:
 }
 ```
 
-A palette of your own has to define the nine keys that the preset names, and
+A palette of your own has to define the eleven keys that the preset names, and
 nothing else: a key the preset names and the palette does not define is painted
 with no colour at all, and Starship reports nothing.
 

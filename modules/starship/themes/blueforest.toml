@@ -14,6 +14,10 @@ symbol = ""
 [character]
 error_symbol = "[❯](bold fg:flamingo)"
 success_symbol = "[❯](bold fg:blue)"
+vimcmd_symbol = "[❮](bold fg:green)"
+vimcmd_visual_symbol = "[❮](bold fg:yellow)"
+vimcmd_replace_symbol = "[❮](bold fg:magenta)"
+vimcmd_replace_one_symbol = "[❮](bold fg:magenta)"
 
 [cmd_duration]
 format = "[ 󰔛 $duration ]($style)"
@@ -108,7 +112,7 @@ style = "bg:crust"
 symbol = "󱁢"
 
 [username]
-format = "[$user]($style)"
+format = "[$user ]($style)"
 show_always = true
 style_root = "bg:blue fg:flamingo"
 style_user = "bg:blue fg:base"
