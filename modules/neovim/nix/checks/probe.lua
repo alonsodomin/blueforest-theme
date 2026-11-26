@@ -27,6 +27,8 @@ local expected = {
   DiagnosticError = { fg = 0xff8080 },
   RainbowDelimiterRed = { fg = 0xdc322f },
   RainbowDelimiterViolet = { fg = 0xa2cff5 },
+  NeoTreeRootName = { fg = 0xffcc33 },
+  NeoTreeDirectoryIcon = { fg = 0x91ccff },
 
   -- The groups of the shell, which the other applications of the repository
   -- paint with the same colours: the command is a function, the arguments
@@ -92,6 +94,8 @@ local expectedLight = {
   DiagnosticError = { fg = 0xb02a28 },
   RainbowDelimiterRed = { fg = 0xb02a28 },
   RainbowDelimiterViolet = { fg = 0x1b7a70 },
+  NeoTreeRootName = { fg = 0xc57633 },
+  NeoTreeDirectoryIcon = { fg = 0x1b7a70 },
 
   ["@comment"] = { fg = 0x56697d },
   ["@function.call"] = { fg = 0x1b7a70 },

@@ -627,6 +627,29 @@ local function plugins(palette)
     NvimTreeEmptyFolderName = { fg = palette.bg_sel },
     NvimTreeFolderName = { fg = palette.accent_light },
     NvimTreeFolderIcon = { fg = palette.accent_light },
+
+    -- neo-tree, the file explorer: the groups the plugin would otherwise paint
+    -- with its own greys.
+    NeoTreeRootName = { fg = palette.operator, bold = true },
+    NeoTreeDirectoryName = { fg = palette.accent_light },
+    NeoTreeDirectoryIcon = { fg = palette.accent_light },
+    NeoTreeFileNameOpened = { fg = palette.fg, bold = true },
+    NeoTreeIndentMarker = { fg = palette.bg_sel },
+    NeoTreeExpander = { fg = palette.bg_sel },
+    NeoTreeCursorLine = { bg = palette.bg_input },
+    NeoTreeSelected = { fg = palette.fg, bg = palette.bg_sel },
+    NeoTreeDimText = { fg = palette.comment },
+    NeoTreeFadeText1 = { fg = palette.comment },
+    NeoTreeDotfile = { fg = palette.comment },
+    NeoTreeMessage = { fg = palette.comment, italic = true },
+    NeoTreeFilterTerm = { fg = palette.accent, bold = true },
+    NeoTreeModified = { fg = palette.operator },
+    NeoTreePreview = { bg = palette.bg_sel },
+    NeoTreeGitConflict = { fg = palette.number, bold = true },
+    NeoTreeGitUntracked = { fg = palette.string, italic = true },
+    NeoTreeTabActive = { fg = palette.fg, bold = true },
+    NeoTreeTabInactive = { fg = palette.bg_sel, bg = palette.bg_dark },
+    NeoTreeFloatTitle = { fg = palette.accent, bg = palette.bg },
   }
 end
 
