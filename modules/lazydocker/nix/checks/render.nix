@@ -68,7 +68,12 @@ pkgs.runCommand "blueforest-lazydocker-render-check"
       local status=0
 
       (
-        sleep 2
+        # Wait for the selected row, which is drawn last: lazydocker starts
+        # slowly under load, and a fixed wait quits it before it paints.
+        for _ in $(seq 1 100); do
+          grep -aq '48;2;' "$out" 2>/dev/null && break
+          sleep 0.1
+        done
 
         # lazydocker may have quit already, and the pipe may be closed: the
         # error of the write is of no use.
