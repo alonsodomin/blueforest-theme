@@ -39,6 +39,13 @@ in
         }
         {
           name = "Commit the workflows";
+
+          # The branch of the pull request goes through the environment, so that
+          # actionlint does not read it as an untrusted input in the script.
+          env = {
+            HEAD_REF = "\${{ github.event.pull_request.head.ref }}";
+          };
+
           run = ''
             if git diff --quiet -- .github/workflows; then
               echo "The workflows are already rendered."
@@ -47,9 +54,7 @@ in
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git commit --all --message "Render the workflows"
-            # The ''${ is the escape of an indented string: it writes the
-            # expression of GitHub, and not an interpolation of Nix.
-            git push origin "HEAD:refs/heads/''${github.event.pull_request.head.ref }}"
+            git push origin "HEAD:refs/heads/$HEAD_REF"
           '';
         }
       ];

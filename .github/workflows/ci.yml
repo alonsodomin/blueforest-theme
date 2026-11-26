@@ -83,7 +83,9 @@ jobs:
         extra_nix_config: experimental-features = nix-command flakes
     - name: Render the workflows
       run: nix run .#render-workflows
-    - name: Commit the workflows
+    - env:
+        HEAD_REF: ${{ github.event.pull_request.head.ref }}
+      name: Commit the workflows
       run: |-
         if git diff --quiet -- .github/workflows; then
           echo "The workflows are already rendered."
@@ -92,9 +94,7 @@ jobs:
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git commit --all --message "Render the workflows"
-        # The ${ is the escape of an indented string: it writes the
-        # expression of GitHub, and not an interpolation of Nix.
-        git push origin "HEAD:refs/heads/${github.event.pull_request.head.ref }}"
+        git push origin "HEAD:refs/heads/$HEAD_REF"
 name: CI
 'on':
   pull_request:
