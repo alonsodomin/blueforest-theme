@@ -45,6 +45,26 @@ local expected = {
   NavicIconsNull = { fg = 0xa0ffa0 },
   NavicIconsOperator = { fg = 0xffcc33 },
 
+  -- The markers of bufferline, one group per severity and form: the marker of
+  -- the buffer wears the base or the visible group, and its count wears the
+  -- diagnostic one. Every one is asserted, so a severity cannot go unstyled.
+  BufferLineError = { fg = 0xff8080, bg = 0x0a101d },
+  BufferLineErrorVisible = { fg = 0xff8080, bg = 0x0a101d },
+  BufferLineErrorDiagnostic = { fg = 0xff8080, bg = 0x0a101d },
+  BufferLineErrorDiagnosticVisible = { fg = 0xff8080, bg = 0x0a101d },
+  BufferLineWarning = { fg = 0xffcc33, bg = 0x0a101d },
+  BufferLineWarningVisible = { fg = 0xffcc33, bg = 0x0a101d },
+  BufferLineWarningDiagnostic = { fg = 0xffcc33, bg = 0x0a101d },
+  BufferLineWarningDiagnosticVisible = { fg = 0xffcc33, bg = 0x0a101d },
+  BufferLineInfo = { fg = 0x0099ff, bg = 0x0a101d },
+  BufferLineInfoVisible = { fg = 0x0099ff, bg = 0x0a101d },
+  BufferLineInfoDiagnostic = { fg = 0x0099ff, bg = 0x0a101d },
+  BufferLineInfoDiagnosticVisible = { fg = 0x0099ff, bg = 0x0a101d },
+  BufferLineHint = { fg = 0x91ccff, bg = 0x0a101d },
+  BufferLineHintVisible = { fg = 0x91ccff, bg = 0x0a101d },
+  BufferLineHintDiagnostic = { fg = 0x91ccff, bg = 0x0a101d },
+  BufferLineHintDiagnosticVisible = { fg = 0x91ccff, bg = 0x0a101d },
+
   -- The groups of the shell, which the other applications of the repository
   -- paint with the same colours: the command is a function, the arguments
   -- are parameters, and the variables are variables.
@@ -125,6 +145,24 @@ local expectedLight = {
   NavicIconsArray = { fg = 0x808000 },
   NavicIconsNull = { fg = 0x56697d },
   NavicIconsOperator = { fg = 0xc57633 },
+
+  -- The markers of bufferline, in the light palette.
+  BufferLineError = { fg = 0xb02a28, bg = 0xe0e4ea },
+  BufferLineErrorVisible = { fg = 0xb02a28, bg = 0xe0e4ea },
+  BufferLineErrorDiagnostic = { fg = 0xb02a28, bg = 0xe0e4ea },
+  BufferLineErrorDiagnosticVisible = { fg = 0xb02a28, bg = 0xe0e4ea },
+  BufferLineWarning = { fg = 0xc57633, bg = 0xe0e4ea },
+  BufferLineWarningVisible = { fg = 0xc57633, bg = 0xe0e4ea },
+  BufferLineWarningDiagnostic = { fg = 0xc57633, bg = 0xe0e4ea },
+  BufferLineWarningDiagnosticVisible = { fg = 0xc57633, bg = 0xe0e4ea },
+  BufferLineInfo = { fg = 0x3a5f8a, bg = 0xe0e4ea },
+  BufferLineInfoVisible = { fg = 0x3a5f8a, bg = 0xe0e4ea },
+  BufferLineInfoDiagnostic = { fg = 0x3a5f8a, bg = 0xe0e4ea },
+  BufferLineInfoDiagnosticVisible = { fg = 0x3a5f8a, bg = 0xe0e4ea },
+  BufferLineHint = { fg = 0x1b7a70, bg = 0xe0e4ea },
+  BufferLineHintVisible = { fg = 0x1b7a70, bg = 0xe0e4ea },
+  BufferLineHintDiagnostic = { fg = 0x1b7a70, bg = 0xe0e4ea },
+  BufferLineHintDiagnosticVisible = { fg = 0x1b7a70, bg = 0xe0e4ea },
 
   ["@comment"] = { fg = 0x56697d },
   ["@function.call"] = { fg = 0x1b7a70 },
