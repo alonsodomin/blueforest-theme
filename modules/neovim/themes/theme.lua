@@ -647,6 +647,40 @@ local function plugins(palette)
     NeoTreeTabActive = { fg = palette.fg, bold = true },
     NeoTreeTabInactive = { fg = palette.bg_sel, bg = palette.bg_dark },
     NeoTreeFloatTitle = { fg = palette.accent, bg = palette.bg },
+
+    -- nvim-navic, the breadcrumbs of the winbar: the plugin reads the colour of
+    -- every symbol kind from these groups, and it paints them only when its
+    -- `highlight` option is on. Each icon wears the colour of the syntax role
+    -- it names, so the breadcrumb matches the buffer it summarises.
+    NavicText = { fg = palette.fg },
+    NavicSeparator = { fg = palette.bg_sel },
+    NavicIconsFile = { fg = palette.fg },
+    NavicIconsModule = { fg = palette.accent_light, italic = true },
+    NavicIconsNamespace = { fg = palette.accent_light, italic = true },
+    NavicIconsPackage = { fg = palette.accent_light },
+    NavicIconsClass = { fg = palette.accent_light },
+    NavicIconsMethod = { fg = palette.function_blue },
+    NavicIconsProperty = { fg = palette.variable },
+    NavicIconsField = { fg = palette.variable },
+    NavicIconsConstructor = { fg = palette.accent_light },
+    NavicIconsEnum = { fg = palette.identifier },
+    NavicIconsInterface = { fg = palette.accent_light },
+    NavicIconsFunction = { fg = palette.function_blue },
+    NavicIconsVariable = { fg = palette.variable },
+    NavicIconsConstant = { fg = palette.identifier },
+    NavicIconsString = { fg = palette.string },
+    NavicIconsNumber = { fg = palette.number },
+    NavicIconsBoolean = { fg = palette.accent, bold = true },
+    NavicIconsArray = { fg = palette.type },
+    NavicIconsObject = { fg = palette.type },
+    NavicIconsKey = { fg = palette.variable },
+    NavicIconsNull = { fg = palette.comment },
+    NavicIconsEnumMember = { fg = palette.identifier },
+    NavicIconsStruct = { fg = palette.accent_light },
+    NavicIconsEvent = { fg = palette.accent },
+    NavicIconsOperator = { fg = palette.operator },
+    NavicIconsTypeParameter = { fg = palette.type },
+    NavicIconsText = { fg = palette.fg },
   }
 end
 

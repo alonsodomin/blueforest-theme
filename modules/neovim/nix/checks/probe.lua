@@ -30,6 +30,21 @@ local expected = {
   NeoTreeRootName = { fg = 0xffcc33 },
   NeoTreeDirectoryIcon = { fg = 0x91ccff },
 
+  -- The groups of nvim-navic, which the plugin reads from the colourscheme.
+  -- One per colour of the breadcrumbs, so every role is proved to resolve.
+  NavicText = { fg = 0xd0d0d0 },
+  NavicSeparator = { fg = 0x3a5f8a },
+  NavicIconsModule = { fg = 0x91ccff },
+  NavicIconsFunction = { fg = 0xa2cff5 },
+  NavicIconsVariable = { fg = 0xfffab1 },
+  NavicIconsEnum = { fg = 0xf7ff66 },
+  NavicIconsString = { fg = 0x80ff80 },
+  NavicIconsNumber = { fg = 0xff8080 },
+  NavicIconsBoolean = { fg = 0x0099ff },
+  NavicIconsArray = { fg = 0x808000 },
+  NavicIconsNull = { fg = 0xa0ffa0 },
+  NavicIconsOperator = { fg = 0xffcc33 },
+
   -- The groups of the shell, which the other applications of the repository
   -- paint with the same colours: the command is a function, the arguments
   -- are parameters, and the variables are variables.
@@ -96,6 +111,20 @@ local expectedLight = {
   RainbowDelimiterViolet = { fg = 0x1b7a70 },
   NeoTreeRootName = { fg = 0xc57633 },
   NeoTreeDirectoryIcon = { fg = 0x1b7a70 },
+
+  -- The groups of nvim-navic, in the light palette.
+  NavicText = { fg = 0x141f2e },
+  NavicSeparator = { fg = 0x3a5f8a },
+  NavicIconsModule = { fg = 0x1b7a70 },
+  NavicIconsFunction = { fg = 0x1b7a70 },
+  NavicIconsVariable = { fg = 0x333333 },
+  NavicIconsEnum = { fg = 0x1b2b40 },
+  NavicIconsString = { fg = 0x1e5c1e },
+  NavicIconsNumber = { fg = 0xb02a28 },
+  NavicIconsBoolean = { fg = 0x3a5f8a },
+  NavicIconsArray = { fg = 0x808000 },
+  NavicIconsNull = { fg = 0x56697d },
+  NavicIconsOperator = { fg = 0xc57633 },
 
   ["@comment"] = { fg = 0x56697d },
   ["@function.call"] = { fg = 0x1b7a70 },
