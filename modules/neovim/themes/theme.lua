@@ -356,7 +356,22 @@ local function git(palette)
   }
 end
 
-local function plugins(palette)
+-- bufferline shades Normal to derive the background of each of its states;
+-- mirror its formula so a themed marker cannot repaint the tab around it.
+local function shade(hex, percent)
+  local r, g, b = hex:match("^#(%x%x)(%x%x)(%x%x)$")
+  local function scale(value)
+    return math.min(255, math.floor(tonumber(value, 16) * (100 + percent) / 100))
+  end
+  return ("#%02x%02x%02x"):format(scale(r), scale(g), scale(b))
+end
+
+local function plugins(palette, background)
+  -- The bright mode shades less, because darkening an already light background
+  -- reads as dirt instead of depth.
+  local bg_inactive = shade(palette.bg, background == "light" and -12 or -25)
+  local bg_visible = shade(palette.bg, -8)
+
   return {
     LazyNormal = { bg = palette.bg },
     LazyFloat = { bg = palette.bg },
@@ -457,40 +472,35 @@ local function plugins(palette)
     SnacksDashboardFooter = { fg = palette.bg_sel },
     SnacksDashboardKey = { fg = palette.operator },
 
-    -- Bufferline derives its selected/indicator/separator groups itself and
-    -- decorates them per its own config (`indicator.style`, separator style),
-    -- applying those groups with `default = true`. Defining them here would
-    -- silently drop that decoration, so only the non-decorated groups are
-    -- themed; the separators need contrasting sides for slant/slope to draw.
-    BufferLineBackground = { bg = palette.bg_light },
-    BufferLineBuffer = { fg = palette.fg, bg = palette.bg_dark },
-    BufferLineBufferVisible = { fg = palette.fg, bg = palette.bg_dark },
-    BufferLineModified = { fg = palette.operator, bg = palette.bg_dark },
-    BufferLineModifiedVisible = { fg = palette.operator, bg = palette.bg_dark },
-    BufferLineCloseButton = { fg = palette.fg, bg = palette.bg_dark },
-    BufferLineDuplicate = { fg = palette.bg_sel, bg = palette.bg_dark },
-    BufferLineDuplicateVisible = { fg = palette.bg_sel, bg = palette.bg_dark },
+    -- Bufferline owns the layout colours of its tab bar: it derives every state
+    -- from Normal and applies the decorated groups with `default = true`, so a
+    -- definition here would silently drop the decorations of the selected tab
+    -- (`bold`/`italic`, the indicator's underline). Only the accents are themed,
+    -- and the themed backgrounds mirror bufferline's derivation (`bg_inactive`
+    -- and `bg_visible`), so a marker never repaints the tab around it.
+    BufferLineModified = { fg = palette.operator, bg = bg_inactive },
+    BufferLineModifiedVisible = { fg = palette.operator, bg = bg_visible },
+    BufferLineCloseButton = { fg = palette.fg, bg = bg_inactive },
+    BufferLineDuplicate = { fg = palette.bg_sel, bg = bg_inactive },
+    BufferLineDuplicateVisible = { fg = palette.bg_sel, bg = bg_visible },
     BufferLineIndicatorSelected = { fg = palette.accent, bg = palette.bg },
-    BufferLineError = { fg = palette.number, bg = palette.bg_dark },
-    BufferLineErrorVisible = { fg = palette.number, bg = palette.bg_dark },
-    BufferLineErrorDiagnostic = { fg = palette.number, bg = palette.bg_dark },
-    BufferLineErrorDiagnosticVisible = { fg = palette.number, bg = palette.bg_dark },
-    BufferLineWarning = { fg = palette.operator, bg = palette.bg_dark },
-    BufferLineWarningVisible = { fg = palette.operator, bg = palette.bg_dark },
-    BufferLineWarningDiagnostic = { fg = palette.operator, bg = palette.bg_dark },
-    BufferLineWarningDiagnosticVisible = { fg = palette.operator, bg = palette.bg_dark },
-    BufferLineInfo = { fg = palette.accent, bg = palette.bg_dark },
-    BufferLineInfoVisible = { fg = palette.accent, bg = palette.bg_dark },
-    BufferLineInfoDiagnostic = { fg = palette.accent, bg = palette.bg_dark },
-    BufferLineInfoDiagnosticVisible = { fg = palette.accent, bg = palette.bg_dark },
-    BufferLineHint = { fg = palette.accent_light, bg = palette.bg_dark },
-    BufferLineHintVisible = { fg = palette.accent_light, bg = palette.bg_dark },
-    BufferLineHintDiagnostic = { fg = palette.accent_light, bg = palette.bg_dark },
-    BufferLineHintDiagnosticVisible = { fg = palette.accent_light, bg = palette.bg_dark },
-    BufferLineSeparator = { fg = palette.bg_light, bg = palette.bg_dark },
-    BufferLineSeparatorVisible = { fg = palette.bg_light, bg = palette.bg_dark },
-    BufferLineFill = { fg = palette.fg, bg = palette.bg_light },
-    BufferLineTab = { fg = palette.fg, bg = palette.bg_dark },
+    BufferLineError = { fg = palette.number, bg = bg_inactive },
+    BufferLineErrorVisible = { fg = palette.number, bg = bg_visible },
+    BufferLineErrorDiagnostic = { fg = palette.number, bg = bg_inactive },
+    BufferLineErrorDiagnosticVisible = { fg = palette.number, bg = bg_visible },
+    BufferLineWarning = { fg = palette.operator, bg = bg_inactive },
+    BufferLineWarningVisible = { fg = palette.operator, bg = bg_visible },
+    BufferLineWarningDiagnostic = { fg = palette.operator, bg = bg_inactive },
+    BufferLineWarningDiagnosticVisible = { fg = palette.operator, bg = bg_visible },
+    BufferLineInfo = { fg = palette.accent, bg = bg_inactive },
+    BufferLineInfoVisible = { fg = palette.accent, bg = bg_visible },
+    BufferLineInfoDiagnostic = { fg = palette.accent, bg = bg_inactive },
+    BufferLineInfoDiagnosticVisible = { fg = palette.accent, bg = bg_visible },
+    BufferLineHint = { fg = palette.accent_light, bg = bg_inactive },
+    BufferLineHintVisible = { fg = palette.accent_light, bg = bg_visible },
+    BufferLineHintDiagnostic = { fg = palette.accent_light, bg = bg_inactive },
+    BufferLineHintDiagnosticVisible = { fg = palette.accent_light, bg = bg_visible },
+    BufferLineTab = { fg = palette.fg, bg = bg_inactive },
 
     MasonNormal = { fg = palette.fg, bg = palette.bg },
     MasonHeader = { fg = palette.bg, bg = palette.accent },
@@ -722,7 +732,7 @@ function M.setup(spec)
   vim.o.background = spec.background
 
   for _, set in ipairs({ groups, treesitter, diagnostics, git, plugins, rainbow }) do
-    for group, hl in pairs(set(spec.palette)) do
+    for group, hl in pairs(set(spec.palette, spec.background)) do
       vim.api.nvim_set_hl(0, group, hl)
     end
   end

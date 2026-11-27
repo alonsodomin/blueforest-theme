@@ -92,6 +92,7 @@ in
             theme
             sources
             ;
+          bufferline = pkgs.vimPlugins.bufferline-nvim;
           lualine = pkgs.vimPlugins.lualine-nvim;
         };
       }
