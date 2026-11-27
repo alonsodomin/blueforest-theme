@@ -24,6 +24,12 @@ plugins that are common enough to be worth a colour.
 It also describes the seven `RainbowDelimiter*` groups, because the
 rainbow-delimiters plugin reads their colours from the colourscheme.
 
+It also describes the `Navic*` groups of nvim-navic, the breadcrumbs of the
+winbar: a `NavicIcons*` group per symbol kind, plus `NavicText` and
+`NavicSeparator`, each wearing the colour of the syntax role it names. The
+plugin paints them only when its `highlight` option is on, so a breadcrumb
+takes `require("nvim-navic").setup({ highlight = true })`.
+
 ## Install with Nix
 
 The theme comes as a module of nixvim, which is imported into the
