@@ -27,23 +27,15 @@ require("bufferline").setup({
   options = { separator_style = "slope", diagnostics = "nvim_lsp" },
 })
 
--- bufferline applies its groups as defaults, so it does not restyle them when
--- the colourscheme changes under it; clear the derived bodies and re-fire the
--- event so they are derived again for the mode that is now loaded.
-local function refresh_bufferline()
-  for _, group in ipairs({ "BufferLineBackground", "BufferLineBufferVisible" }) do
-    vim.api.nvim_set_hl(0, group, {})
-  end
-  vim.api.nvim_exec_autocmds("ColorScheme", { pattern = "*" })
-end
-
--- Every themed marker sits on the background bufferline derives for its state,
--- so a marker cannot repaint the tab around it.
+-- The themed markers and bodies mirror the backgrounds bufferline derives from
+-- Normal, so neither can drift: derive for the mode that is loaded and compare
+-- with what the theme set.
 local function assert_bufferline_backgrounds()
+  local derived = require("bufferline.config").update_highlights().highlights
   for _, level in ipairs({ "Error", "Warning", "Info", "Hint" }) do
     for _, form in ipairs({ "", "Visible" }) do
-      local body_group = form == "" and "BufferLineBackground" or "BufferLineBufferVisible"
-      local body = vim.api.nvim_get_hl(0, { name = body_group }).bg
+      local body_hex = form == "" and derived.background.bg or derived.buffer_visible.bg
+      local body = tonumber(body_hex:sub(2), 16)
       for _, group in ipairs({
         "BufferLine" .. level .. form,
         "BufferLine" .. level .. "Diagnostic" .. form,
@@ -102,6 +94,14 @@ local expected = {
   BufferLineHintVisible = { fg = 0x91ccff, bg = 0x121c2a },
   BufferLineHintDiagnostic = { fg = 0x91ccff, bg = 0x0f1722 },
   BufferLineHintDiagnosticVisible = { fg = 0x91ccff, bg = 0x121c2a },
+
+  -- The inactive states wear the neutral foreground, not Comment, on the body
+  -- bufferline derives for them.
+  BufferLineBackground = { fg = 0xd0d0d0, bg = 0x0f1722 },
+  BufferLineBufferVisible = { fg = 0xd0d0d0, bg = 0x121c2a },
+  BufferLineCloseButtonVisible = { fg = 0xd0d0d0, bg = 0x121c2a },
+  BufferLineNumbers = { fg = 0xd0d0d0, bg = 0x0f1722 },
+  BufferLineNumbersVisible = { fg = 0xd0d0d0, bg = 0x121c2a },
 
   -- The groups of the shell, which the other applications of the repository
   -- paint with the same colours: the command is a function, the arguments
@@ -205,6 +205,14 @@ local expectedLight = {
   BufferLineHintDiagnostic = { fg = 0x1b7a70, bg = 0xcccfd4 },
   BufferLineHintDiagnosticVisible = { fg = 0x1b7a70, bg = 0xd5d9de },
 
+  -- The inactive states in the light palette, over the bodies bufferline
+  -- derives for a bright Normal.
+  BufferLineBackground = { fg = 0x141f2e, bg = 0xcccfd4 },
+  BufferLineBufferVisible = { fg = 0x141f2e, bg = 0xd5d9de },
+  BufferLineCloseButtonVisible = { fg = 0x141f2e, bg = 0xd5d9de },
+  BufferLineNumbers = { fg = 0x141f2e, bg = 0xcccfd4 },
+  BufferLineNumbersVisible = { fg = 0x141f2e, bg = 0xd5d9de },
+
   ["@comment"] = { fg = 0x56697d },
   ["@function.call"] = { fg = 0x1b7a70 },
   ["@keyword.conditional"] = { fg = 0x3a5f8a },
@@ -223,7 +231,6 @@ for group, colours in pairs(expectedLight) do
   end
 end
 
-refresh_bufferline()
 assert_bufferline_backgrounds()
 
 -- And lualine reads the light variant of its own theme as well.
