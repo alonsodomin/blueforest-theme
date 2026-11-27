@@ -475,12 +475,18 @@ local function plugins(palette, background)
     -- Bufferline owns the layout colours of its tab bar: it derives every state
     -- from Normal and applies the decorated groups with `default = true`, so a
     -- definition here would silently drop the decorations of the selected tab
-    -- (`bold`/`italic`, the indicator's underline). Only the accents are themed,
-    -- and the themed backgrounds mirror bufferline's derivation (`bg_inactive`
-    -- and `bg_visible`), so a marker never repaints the tab around it.
+    -- (`bold`/`italic`, the indicator's underline). Only the accents are themed:
+    -- the inactive states get the neutral foreground (bufferline would take
+    -- Comment), and their background mirrors bufferline's derivation
+    -- (`bg_inactive` and `bg_visible`), so a marker never repaints the tab.
+    BufferLineBackground = { fg = palette.fg, bg = bg_inactive },
+    BufferLineBufferVisible = { fg = palette.fg, bg = bg_visible },
     BufferLineModified = { fg = palette.operator, bg = bg_inactive },
     BufferLineModifiedVisible = { fg = palette.operator, bg = bg_visible },
     BufferLineCloseButton = { fg = palette.fg, bg = bg_inactive },
+    BufferLineCloseButtonVisible = { fg = palette.fg, bg = bg_visible },
+    BufferLineNumbers = { fg = palette.fg, bg = bg_inactive },
+    BufferLineNumbersVisible = { fg = palette.fg, bg = bg_visible },
     BufferLineDuplicate = { fg = palette.bg_sel, bg = bg_inactive },
     BufferLineDuplicateVisible = { fg = palette.bg_sel, bg = bg_visible },
     BufferLineIndicatorSelected = { fg = palette.accent, bg = palette.bg },
