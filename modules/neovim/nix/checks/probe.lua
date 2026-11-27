@@ -19,6 +19,42 @@ vim.opt.runtimepath:append(lualine)
 vim.cmd.colorscheme("blueforest")
 assert(vim.g.colors_name == "blueforest", "the colourscheme did not set its name")
 
+-- bufferline derives the backgrounds of its states from Normal, and the theme
+-- mirrors that derivation. Set it up so the derived groups are checked too.
+local bufferline = assert(os.getenv("BLUEFOREST_BUFFERLINE"), "bufferline is not set")
+vim.opt.runtimepath:append(bufferline)
+require("bufferline").setup({
+  options = { separator_style = "slope", diagnostics = "nvim_lsp" },
+})
+
+-- bufferline applies its groups as defaults, so it does not restyle them when
+-- the colourscheme changes under it; clear the derived bodies and re-fire the
+-- event so they are derived again for the mode that is now loaded.
+local function refresh_bufferline()
+  for _, group in ipairs({ "BufferLineBackground", "BufferLineBufferVisible" }) do
+    vim.api.nvim_set_hl(0, group, {})
+  end
+  vim.api.nvim_exec_autocmds("ColorScheme", { pattern = "*" })
+end
+
+-- Every themed marker sits on the background bufferline derives for its state,
+-- so a marker cannot repaint the tab around it.
+local function assert_bufferline_backgrounds()
+  for _, level in ipairs({ "Error", "Warning", "Info", "Hint" }) do
+    for _, form in ipairs({ "", "Visible" }) do
+      local body_group = form == "" and "BufferLineBackground" or "BufferLineBufferVisible"
+      local body = vim.api.nvim_get_hl(0, { name = body_group }).bg
+      for _, group in ipairs({
+        "BufferLine" .. level .. form,
+        "BufferLine" .. level .. "Diagnostic" .. form,
+      }) do
+        local got = vim.api.nvim_get_hl(0, { name = group }).bg
+        assert(got == body, string.format("%s.bg is %s, not the body %s", group, tostring(got), tostring(body)))
+      end
+    end
+  end
+end
+
 -- The colours of the theme are the ones of the repository.
 local expected = {
   Normal = { fg = 0xd0d0d0, bg = 0x141f2e },
@@ -47,23 +83,25 @@ local expected = {
 
   -- The markers of bufferline, one group per severity and form: the marker of
   -- the buffer wears the base or the visible group, and its count wears the
-  -- diagnostic one. Every one is asserted, so a severity cannot go unstyled.
-  BufferLineError = { fg = 0xff8080, bg = 0x0a101d },
-  BufferLineErrorVisible = { fg = 0xff8080, bg = 0x0a101d },
-  BufferLineErrorDiagnostic = { fg = 0xff8080, bg = 0x0a101d },
-  BufferLineErrorDiagnosticVisible = { fg = 0xff8080, bg = 0x0a101d },
-  BufferLineWarning = { fg = 0xffcc33, bg = 0x0a101d },
-  BufferLineWarningVisible = { fg = 0xffcc33, bg = 0x0a101d },
-  BufferLineWarningDiagnostic = { fg = 0xffcc33, bg = 0x0a101d },
-  BufferLineWarningDiagnosticVisible = { fg = 0xffcc33, bg = 0x0a101d },
-  BufferLineInfo = { fg = 0x0099ff, bg = 0x0a101d },
-  BufferLineInfoVisible = { fg = 0x0099ff, bg = 0x0a101d },
-  BufferLineInfoDiagnostic = { fg = 0x0099ff, bg = 0x0a101d },
-  BufferLineInfoDiagnosticVisible = { fg = 0x0099ff, bg = 0x0a101d },
-  BufferLineHint = { fg = 0x91ccff, bg = 0x0a101d },
-  BufferLineHintVisible = { fg = 0x91ccff, bg = 0x0a101d },
-  BufferLineHintDiagnostic = { fg = 0x91ccff, bg = 0x0a101d },
-  BufferLineHintDiagnosticVisible = { fg = 0x91ccff, bg = 0x0a101d },
+  -- diagnostic one. Every one is asserted, so a severity cannot go unstyled,
+  -- and their background is the one bufferline derives for the state, so a
+  -- marker cannot repaint the tab around it.
+  BufferLineError = { fg = 0xff8080, bg = 0x0f1722 },
+  BufferLineErrorVisible = { fg = 0xff8080, bg = 0x121c2a },
+  BufferLineErrorDiagnostic = { fg = 0xff8080, bg = 0x0f1722 },
+  BufferLineErrorDiagnosticVisible = { fg = 0xff8080, bg = 0x121c2a },
+  BufferLineWarning = { fg = 0xffcc33, bg = 0x0f1722 },
+  BufferLineWarningVisible = { fg = 0xffcc33, bg = 0x121c2a },
+  BufferLineWarningDiagnostic = { fg = 0xffcc33, bg = 0x0f1722 },
+  BufferLineWarningDiagnosticVisible = { fg = 0xffcc33, bg = 0x121c2a },
+  BufferLineInfo = { fg = 0x0099ff, bg = 0x0f1722 },
+  BufferLineInfoVisible = { fg = 0x0099ff, bg = 0x121c2a },
+  BufferLineInfoDiagnostic = { fg = 0x0099ff, bg = 0x0f1722 },
+  BufferLineInfoDiagnosticVisible = { fg = 0x0099ff, bg = 0x121c2a },
+  BufferLineHint = { fg = 0x91ccff, bg = 0x0f1722 },
+  BufferLineHintVisible = { fg = 0x91ccff, bg = 0x121c2a },
+  BufferLineHintDiagnostic = { fg = 0x91ccff, bg = 0x0f1722 },
+  BufferLineHintDiagnosticVisible = { fg = 0x91ccff, bg = 0x121c2a },
 
   -- The groups of the shell, which the other applications of the repository
   -- paint with the same colours: the command is a function, the arguments
@@ -85,6 +123,8 @@ for group, colours in pairs(expected) do
     assert(hl[what] == colour, string.format("%s.%s is %s, not %s", group, what, tostring(hl[what]), tostring(colour)))
   end
 end
+
+assert_bufferline_backgrounds()
 
 -- lualine reads its theme from the `lua/lualine/themes` directory of the
 -- runtimepath.
@@ -146,23 +186,24 @@ local expectedLight = {
   NavicIconsNull = { fg = 0x56697d },
   NavicIconsOperator = { fg = 0xc57633 },
 
-  -- The markers of bufferline, in the light palette.
-  BufferLineError = { fg = 0xb02a28, bg = 0xe0e4ea },
-  BufferLineErrorVisible = { fg = 0xb02a28, bg = 0xe0e4ea },
-  BufferLineErrorDiagnostic = { fg = 0xb02a28, bg = 0xe0e4ea },
-  BufferLineErrorDiagnosticVisible = { fg = 0xb02a28, bg = 0xe0e4ea },
-  BufferLineWarning = { fg = 0xc57633, bg = 0xe0e4ea },
-  BufferLineWarningVisible = { fg = 0xc57633, bg = 0xe0e4ea },
-  BufferLineWarningDiagnostic = { fg = 0xc57633, bg = 0xe0e4ea },
-  BufferLineWarningDiagnosticVisible = { fg = 0xc57633, bg = 0xe0e4ea },
-  BufferLineInfo = { fg = 0x3a5f8a, bg = 0xe0e4ea },
-  BufferLineInfoVisible = { fg = 0x3a5f8a, bg = 0xe0e4ea },
-  BufferLineInfoDiagnostic = { fg = 0x3a5f8a, bg = 0xe0e4ea },
-  BufferLineInfoDiagnosticVisible = { fg = 0x3a5f8a, bg = 0xe0e4ea },
-  BufferLineHint = { fg = 0x1b7a70, bg = 0xe0e4ea },
-  BufferLineHintVisible = { fg = 0x1b7a70, bg = 0xe0e4ea },
-  BufferLineHintDiagnostic = { fg = 0x1b7a70, bg = 0xe0e4ea },
-  BufferLineHintDiagnosticVisible = { fg = 0x1b7a70, bg = 0xe0e4ea },
+  -- The markers of bufferline, in the light palette, over the backgrounds
+  -- bufferline derives for a bright Normal.
+  BufferLineError = { fg = 0xb02a28, bg = 0xcccfd4 },
+  BufferLineErrorVisible = { fg = 0xb02a28, bg = 0xd5d9de },
+  BufferLineErrorDiagnostic = { fg = 0xb02a28, bg = 0xcccfd4 },
+  BufferLineErrorDiagnosticVisible = { fg = 0xb02a28, bg = 0xd5d9de },
+  BufferLineWarning = { fg = 0xc57633, bg = 0xcccfd4 },
+  BufferLineWarningVisible = { fg = 0xc57633, bg = 0xd5d9de },
+  BufferLineWarningDiagnostic = { fg = 0xc57633, bg = 0xcccfd4 },
+  BufferLineWarningDiagnosticVisible = { fg = 0xc57633, bg = 0xd5d9de },
+  BufferLineInfo = { fg = 0x3a5f8a, bg = 0xcccfd4 },
+  BufferLineInfoVisible = { fg = 0x3a5f8a, bg = 0xd5d9de },
+  BufferLineInfoDiagnostic = { fg = 0x3a5f8a, bg = 0xcccfd4 },
+  BufferLineInfoDiagnosticVisible = { fg = 0x3a5f8a, bg = 0xd5d9de },
+  BufferLineHint = { fg = 0x1b7a70, bg = 0xcccfd4 },
+  BufferLineHintVisible = { fg = 0x1b7a70, bg = 0xd5d9de },
+  BufferLineHintDiagnostic = { fg = 0x1b7a70, bg = 0xcccfd4 },
+  BufferLineHintDiagnosticVisible = { fg = 0x1b7a70, bg = 0xd5d9de },
 
   ["@comment"] = { fg = 0x56697d },
   ["@function.call"] = { fg = 0x1b7a70 },
@@ -181,6 +222,9 @@ for group, colours in pairs(expectedLight) do
     assert(hl[what] == colour, string.format("%s.%s is %s, not %s", group, what, tostring(hl[what]), tostring(colour)))
   end
 end
+
+refresh_bufferline()
+assert_bufferline_backgrounds()
 
 -- And lualine reads the light variant of its own theme as well.
 local lualineLight = loader.load_theme("blueforest-light")

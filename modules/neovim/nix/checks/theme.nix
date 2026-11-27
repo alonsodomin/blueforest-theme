@@ -8,6 +8,8 @@
   theme,
   # The plugin of lualine, which reads a theme of its own.
   lualine,
+  # The plugin of bufferline, whose layout colours are checked too.
+  bufferline,
   # The files of the repository the package carries.
   sources,
 }:
@@ -21,6 +23,7 @@ pkgs.runCommand "blueforest-neovim-theme-check"
     # The probe reads the paths of the packages from the environment.
     BLUEFOREST_THEME = theme.outPath;
     BLUEFOREST_LUALINE = lualine.outPath;
+    BLUEFOREST_BUFFERLINE = bufferline.outPath;
   }
   ''
     # The files of the package are the files of the repository.
