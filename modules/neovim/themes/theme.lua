@@ -457,29 +457,26 @@ local function plugins(palette)
     SnacksDashboardFooter = { fg = palette.bg_sel },
     SnacksDashboardKey = { fg = palette.operator },
 
+    -- Bufferline derives its selected/indicator/separator groups itself and
+    -- decorates them per its own config (`indicator.style`, separator style),
+    -- applying those groups with `default = true`. Defining them here would
+    -- silently drop that decoration, so only the non-decorated groups are
+    -- themed; the separators need contrasting sides for slant/slope to draw.
     BufferLineBackground = { bg = palette.bg_light },
     BufferLineBuffer = { fg = palette.fg, bg = palette.bg_dark },
     BufferLineBufferVisible = { fg = palette.fg, bg = palette.bg_dark },
-    BufferLineBufferSelected = { fg = palette.fg, bg = palette.bg },
     BufferLineModified = { fg = palette.operator, bg = palette.bg_dark },
-    BufferLineModifiedSelected = { fg = palette.operator, bg = palette.bg },
     BufferLineModifiedVisible = { fg = palette.operator, bg = palette.bg_dark },
     BufferLineCloseButton = { fg = palette.fg, bg = palette.bg_dark },
-    BufferLineCloseButtonSelected = { fg = palette.fg, bg = palette.bg },
     BufferLineDuplicate = { fg = palette.bg_sel, bg = palette.bg_dark },
-    BufferLineDuplicateSelected = { fg = palette.bg_sel, bg = palette.bg },
     BufferLineDuplicateVisible = { fg = palette.bg_sel, bg = palette.bg_dark },
     BufferLineIndicatorSelected = { fg = palette.accent, bg = palette.bg },
     BufferLineError = { fg = palette.number, bg = palette.bg_dark },
-    BufferLineErrorSelected = { fg = palette.number, bg = palette.bg },
     BufferLineWarning = { fg = palette.operator, bg = palette.bg_dark },
-    BufferLineWarningSelected = { fg = palette.operator, bg = palette.bg },
-    BufferLineSeparator = { fg = palette.bg_light, bg = palette.bg_light },
-    BufferLineSeparatorSelected = { fg = palette.bg_light, bg = palette.bg_light },
-    BufferLineSeparatorVisible = { fg = palette.bg_light, bg = palette.bg_light },
+    BufferLineSeparator = { fg = palette.bg_light, bg = palette.bg_dark },
+    BufferLineSeparatorVisible = { fg = palette.bg_light, bg = palette.bg_dark },
     BufferLineFill = { fg = palette.fg, bg = palette.bg_light },
     BufferLineTab = { fg = palette.fg, bg = palette.bg_dark },
-    BufferLineTabSelected = { fg = palette.fg, bg = palette.bg },
 
     MasonNormal = { fg = palette.fg, bg = palette.bg },
     MasonHeader = { fg = palette.bg, bg = palette.accent },
